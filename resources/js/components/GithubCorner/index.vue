@@ -1,6 +1,6 @@
 <template>
   <a href="https://github.com/tuandm/laravue" target="_blank" class="github-corner" aria-label="View source on Github">
-    <svg
+    <!-- <svg
       width="80"
       height="80"
       viewBox="0 0 250 250"
@@ -19,14 +19,14 @@
         fill="currentColor"
         class="octo-body"
       />
-    </svg>
+    </svg> -->
   </a>
 </template>
 
 <style scoped>
-.github-corner:hover .octo-arm {
+/*.github-corner:hover .octo-arm {
   animation: octocat-wave 560ms ease-in-out
-}
+}*/
 
 @keyframes octocat-wave {
   0%,
@@ -44,11 +44,11 @@
 }
 
 @media (max-width:500px) {
-  .github-corner:hover .octo-arm {
+  /*.github-corner:hover .octo-arm {
     animation: none
   }
-  .github-corner .octo-arm {
+  /*.github-corner .octo-arm {
     animation: octocat-wave 560ms ease-in-out
-  }
+  }*/
 }
 </style>
