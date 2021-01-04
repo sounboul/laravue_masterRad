@@ -42,6 +42,7 @@ Route::namespace('Api')->group(function() {
 
         // Articles
         Route::get('/articles', 'ArticlesController@fetchArticles');
+        Route::post('/article/update', 'ArticlesController@updateArticles');
     });
 });
 

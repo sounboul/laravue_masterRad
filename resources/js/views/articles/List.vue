@@ -5,9 +5,9 @@
       <el-select v-model="listQuery.importance" :placeholder="$t('table.importance')" clearable style="width: 90px" class="filter-item">
         <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />
       </el-select>
-      <el-select v-model="listQuery.type" :placeholder="$t('table.type')" clearable class="filter-item" style="width: 130px">
+      <!-- <el-select v-model="listQuery.type" :placeholder="$t('table.type')" clearable class="filter-item" style="width: 130px">
         <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name+'('+item.key+')'" :value="item.key" />
-      </el-select>
+      </el-select> -->
       <el-select v-model="listQuery.sort" style="width: 140px" class="filter-item" @change="handleFilter">
         <el-option v-for="item in sortOptions" :key="item.key" :label="item.label" :value="item.key" />
       </el-select>
@@ -53,7 +53,7 @@
       </el-table-column>
       <el-table-column :label="$t('table.author')" width="120px" align="center">
         <template slot-scope="scope">
-          <span v-for="(n, index) in scope.row.store" :key="n">{{ scope.row.store[index].address }}<br></span>
+          <span v-for="(n, index) in scope.row.store" :key="index">{{ scope.row.store[index].address }}<br></span>
         </template>
       </el-table-column>
       <el-table-column v-if="showReviewer" :label="$t('table.reviewer')" width="110px" align="center">
@@ -79,17 +79,17 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.actions')" align="center" width="300" class-name="small-padding fixed-width">
+      <el-table-column :label="$t('table.actions')" align="center" width="200" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
             {{ $t('table.edit') }}
           </el-button>
-          <el-button v-if="row.status!='published'" size="mini" type="success" @click="handleModifyStatus(row,'published')">
+          <!-- <el-button v-if="row.status!='published'" size="mini" type="success" @click="handleModifyStatus(row,'published')">
             {{ $t('table.publish') }}
           </el-button>
           <el-button v-if="row.status!='draft'" size="mini" @click="handleModifyStatus(row,'draft')">
             {{ $t('table.draft') }}
-          </el-button>
+          </el-button> -->
           <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleModifyStatus(row,'deleted')">
             {{ $t('table.delete') }}
           </el-button>
@@ -101,6 +101,9 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
+        <el-form-item :label="$t('table.code')" prop="code">
+          <el-input v-model="temp.code" />
+        </el-form-item>
         <el-form-item :label="$t('table.type')" prop="type">
           <el-select v-model="temp.type" class="filter-item" placeholder="Please select">
             <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
@@ -208,6 +211,7 @@ export default {
         timestamp: new Date(),
         title: '',
         type: '',
+        code: '',
         status: 'published',
       },
       dialogFormVisible: false,
@@ -271,6 +275,7 @@ export default {
         remark: '',
         timestamp: new Date(),
         title: '',
+        code: '',
         status: 'published',
         type: '',
       };
