@@ -1,7 +1,8 @@
 <?php
 
-namespace App;
+namespace App\Laravue\Models;
 
+use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class Stores extends Model

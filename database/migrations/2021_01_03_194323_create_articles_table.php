@@ -24,10 +24,10 @@ class CreateArticlesTable extends Migration
             $table->string('image')->nullable();
             $table->string('brand')->nullable();
             $table->integer('rating')->nullable();
-            /*$table->unsignedBigInteger('store_id');
-            $table->foreign('store_id')->references('id')->on('stores');
-            $table->unsignedBigInteger('color_id');
-            $table->foreign('color_id')->references('id')->on('colors');*/
+            /*$table->unsignedBigInteger('stores_id');
+            $table->foreign('stores_id')->references('id')->on('stores');
+            $table->unsignedBigInteger('colors_id');
+            $table->foreign('colors_id')->references('id')->on('colors');*/
             $table->text('tags')->nullable();
             $table->longText('description')->nullable();
             $table->text('short_description')->nullable();

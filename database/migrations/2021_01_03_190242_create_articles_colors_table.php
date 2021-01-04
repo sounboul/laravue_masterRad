@@ -14,10 +14,10 @@ class CreateArticlesColorsTable extends Migration
     public function up()
     {
         Schema::create('articles_colors', function (Blueprint $table) {
-            $table->unsignedBigInteger('article_id');
-            $table->foreign('article_id')->references('id')->on('articles');
-            $table->unsignedBigInteger('color_id');
-            $table->foreign('color_id')->references('id')->on('colors');
+            $table->unsignedBigInteger('articles_id');
+            $table->foreign('articles_id')->references('id')->on('articles');
+            $table->unsignedBigInteger('colors_id');
+            $table->foreign('colors_id')->references('id')->on('colors');
         });
     }
 
