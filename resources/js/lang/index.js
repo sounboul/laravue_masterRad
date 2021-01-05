@@ -1,10 +1,12 @@
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
 import Cookies from 'js-cookie';
+import elementSrLocale from 'element-ui/lib/locale/lang/sr'; // element-ui lang
 import elementEnLocale from 'element-ui/lib/locale/lang/en'; // element-ui lang
 import elementRuLocale from 'element-ui/lib/locale/lang/ru-RU'; // element-ui lang
 import elementZhLocale from 'element-ui/lib/locale/lang/zh-CN';// element-ui lang
 import elementViLocale from 'element-ui/lib/locale/lang/vi';// element-ui lang
+import srLocale from './sr';
 import enLocale from './en';
 import ruLocale from './ru';
 import zhLocale from './zh';
@@ -13,6 +15,10 @@ import viLocale from './vi';
 Vue.use(VueI18n);
 
 const messages = {
+  sr: {
+    ...srLocale,
+    ...elementSrLocale,
+  },
   en: {
     ...enLocale,
     ...elementEnLocale,
@@ -45,7 +51,7 @@ export function getLanguage() {
       return locale;
     }
   }
-  return 'en';
+  return 'sr';
 }
 const i18n = new VueI18n({
   // set locale
