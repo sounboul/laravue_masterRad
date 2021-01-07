@@ -4,15 +4,18 @@
       <svg-icon class-name="international-icon" icon-class="language" />
     </div>
     <el-dropdown-menu slot="dropdown">
-      <el-dropdown-item :disabled="language==='vi'" command="vi">
-        Tiếng Việt
+      <el-dropdown-item :disabled="language==='sr'" command="sr">
+        Srpski
       </el-dropdown-item>
+      <!--  <el-dropdown-item :disabled="language==='vi'" command="vi">
+        Tiếng Việt
+      </el-dropdown-item> -->
       <el-dropdown-item :disabled="language==='en'" command="en">
         English
       </el-dropdown-item>
-      <el-dropdown-item :disabled="language==='zh'" command="zh">
+      <!-- <el-dropdown-item :disabled="language==='zh'" command="zh">
         中文
-      </el-dropdown-item>
+      </el-dropdown-item> -->
       <el-dropdown-item :disabled="language==='ru'" command="ru">
         Русский
       </el-dropdown-item>
@@ -31,10 +34,24 @@ export default {
     handleSetLanguage(lang) {
       this.$i18n.locale = lang;
       this.$store.dispatch('app/setLanguage', lang);
-      this.$message({
-        message: 'Switch Language Success',
-        type: 'success',
-      });
+      if (lang === 'sr') {
+        this.$message({
+          message: 'Promena jezika uspešna!',
+          type: 'success',
+        });
+      }
+      if (lang === 'en') {
+        this.$message({
+          message: 'Switch Language Success!',
+          type: 'success',
+        });
+      }
+      if (lang === 'ru') {
+        this.$message({
+          message: 'Сменить язык успешно!',
+          type: 'success',
+        });
+      }
     },
   },
 };

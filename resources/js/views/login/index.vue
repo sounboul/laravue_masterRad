@@ -29,12 +29,12 @@
       </el-form-item>
       <el-form-item>
         <el-button :loading="loading" type="primary" style="width:100%;" @click.native.prevent="handleLogin">
-          Sign in
+          {{ $t('login.logIn') }}
         </el-button>
       </el-form-item>
       <div class="tips">
         <span style="margin-right:20px;">Email: admin@laravue.dev</span>
-        <span>Password: laravue</span>
+        <span>{{ $t('login.password') }}: laravue</span>
       </div>
     </el-form>
   </div>

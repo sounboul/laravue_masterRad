@@ -30,7 +30,9 @@ class UserResource extends JsonResource
                 },
                 $this->getAllPermissions()->toArray()
             ),
-            'avatar' => 'https://i.pravatar.cc',
+            'avatar' => '../../assets/avatars/SlikaSokoBanja.png',
+            /*'avatar' => $this->avatar,*/
+            /*'avatar' => 'https://i.pravatar.cc',*/
         ];
     }
 }

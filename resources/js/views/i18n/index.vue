@@ -7,6 +7,9 @@
       </div>
       <div>
         <el-radio-group v-model="lang" size="small">
+          <el-radio label="sr" border>
+            Srpski
+          </el-radio>
           <el-radio label="vi" border>
             Tiếng Việt
           </el-radio>
