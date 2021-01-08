@@ -32,7 +32,7 @@
       border
       fit
       highlight-current-row
-      style="width: 100%;"
+      style="width: 100%; border-radius: 15px;"
       @sort-change="sortChange"
     >
       <el-table-column :label="$t('table.id')" prop="id" sortable="custom" align="center" width="80">
