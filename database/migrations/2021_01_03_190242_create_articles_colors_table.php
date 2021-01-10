@@ -15,9 +15,9 @@ class CreateArticlesColorsTable extends Migration
     {
         Schema::create('articles_colors', function (Blueprint $table) {
             $table->unsignedBigInteger('articles_id');
-            $table->foreign('articles_id')->references('id')->on('articles');
+            $table->foreign('articles_id')->references('id')->on('articles')->onUpdate('cascade')->onDelete('cascade');
             $table->unsignedBigInteger('colors_id');
-            $table->foreign('colors_id')->references('id')->on('colors');
+            $table->foreign('colors_id')->references('id')->on('colors')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

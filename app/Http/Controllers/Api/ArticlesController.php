@@ -24,7 +24,7 @@ class ArticlesController extends BaseController
     	return response()->json(new JsonResponse(['items' => $articles, 'total' => count($articles)]));
     }
 
-    public function updateArticles(Request $request, Articles $articles)
+    public function updateArticle(Request $request, Articles $articles)
     {
         if ($articles === null) {
             return response()->json(['error' => 'Article not found'], 404);
@@ -53,5 +53,13 @@ class ArticlesController extends BaseController
         $article->short_description = $request->short_description;
         $article->save();
         return;
+    }
+
+    public function deleteArticle($id)
+    {
+        $article = Articles::find($id);
+        $article->delete();
+        
+        return response()->json(['status' => $id]);
     }
 }

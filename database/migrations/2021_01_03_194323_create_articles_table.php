@@ -18,16 +18,12 @@ class CreateArticlesTable extends Migration
             $table->integer('code')->unique();
             $table->string('title');
             $table->unsignedBigInteger('category_id');
-            $table->foreign('category_id')->references('id')->on('categories');
+            $table->foreign('category_id')->references('id')->on('categories')->onUpdate('cascade')->onDelete('cascade');
             $table->integer('price');
             $table->integer('amount');
             $table->string('image')->nullable();
             $table->string('brand')->nullable();
             $table->integer('rating')->nullable();
-            /*$table->unsignedBigInteger('stores_id');
-            $table->foreign('stores_id')->references('id')->on('stores');
-            $table->unsignedBigInteger('colors_id');
-            $table->foreign('colors_id')->references('id')->on('colors');*/
             $table->text('tags')->nullable();
             $table->longText('description')->nullable();
             $table->text('short_description')->nullable();

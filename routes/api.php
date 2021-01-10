@@ -42,7 +42,8 @@ Route::namespace('Api')->group(function() {
 
         // Articles
         Route::get('/articles', 'ArticlesController@fetchArticles');
-        Route::post('/article/update', 'ArticlesController@updateArticles');
+        Route::post('/article/update', 'ArticlesController@updateArticle');
+        Route::get('/article/delete/{id}', 'ArticlesController@deleteArticle');
     });
 });
 

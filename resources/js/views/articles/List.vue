@@ -32,7 +32,7 @@
       border
       fit
       highlight-current-row
-      style="width: 100%; border-radius: 15px;"
+      style="width: 100%;border-radius: 15px;box-shadow: 10px 10px 10px 5px #aaaaaa;"
       @sort-change="sortChange"
     >
       <el-table-column :label="$t('table.id')" prop="id" sortable="custom" align="center" width="80">
@@ -90,7 +90,8 @@
           <el-button v-if="row.status!='draft'" size="mini" @click="handleModifyStatus(row,'draft')">
             {{ $t('table.draft') }}
           </el-button> -->
-          <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleModifyStatus(row,'deleted')">
+          <!-- <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleModifyStatus(row,'deleted')"> -->
+          <el-button v-if="row.id!='deleted'" size="mini" type="danger" @click="handleDelete(row.id)">
             {{ $t('table.delete') }}
           </el-button>
         </template>
@@ -150,7 +151,7 @@
 </template>
 
 <script>
-import { fetchList, fetchPv, createArticle, updateArticle } from '@/api/article';
+import { fetchList, fetchPv, createArticle, updateArticle, deleteArticle } from '@/api/article';
 import waves from '@/directive/waves'; // Waves directive
 import { parseTime } from '@/utils';
 import Pagination from '@/components/Pagination'; // Secondary package based on el-pagination
@@ -339,15 +340,18 @@ export default {
         }
       });
     },
-    handleDelete(row) {
-      this.$notify({
-        title: 'Success',
-        message: 'Deleted successfully',
-        type: 'success',
-        duration: 2000,
+    handleDelete(id) {
+      deleteArticle(id).then(() => {
+        this.$notify({
+          title: 'Success',
+          message: 'Deleted successfully',
+          type: 'success',
+          duration: 2000,
+        });
+        this.getList();
       });
-      const index = this.list.indexOf(row);
-      this.list.splice(index, 1);
+      /* const index = this.list.indexOf(row);
+      this.list.splice(index, 1); */
     },
     handleFetchPv(pv) {
       fetchPv(pv).then(response => {
@@ -381,3 +385,10 @@ export default {
   },
 };
 </script>
+<style scoped>
+  .pagination-container {
+    width: 100%;
+    border-radius: 15px;
+    box-shadow: 10px 10px 10px 5px #aaaaaa;
+  }
+</style>
