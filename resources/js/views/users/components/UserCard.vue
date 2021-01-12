@@ -15,7 +15,7 @@
       <div class="box-social">
         <el-table :data="social" :show-header="false">
           <el-table-column prop="name" label="Name" />
-          <el-table-column label="Count" align="left" width="250">
+          <el-table-column label="Count" align="right" width="250">
             <template slot-scope="scope">
               {{ scope.row.account }}
             </template>
@@ -54,15 +54,15 @@ export default {
       social: [
         {
           'name': 'Facebook: ',
-          'account': 'user.facebook.account',
+          'account': 'facebook.account',
         },
         {
           'name': 'Instagram: ',
-          'account': 'user.instagram.account',
+          'account': 'instagram.account',
         },
         {
           'name': 'Twitter: ',
-          'account': 'user.twitter.account',
+          'account': 'twitter.account',
         },
       ],
     };

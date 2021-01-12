@@ -207,7 +207,7 @@ export default {
         .then(response => {
           this.updating = false;
           this.$message({
-            message: 'User information has been updated successfully',
+            message: this.$t('user.edit_success'),
             type: 'success',
             duration: 5 * 1000,
           });

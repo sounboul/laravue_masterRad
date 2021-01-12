@@ -191,6 +191,7 @@ export default {
     'education': 'Oбразование',
     'about_me': 'О пользователе',
     'skills': 'Навыки и умения',
+    'edit_success': 'Информация о пользователе успешно обновлена!',
   },
   roles: {
     description: {

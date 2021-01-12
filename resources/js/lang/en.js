@@ -191,6 +191,7 @@ export default {
     'education': 'Education',
     'about_me': 'About user',
     'skills': 'Skills',
+    'edit_success': 'User information has been updated successfully!',
   },
   roles: {
     description: {

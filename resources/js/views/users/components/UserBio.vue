@@ -10,7 +10,7 @@
       </div>
       <div class="user-bio-section-body">
         <div class="text-muted">
-          B.S. in Computer Science from the University of Technology at Ho Chi Minh city
+          Akademija tehničko-vaspitačkih strukovnih studija u Nišu
         </div>
       </div>
     </div>
