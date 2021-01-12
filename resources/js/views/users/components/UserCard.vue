@@ -15,9 +15,9 @@
       <div class="box-social">
         <el-table :data="social" :show-header="false">
           <el-table-column prop="name" label="Name" />
-          <el-table-column label="Count" align="left" width="100">
+          <el-table-column label="Count" align="left" width="250">
             <template slot-scope="scope">
-              {{ scope.row.count | toThousandFilter }}
+              {{ scope.row.account }}
             </template>
           </el-table-column>
         </el-table>
@@ -53,16 +53,16 @@ export default {
     return {
       social: [
         {
-          'name': 'Followers',
-          'count': 1235,
+          'name': 'Facebook: ',
+          'account': 'user.facebook.account',
         },
         {
-          'name': 'Following',
-          'count': 23512,
+          'name': 'Instagram: ',
+          'account': 'user.instagram.account',
         },
         {
-          'name': 'Friends',
-          'count': 7242,
+          'name': 'Twitter: ',
+          'account': 'user.twitter.account',
         },
       ],
     };

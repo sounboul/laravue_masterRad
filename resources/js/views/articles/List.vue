@@ -350,8 +350,6 @@ export default {
         });
         this.getList();
       });
-      /* const index = this.list.indexOf(row);
-      this.list.splice(index, 1); */
     },
     handleFetchPv(pv) {
       fetchPv(pv).then(response => {
@@ -389,6 +387,6 @@ export default {
   .pagination-container {
     width: 100%;
     border-radius: 15px;
-    box-shadow: 10px 10px 10px 5px #aaaaaa;
+    /*box-shadow: 10px 10px 10px 5px #aaaaaa;*/
   }
 </style>

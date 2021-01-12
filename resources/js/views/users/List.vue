@@ -16,7 +16,7 @@
       </el-button>
     </div>
 
-    <el-table v-loading="loading" :data="list" border fit highlight-current-row style="width: 100%">
+    <el-table v-loading="loading" :data="list" border fit highlight-current-row style="width: 100%; border-radius: 15px;box-shadow: 10px 10px 10px 5px #aaaaaa;">
       <el-table-column align="center" label="ID" width="80">
         <template slot-scope="scope">
           <span>{{ scope.row.index }}</span>
@@ -458,6 +458,11 @@ export default {
   }
   .clear-left {
     clear: left;
+  }
+  .pagination-container {
+    width: 100%;
+    border-radius: 15px;
+    //box-shadow: 10px 10px 10px 5px #aaaaaa;
   }
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-table v-loading="loading" :data="list" border fit highlight-current-row style="width: 100%">
+    <el-table v-loading="loading" :data="list" border fit highlight-current-row style="width: 100%;border-radius: 15px;box-shadow: 10px 10px 10px 5px #aaaaaa;padding: 15px;">
       <el-table-column align="center" label="ID" width="80">
         <template slot-scope="scope">
           <span>{{ scope.row.index }}</span>

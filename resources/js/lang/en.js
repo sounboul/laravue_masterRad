@@ -188,6 +188,9 @@ export default {
     'confirmPassword': 'Confirm password',
     'name': 'Name',
     'email': 'Email',
+    'education': 'Education',
+    'about_me': 'About user',
+    'skills': 'Skills',
   },
   roles: {
     description: {

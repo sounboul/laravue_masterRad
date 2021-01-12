@@ -188,6 +188,9 @@ export default {
     'confirmPassword': 'Подтвердить пароль',
     'name': 'Имя',
     'email': 'Email',
+    'education': 'Oбразование',
+    'about_me': 'О пользователе',
+    'skills': 'Навыки и умения',
   },
   roles: {
     description: {

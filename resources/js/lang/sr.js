@@ -190,6 +190,9 @@ export default {
     'name': 'Ime',
     'email': 'Email',
     'CreateNewUser': 'Kreiranje novog korisnika',
+    'education': 'Obrazovanje',
+    'about_me': 'O korisniku',
+    'skills': 'Veštine',
   },
   roles: {
     description: {
