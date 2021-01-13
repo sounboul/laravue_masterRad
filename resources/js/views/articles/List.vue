@@ -42,12 +42,12 @@
       </el-table-column>
       <el-table-column :label="$t('table.date')" width="100px" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.created_at | parseTime('{d}-{m}-{y}') }}</span>
+          <span>{{ scope.row.created_at | parseTime('{d}.{m}.{y}.') }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('table.title')" min-width="120px">
         <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate(row)">{{ row.title }}</span>
+          <span class="link-type" @click="previewArticle(row)">{{ row.title }}</span>
           <!-- <el-tag>{{ row.title }}</el-tag> -->
         </template>
       </el-table-column>
@@ -105,16 +105,16 @@
         <el-form-item :label="$t('table.code')" prop="code">
           <el-input v-model="temp.code" />
         </el-form-item>
-        <el-form-item :label="$t('table.type')" prop="type">
+        <!-- <el-form-item :label="$t('table.type')" prop="type">
           <el-select v-model="temp.type" class="filter-item" placeholder="Please select">
             <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
           </el-select>
-        </el-form-item>
-        <el-form-item :label="$t('table.date')" prop="timestamp">
-          <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="Please pick a date" />
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item :label="$t('table.title')" prop="title">
           <el-input v-model="temp.title" />
+        </el-form-item>
+        <!-- <el-form-item :label="$t('table.date')" prop="timestamp">
+          <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="Please pick a date" />
         </el-form-item>
         <el-form-item :label="$t('table.status')">
           <el-select v-model="temp.status" class="filter-item" placeholder="Please select">
@@ -123,7 +123,7 @@
         </el-form-item>
         <el-form-item :label="$t('table.importance')">
           <el-rate v-model="temp.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="3" style="margin-top:8px;" />
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item :label="$t('table.remark')">
           <el-input v-model="temp.remark" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" placeholder="Please input" />
         </el-form-item>
@@ -135,6 +135,44 @@
         <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
           {{ $t('table.confirm') }}
         </el-button>
+      </div>
+    </el-dialog>
+
+    <el-dialog title="Pregled artikla" :visible.sync="modalArticlePreview">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
+        <el-form-item :label="$t('table.code')" prop="code">
+          <el-input v-model="temp.code" />
+        </el-form-item>
+        <!-- <el-form-item :label="$t('table.type')" prop="type">
+          <el-select v-model="temp.type" class="filter-item" placeholder="Please select">
+            <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
+          </el-select>
+        </el-form-item> -->
+        <el-form-item :label="$t('table.title')" prop="title">
+          <el-input v-model="temp.title" />
+        </el-form-item>
+        <!-- <el-form-item :label="$t('table.date')" prop="timestamp">
+          <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="Please pick a date" />
+        </el-form-item>
+        <el-form-item :label="$t('table.status')">
+          <el-select v-model="temp.status" class="filter-item" placeholder="Please select">
+            <el-option v-for="item in statusOptions" :key="item" :label="item" :value="item" />
+          </el-select>
+        </el-form-item>
+        <el-form-item :label="$t('table.importance')">
+          <el-rate v-model="temp.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="3" style="margin-top:8px;" />
+        </el-form-item> -->
+        <el-form-item :label="$t('table.remark')">
+          <el-input v-model="temp.remark" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" placeholder="Please input" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="modalArticlePreview = false">
+          {{ $t('table.cancel') }}
+        </el-button>
+        <!-- <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
+          {{ $t('table.confirm') }}
+        </el-button> -->
       </div>
     </el-dialog>
 
@@ -151,7 +189,7 @@
 </template>
 
 <script>
-import { fetchList, fetchPv, createArticle, updateArticle, deleteArticle } from '@/api/article';
+import { fetchList, fetchPv, fetchArticle, createArticle, updateArticle, deleteArticle } from '@/api/article';
 import waves from '@/directive/waves'; // Waves directive
 import { parseTime } from '@/utils';
 import Pagination from '@/components/Pagination'; // Secondary package based on el-pagination
@@ -222,6 +260,7 @@ export default {
         create: 'Create',
       },
       dialogPvVisible: false,
+      modalArticlePreview: false,
       pvData: [],
       rules: {
         type: [{ required: true, message: 'type is required', trigger: 'change' }],
@@ -296,16 +335,22 @@ export default {
           this.temp.author = 'laravue';
           createArticle(this.temp).then(() => {
             this.list.unshift(this.temp);
-            this.dialogFormVisible = false;
+            this.dialogFormVisible = true;
             this.$notify({
-              title: 'Success',
-              message: 'Created successfully',
+              title: this.$t('table.success'),
+              message: this.$t('table.created_successfully'),
               type: 'success',
               duration: 2000,
             });
+            // this.getList();
           });
         }
       });
+    },
+    previewArticle(row) {
+      // console.log(row);
+      fetchArticle(row.id);
+      this.modalArticlePreview = true;
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row); // copy obj
@@ -331,8 +376,8 @@ export default {
             }
             this.dialogFormVisible = false;
             this.$notify({
-              title: 'Success',
-              message: 'Updated successfully',
+              title: this.$t('table.success'),
+              message: this.$t('table.updated_successfully'),
               type: 'success',
               duration: 2000,
             });
@@ -343,8 +388,8 @@ export default {
     handleDelete(id) {
       deleteArticle(id).then(() => {
         this.$notify({
-          title: 'Success',
-          message: 'Deleted successfully',
+          title: this.$t('table.success'),
+          message: this.$t('table.deleted_successfully'),
           type: 'success',
           duration: 2000,
         });

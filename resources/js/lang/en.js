@@ -146,6 +146,11 @@ export default {
     confirm: 'Confirm',
     keyword: 'Keyword',
     role: 'Role',
+    code: 'Code',
+    success: 'Success',
+    created_successfully: 'Created successfully!',
+    updated_successfully: 'Updated successfully!',
+    deleted_successfully: 'Deleted successfully!',
   },
   errorLog: {
     tips: 'Please click the bug icon in the upper right corner',
@@ -192,6 +197,7 @@ export default {
     'about_me': 'About user',
     'skills': 'Skills',
     'edit_success': 'User information has been updated successfully!',
+    'update': 'Update',
   },
   roles: {
     description: {

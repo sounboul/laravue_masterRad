@@ -146,6 +146,11 @@ export default {
     confirm: 'Подтвердить',
     keyword: 'Ключевое слово',
     role: 'Роль',
+    code: 'Kод',
+    success: 'Успех',
+    created_successfully: 'Создано успешно!',
+    updated_successfully: 'Успешно Обновлено!',
+    deleted_successfully: 'Удалено успешно!',
   },
   errorLog: {
     tips: 'Пожалуйста, нажмите на иконку "бага" в правом верхнем углу',
@@ -192,6 +197,7 @@ export default {
     'about_me': 'О пользователе',
     'skills': 'Навыки и умения',
     'edit_success': 'Информация о пользователе успешно обновлена!',
+    'update': 'Обновить',
   },
   roles: {
     description: {

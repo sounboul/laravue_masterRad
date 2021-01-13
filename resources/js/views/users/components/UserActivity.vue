@@ -157,7 +157,7 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" :disabled="user.role === 'admin'" @click="onSubmit">
-            Update
+            {{ $t('user.update') }}
           </el-button>
         </el-form-item>
       </el-tab-pane>

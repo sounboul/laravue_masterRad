@@ -24,6 +24,22 @@ class ArticlesController extends BaseController
     	return response()->json(new JsonResponse(['items' => $articles, 'total' => count($articles)]));
     }
 
+    public function previewArticle($id)
+    {
+        
+    }
+
+    public function createArticle(Request $request, Articles $articles)
+    {
+        $currentUser = Auth::user();
+        if (!$currentUser->isAdmin()
+            && !$currentUser->hasPermission(\App\Laravue\Acl::PERMISSION_ARTICLE_MANAGE)
+        ) {
+            return response()->json(['error' => 'Permission denied'], 403);
+        }
+        dd($request);
+    }
+
     public function updateArticle(Request $request, Articles $articles)
     {
         if ($articles === null) {

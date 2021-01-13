@@ -147,6 +147,11 @@ export default {
     confirm: 'Potvrdi',
     keyword: 'Ključna reč',
     role: 'Zaduženje',
+    code: 'Šifra',
+    success: 'Izvršeno!',
+    created_successfully: 'Kreiranje uspešno!',
+    updated_successfully: 'Ažuriranje uspešno!',
+    deleted_successfully: 'Uspešno obrisano!',
   },
   errorLog: {
     tips: 'Please click the bug icon in the upper right corner',
@@ -194,6 +199,7 @@ export default {
     'about_me': 'O korisniku',
     'skills': 'Veštine',
     'edit_success': 'Informacije o korisniku uspešno ažurirane!',
+    'update': 'Ažuriraj',
   },
   roles: {
     description: {
