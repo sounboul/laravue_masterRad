@@ -70,6 +70,7 @@ export default {
     administrator: 'Administrator',
     users: 'Korisnici',
     userProfile: 'Profil korisnika',
+    Customers: 'Korisnici',
   },
   navbar: {
     logOut: 'Odjava',
@@ -209,5 +210,11 @@ export default {
       user: 'Korisnik. Ima pristup nekim stranicama',
       visitor: 'Visitor. Ima pristup statičkim stranicama, ne bi trebalo da ima dozvolu za pisanje',
     },
+  },
+  customers: {
+    'customers': 'Korisnici',
+    'customer': 'Korisnik',
+    'Create_new_customer': 'Kreiranje novog korisnika',
+    'name': 'Ime',
   },
 };

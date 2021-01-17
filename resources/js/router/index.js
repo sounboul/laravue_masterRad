@@ -119,6 +119,19 @@ export const constantRoutes = [
     ],
   },
   {
+    path: '/customers',
+    component: Layout,
+    redirect: '/profile/customers',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/customers/List'),
+        name: 'CustomerList',
+        meta: { title: 'Customers', icon: 'user', noCache: true },
+      },
+    ],
+  },
+  {
     path: '/guide',
     component: Layout,
     redirect: '/guide/index',

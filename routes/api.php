@@ -46,6 +46,9 @@ Route::namespace('Api')->group(function() {
         Route::post('/article/create', 'ArticlesController@createArticle');
         Route::post('/article/update', 'ArticlesController@updateArticle');
         Route::get('/article/delete/{id}', 'ArticlesController@deleteArticle');
+
+        //customers
+        Route::get('/customers', 'CustomersController@fetchCustomers');
     });
 });
 

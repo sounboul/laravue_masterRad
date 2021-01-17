@@ -70,6 +70,7 @@ export default {
     administrator: 'Администратор',
     users: 'Пользователи',
     userProfile: 'Профиль пользователя',
+    Customers: 'Клиенты',
   },
   navbar: {
     logOut: 'Выход',
@@ -207,5 +208,11 @@ export default {
       user: 'Normal user. Есть доступ к некоторым страницам.',
       visitor: 'Visitor. Имеют доступ к статическим страницам, не должны иметь прав на запись.',
     },
+  },
+  customers: {
+    'customers': 'Клиенты',
+    'customer': 'Клиент',
+    'Create_new_customer': 'Создать нового клиента',
+    'name': 'Имя',
   },
 };

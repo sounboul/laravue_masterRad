@@ -15,9 +15,15 @@ class CreateArticlesStoresTable extends Migration
     {
         Schema::create('articles_stores', function (Blueprint $table) {
             $table->unsignedBigInteger('articles_id');
-            $table->foreign('articles_id')->references('id')->on('articles')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('articles_id')->references('id')
+                                        ->on('articles')
+                                        ->onUpdate('cascade')
+                                        ->onDelete('cascade');
             $table->unsignedBigInteger('stores_id');
-            $table->foreign('stores_id')->references('id')->on('stores')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('stores_id')->references('id')
+                                        ->on('stores')
+                                        ->onUpdate('cascade')
+                                        ->onDelete('cascade');
         });
     }
 

@@ -52,7 +52,7 @@
             {{ $t('route.permission') }}
           </el-button>
           <el-button v-if="scope.row.roles.includes('visitor')" v-permission="['manage user']" type="danger" size="small" icon="el-icon-delete" @click="handleDelete(scope.row.id, scope.row.name);">
-            {{ $t('route.delete') }}
+            {{ $t('table.delete') }}
           </el-button>
         </template>
       </el-table-column>

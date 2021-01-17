@@ -21,6 +21,7 @@ class CreateArticlesTable extends Migration
             $table->foreign('category_id')->references('id')->on('categories')->onUpdate('cascade')->onDelete('cascade');
             $table->integer('price');
             $table->integer('amount');
+            $table->integer('discount')->default(0);
             $table->string('image')->nullable();
             $table->string('brand')->nullable();
             $table->integer('rating')->nullable();
