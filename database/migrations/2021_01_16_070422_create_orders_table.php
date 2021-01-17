@@ -16,12 +16,21 @@ class CreateOrdersTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->integer('order_number');
-            $table->integer('customer');
-            $table->integer('article');
+            $table->unsignedBigInteger('customer_id');
+            $table->foreign('customer_id')->references('id')
+                                        ->on('customers')
+                                        ->onUpdate('cascade')
+                                        ->onDelete('cascade');
+            $table->unsignedBigInteger('article_id');
+            $table->foreign('article_id')->references('id')
+                                        ->on('articles')
+                                        ->onUpdate('cascade')
+                                        ->onDelete('cascade');
             $table->integer('amount');
             $table->integer('price');
             $table->integer('points');
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
         });
     }
 

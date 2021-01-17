@@ -116,7 +116,6 @@ Route::get('/orders', function () {
 
     return response()->json(new JsonResponse(['items' => $data, 'total' => mt_rand(1000, 10000)]));
 });
-*/
 Route::get('articles/{id}', function ($id) {
     $article = [
         'id' => $id,
@@ -139,6 +138,7 @@ Route::get('articles/{id}', function ($id) {
 
     return response()->json(new JsonResponse($article));
 });
+*/
 
 Route::get('articles/{id}/pageviews', function ($id) {
     $pageviews = [

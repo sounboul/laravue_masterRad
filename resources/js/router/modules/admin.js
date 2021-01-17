@@ -25,7 +25,7 @@ const adminRoutes = {
       path: 'users',
       component: () => import('@/views/users/List'),
       name: 'UserList',
-      meta: { title: 'users', icon: 'user', permissions: ['manage user'] },
+      meta: { title: 'users', icon: 'people', permissions: ['manage user'] },
     },
     /** Role and permission */
     {
@@ -52,7 +52,7 @@ const adminRoutes = {
       path: 'articles',
       component: () => import('@/views/articles/List'),
       name: 'ArticleList',
-      meta: { title: 'articleList', icon: 'list', permissions: ['manage article'] },
+      meta: { title: 'articleList', icon: 'shopping', permissions: ['manage article'] },
     },
   ],
 };

@@ -28,7 +28,8 @@ class CreateArticlesTable extends Migration
             $table->text('tags')->nullable();
             $table->longText('description')->nullable();
             $table->text('short_description')->nullable();
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
         });
     }
 

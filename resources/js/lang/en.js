@@ -50,6 +50,7 @@ export default {
     createArticle: 'Create Article',
     editArticle: 'Edit Article',
     articleList: 'Articles',
+    articleDetails: 'Article Details',
     errorPages: 'Error Pages',
     page401: '401',
     page404: '404',
@@ -68,8 +69,8 @@ export default {
     externalLink: 'External Link',
     elementUi: 'Element UI',
     administrator: 'Administrator',
-    users: 'Users',
-    userProfile: 'User Profile',
+    users: 'Employees',
+    userProfile: "Employer's Profile",
     Customers: 'Customers',
   },
   navbar: {
@@ -212,7 +213,13 @@ export default {
   customers: {
     'customers': 'Customers',
     'customer': 'Customer',
+    'customerDetails': 'Customer Details',
     'Create_new_customer': 'Create new customer',
+    'member_since': 'Member from:',
+    'total_points': 'Points',
+    'last_change': 'Last Activity',
+    'active': 'Active',
+    'deleted': 'Removed',
     'name': 'Name',
   },
 };

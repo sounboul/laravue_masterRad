@@ -18,7 +18,8 @@ class CreatePaymentsTable extends Migration
             $table->integer('customer');
             $table->integer('amount');
             $table->integer('order_number');
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
         });
     }
 

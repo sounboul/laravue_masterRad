@@ -8,39 +8,39 @@ export function fetchList(query) {
   });
 }
 
-export function fetchArticle(id) {
+export function fetchCustomer(id) {
   return request({
-    url: '/article/preview/' + id,
+    url: '/customer/preview/' + id,
     method: 'get',
   });
 }
 
 export function fetchPv(id) {
   return request({
-    url: '/articles/' + id + '/pageviews',
+    url: '/customers/' + id + '/pageviews',
     method: 'get',
   });
 }
 
-export function createArticle(data) {
+export function createCustomer(data) {
   return request({
-    url: '/article/create',
+    url: '/customer/create',
     method: 'post',
     data,
   });
 }
 
-export function updateArticle(data) {
+export function updateCustomer(data) {
   return request({
-    url: '/article/update',
+    url: '/customer/update',
     method: 'post',
     data,
   });
 }
 
-export function deleteArticle(id) {
+export function deleteCustomer(id) {
   return request({
-    url: '/article/delete/' + id,
+    url: '/customer/delete/' + id,
     method: 'get',
   });
 }

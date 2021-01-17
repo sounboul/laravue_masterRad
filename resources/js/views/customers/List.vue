@@ -32,40 +32,51 @@
       border
       fit
       highlight-current-row
-      style="width: 100%;border-radius: 15px;box-shadow: 10px 10px 10px 5px #aaaaaa;"
+      style="width: 100%;border-radius: 15px;box-shadow: 10px 10px 10px 5px #aaaaaa;word-break: break-word !important;"
       @sort-change="sortChange"
     >
       <el-table-column :label="$t('table.id')" prop="id" sortable="custom" align="center" width="80">
         <template slot-scope="scope">
-          <span>{{ scope.row.code }}</span>
+          <span>{{ scope.row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.date')" width="100px" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.created_at | parseTime('{d}.{m}.{y}.') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.title')" min-width="120px">
+      <el-table-column :label="$t('customers.customer')" min-width="120px">
         <template slot-scope="{row}">
-          <span class="link-type" @click="previewArticle(row)">{{ row.title }}</span>
+          <span class="link-type" @click="previewCustomer(row)">{{ row.name }}</span>
           <!-- <el-tag>{{ row.title }}</el-tag> -->
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.author')" width="120px" align="center">
+      <el-table-column :label="$t('customers.total_points')" width="100px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type" @click="previewCustomer(row)">{{ row.total_points }}</span>
+          <!-- <el-tag>{{ row.title }}</el-tag> -->
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('customers.member_since')" width="130px" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.member_since | parseTime('{d}.{m}.{y}.') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('customers.last_change')" width="130px" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.updated_at | parseTime('{d}.{m}.{y}.') }}</span>
+        </template>
+      </el-table-column>
+      <!-- <el-table-column :label="$t('table.author')" width="120px" align="center">
         <template slot-scope="scope">
           <span v-for="(n, index) in scope.row.store" :key="index">{{ scope.row.store[index].address }}<br></span>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column v-if="showReviewer" :label="$t('table.reviewer')" width="110px" align="center">
         <template slot-scope="scope">
           <span style="color:red;">{{ scope.row.reviewer }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.importance')" width="80px">
+      <!-- <el-table-column :label="$t('table.importance')" width="80px">
         <template slot-scope="scope">
           <svg-icon v-for="n in +scope.row.rating" :key="n" icon-class="star" class="meta-item__icon" />
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column :label="$t('table.readings')" align="center" width="95">
         <template slot-scope="{row}">
           <span v-if="row.pageviews" class="link-type" @click="handleFetchPv(row.pageviews)">{{ row.pageviews }}</span>
@@ -74,8 +85,8 @@
       </el-table-column>
       <el-table-column :label="$t('table.status')" class-name="status-col" width="100">
         <template slot-scope="{row}">
-          <el-tag :type="row.status | statusFilter">
-            {{ row.status }}
+          <el-tag :type="row.active | statusFilter">
+            {{ row.active=='active' ? $t('customers.active') : $t('customers.deleted') }}
           </el-tag>
         </template>
       </el-table-column>
@@ -138,7 +149,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="Pregled artikla" :visible.sync="modalArticlePreview">
+    <el-dialog :title="$t('customers.customerDetails')" :visible.sync="modalCustomerPreview">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
         <el-form-item :label="$t('table.code')" prop="code">
           <el-input v-model="temp.code" />
@@ -167,7 +178,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="modalArticlePreview = false">
+        <el-button @click="modalCustomerPreview = false">
           {{ $t('table.cancel') }}
         </el-button>
         <!-- <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
@@ -189,7 +200,7 @@
 </template>
 
 <script>
-import { fetchList, fetchPv, fetchArticle, createArticle, updateArticle, deleteArticle } from '@/api/customer';
+import { fetchList, fetchPv, fetchCustomer, createCustomer, updateCustomer, deleteCustomer } from '@/api/customer';
 import waves from '@/directive/waves'; // Waves directive
 import { parseTime } from '@/utils';
 import Pagination from '@/components/Pagination'; // Secondary package based on el-pagination
@@ -212,13 +223,13 @@ export default {
   components: { Pagination },
   directives: { waves },
   filters: {
-    statusFilter(status) {
+    statusFilter(active) {
       const statusMap = {
-        published: 'success',
+        active: 'success',
         draft: 'info',
         deleted: 'danger',
       };
-      return statusMap[status];
+      return statusMap[active];
     },
     typeFilter(type) {
       return calendarTypeKeyValue[type];
@@ -241,7 +252,7 @@ export default {
       importanceOptions: [1, 2, 3],
       calendarTypeOptions,
       sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
-      statusOptions: ['published', 'draft', 'deleted'],
+      statusOptions: ['active', 'draft', 'deleted'],
       showReviewer: false,
       temp: {
         id: undefined,
@@ -260,7 +271,7 @@ export default {
         create: 'Create',
       },
       dialogPvVisible: false,
-      modalArticlePreview: false,
+      modalCustomerPreview: false,
       pvData: [],
       rules: {
         type: [{ required: true, message: 'type is required', trigger: 'change' }],
@@ -333,7 +344,7 @@ export default {
         if (valid) {
           this.temp.id = parseInt(Math.random() * 100) + 1024; // mock a id
           this.temp.author = 'laravue';
-          createArticle(this.temp).then(() => {
+          createCustomer(this.temp).then(() => {
             this.list.unshift(this.temp);
             this.dialogFormVisible = true;
             this.$notify({
@@ -347,10 +358,10 @@ export default {
         }
       });
     },
-    previewArticle(row) {
+    previewCustomer(row) {
       // console.log(row);
-      fetchArticle(row.id);
-      this.modalArticlePreview = true;
+      fetchCustomer(row.id);
+      this.modalCustomerPreview = true;
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row); // copy obj
@@ -366,7 +377,7 @@ export default {
         if (valid) {
           const tempData = Object.assign({}, this.temp);
           tempData.timestamp = +new Date(tempData.timestamp); // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
-          updateArticle(tempData).then(() => {
+          updateCustomer(tempData).then(() => {
             for (const v of this.list) {
               if (v.id === this.temp.id) {
                 const index = this.list.indexOf(v);
@@ -386,7 +397,7 @@ export default {
       });
     },
     handleDelete(id) {
-      deleteArticle(id).then(() => {
+      deleteCustomer(id).then(() => {
         this.$notify({
           title: this.$t('table.success'),
           message: this.$t('table.deleted_successfully'),
@@ -429,9 +440,8 @@ export default {
 };
 </script>
 <style scoped>
-  .pagination-container {
-    width: 100%;
-    border-radius: 15px;
-    /*box-shadow: 10px 10px 10px 5px #aaaaaa;*/
+  el-table-column {
+    word-break: break-word !important;
+    background-color: red;
   }
 </style>

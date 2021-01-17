@@ -50,6 +50,7 @@ export default {
     createArticle: 'Создать статью',
     editArticle: 'Изменить статью',
     articleList: 'Статьи',
+    articleDetails: 'Подробности статьи',
     errorPages: 'Страницы ошибок',
     page401: '401',
     page404: '404',
@@ -68,8 +69,8 @@ export default {
     externalLink: 'Внешняя ссылка',
     elementUi: 'Element UI',
     administrator: 'Администратор',
-    users: 'Пользователи',
-    userProfile: 'Профиль пользователя',
+    users: 'Рабочие',
+    userProfile: 'Профиль работника',
     Customers: 'Клиенты',
   },
   navbar: {
@@ -212,7 +213,13 @@ export default {
   customers: {
     'customers': 'Клиенты',
     'customer': 'Клиент',
+    'customerDetails': 'Информация для клиентов',
     'Create_new_customer': 'Создать нового клиента',
+    'member_since': 'Член от:',
+    'total_points': 'Точки',
+    'last_change': 'Последняя активность',
+    'active': 'Активный',
+    'deleted': 'Удалено',
     'name': 'Имя',
   },
 };

@@ -27,7 +27,9 @@ class CreateCustomersTable extends Migration
             $table->date('member_since');
             $table->integer('order_id')->nullable();
             $table->integer('total_points')->default(0);
-            $table->timestamps();
+            $table->boolean('active')->default(true);
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
         });
     }
 
