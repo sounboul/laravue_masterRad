@@ -32,7 +32,7 @@
       border
       fit
       highlight-current-row
-      style="width: 100%;border-radius: 15px;box-shadow: 10px 10px 10px 5px #aaaaaa;word-break: break-word !important;"
+      style="width: 100%;border-radius: 15px;box-shadow: 10px 10px 10px 5px #aaaaaa;"
       @sort-change="sortChange"
     >
       <el-table-column :label="$t('table.id')" prop="id" sortable="custom" align="center" width="80">
@@ -440,8 +440,5 @@ export default {
 };
 </script>
 <style scoped>
-  el-table-column {
-    word-break: break-word !important;
-    background-color: red;
-  }
+  background-color: red !important;
 </style>
