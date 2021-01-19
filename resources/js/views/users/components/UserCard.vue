@@ -15,7 +15,7 @@
       <div class="box-social">
         <el-table :data="social" :show-header="false">
           <el-table-column prop="name" label="Name" />
-          <el-table-column label="Count" align="right" width="250">
+          <el-table-column label="Count" align="right" width="200">
             <template slot-scope="scope">
               {{ scope.row.account }}
             </template>

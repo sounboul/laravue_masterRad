@@ -111,23 +111,47 @@
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
-        <el-form-item :label="$t('table.code')" prop="code">
+    <el-dialog :title="textMap[dialogStatus] == 'Create' ? $t('customers.create_new_customer') : $t('customers.edit_customer')" :visible.sync="dialogFormVisible">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="200px" style="width: 500px; margin-left:50px; word-break: break-word;">
+        <!-- <el-form-item :label="$t('table.code')" prop="code">
           <el-input v-model="temp.code" />
-        </el-form-item>
+        </el-form-item> -->
         <!-- <el-form-item :label="$t('table.type')" prop="type">
           <el-select v-model="temp.type" class="filter-item" placeholder="Please select">
             <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
           </el-select>
         </el-form-item> -->
-        <el-form-item :label="$t('table.title')" prop="title">
-          <el-input v-model="temp.title" />
+        <el-form-item :label="$t('customers.customer_name')" prop="name">
+          <el-input v-model="temp.name" />
         </el-form-item>
-        <!-- <el-form-item :label="$t('table.date')" prop="timestamp">
-          <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="Please pick a date" />
+        <el-form-item :label="$t('login.email')" type="email" prop="email">
+          <el-input v-model="temp.email" />
         </el-form-item>
-        <el-form-item :label="$t('table.status')">
+        <el-form-item :label="$t('customers.mobile')" prop="mobile">
+          <el-input v-model="temp.mobile" />
+        </el-form-item>
+        <el-form-item :label="$t('customers.dob')" prop="dob">
+          <el-date-picker v-model="temp.dob" type="date" :placeholder="$t('customers.pick_a_date')" />
+        </el-form-item>
+        <el-form-item :label="$t('customers.ID_number')" prop="ID_number">
+          <el-input v-model="temp.ID_number" />
+        </el-form-item>
+        <el-form-item :label="$t('customers.street')" prop="street">
+          <el-input v-model="temp.street" />
+        </el-form-item>
+        <el-form-item :label="$t('customers.number')" prop="number">
+          <el-input v-model="temp.number" />
+        </el-form-item>
+        <el-form-item :label="$t('customers.city')" prop="city">
+          <el-input v-model="temp.city" />
+        </el-form-item>
+        <el-form-item :label="$t('customers.postal_code')" prop="postal_code">
+          <el-input v-model="temp.postal_code" />
+        </el-form-item>
+        <el-form-item :label="$t('customers.country')" prop="country">
+          <el-input v-model="temp.country" />
+        </el-form-item>
+        <!-- <el-form-item :label="$t('table.status')">
           <el-select v-model="temp.status" class="filter-item" placeholder="Please select">
             <el-option v-for="item in statusOptions" :key="item" :label="item" :value="item" />
           </el-select>
@@ -135,9 +159,9 @@
         <el-form-item :label="$t('table.importance')">
           <el-rate v-model="temp.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="3" style="margin-top:8px;" />
         </el-form-item> -->
-        <el-form-item :label="$t('table.remark')">
-          <el-input v-model="temp.remark" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" placeholder="Please input" />
-        </el-form-item>
+        <!-- <el-form-item :label="$t('table.remark')">
+          <el-input v-model="temp.remark" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" :placeholder="$t('customers.please_input')" />
+        </el-form-item> -->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">
@@ -260,6 +284,15 @@ export default {
         remark: '',
         timestamp: new Date(),
         title: '',
+        email: '',
+        mobile: '',
+        dob: '',
+        ID_number: '',
+        street: '',
+        number: '',
+        city: '',
+        postal_code: '',
+        country: '',
         type: '',
         code: '',
         status: 'published',
@@ -277,6 +310,8 @@ export default {
         type: [{ required: true, message: 'type is required', trigger: 'change' }],
         timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
         title: [{ required: true, message: 'title is required', trigger: 'blur' }],
+        email: [{ required: true, message: 'email is required', trigger: 'blur' }],
+        mobile: [{ required: true, message: 'mobile is required', trigger: 'blur' }],
       },
       downloadLoading: false,
     };
@@ -353,13 +388,11 @@ export default {
               type: 'success',
               duration: 2000,
             });
-            // this.getList();
           });
         }
       });
     },
     previewCustomer(row) {
-      // console.log(row);
       fetchCustomer(row.id);
       this.modalCustomerPreview = true;
     },
@@ -440,5 +473,7 @@ export default {
 };
 </script>
 <style scoped>
-  background-color: red !important;
+  label.el-form-item__label {
+    width: 270px !important;
+  }
 </style>

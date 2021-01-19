@@ -23,6 +23,7 @@ class CreateCustomersTable extends Migration
             $table->string('street')->nullable();
             $table->integer('number')->nullable();
             $table->string('city')->nullable();
+            $table->integer('postal_code')->nullable();
             $table->string('country')->nullable();
             $table->date('member_since');
             $table->integer('order_id')->nullable();
