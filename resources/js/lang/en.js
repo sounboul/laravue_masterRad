@@ -85,7 +85,9 @@ export default {
     title: 'Login Form',
     logIn: 'Log in',
     username: 'Username',
+    username_validate: 'Please enter the correct email',
     password: 'Password',
+    password_validate: 'Password cannot be less than 6 digits',
     any: 'any',
     thirdparty: 'Or connect with',
     thirdpartyTips: 'Can not be simulated on local, so please combine you own business simulation! ! !',
@@ -215,6 +217,7 @@ export default {
   customers: {
     'customers': 'Customers',
     'customer': 'Customer',
+    'active_customers': 'Active customers',
     'customer_name': 'Customer name',
     'customerDetails': 'Customer Details',
     'create_new_customer': 'Create new customer',

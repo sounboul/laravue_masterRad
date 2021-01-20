@@ -85,7 +85,9 @@ export default {
     title: 'Forma za prijavu',
     logIn: 'Prijava',
     username: 'Korisničko ime',
+    username_validate: 'Molimo unesite ispravnu email adresu',
     password: 'Lozinka',
+    password_validate: 'Lozinka ne može biti kraća od 6 simbola',
     any: 'bilo koji',
     thirdparty: 'Ili se povežite preko',
     thirdpartyTips: 'Ne može se simulirati na lokalnom serveru, pa vas molimo da kombinujete sopstvenu poslovnu simulaciju! ! !',
@@ -217,6 +219,7 @@ export default {
   customers: {
     'customers': 'Kupci',
     'customer': 'Kupac',
+    'active_customers': 'Aktivni kupci',
     'customer_name': 'Ime kupca',
     'customerDetails': 'Podaci o kupcu',
     'create_new_customer': 'Kreiranje novog kupca',

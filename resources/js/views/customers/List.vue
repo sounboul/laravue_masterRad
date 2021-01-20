@@ -2,9 +2,9 @@
   <div class="app-container">
     <div class="filter-container">
       <el-input v-model="listQuery.title" :placeholder="$t('table.title')" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-select v-model="listQuery.importance" :placeholder="$t('table.importance')" clearable style="width: 90px" class="filter-item">
+      <!-- <el-select v-model="listQuery.importance" :placeholder="$t('table.importance')" clearable style="width: 90px" class="filter-item">
         <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />
-      </el-select>
+      </el-select> -->
       <!-- <el-select v-model="listQuery.type" :placeholder="$t('table.type')" clearable class="filter-item" style="width: 130px">
         <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name+'('+item.key+')'" :value="item.key" />
       </el-select> -->
@@ -20,9 +20,7 @@
       <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
         {{ $t('table.export') }}
       </el-button>
-      <el-checkbox v-model="showReviewer" class="filter-item" style="margin-left:15px;" @change="tableKey=tableKey+1">
-        {{ $t('table.reviewer') }}
-      </el-checkbox>
+      <el-checkbox class="filter-item" style="margin-left:15px;" @change="showActiveCustomers===true?activeCustomers():getList()">{{ $t('customers.active_customers') }}</el-checkbox>
     </div>
 
     <el-table
@@ -48,7 +46,7 @@
       </el-table-column>
       <el-table-column :label="$t('customers.total_points')" width="100px" align="center">
         <template slot-scope="{row}">
-          <span class="link-type" @click="previewCustomer(row)">{{ row.total_points }}</span>
+          <span>{{ row.total_points }}</span>
           <!-- <el-tag>{{ row.title }}</el-tag> -->
         </template>
       </el-table-column>
@@ -67,11 +65,11 @@
           <span v-for="(n, index) in scope.row.store" :key="index">{{ scope.row.store[index].address }}<br></span>
         </template>
       </el-table-column> -->
-      <el-table-column v-if="showReviewer" :label="$t('table.reviewer')" width="110px" align="center">
+      <!-- <el-table-column v-if="showReviewer" :label="$t('table.reviewer')" width="110px" align="center">
         <template slot-scope="scope">
           <span style="color:red;">{{ scope.row.reviewer }}</span>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <!-- <el-table-column :label="$t('table.importance')" width="80px">
         <template slot-scope="scope">
           <svg-icon v-for="n in +scope.row.rating" :key="n" icon-class="star" class="meta-item__icon" />
@@ -90,9 +88,9 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.actions')" align="center" width="200" class-name="small-padding fixed-width">
+      <el-table-column :label="$t('table.actions')" align="center" width="250" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
-          <el-button type="primary" size="mini" @click="handleUpdate(row)">
+          <el-button v-if="row.active!='deleted'" type="primary" @click="handleUpdate(row)">
             {{ $t('table.edit') }}
           </el-button>
           <!-- <el-button v-if="row.status!='published'" size="mini" type="success" @click="handleModifyStatus(row,'published')">
@@ -102,7 +100,7 @@
             {{ $t('table.draft') }}
           </el-button> -->
           <!-- <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleModifyStatus(row,'deleted')"> -->
-          <el-button v-if="row.id!='deleted'" size="mini" type="danger" @click="handleDelete(row.id)">
+          <el-button v-if="row.active!='deleted'" type="danger" @click="handleDelete(row.id)">
             {{ $t('table.delete') }}
           </el-button>
         </template>
@@ -224,7 +222,7 @@
 </template>
 
 <script>
-import { fetchList, fetchPv, fetchCustomer, createCustomer, updateCustomer, deleteCustomer } from '@/api/customer';
+import { fetchList, fetchPv, fetchActiveCustomers, fetchCustomer, createCustomer, updateCustomer, deleteCustomer } from '@/api/customer';
 import waves from '@/directive/waves'; // Waves directive
 import { parseTime } from '@/utils';
 import Pagination from '@/components/Pagination'; // Secondary package based on el-pagination
@@ -277,7 +275,7 @@ export default {
       calendarTypeOptions,
       sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
       statusOptions: ['active', 'draft', 'deleted'],
-      showReviewer: false,
+      showActiveCustomers: false,
       temp: {
         id: undefined,
         importance: 1,
@@ -322,6 +320,7 @@ export default {
   methods: {
     async getList() {
       this.listLoading = true;
+      this.showActiveCustomers = !this.showActiveCustomers;
       const { data } = await fetchList(this.listQuery);
       this.list = data.items;
       this.total = data.total;
@@ -395,6 +394,15 @@ export default {
     previewCustomer(row) {
       fetchCustomer(row.id);
       this.modalCustomerPreview = true;
+    },
+    async activeCustomers() {
+      this.listLoading = true;
+      this.showActiveCustomers = !this.showActiveCustomers;
+      const { data } = await fetchActiveCustomers(this.listQuery);
+      this.list = data.items;
+      this.total = data.total;
+      // Just to simulate the time of the request
+      this.listLoading = false;
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row); // copy obj
@@ -472,8 +480,3 @@ export default {
   },
 };
 </script>
-<style scoped>
-  label.el-form-item__label {
-    width: 270px !important;
-  }
-</style>

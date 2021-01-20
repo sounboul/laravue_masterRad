@@ -8,6 +8,14 @@ export function fetchList(query) {
   });
 }
 
+export function fetchActiveCustomers(query) {
+  return request({
+    url: '/active_customers',
+    method: 'get',
+    params: query,
+  });
+}
+
 export function fetchCustomer(id) {
   return request({
     url: '/customer/preview/' + id,

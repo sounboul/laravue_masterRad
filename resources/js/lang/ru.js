@@ -85,7 +85,9 @@ export default {
     title: 'Авторизация',
     logIn: 'Войти',
     username: 'Username',
+    username_validate: 'Пожалуйста, введите правильный адрес электронной почты',
     password: 'Пароль',
+    password_validate: 'Пароль не может быть короче 6 цифр.',
     any: 'любой',
     thirdparty: 'Или войдите с помощью',
     thirdpartyTips: 'Can not be simulated on local, so please combine you own business simulation! ! !',
@@ -215,6 +217,7 @@ export default {
   customers: {
     'customers': 'Клиенты',
     'customer': 'Клиент',
+    'active_customers': 'Активные клиенты',
     'customer_name': 'Имя клиента',
     'customerDetails': 'Информация для клиентов',
     'create_new_customer': 'Создать нового клиента',

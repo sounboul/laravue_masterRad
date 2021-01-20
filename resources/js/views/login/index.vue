@@ -51,14 +51,14 @@ export default {
   data() {
     const validateEmail = (rule, value, callback) => {
       if (!validEmail(value)) {
-        callback(new Error('Please enter the correct email'));
+        callback(new Error(this.$t('login.username_validate')));
       } else {
         callback();
       }
     };
     const validatePass = (rule, value, callback) => {
-      if (value.length < 4) {
-        callback(new Error('Password cannot be less than 4 digits'));
+      if (value.length < 6) {
+        callback(new Error(this.$t('login.password_validate')));
       } else {
         callback();
       }
