@@ -217,7 +217,7 @@ export default {
   customers: {
     'customers': 'Клиенты',
     'customer': 'Клиент',
-    'active_customers': 'Активные клиенты',
+    'active_customers': 'Показать всех клиентов',
     'customer_name': 'Имя клиента',
     'customerDetails': 'Информация для клиентов',
     'create_new_customer': 'Создать нового клиента',
@@ -226,7 +226,7 @@ export default {
     'total_points': 'Точки',
     'last_change': 'Последняя активность',
     'active': 'Активный',
-    'deleted': 'Удалено',
+    'deleted': 'Неактивный',
     'name': 'Имя',
     'mobile': 'Мобильный',
     'dob': 'Дата рождения',
@@ -238,5 +238,8 @@ export default {
     'country': 'Страна',
     'please_input': 'Пожалуйста, введите',
     'pick_a_date': 'Выберите дату',
+    'name_required': 'Имя обязательно',
+    'email_required': 'Электронная почта требуется',
+    'mobile_required': 'Требуется мобильный',
   },
 };

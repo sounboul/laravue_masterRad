@@ -219,7 +219,7 @@ export default {
   customers: {
     'customers': 'Kupci',
     'customer': 'Kupac',
-    'active_customers': 'Aktivni kupci',
+    'active_customers': 'Prikaži sve kupce',
     'customer_name': 'Ime kupca',
     'customerDetails': 'Podaci o kupcu',
     'create_new_customer': 'Kreiranje novog kupca',
@@ -228,7 +228,7 @@ export default {
     'total_points': 'Bodovi',
     'last_change': 'Poslednja aktivnost',
     'active': 'Aktivan',
-    'deleted': 'Izbrisan',
+    'deleted': 'Mirovanje',
     'name': 'Ime',
     'mobile': 'Mobilni tel.',
     'dob': 'Datum rođenja',
@@ -240,5 +240,8 @@ export default {
     'country': 'Država',
     'please_input': 'Molimo ispunite',
     'pick_a_date': 'Molimo izaberite datum',
+    'name_required': 'Ime je obavezno',
+    'email_required': 'Email je obavezan',
+    'mobile_required': 'Mobilni telefon je obavezan',
   },
 };

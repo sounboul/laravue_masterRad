@@ -217,7 +217,7 @@ export default {
   customers: {
     'customers': 'Customers',
     'customer': 'Customer',
-    'active_customers': 'Active customers',
+    'active_customers': 'Show all customers',
     'customer_name': 'Customer name',
     'customerDetails': 'Customer Details',
     'create_new_customer': 'Create new customer',
@@ -226,7 +226,7 @@ export default {
     'total_points': 'Points',
     'last_change': 'Last Activity',
     'active': 'Active',
-    'deleted': 'Removed',
+    'deleted': 'Inactive',
     'name': 'Name',
     'mobile': 'Mobile',
     'dob': 'Date of birth',
@@ -238,5 +238,8 @@ export default {
     'country': 'Country',
     'please_input': 'Please input',
     'pick_a_date': 'Please pick a date',
+    'name_required': 'Name is required',
+    'email_required': 'Email is required',
+    'mobile_required': 'Mobile is required',
   },
 };

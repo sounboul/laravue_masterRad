@@ -16,7 +16,7 @@
       </el-button>
     </div>
 
-    <el-table v-loading="loading" :data="list" border fit highlight-current-row style="width: 100%; border-radius: 15px;box-shadow: 10px 10px 10px 5px #aaaaaa;">
+    <el-table v-loading="loading" :data="list" border fit highlight-current-row style="width: 100%; border-radius: 9px;box-shadow: 0 0 5px 5px #aaaaaa;">
       <el-table-column align="center" label="ID" width="80">
         <template slot-scope="scope">
           <span>{{ scope.row.index }}</span>
@@ -44,7 +44,7 @@
       <el-table-column align="center" label="Actions" width="350">
         <template slot-scope="scope">
           <router-link v-if="!scope.row.roles.includes('admin')" :to="'/administrator/users/edit/'+scope.row.id">
-            <el-button v-permission="['manage user']" type="primary" size="small" icon="el-icon-edit">
+            <el-button v-permission="['manage user']" type="success" size="small" icon="el-icon-edit">
               {{ $t('table.edit') }}
             </el-button>
           </router-link>
@@ -461,7 +461,7 @@ export default {
   }
   .pagination-container {
     width: 100%;
-    border-radius: 15px;
+    border-radius: 9px;
     //box-shadow: 10px 10px 10px 5px #aaaaaa;
   }
 }

@@ -82,14 +82,16 @@ export default {
 
 <style lang="scss" scoped>
 .navbar {
-  height: 50px;
+  height: 65px;
   overflow: hidden;
   position: relative;
-  background: #001133;
-  box-shadow: 0 10px 4px rgba(0,21,41,.08);
+  background: #283046;
+  // box-shadow: 0 10px 4px rgba(0,21,41,.08);
+  margin: 17px 25px;
+  border-radius: 9px;
 
   .hamburger-container {
-    line-height: 46px;
+    line-height: 55px;
     height: 100%;
     float: left;
     cursor: pointer;
@@ -101,10 +103,16 @@ export default {
     }
   }
 
+  .el-breadcrumb__inner a {
+    color: red;
+  }
+
   .breadcrumb-container {
     float: left;
+    padding-top: 5px;
+    font-size: 13pt;
     :hover {
-      color: #fff !important;
+      color: #f58938 !important;
     }
   }
 
@@ -124,7 +132,7 @@ export default {
 
     .right-menu-item {
       display: inline-block;
-      padding: 0 8px;
+      padding: 5px 8px;
       height: 100%;
       font-size: 18px;
       color: #fff;
@@ -149,9 +157,9 @@ export default {
 
         .user-avatar {
           cursor: pointer;
-          width: 40px;
-          height: 40px;
-          border-radius: 4px;
+          width: 50px;
+          height: 50px;
+          border-radius: 9px;
         }
 
         .el-icon-caret-bottom {

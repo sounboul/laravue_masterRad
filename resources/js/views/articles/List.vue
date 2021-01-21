@@ -32,7 +32,7 @@
       border
       fit
       highlight-current-row
-      style="width: 100%;border-radius: 15px;box-shadow: 10px 10px 10px 5px #aaaaaa;"
+      style="width: 100%;border-radius: 9px;box-shadow: 0 0 5px 5px #aaaaaa;"
       @sort-change="sortChange"
     >
       <el-table-column :label="$t('table.id')" prop="id" sortable="custom" align="center" width="80">
@@ -81,7 +81,7 @@
       </el-table-column>
       <el-table-column :label="$t('table.actions')" align="center" width="200" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
-          <el-button type="primary" size="mini" @click="handleUpdate(row)">
+          <el-button type="success" size="mini" @click="handleUpdate(row)">
             {{ $t('table.edit') }}
           </el-button>
           <!-- <el-button v-if="row.status!='published'" size="mini" type="success" @click="handleModifyStatus(row,'published')">

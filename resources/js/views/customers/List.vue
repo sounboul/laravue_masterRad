@@ -20,7 +20,7 @@
       <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
         {{ $t('table.export') }}
       </el-button>
-      <el-checkbox class="filter-item" style="margin-left:15px;" @change="showActiveCustomers===true?activeCustomers():getList()">{{ $t('customers.active_customers') }}</el-checkbox>
+      <el-checkbox class="filter-item" style="margin-left:15px;" @change="showActiveCustomers===false?activeCustomers():getList()">{{ $t('customers.active_customers') }}</el-checkbox>
     </div>
 
     <el-table
@@ -30,7 +30,7 @@
       border
       fit
       highlight-current-row
-      style="width: 100%;border-radius: 15px;box-shadow: 10px 10px 10px 5px #aaaaaa;"
+      style="width: 100%;border-radius: 9px;box-shadow: 0px 0px 5px 5px #aaaaaa;"
       @sort-change="sortChange"
     >
       <el-table-column :label="$t('table.id')" prop="id" sortable="custom" align="center" width="80">
@@ -90,7 +90,7 @@
       </el-table-column>
       <el-table-column :label="$t('table.actions')" align="center" width="250" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
-          <el-button v-if="row.active!='deleted'" type="primary" @click="handleUpdate(row)">
+          <el-button v-if="row.active!='deleted'" type="success" @click="handleUpdate(row)">
             {{ $t('table.edit') }}
           </el-button>
           <!-- <el-button v-if="row.status!='published'" size="mini" type="success" @click="handleModifyStatus(row,'published')">
@@ -172,22 +172,38 @@
     </el-dialog>
 
     <el-dialog :title="$t('customers.customerDetails')" :visible.sync="modalCustomerPreview">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
-        <el-form-item :label="$t('table.code')" prop="code">
-          <el-input v-model="temp.code" />
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="200px" style="width: 400px; margin-left:50px; word-break: break-word;">
+        <el-form-item :label="$t('customers.customer_name')" prop="name">
+          <el-input v-model="temp.name" />
         </el-form-item>
-        <!-- <el-form-item :label="$t('table.type')" prop="type">
-          <el-select v-model="temp.type" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
-          </el-select>
-        </el-form-item> -->
-        <el-form-item :label="$t('table.title')" prop="title">
-          <el-input v-model="temp.title" />
+        <el-form-item :label="$t('login.email')" type="email" prop="email">
+          <el-input v-model="temp.email" />
         </el-form-item>
-        <!-- <el-form-item :label="$t('table.date')" prop="timestamp">
-          <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="Please pick a date" />
+        <el-form-item :label="$t('customers.mobile')" prop="mobile">
+          <el-input v-model="temp.mobile" />
         </el-form-item>
-        <el-form-item :label="$t('table.status')">
+        <el-form-item :label="$t('customers.dob')" prop="dob">
+          <el-date-picker v-model="temp.dob" type="date" :placeholder="$t('customers.pick_a_date')" />
+        </el-form-item>
+        <el-form-item :label="$t('customers.ID_number')" prop="ID_number">
+          <el-input v-model="temp.ID_number" />
+        </el-form-item>
+        <el-form-item :label="$t('customers.street')" prop="street">
+          <el-input v-model="temp.street" />
+        </el-form-item>
+        <el-form-item :label="$t('customers.number')" prop="number">
+          <el-input v-model="temp.number" />
+        </el-form-item>
+        <el-form-item :label="$t('customers.city')" prop="city">
+          <el-input v-model="temp.city" />
+        </el-form-item>
+        <el-form-item :label="$t('customers.postal_code')" prop="postal_code">
+          <el-input v-model="temp.postal_code" />
+        </el-form-item>
+        <el-form-item :label="$t('customers.country')" prop="country">
+          <el-input v-model="temp.country" />
+        </el-form-item>
+        <!-- <el-form-item :label="$t('table.status')">
           <el-select v-model="temp.status" class="filter-item" placeholder="Please select">
             <el-option v-for="item in statusOptions" :key="item" :label="item" :value="item" />
           </el-select>
@@ -195,13 +211,13 @@
         <el-form-item :label="$t('table.importance')">
           <el-rate v-model="temp.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="3" style="margin-top:8px;" />
         </el-form-item> -->
-        <el-form-item :label="$t('table.remark')">
-          <el-input v-model="temp.remark" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" placeholder="Please input" />
-        </el-form-item>
+        <!-- <el-form-item :label="$t('table.remark')">
+          <el-input v-model="temp.remark" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" :placeholder="$t('customers.please_input')" />
+        </el-form-item> -->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="modalCustomerPreview = false">
-          {{ $t('table.cancel') }}
+          {{ $t('tagsView.close') }}
         </el-button>
         <!-- <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
           {{ $t('table.confirm') }}
@@ -307,15 +323,16 @@ export default {
       rules: {
         type: [{ required: true, message: 'type is required', trigger: 'change' }],
         timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
-        title: [{ required: true, message: 'title is required', trigger: 'blur' }],
-        email: [{ required: true, message: 'email is required', trigger: 'blur' }],
-        mobile: [{ required: true, message: 'mobile is required', trigger: 'blur' }],
+        name: [{ required: true, message: this.$t('customers.name_required'), trigger: 'blur' }],
+        email: [{ required: true, message: this.$t('customers.email_required'), trigger: 'blur' }],
+        mobile: [{ required: true, message: this.$t('customers.mobile_required'), trigger: 'blur' }],
       },
       downloadLoading: false,
     };
   },
   created() {
-    this.getList();
+    // this.getList();
+    this.activeCustomers();
   },
   methods: {
     async getList() {
@@ -324,8 +341,14 @@ export default {
       const { data } = await fetchList(this.listQuery);
       this.list = data.items;
       this.total = data.total;
-
-      // Just to simulate the time of the request
+      this.listLoading = false;
+    },
+    async activeCustomers() {
+      this.listLoading = true;
+      this.showActiveCustomers = !this.showActiveCustomers;
+      const { data } = await fetchActiveCustomers(this.listQuery);
+      this.list = data.items;
+      this.total = data.total;
       this.listLoading = false;
     },
     handleFilter() {
@@ -394,15 +417,6 @@ export default {
     previewCustomer(row) {
       fetchCustomer(row.id);
       this.modalCustomerPreview = true;
-    },
-    async activeCustomers() {
-      this.listLoading = true;
-      this.showActiveCustomers = !this.showActiveCustomers;
-      const { data } = await fetchActiveCustomers(this.listQuery);
-      this.list = data.items;
-      this.total = data.total;
-      // Just to simulate the time of the request
-      this.listLoading = false;
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row); // copy obj

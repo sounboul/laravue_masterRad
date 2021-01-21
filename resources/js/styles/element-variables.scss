@@ -5,15 +5,15 @@
 
 /* theme color */
 /* $--color-primary: #1890ff; */
-$--color-primary: #00e600;
+$--color-primary: #7367f0;
 $--color-success: #13ce66;
 $--color-warning: #FFBA00;
 $--color-danger: #ff4949;
 // $--color-info: #1E1E1E;
 
-$--button-font-weight: 400;
+$--button-font-weight: 500;
 
- $--color-text-regular: #1f2d3d;
+ $--color-text-regular: $--color-primary;
 
 $--border-color-light: #dfe4ed;
 $--border-color-lighter: #e6ebf5;
