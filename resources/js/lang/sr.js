@@ -198,6 +198,7 @@ export default {
     'confirmPassword': 'Potvrdi lozinku',
     'name': 'Ime',
     'email': 'Email',
+    'phone': 'Telefon',
     'CreateNewUser': 'Kreiranje novog korisnika',
     'education': 'Obrazovanje',
     'about_me': 'O korisniku',

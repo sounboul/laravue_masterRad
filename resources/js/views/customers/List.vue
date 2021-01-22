@@ -27,10 +27,9 @@
       :key="tableKey"
       v-loading="listLoading"
       :data="list"
-      border
       fit
       highlight-current-row
-      style="width: 100%;border-radius: 9px;box-shadow: 0px 0px 5px 5px #aaaaaa;"
+      style="width: 100%;border-radius: 9px;"
       @sort-change="sortChange"
     >
       <el-table-column :label="$t('table.id')" prop="id" sortable="custom" align="center" width="80">
@@ -40,7 +39,7 @@
       </el-table-column>
       <el-table-column :label="$t('customers.customer')" min-width="120px">
         <template slot-scope="{row}">
-          <span class="link-type" @click="previewCustomer(row)">{{ row.name }}</span>
+          <span class="" style="font-weight: bold;cursor: pointer;" @click="previewCustomer(row)">{{ row.name }}</span>
           <!-- <el-tag>{{ row.title }}</el-tag> -->
         </template>
       </el-table-column>
@@ -226,7 +225,7 @@
     </el-dialog>
 
     <el-dialog :visible.sync="dialogPvVisible" title="Reading statistics">
-      <el-table :data="pvData" border fit highlight-current-row style="width: 100%">
+      <el-table :data="pvData" fit highlight-current-row style="width: 100%">
         <el-table-column prop="key" label="Channel" />
         <el-table-column prop="pv" label="Pv" />
       </el-table>
@@ -494,3 +493,4 @@ export default {
   },
 };
 </script>
+<style scoped></style>

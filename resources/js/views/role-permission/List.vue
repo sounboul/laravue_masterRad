@@ -1,13 +1,13 @@
 <template>
   <div class="app-container">
-    <el-table v-loading="loading" :data="list" border fit highlight-current-row style="width: 100%;border-radius: 15px;box-shadow: 10px 10px 10px 5px #aaaaaa;padding: 15px;">
+    <el-table v-loading="loading" :data="list" fit highlight-current-row style="width: 100%;border-radius: 9px;">
       <el-table-column align="center" label="ID" width="80">
         <template slot-scope="scope">
           <span>{{ scope.row.index }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column width="150" align="center" :label="$t('table.name')">
+      <el-table-column width="150" align="left" :label="$t('table.name')">
         <template slot-scope="scope">
           <span>{{ scope.row.name | uppercaseFirst }}</span>
         </template>
@@ -19,7 +19,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column v-if="checkPermission(['manage permission'])" align="center" label="Actions" width="200">
+      <el-table-column v-if="checkPermission(['manage permission'])" align="center" :label="$t('table.actions')" width="200">
         <template slot-scope="scope">
           <el-button v-if="scope.row.name !== 'admin'" v-permission="['manage permission']" type="primary" size="small" icon="el-icon-edit" @click="handleEditPermissions(scope.row.id);">
             {{ $t('permission.editPermission') }}

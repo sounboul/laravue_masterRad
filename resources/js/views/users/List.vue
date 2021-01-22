@@ -16,32 +16,39 @@
       </el-button>
     </div>
 
-    <el-table v-loading="loading" :data="list" border fit highlight-current-row style="width: 100%; border-radius: 9px;box-shadow: 0 0 5px 5px #aaaaaa;">
-      <el-table-column align="center" label="ID" width="80">
+    <el-table v-loading="loading" :data="list" fit highlight-current-row style="width: 100%; border-radius: 9px;">
+      <el-table-column align="center" label="" width="80">
         <template slot-scope="scope">
-          <span>{{ scope.row.index }}</span>
+          <img :src="scope.row.avatar" class="user-avatar">
+          <!-- <span>{{ scope.row.avatar }}</span> -->
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="Name">
+      <el-table-column align="left" :label="$t('user.name')">
         <template slot-scope="scope">
-          <span>{{ scope.row.name }}</span>
+          <span style="font-weight: bold;">{{ scope.row.name }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="Email">
+      <el-table-column align="left" :label="$t('user.email')">
         <template slot-scope="scope">
           <span>{{ scope.row.email }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="Role" width="120">
+      <el-table-column align="left" :label="$t('user.phone')">
+        <template slot-scope="scope">
+          <span>{{ scope.row.phone }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column align="left" :label="$t('user.role')" width="120">
         <template slot-scope="scope">
           <span>{{ scope.row.roles.join(', ') }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="Actions" width="350">
+      <el-table-column align="center" :label="$t('table.actions')" width="350">
         <template slot-scope="scope">
           <router-link v-if="!scope.row.roles.includes('admin')" :to="'/administrator/users/edit/'+scope.row.id">
             <el-button v-permission="['manage user']" type="success" size="small" icon="el-icon-edit">
@@ -452,6 +459,7 @@ export default {
   justify-content: space-between;
   font-size: 14px;
   padding-right: 8px;
+  margin-right: 18px;
   .block {
     float: left;
     min-width: 250px;
@@ -463,6 +471,12 @@ export default {
     width: 100%;
     border-radius: 9px;
     //box-shadow: 10px 10px 10px 5px #aaaaaa;
+  }
+  .user-avatar {
+    margin: 0 10px;
+    height: 35px;
+    width: 35px;
+    border-radius: 20px;
   }
 }
 </style>

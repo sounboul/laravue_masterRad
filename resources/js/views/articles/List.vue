@@ -29,10 +29,9 @@
       :key="tableKey"
       v-loading="listLoading"
       :data="list"
-      border
       fit
       highlight-current-row
-      style="width: 100%;border-radius: 9px;box-shadow: 0 0 5px 5px #aaaaaa;"
+      style="width: 100%;border-radius: 9px;"
       @sort-change="sortChange"
     >
       <el-table-column :label="$t('table.id')" prop="id" sortable="custom" align="center" width="80">
@@ -40,18 +39,18 @@
           <span>{{ scope.row.code }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.date')" width="100px" align="center">
+      <el-table-column :label="$t('table.date')" width="120px" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.created_at | parseTime('{d}.{m}.{y}.') }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('table.title')" min-width="120px">
         <template slot-scope="{row}">
-          <span class="link-type" @click="previewArticle(row)">{{ row.title }}</span>
+          <span class="" style="font-weight: bold;cursor: pointer;" @click="previewArticle(row)">{{ row.title }}</span>
           <!-- <el-tag>{{ row.title }}</el-tag> -->
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.author')" width="120px" align="center">
+      <el-table-column :label="$t('table.author')" width="180px" align="center">
         <template slot-scope="scope">
           <span v-for="(n, index) in scope.row.store" :key="index">{{ scope.row.store[index].address }}<br></span>
         </template>

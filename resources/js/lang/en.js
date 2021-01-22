@@ -197,6 +197,7 @@ export default {
     'confirmPassword': 'Confirm password',
     'name': 'Name',
     'email': 'Email',
+    'phone': 'Phone',
     'education': 'Education',
     'about_me': 'About user',
     'skills': 'Skills',
