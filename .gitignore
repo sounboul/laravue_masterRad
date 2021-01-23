@@ -13,7 +13,6 @@ yarn-error.log
 /public/css/*.css
 /public/css/*.map
 /public/css/*.gz
-/public/images/*.gif
 /public/fonts/
 /public/stats.html
 /public/*.js
