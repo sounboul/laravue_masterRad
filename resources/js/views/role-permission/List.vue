@@ -1,13 +1,18 @@
 <template>
   <div class="app-container">
     <el-table v-loading="loading" :data="list" fit highlight-current-row style="width: 100%;border-radius: 9px;">
-      <el-table-column align="center" label="ID" width="80">
+      <!-- <el-table-column align="center" label="ID" width="80">
         <template slot-scope="scope">
           <span>{{ scope.row.index }}</span>
         </template>
+      </el-table-column> -->
+      <el-table-column align="center" width="15">
+        <template>
+          <span>&nbsp;</span>
+        </template>
       </el-table-column>
 
-      <el-table-column width="150" align="left" :label="$t('table.name')">
+      <el-table-column width="150" align="left" :label="$t('table.title')">
         <template slot-scope="scope">
           <span>{{ scope.row.name | uppercaseFirst }}</span>
         </template>
@@ -204,5 +209,8 @@ export default {
   .clear-left {
     clear: left;
   }
+}
+.app-container {
+  margin-top: 20px;
 }
 </style>

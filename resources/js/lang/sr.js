@@ -211,7 +211,7 @@ export default {
   roles: {
     description: {
       admin: 'Super Administrator. Ima pristup i puno odobrenje za sve stranice.',
-      manager: 'Manager. Imati pristup i dozvolu većini stranica, osim stranice sa dozvolama.',
+      manager: 'Manager. Ima pristup i dozvolu većini stranica, osim stranice sa dozvolama.',
       editor: 'Editor. Ima pristup većini stranica, puno odobrenje sa proizvodima i srodnim resursima.',
       user: 'Korisnik. Ima pristup nekim stranicama',
       visitor: 'Visitor. Ima pristup statičkim stranicama, ne bi trebalo da ima dozvolu za pisanje',
