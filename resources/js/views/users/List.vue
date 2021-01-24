@@ -1,23 +1,25 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="query.keyword" :placeholder="$t('table.keyword')" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-select v-model="query.role" :placeholder="$t('table.role')" clearable style="width: 90px" class="filter-item" @change="handleFilter">
+      <el-input v-model="query.keyword" :placeholder="$t('table.keyword')" style="width: 150px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-select v-model="query.role" :placeholder="$t('table.role')" clearable style="width: 110px" class="filter-item" @change="handleFilter">
         <el-option v-for="item in roles" :key="item" :label="item | uppercaseFirst" :value="item" />
       </el-select>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         {{ $t('table.search') }}
       </el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-plus" @click="handleCreate">
-        {{ $t('table.add') }}
-      </el-button>
-      <el-button v-waves :loading="downloading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
-        {{ $t('table.export') }}
-      </el-button>
+      <div style="float: right;">
+        <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-plus" @click="handleCreate">
+          {{ $t('table.add') }}
+        </el-button>
+        <el-button v-waves :loading="downloading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
+          {{ $t('table.export') }}
+        </el-button>
+      </div>
     </div>
 
     <el-table v-loading="loading" :data="list" fit highlight-current-row style="width: 100%; border-radius: 9px;">
-      <el-table-column align="center" label="" width="80">
+      <el-table-column align="center" label="" width="70">
         <template slot-scope="scope">
           <img :src="scope.row.avatar" class="user-avatar">
           <!-- <span>{{ scope.row.avatar }}</span> -->
@@ -26,7 +28,8 @@
 
       <el-table-column align="left" :label="$t('user.name')">
         <template slot-scope="scope">
-          <span style="font-weight: bold;">{{ scope.row.name }}</span>
+          <div style="font-family: 'Poppins', sans-serif; font-size: 12pt; margin-top: 2px;">{{ scope.row.name }}</div>
+          <div style="font-family: 'Nunito', sans-serif; font-size: 9pt;color: #e0e0eb;">{{ scope.row.email }}</div>
         </template>
       </el-table-column>
 
@@ -55,7 +58,7 @@
               {{ $t('table.edit') }}
             </el-button>
           </router-link>
-          <el-button v-if="!scope.row.roles.includes('admin')" v-permission="['manage permission']" type="warning" size="small" icon="el-icon-edit" @click="handleEditPermissions(scope.row.id);">
+          <el-button v-if="!scope.row.roles.includes('admin')" v-permission="['manage permission']" style="background-color: #f58938; color: #000;" size="small" icon="el-icon-edit" @click="handleEditPermissions(scope.row.id);">
             {{ $t('route.permission') }}
           </el-button>
           <el-button v-if="scope.row.roles.includes('visitor')" v-permission="['manage user']" type="danger" size="small" icon="el-icon-delete" @click="handleDelete(scope.row.id, scope.row.name);">
@@ -458,8 +461,8 @@ export default {
   flex: 1;
   justify-content: space-between;
   font-size: 14px;
-  padding-right: 8px;
-  margin-right: 18px;
+  padding-right: 7px;
+  margin-right: 17px;
   .block {
     float: left;
     min-width: 250px;
@@ -473,10 +476,12 @@ export default {
     //box-shadow: 10px 10px 10px 5px #aaaaaa;
   }
   .user-avatar {
-    margin: 0 10px;
-    height: 35px;
-    width: 35px;
+    margin-left: 15px;
+    height: 40px;
+    width: 40px;
     border-radius: 20px;
   }
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@1,300;1,400&family=Raleway:wght@500&display=swap');
+  // @import url('https://fonts.googleapis.com/css2?family=Indie+Flower&family=Nunito&family=Raleway:wght@500&display=swap');
 }
 </style>

@@ -14,13 +14,16 @@
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         {{ $t('table.search') }}
       </el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
-        {{ $t('table.add') }}
-      </el-button>
-      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
-        {{ $t('table.export') }}
-      </el-button>
-      <el-checkbox class="filter-item" style="margin-left:15px;" @change="showActiveCustomers===false?activeCustomers():getList()">{{ $t('customers.active_customers') }}</el-checkbox>
+      <el-checkbox class="filter-item" style="margin-left:15px;" @change="showActiveCustomers===false?activeCustomers():getList()">{{ $t('customers.active_customers') }}
+      </el-checkbox>
+      <div style="float: right;">
+        <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
+          {{ $t('table.add') }}
+        </el-button>
+        <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
+          {{ $t('table.export') }}
+        </el-button>
+      </div>
     </div>
 
     <el-table
@@ -89,17 +92,10 @@
       </el-table-column>
       <el-table-column :label="$t('table.actions')" align="center" width="250" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
-          <el-button v-if="row.active!='deleted'" type="success" @click="handleUpdate(row)">
+          <el-button v-if="checkRole(['admin','manager','editor']) && row.active!='deleted'" type="success" size="mini" @click="handleUpdate(row)">
             {{ $t('table.edit') }}
           </el-button>
-          <!-- <el-button v-if="row.status!='published'" size="mini" type="success" @click="handleModifyStatus(row,'published')">
-            {{ $t('table.publish') }}
-          </el-button>
-          <el-button v-if="row.status!='draft'" size="mini" @click="handleModifyStatus(row,'draft')">
-            {{ $t('table.draft') }}
-          </el-button> -->
-          <!-- <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleModifyStatus(row,'deleted')"> -->
-          <el-button v-if="row.active!='deleted'" type="danger" @click="handleDelete(row.id)">
+          <el-button v-if="checkRole(['admin','manager']) && row.active!='deleted'" type="danger" size="mini" @click="handleDelete(row.id)">
             {{ $t('table.delete') }}
           </el-button>
         </template>
@@ -110,14 +106,6 @@
 
     <el-dialog :title="textMap[dialogStatus] == 'Create' ? $t('customers.create_new_customer') : $t('customers.edit_customer')" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="200px" style="width: 500px; margin-left:50px; word-break: break-word;">
-        <!-- <el-form-item :label="$t('table.code')" prop="code">
-          <el-input v-model="temp.code" />
-        </el-form-item> -->
-        <!-- <el-form-item :label="$t('table.type')" prop="type">
-          <el-select v-model="temp.type" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
-          </el-select>
-        </el-form-item> -->
         <el-form-item :label="$t('customers.customer_name')" prop="name">
           <el-input v-model="temp.name" />
         </el-form-item>
@@ -240,6 +228,7 @@
 import { fetchList, fetchPv, fetchActiveCustomers, fetchCustomer, createCustomer, updateCustomer, deleteCustomer } from '@/api/customer';
 import waves from '@/directive/waves'; // Waves directive
 import { parseTime } from '@/utils';
+import checkRole from '@/utils/role';
 import Pagination from '@/components/Pagination'; // Secondary package based on el-pagination
 
 const calendarTypeOptions = [
@@ -288,6 +277,7 @@ export default {
       },
       importanceOptions: [1, 2, 3],
       calendarTypeOptions,
+      checkRole,
       sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
       statusOptions: ['active', 'draft', 'deleted'],
       showActiveCustomers: false,

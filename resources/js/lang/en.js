@@ -243,4 +243,13 @@ export default {
     'email_required': 'Email is required',
     'mobile_required': 'Mobile is required',
   },
+  errors: {
+    'back': 'Back',
+    'have_no_permission': 'You don\'t have permission to go to this page',
+    'contact_administrator': 'If you are dissatisfied, please contact administrator.',
+    'cant_enter_page': 'The bodyguard said that you can\'t enter this page...',
+    'check_url': 'Please check that the URL you entered is correct. Click the button below to return to the homepage or send an error report.',
+    'or_go': 'Or you can go:',
+    'show_picture': 'Show picture :)',
+  },
 };

@@ -13,15 +13,15 @@
         </div>
         <div class="bullshit__info">
           Copyright by
-          <a class="link-type" href="https://github.com/tuandm/laravue" target="_blank">Laravue</a>
+          <a class="link-type" href="https://selltico.com" target="_blank">SellTico</a>
         </div>
         <div class="bullshit__headline">
           {{ message }}
         </div>
         <div class="bullshit__info">
-          Please check that the URL you entered is correct. Please click the button below to return to the homepage or send an error report.
+          {{ $t('errors.check_url') }}
         </div>
-        <a href="/" class="bullshit__return-home">Back to home</a>
+        <a href="/" class="bullshit__return-home">{{ $t('errors.back') }}</a>
       </div>
     </div>
   </div>
@@ -40,7 +40,7 @@ export default {
   },
   computed: {
     message() {
-      return 'The bodyguard said that you can\'t enter this page...';
+      return this.$t('errors.cant_enter_page');
     },
   },
 };
@@ -189,7 +189,7 @@ export default {
     &__headline {
       font-size: 20px;
       line-height: 24px;
-      color: #222;
+      color: #fff;
       font-weight: bold;
       opacity: 0;
       margin-bottom: 10px;

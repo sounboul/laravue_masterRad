@@ -1,17 +1,23 @@
 <template>
   <div class="errPage-container">
     <el-button icon="arrow-left" class="pan-back-btn" @click="back">
-      {{ $t('common.back') }}
+      {{ $t('errors.back') }}
     </el-button>
     <el-row>
       <el-col :span="12">
         <h1 class="text-jumbo text-ginormous">
           Oops!
         </h1>
-        <h2>You don't have permission to go to this page</h2>
-        <h6>If you are dissatisfied, please contact admistrator.</h6>
-        <ul class="list-unstyled">
-          <li>Or you can go:</li>
+        <h2 style="color: #fff;">
+          {{ $t('errors.have_no_permission') }}
+        </h2>
+        <h6 style="color: #fff;">
+          {{ $t('errors.contact_administrator') }}
+        </h6>
+        <ul class="list-unstyled" style="list-style: none;">
+          <li style="color: #484848;">
+            {{ $t('errors.or_go') }}
+          </li>
           <li class="link-type">
             <router-link to="/dashboard">
               {{ $t('route.dashboard') }}
@@ -20,7 +26,7 @@
           <li class="link-type">
             <a href="https://www.google.com/">just looking around</a>
           </li>
-          <li><a href="#" @click.prevent="dialogVisible=true">show a picture</a></li>
+          <li><a href="#" @click.prevent="dialogVisible=true">{{ $t('errors.show_picture') }}</a></li>
         </ul>
       </el-col>
       <el-col :span="12">
@@ -87,7 +93,7 @@ export default {
         padding-bottom: 5px;
       }
       a {
-        color: #008489;
+        color: #fff;
         text-decoration: none;
         &:hover {
           text-decoration: underline;

@@ -245,4 +245,13 @@ export default {
     'email_required': 'Email je obavezan',
     'mobile_required': 'Mobilni telefon je obavezan',
   },
+  errors: {
+    'back': 'Nazad',
+    'have_no_permission': 'Nemate dozvolu za pregled ove stranice',
+    'contact_administrator': 'Ukoliko ste nezadovoljni, obratite se administratoru.',
+    'cant_enter_page': 'Bodygard kaže da ne možete pregledati ovu stranicu...',
+    'check_url': 'Molimo proverite da li je URL koji ste uneli tačan. Kliknite na dugme ispod kako biste se vratili na početnu stranicu ili pošaljite izveštaj o grešci.',
+    'or_go': 'Ili možete posetiti:',
+    'show_picture': 'Prikaz slike :)',
+  },
 };
