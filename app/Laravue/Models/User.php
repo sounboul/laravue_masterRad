@@ -71,6 +71,11 @@ class User extends Authenticatable
         return [];
     }
 
+    public function stores()
+    {
+        return $this->hasMany(Stores::class);
+    }
+
     /**
      * Check if user has a permission
      * @param String

@@ -80,6 +80,7 @@ export default {
     theme: 'Theme',
     size: 'Global Size',
     profile: 'Profile',
+    change_language: 'Switch Language Success!',
   },
   login: {
     title: 'Login Form',

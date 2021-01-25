@@ -80,6 +80,7 @@ export default {
     theme: 'Тема',
     size: 'Размер интерфейса',
     profile: 'Профиль',
+    change_language: 'Сменить язык успешно!',
   },
   login: {
     title: 'Авторизация',

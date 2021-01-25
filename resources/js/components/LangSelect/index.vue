@@ -5,19 +5,13 @@
     </div>
     <el-dropdown-menu slot="dropdown">
       <el-dropdown-item :disabled="language==='sr'" command="sr">
-        Srpski
+        <img src="images/flags/sr.png" style="width: 25px;"> Srpski
       </el-dropdown-item>
-      <!--  <el-dropdown-item :disabled="language==='vi'" command="vi">
-        Tiếng Việt
-      </el-dropdown-item> -->
       <el-dropdown-item :disabled="language==='en'" command="en">
-        English
+        <img src="images/flags/en.png" style="width: 25px;"> English
       </el-dropdown-item>
-      <!-- <el-dropdown-item :disabled="language==='zh'" command="zh">
-        中文
-      </el-dropdown-item> -->
       <el-dropdown-item :disabled="language==='ru'" command="ru">
-        Русский
+        <img src="images/flags/ru.png" style="width: 25px;"> Русский
       </el-dropdown-item>
     </el-dropdown-menu>
   </el-dropdown>
@@ -34,24 +28,10 @@ export default {
     handleSetLanguage(lang) {
       this.$i18n.locale = lang;
       this.$store.dispatch('app/setLanguage', lang);
-      if (lang === 'sr') {
-        this.$message({
-          message: 'Promena jezika uspešna!',
-          type: 'success',
-        });
-      }
-      if (lang === 'en') {
-        this.$message({
-          message: 'Switch Language Success!',
-          type: 'success',
-        });
-      }
-      if (lang === 'ru') {
-        this.$message({
-          message: 'Сменить язык успешно!',
-          type: 'success',
-        });
-      }
+      this.$message({
+        message: this.$t('navbar.change_language'),
+        type: 'success',
+      });
     },
   },
 };
@@ -61,7 +41,7 @@ export default {
 .international-icon {
   font-size: 20px;
   cursor: pointer;
-  vertical-align: -5px!important;
+  /*vertical-align: -5px!important;*/
 }
 </style>
 

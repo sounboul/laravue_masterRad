@@ -80,6 +80,7 @@ export default {
     theme: 'Tema',
     size: 'Globalna veličina',
     profile: 'Profil',
+    change_language: 'Promena jezika uspešna!',
   },
   login: {
     title: 'Forma za prijavu',

@@ -47,7 +47,7 @@ Route::namespace('Api')->group(function() {
         Route::post('/article/update', 'ArticlesController@updateArticle');
         Route::get('/article/delete/{id}', 'ArticlesController@deleteArticle');
 
-        //customers
+        // Customers
         Route::get('/customers', 'CustomersController@fetchCustomers');
         Route::get('/active_customers', 'CustomersController@fetchActiveCustomers');
     });
