@@ -27,6 +27,7 @@ class CreateUsersTable extends Migration
                                         ->onUpdate('cascade')
                                         ->onDelete('cascade')
                                         ->nullable();
+            $table->boolean('active')->default(1);
             $table->rememberToken();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();

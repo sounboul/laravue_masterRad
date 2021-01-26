@@ -53,10 +53,10 @@
 
       <el-table-column align="left" :label="$t('stores.status')">
         <template slot-scope="scope">
-          <el-tag :type="(scope.row.active && scope.row.email_verified_at) | statusFilter">
-            <span v-if="scope.row.active == 1 && scope.row.email_verified_at !== null">{{ $t('customers.active') }}</span>
-            <span v-if="scope.row.active == 0 && scope.row.email_verified_at === null">{{ $t('customers.deleted') }}</span>
-            <span v-if="scope.row.active == 1 && scope.row.email_verified_at === null">{{ $t('customers.pending') }}</span>
+          <el-tag :type="scope.row.active | statusFilter">
+            <span v-if="scope.row.active == 1 && scope.row.status !== null">{{ $t('customers.active') }}</span>
+            <span v-else-if="scope.row.active == 0 && scope.row.status !== null">{{ $t('customers.deleted') }}</span>
+            <span v-else-if="scope.row.active == 1 && scope.row.status == null" style="color: #f58938;">{{ $t('customers.pending') }}</span>
           </el-tag>
         </template>
       </el-table-column>
