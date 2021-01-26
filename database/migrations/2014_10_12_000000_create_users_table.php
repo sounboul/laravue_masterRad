@@ -21,6 +21,12 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('phone')->nullable();
             $table->string('avatar')->nullable()->default('UnknownUser.png');
+            $table->unsignedBigInteger('stores_id');
+            $table->foreign('stores_id')->references('id')
+                                        ->on('stores')
+                                        ->onUpdate('cascade')
+                                        ->onDelete('cascade')
+                                        ->nullable();
             $table->rememberToken();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();

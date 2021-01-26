@@ -82,13 +82,13 @@ export default {
 
 <style lang="scss" scoped>
 .navbar {
-  height: 65px;
+  height: 63px;
   overflow: hidden;
   position: relative;
   background: #283046;
   // box-shadow: 0 10px 4px rgba(0,21,41,.08);
-  margin: 17px 25px;
-  border-radius: 9px;
+  margin: 18px 23px 18px 27px;
+  border-radius: .428rem;
 
   .hamburger-container {
     line-height: 55px;
@@ -152,14 +152,14 @@ export default {
       margin-right: 30px;
 
       .avatar-wrapper {
-        margin-top: 5px;
+        margin-top: 2px;
         position: relative;
 
         .user-avatar {
           cursor: pointer;
           width: 50px;
           height: 50px;
-          border-radius: 9px;
+          border-radius: .428rem;
         }
 
         .el-icon-caret-bottom {

@@ -228,6 +228,7 @@ export default {
     'total_points': 'Points',
     'last_change': 'Last Activity',
     'active': 'Active',
+    'pending': 'Pending',
     'deleted': 'Inactive',
     'name': 'Name',
     'mobile': 'Mobile',
@@ -252,5 +253,9 @@ export default {
     'check_url': 'Please check that the URL you entered is correct. Click the button below to return to the homepage or send an error report.',
     'or_go': 'Or you can go:',
     'show_picture': 'Show picture :)',
+  },
+  stores: {
+    'location': 'Location',
+    'status': 'Status',
   },
 };

@@ -33,7 +33,7 @@
       :data="list"
       fit
       highlight-current-row
-      style="width: 100%;border-radius: 9px;"
+      style="width: 100%;border-radius: .428rem;"
       @sort-change="sortChange"
     >
       <el-table-column :label="$t('table.id')" prop="id" sortable="custom" align="center" width="80">

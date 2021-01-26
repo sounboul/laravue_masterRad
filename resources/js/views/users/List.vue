@@ -18,7 +18,7 @@
       </div>
     </div>
 
-    <el-table v-loading="loading" :data="list" fit highlight-current-row style="width: 100%; border-radius: 9px;">
+    <el-table v-loading="loading" :data="list" fit highlight-current-row style="width: 100%; border-radius: .428rem;">
       <el-table-column align="center" label="" width="70">
         <template slot-scope="scope">
           <img :src="scope.row.avatar" class="user-avatar">
@@ -29,13 +29,19 @@
       <el-table-column align="left" :label="$t('user.name')">
         <template slot-scope="scope">
           <div style="font-family: 'Poppins', sans-serif; font-size: 12pt; margin-top: 2px;">{{ scope.row.name }}</div>
-          <div style="font-family: 'Nunito', sans-serif; font-size: 9pt;color: #e0e0eb;">{{ scope.row.email }}</div>
+          <div style="font-size: 9pt;color: #6a8295;">{{ scope.row.email }}</div>
         </template>
       </el-table-column>
 
-      <el-table-column align="left" :label="$t('user.email')">
+      <el-table-column align="left" :label="$t('user.role')" width="120">
         <template slot-scope="scope">
-          <span>{{ scope.row.email }}</span>
+          <span>{{ scope.row.roles.join(', ') }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column align="left" :label="$t('stores.location')">
+        <template slot-scope="scope">
+          <span>{{ scope.row.store }}</span>
         </template>
       </el-table-column>
 
@@ -45,9 +51,13 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="left" :label="$t('user.role')" width="120">
+      <el-table-column align="left" :label="$t('stores.status')">
         <template slot-scope="scope">
-          <span>{{ scope.row.roles.join(', ') }}</span>
+          <el-tag :type="(scope.row.active && scope.row.email_verified_at) | statusFilter">
+            <span v-if="scope.row.active == 1 && scope.row.email_verified_at !== null">{{ $t('customers.active') }}</span>
+            <span v-if="scope.row.active == 0 && scope.row.email_verified_at === null">{{ $t('customers.deleted') }}</span>
+            <span v-if="scope.row.active == 1 && scope.row.email_verified_at === null">{{ $t('customers.pending') }}</span>
+          </el-tag>
         </template>
       </el-table-column>
 
@@ -149,6 +159,16 @@ export default {
   name: 'UserList',
   components: { Pagination },
   directives: { waves, permission },
+  filters: {
+    statusFilter(active) {
+      const statusMap = {
+        1: 'success',
+        2: 'info',
+        0: 'danger',
+      };
+      return statusMap[active];
+    },
+  },
   data() {
     var validateConfirmPassword = (rule, value, callback) => {
       if (value !== this.newUser.password) {

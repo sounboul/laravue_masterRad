@@ -230,6 +230,7 @@ export default {
     'total_points': 'Bodovi',
     'last_change': 'Poslednja aktivnost',
     'active': 'Aktivan',
+    'pending': 'Nepotvrđen',
     'deleted': 'Mirovanje',
     'name': 'Ime',
     'mobile': 'Mobilni tel.',
@@ -254,5 +255,9 @@ export default {
     'check_url': 'Molimo proverite da li je URL koji ste uneli tačan. Kliknite na dugme ispod kako biste se vratili na početnu stranicu ili pošaljite izveštaj o grešci.',
     'or_go': 'Ili možete posetiti:',
     'show_picture': 'Prikaz slike :)',
+  },
+  stores: {
+    'location': 'Lokacija',
+    'status': 'Status',
   },
 };
