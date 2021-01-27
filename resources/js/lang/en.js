@@ -144,6 +144,7 @@ export default {
     status: 'Status',
     actions: 'Actions',
     edit: 'Edit',
+    filters: 'Filters',
     publish: 'Publish',
     draft: 'Draft',
     delete: 'Delete',

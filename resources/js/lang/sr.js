@@ -145,6 +145,7 @@ export default {
     status: 'Status',
     actions: 'Radnje',
     edit: 'Uredi',
+    filters: 'Filteri',
     publish: 'Publikuj',
     draft: 'Nacrt',
     delete: 'Obriši',

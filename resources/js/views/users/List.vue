@@ -2,9 +2,6 @@
   <div class="app-container">
     <div class="filter-container">
       <el-input v-model="query.keyword" :placeholder="$t('table.keyword')" style="width: 150px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-select v-model="query.role" :placeholder="$t('table.role')" clearable style="width: 110px" class="filter-item" @change="handleFilter">
-        <el-option v-for="item in roles" :key="item" :label="item | uppercaseFirst" :value="item" />
-      </el-select>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         {{ $t('table.search') }}
       </el-button>
@@ -18,11 +15,30 @@
       </div>
     </div>
 
+    <div class="filters">
+      <div class="filter-container">
+        <div style="margin-left: 1.3%;">
+          <div style="font-size: 15pt; color: #6a8295; margin-bottom: 25px;">{{ $t('table.filters') }}</div>
+
+          <el-select v-model="query.role" :placeholder="$t('user.role')" clearable style="width: 30%; margin-right: 4%;" class="filter-item" @change="handleFilter">
+            <el-option v-for="item in roles" :key="item" :label="item | uppercaseFirst" :value="item" />
+          </el-select>
+
+          <el-select v-model="query.store" :placeholder="$t('stores.location')" clearable style="width: 30%; margin-right: 4%;" class="filter-item" @change="handleFilter">
+            <el-option v-for="item1 in stores" :key="item1" :label="item1 | uppercaseFirst" :value="item1" />
+          </el-select>
+
+          <el-select v-model="query.active" :placeholder="$t('table.status')" clearable style="width: 30%" class="filter-item" @change="handleFilter">
+            <el-option v-for="item2 in actives" :key="item2" :label="item2 | uppercaseFirst" :value="item2" />
+          </el-select>
+        </div>
+      </div>
+    </div>
+
     <el-table v-loading="loading" :data="list" fit highlight-current-row style="width: 100%; border-radius: .428rem;">
       <el-table-column align="center" label="" width="70">
         <template slot-scope="scope">
           <img :src="scope.row.avatar" class="user-avatar">
-          <!-- <span>{{ scope.row.avatar }}</span> -->
         </template>
       </el-table-column>
 
@@ -54,9 +70,9 @@
       <el-table-column align="left" :label="$t('stores.status')">
         <template slot-scope="scope">
           <el-tag :type="scope.row.active | statusFilter">
-            <span v-if="scope.row.active == 1 && scope.row.status !== null">{{ $t('customers.active') }}</span>
-            <span v-else-if="scope.row.active == 0 && scope.row.status !== null">{{ $t('customers.deleted') }}</span>
-            <span v-else-if="scope.row.active == 1 && scope.row.status == null" style="color: #f58938;">{{ $t('customers.pending') }}</span>
+            <span v-if="scope.row.active == 'active'">{{ $t('customers.active') | lowercaseFirst }}</span>
+            <span v-else-if="scope.row.active == 'deleted'">{{ $t('customers.deleted') | lowercaseFirst }}</span>
+            <span v-else-if="scope.row.active == 'pending'">{{ $t('customers.pending') | lowercaseFirst }}</span>
           </el-tag>
         </template>
       </el-table-column>
@@ -162,9 +178,9 @@ export default {
   filters: {
     statusFilter(active) {
       const statusMap = {
-        1: 'success',
-        2: 'info',
-        0: 'danger',
+        active: 'success',
+        pending: 'warning',
+        deleted: 'danger',
       };
       return statusMap[active];
     },
@@ -188,8 +204,12 @@ export default {
         limit: 15,
         keyword: '',
         role: '',
+        store: '',
+        active: '',
       },
       roles: ['admin', 'manager', 'editor', 'user', 'visitor'],
+      stores: [],
+      actives: ['active', 'inactive', 'pending'],
       nonAdminRoles: ['editor', 'user', 'visitor'],
       newUser: {},
       dialogFormVisible: false,
@@ -501,7 +521,13 @@ export default {
     width: 40px;
     border-radius: 20px;
   }
+  .filters {
+    border: 1px solid #678295;
+    padding: 10px 10px 5px 10px;
+    margin-bottom: 15px;
+    border-radius: .428rem;
+    background-color: #283046;
+  }
   @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@1,300;1,400&family=Raleway:wght@500&display=swap');
-  // @import url('https://fonts.googleapis.com/css2?family=Indie+Flower&family=Nunito&family=Raleway:wght@500&display=swap');
 }
 </style>

@@ -144,6 +144,7 @@ export default {
     status: 'Статус',
     actions: 'Действия',
     edit: 'Изменить',
+    filters: 'Фильтры',
     publish: 'Опубликовать',
     draft: 'Черновик',
     delete: 'Удалить',

@@ -183,6 +183,12 @@ aside {
     vertical-align: middle;
     margin-bottom: 10px;
   }
+
+  .variant {
+    width: 300 px !important;
+    background-color: red;
+    margin-bottom: 20 px !important;
+  }
 }
 
 //refine vue-multiselect plugin

@@ -44,3 +44,7 @@ export function toThousandFilter(num) {
 export function uppercaseFirst(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
+
+export function lowercaseFirst(string) {
+  return string.charAt(0).toLowerCase() + string.slice(1);
+}
