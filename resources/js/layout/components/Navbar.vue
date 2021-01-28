@@ -1,7 +1,7 @@
 <template>
   <div class="navbar">
     <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
-    <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
+    <breadcrumb class="breadcrumb-container" />
     <div class="right-menu">
       <template v-if="device!=='mobile'">
         <search id="header-search" class="right-menu-item" />
@@ -81,12 +81,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.el-breadcrumb__inner a,.el-breadcrumb__inner.is-link {
+  color: red !important;
+}
+
 .navbar {
   height: 63px;
   overflow: hidden;
   position: relative;
   background: #283046;
-  // box-shadow: 0 10px 4px rgba(0,21,41,.08);
   margin: 18px 23px 18px 27px;
   border-radius: .428rem;
   border: 1px solid #678295;
@@ -102,10 +105,6 @@ export default {
     &:hover {
       background: rgba(0, 0, 0, .025)
     }
-  }
-
-  .el-breadcrumb__inner a {
-    color: red;
   }
 
   .breadcrumb-container {

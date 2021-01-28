@@ -16,9 +16,9 @@ class Resource {
     });
   }
 
-  listStores(query) {
+  listStores() {
     return request({
-      url: '/users/filterStore/' + query.store,
+      url: '/getStores',
       method: 'get',
     });
   }

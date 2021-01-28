@@ -2,8 +2,8 @@
 /**
  * File JsonResponse.php
  *
- * @author Tuan Duong <bacduong@gmail.com>
- * @package Laravue
+ * @author Boban Petković
+ * @package Loyalty
  * @version 1.0
  */
 namespace App\Laravue;

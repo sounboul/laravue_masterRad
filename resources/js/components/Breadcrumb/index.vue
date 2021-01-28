@@ -71,5 +71,8 @@ export default {
     color: #97a8be;
     cursor: text;
   }
+  a {
+    color: #4f637d !important;
+  }
 }
 </style>
