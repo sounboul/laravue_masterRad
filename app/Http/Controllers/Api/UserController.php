@@ -15,6 +15,7 @@ use App\Laravue\JsonResponse;
 use App\Laravue\Models\Permission;
 use App\Laravue\Models\Role;
 use App\Laravue\Models\User;
+use App\Laravue\Models\Stores;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Arr;
@@ -43,10 +44,21 @@ class UserController extends BaseController
         $userQuery = User::query();
         $limit = Arr::get($searchParams, 'limit', static::ITEM_PER_PAGE);
         $role = Arr::get($searchParams, 'role', '');
+        $store = Arr::get($searchParams, 'store', '');
+        $active = Arr::get($searchParams, 'active', '');
         $keyword = Arr::get($searchParams, 'keyword', '');
 
         if (!empty($role)) {
             $userQuery->whereHas('roles', function($q) use ($role) { $q->where('name', $role); });
+        }
+
+        if (!empty($active)) {
+            $userQuery->where('active', $active);
+        }
+
+        if (!empty($store)) {
+            $location = Stores::where('name', $store)->first();
+            $userQuery->where('stores_id', $location->id);
         }
 
         if (!empty($keyword)) {
@@ -229,5 +241,11 @@ class UserController extends BaseController
                 'array'
             ],
         ];
+    }
+
+    public function getStores()
+    {
+        $stores = Stores::all();
+        return response()->json(['stores' => $stores]);
     }
 }

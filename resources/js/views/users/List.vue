@@ -25,11 +25,11 @@
           </el-select>
 
           <el-select v-model="query.store" :placeholder="$t('stores.location')" clearable style="width: 30%; margin-right: 4%;" class="filter-item" @change="handleFilter">
-            <el-option v-for="item1 in stores" :key="item1" :label="item1 | uppercaseFirst" :value="item1" />
+            <el-option v-for="item in stores" :key="item" :label="item | uppercaseFirst" :value="item" />
           </el-select>
 
           <el-select v-model="query.active" :placeholder="$t('table.status')" clearable style="width: 30%" class="filter-item" @change="handleFilter">
-            <el-option v-for="item2 in actives" :key="item2" :label="item2 | uppercaseFirst" :value="item2" />
+            <el-option v-for="item in actives" :key="item" :label="$t('customers.'+item)" :value="item" />
           </el-select>
         </div>
       </div>
@@ -208,8 +208,9 @@ export default {
         active: '',
       },
       roles: ['admin', 'manager', 'editor', 'user', 'visitor'],
-      stores: [],
-      actives: ['active', 'inactive', 'pending'],
+      // stores: this.getStores(),
+      stores: ['Lokacija 1', 'Lokacija 2', 'Lokacija 3'],
+      actives: ['active', 'deleted', 'pending'],
       nonAdminRoles: ['editor', 'user', 'visitor'],
       newUser: {},
       dialogFormVisible: false,
@@ -325,12 +326,16 @@ export default {
       const { limit, page } = this.query;
       this.loading = true;
       const { data, meta } = await userResource.list(this.query);
+      // console.log(data);
       this.list = data;
       this.list.forEach((element, index) => {
         element['index'] = (page - 1) * limit + index + 1;
       });
       this.total = meta.total;
       this.loading = false;
+    },
+    async getStores() {
+
     },
     handleFilter() {
       this.query.page = 1;

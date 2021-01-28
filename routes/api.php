@@ -50,6 +50,10 @@ Route::namespace('Api')->group(function() {
         // Customers
         Route::get('/customers', 'CustomersController@fetchCustomers');
         Route::get('/active_customers', 'CustomersController@fetchActiveCustomers');
+
+        // Stores
+        Route::get('/getStores', 'UserController@getStores');
+
     });
 });
 

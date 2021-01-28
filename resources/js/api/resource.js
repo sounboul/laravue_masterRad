@@ -3,6 +3,7 @@ import request from '@/utils/request';
 /**
  * Simple RESTful resource class
  */
+
 class Resource {
   constructor(uri) {
     this.uri = uri;
@@ -12,6 +13,13 @@ class Resource {
       url: '/' + this.uri,
       method: 'get',
       params: query,
+    });
+  }
+
+  listStores(query) {
+    return request({
+      url: '/users/filterStore/' + query.store,
+      method: 'get',
     });
   }
   get(id) {
