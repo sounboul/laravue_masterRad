@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="query.keyword" :placeholder="$t('table.keyword')" style="width: 150px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-input v-model="query.keyword" :placeholder="$t('table.keyword')" style="width: 150px;;" class="filter-item" @keyup.enter.native="handleFilter" />
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         {{ $t('table.search') }}
       </el-button>
@@ -334,11 +334,11 @@ export default {
       this.loading = false;
     },
     async getStores() {
-      this.listLoading = true;
+      // this.listLoading = true;
       const { data } = await fetchStores();
       this.stores = data.stores;
-      this.total = data.total;
-      this.listLoading = false;
+      // this.total = data.total;
+      // this.listLoading = false;
     },
     handleFilter() {
       this.query.page = 1;

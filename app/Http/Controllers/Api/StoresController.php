@@ -12,6 +12,6 @@ class StoresController extends BaseController
     public function fetchStores()
     {
     	$stores = Stores::all();
-    	return response()->json(new JsonResponse(['stores' => $stores, 'total' => count($stores)]));
+    	return response()->json(new JsonResponse(['stores' => $stores]));
     }
 }
