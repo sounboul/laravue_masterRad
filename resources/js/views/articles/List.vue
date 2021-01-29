@@ -36,22 +36,37 @@
       style="width: 100%;border-radius: .428rem;"
       @sort-change="sortChange"
     >
-      <el-table-column :label="$t('table.id')" prop="id" sortable="custom" align="center" width="80">
+      <el-table-column :label="$t('table.code')" prop="id" sortable="custom" align="center" width="90">
         <template slot-scope="scope">
           <span>{{ scope.row.code }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.date')" width="120px" align="center">
+      <!-- <el-table-column :label="$t('table.date')" width="120px" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.created_at | parseTime('{d}.{m}.{y}.') }}</span>
         </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.title')" min-width="120px">
+      </el-table-column> -->
+      <el-table-column :label="$t('articles.name')" min-width="120px">
         <template slot-scope="{row}">
           <span style="font-size: 12pt; margin-top: 2px; cursor: pointer;" @click="previewArticle(row)">{{ row.title }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.author')" width="180px" align="center">
+      <el-table-column :label="$t('articles.price') + $t(' (') + $t('articles.currency')+ $t(')')" width="120px" align="center">
+        <template slot-scope="scope">
+          <span>{{ currencyFormatEU(scope.row.price/100, 2) }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column colspan="2" :label="$t('articles.discount') + $t(' (%)')" width="130px" align="center">
+        <template slot-scope="scope">
+          <span>{{ currencyFormatEU(scope.row.discount/10, 1) }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('articles.in_stock')" width="120px" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.amount }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('stores.location')" width="180px" align="center">
         <template slot-scope="scope">
           <span v-for="(n, index) in scope.row.store" :key="index">{{ scope.row.store[index].address }}<br></span>
         </template>
@@ -414,6 +429,14 @@ export default {
           return v[j];
         }
       }));
+    },
+    currencyFormatEU(num, fixed) {
+      return (
+        num
+          .toFixed(fixed) // always two decimal digits
+          .replace('.', ',') // replace decimal point character with ,
+          .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
+      ); // use . as a separator
     },
   },
 };

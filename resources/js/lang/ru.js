@@ -259,4 +259,11 @@ export default {
     'location': 'Mестонахождение',
     'status': 'Cтатус',
   },
+  articles: {
+    name: 'Название',
+    currency: 'РУБ',
+    price: 'Цена',
+    discount: 'Скидка',
+    in_stock: 'В наличии',
+  },
 };

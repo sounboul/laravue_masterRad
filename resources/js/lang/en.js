@@ -259,4 +259,11 @@ export default {
     'location': 'Location',
     'status': 'Status',
   },
+  articles: {
+    name: 'Name',
+    currency: 'EUR',
+    price: 'Price',
+    discount: 'Discount',
+    in_stock: 'In stock',
+  },
 };

@@ -261,4 +261,11 @@ export default {
     'location': 'Lokacija',
     'status': 'Status',
   },
+  articles: {
+    name: 'Naziv',
+    currency: 'RSD',
+    price: 'Cena',
+    discount: 'Popust',
+    in_stock: 'Na stanju',
+  },
 };
