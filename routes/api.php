@@ -52,7 +52,7 @@ Route::namespace('Api')->group(function() {
         Route::get('/active_customers', 'CustomersController@fetchActiveCustomers');
 
         // Stores
-        Route::get('/getStores', 'UserController@getStores');
+        Route::get('/stores', 'StoresController@fetchStores');
 
     });
 });

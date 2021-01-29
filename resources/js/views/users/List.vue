@@ -25,7 +25,7 @@
           </el-select>
 
           <el-select v-model="query.store" :placeholder="$t('stores.location')" clearable style="width: 30%; margin-right: 4%;" class="filter-item" @change="handleFilter">
-            <el-option v-for="item in stores" :key="item" :label="item | uppercaseFirst" :value="item" />
+            <el-option v-for="item in stores" :key="item.id" :label="item.name | uppercaseFirst" :value="item.name" />
           </el-select>
 
           <el-select v-model="query.active" :placeholder="$t('table.status')" clearable style="width: 30%" class="filter-item" @change="handleFilter">
@@ -164,6 +164,7 @@
 import Pagination from '@/components/Pagination'; // Secondary package based on el-pagination
 import UserResource from '@/api/user';
 import Resource from '@/api/resource';
+import { fetchStores } from '@/api/stores';
 import waves from '@/directive/waves'; // Waves directive
 import permission from '@/directive/permission'; // Permission directive
 import checkPermission from '@/utils/permission'; // Permission checking
@@ -209,7 +210,6 @@ export default {
       },
       roles: ['admin', 'manager', 'editor', 'user', 'visitor'],
       stores: this.getStores(),
-      // stores: ['Lokacija 1', 'Lokacija 2', 'Lokacija 3'],
       actives: ['active', 'deleted', 'pending'],
       nonAdminRoles: ['editor', 'user', 'visitor'],
       newUser: {},
@@ -326,7 +326,6 @@ export default {
       const { limit, page } = this.query;
       this.loading = true;
       const { data, meta } = await userResource.list(this.query);
-      // console.log(data);
       this.list = data;
       this.list.forEach((element, index) => {
         element['index'] = (page - 1) * limit + index + 1;
@@ -335,7 +334,11 @@ export default {
       this.loading = false;
     },
     async getStores() {
-
+      this.listLoading = true;
+      const { data } = await fetchStores();
+      this.stores = data.stores;
+      this.total = data.total;
+      this.listLoading = false;
     },
     handleFilter() {
       this.query.page = 1;
@@ -527,11 +530,13 @@ export default {
     border-radius: 20px;
   }
   .filters {
-    border: 1px solid #678295;
     padding: 10px 10px 5px 10px;
     margin-bottom: 15px;
     border-radius: .428rem;
     background-color: #283046;
+  }
+  .filter-container {
+    border: 0 !important;
   }
   @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@1,300;1,400&family=Raleway:wght@500&display=swap');
 }
