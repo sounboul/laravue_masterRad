@@ -1,20 +1,20 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.title" :placeholder="$t('table.title')" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-input v-model="listQuery.keyword" :placeholder="$t('table.keyword')" style="width: 200px;" class="filter-item" @keyup.native="handleFilter" />
       <!-- <el-select v-model="listQuery.importance" :placeholder="$t('table.importance')" clearable style="width: 90px" class="filter-item">
         <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />
       </el-select> -->
       <!-- <el-select v-model="listQuery.type" :placeholder="$t('table.type')" clearable class="filter-item" style="width: 130px">
         <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name+'('+item.key+')'" :value="item.key" />
       </el-select> -->
-      <el-select v-model="listQuery.sort" style="width: 140px" class="filter-item" @change="handleFilter">
-        <el-option v-for="item in sortOptions" :key="item.key" :label="item.label" :value="item.key" />
+      <el-select v-model="listQuery.sort" style="width: 150px" class="filter-item" @change="handleFilter">
+        <el-option v-for="item in sortOptions" :key="item.key" :label="$t('table.'+item.label)" :value="item.key" />
       </el-select>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         {{ $t('table.search') }}
       </el-button>
-      <el-checkbox class="filter-item" style="margin-left:15px;" @change="showActiveCustomers===false?activeCustomers():getList()">{{ $t('customers.active_customers') }}
+      <el-checkbox class="filter-item" style="margin-left:15px;" @change="showActiveCustomers === false ? activeCustomers() : getAllCustomers()">{{ $t('customers.active_customers') }}
       </el-checkbox>
       <div style="float: right;">
         <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
@@ -35,12 +35,12 @@
       style="width: 100%;border-radius: .428rem;"
       @sort-change="sortChange"
     >
-      <el-table-column :label="$t('table.id')" prop="id" sortable="custom" align="center" width="80">
-        <template slot-scope="scope">
-          <span>{{ scope.row.id }}</span>
+      <el-table-column label="" prop="id" align="center" width="40">
+        <template>
+          <span>{{ }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('customers.customer')" min-width="120px">
+      <el-table-column :label="$t('customers.customer_name')" min-width="120px">
         <template slot-scope="{row}">
           <span class="" style="font-weight: bold;cursor: pointer;" @click="previewCustomer(row)">{{ row.name }}</span>
           <!-- <el-tag>{{ row.title }}</el-tag> -->
@@ -57,7 +57,7 @@
           <span>{{ scope.row.member_since | parseTime('{d}.{m}.{y}.') }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('customers.last_change')" width="130px" align="center">
+      <el-table-column :label="$t('customers.last_change')" width="160px" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.updated_at | parseTime('{d}.{m}.{y}.') }}</span>
         </template>
@@ -225,7 +225,7 @@
 </template>
 
 <script>
-import { fetchList, fetchPv, fetchActiveCustomers, fetchCustomer, createCustomer, updateCustomer, deleteCustomer } from '@/api/customer';
+import { fetchList, fetchPv, fetchActiveCustomers, fetchCustomer, createCustomer, updateCustomer, deleteCustomer, fetchAllCustomers } from '@/api/customer';
 import waves from '@/directive/waves'; // Waves directive
 import { parseTime } from '@/utils';
 import checkRole from '@/utils/role';
@@ -272,13 +272,18 @@ export default {
         limit: 20,
         importance: undefined,
         title: undefined,
+        name: undefined,
         type: undefined,
+        member_since: '',
+        updated_at: '',
         sort: '+id',
+        keyword: '',
+        showActiveCustomers: !this.showActiveCustomers,
       },
       importanceOptions: [1, 2, 3],
       calendarTypeOptions,
       checkRole,
-      sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
+      sortOptions: [{ label: 'ascending', key: '+id' }, { label: 'descending', key: '-id' }],
       statusOptions: ['active', 'draft', 'deleted'],
       showActiveCustomers: false,
       temp: {
@@ -326,7 +331,6 @@ export default {
   methods: {
     async getList() {
       this.listLoading = true;
-      this.showActiveCustomers = !this.showActiveCustomers;
       const { data } = await fetchList(this.listQuery);
       this.list = data.items;
       this.total = data.total;
@@ -334,8 +338,20 @@ export default {
     },
     async activeCustomers() {
       this.listLoading = true;
-      this.showActiveCustomers = !this.showActiveCustomers;
+      this.listQuery.showActiveCustomers = !this.showActiveCustomers;
+      console.log(this.listQuery.showActiveCustomers);
       const { data } = await fetchActiveCustomers(this.listQuery);
+      this.showActiveCustomers = !this.showActiveCustomers;
+      this.list = data.items;
+      this.total = data.total;
+      this.listLoading = false;
+    },
+    async getAllCustomers() {
+      this.listLoading = true;
+      this.listQuery.showActiveCustomers = !this.showActiveCustomers;
+      console.log(this.listQuery.showActiveCustomers);
+      const { data } = await fetchAllCustomers(this.listQuery);
+      this.showActiveCustomers = !this.showActiveCustomers;
       this.list = data.items;
       this.total = data.total;
       this.listLoading = false;
@@ -356,8 +372,30 @@ export default {
       if (prop === 'id') {
         this.sortByID(order);
       }
+      if (prop === 'member_since') {
+        this.sortByDate(order);
+      }
+      if (prop === 'updated_at') {
+        this.sortByBuy(order);
+      }
     },
     sortByID(order) {
+      if (order === 'ascending') {
+        this.listQuery.sort = '+id';
+      } else {
+        this.listQuery.sort = '-id';
+      }
+      this.handleFilter();
+    },
+    sortByDate(order) {
+      if (order === 'ascending') {
+        this.listQuery.sort = '+id';
+      } else {
+        this.listQuery.sort = '-id';
+      }
+      this.handleFilter();
+    },
+    sortByBuy(order) {
       if (order === 'ascending') {
         this.listQuery.sort = '+id';
       } else {

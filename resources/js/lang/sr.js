@@ -123,6 +123,8 @@ export default {
     imageUploadTips: 'Budući da sam koristio samo verziju vue @ 1 i trenutno nije kompatibilna sa mockjs-om, sam sam je modifikovao, a ako ćete je koristiti, bolje je koristiti zvaničnu verziju.',
   },
   table: {
+    ascending: 'Rastuće',
+    descending: 'Opadajuće',
     description: 'Opis',
     dynamicTips1: 'Fiksno zaglavlje, sortirano po redosledu zaglavlja',
     dynamicTips2: 'Nije fiksno zaglavlje, sortirano prema redosledu klikova',
@@ -266,6 +268,9 @@ export default {
     currency: 'RSD',
     price: 'Cena',
     discount: 'Popust',
+    discount_silver: 'Cena za silver kupce',
+    discount_gold: 'Cena za gold kupce',
+    discount_premium: 'Cena za premium kupce',
     in_stock: 'Na stanju',
   },
 };

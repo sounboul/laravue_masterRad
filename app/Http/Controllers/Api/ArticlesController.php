@@ -7,21 +7,71 @@ use App\Laravue\Models\Articles;
 use App\Laravue\Models\Stores;
 use App\Laravue\JsonResponse;
 use App\Laravue\Models\User;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 
 class ArticlesController extends BaseController
 {
-    public function fetchArticles()
-    {
-    	//$store = [];
-    	$articles = Articles::all();
-    	foreach ($articles as $key => $article) {
-    		$store[$key] = $article->store;
-    	}
-    	
+    const ITEM_PER_PAGE = 15;
 
-    	return response()->json(new JsonResponse(['items' => $articles, 'total' => count($articles)]));
+    public function index(Request $request)
+    {
+        $keyword = $request->keyword;
+        $sort = $request->sort;
+        $limit = $request->limit;
+
+        if (!empty($keyword)) {
+            $articleQuery = Articles::where('code', 'LIKE', '%' .$keyword . '%')
+                                    ->orWhere('title', 'LIKE', '%' .$keyword . '%')
+                                    ->get();
+        }
+       /* else {
+            if (!empty($sort)) {
+                if ($sort == '+id') {
+                    $articleQuery = DB::table('articles')->orderBy('id', 'asc')->get();
+                }
+                else {
+                    $articleQuery = DB::table('articles')->orderBy('id', 'desc')->get();
+                }
+            }
+        }*/
+
+        foreach ($articleQuery as $key => $article) {
+            $store[$key] = $article->store;
+        }
+
+        return response()->json(new JsonResponse(['items' => $articleQuery, 'limit' => $limit]));
+    }
+
+    public function fetchArticles(Request $request)
+    {
+        if ($request->sort == "+id") {
+            $order = 'asc';
+        }
+        else {
+            $order = 'desc';
+        }
+
+        $articles = Articles::orderBy('id', $order)->get();
+    	
+        $keyword = $request->keyword;
+        $sort = $request->sort;
+        $limit = $request->limit;
+
+        if (!empty($keyword)) {
+            $articles = Articles::where('code', 'LIKE', '%' .$keyword . '%')
+                                ->orWhere('title', 'LIKE', '%' .$keyword . '%')
+                                ->orderBy('id', $order)
+                                ->get();
+        }
+
+        foreach ($articles as $key => $article) {
+            $store[$key] = $article->store;
+        }
+
+    	return response()->json(new JsonResponse(['items' => $articles, 'total' => count($articles), 'sort' => $request->sort]));
     }
 
     public function previewArticle($id)

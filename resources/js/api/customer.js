@@ -16,6 +16,14 @@ export function fetchActiveCustomers(query) {
   });
 }
 
+export function fetchAllCustomers(query) {
+  return request({
+    url: '/all_customers',
+    method: 'get',
+    params: query,
+  });
+}
+
 export function fetchCustomer(id) {
   return request({
     url: '/customer/preview/' + id,

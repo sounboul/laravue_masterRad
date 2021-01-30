@@ -41,6 +41,7 @@ Route::namespace('Api')->group(function() {
         Route::get('roles/{role}/permissions', 'RoleController@permissions')->middleware('permission:' . Acl::PERMISSION_PERMISSION_MANAGE);
 
         // Articles
+        Route::get('/article', 'ArticlesController@index');
         Route::get('/articles', 'ArticlesController@fetchArticles');
         Route::get('/article/preview/{id}', 'ArticlesController@previewArticle');
         Route::post('/article/create', 'ArticlesController@createArticle');
@@ -49,7 +50,8 @@ Route::namespace('Api')->group(function() {
 
         // Customers
         Route::get('/customers', 'CustomersController@fetchCustomers');
-        Route::get('/active_customers', 'CustomersController@fetchActiveCustomers');
+        Route::get('/all_customers', 'CustomersController@fetchAllCustomers');
+        Route::get('/active_customers', 'CustomersController@fetchAllCustomers');
 
         // Stores
         Route::get('/stores', 'StoresController@fetchStores');

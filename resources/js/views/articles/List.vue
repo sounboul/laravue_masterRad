@@ -1,15 +1,15 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.title" :placeholder="$t('table.title')" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-input v-model="listQuery.keyword" :placeholder="$t('table.keyword')" style="width: 200px;" class="filter-item" @keyup.native="handleFilter" />
       <el-select v-model="listQuery.importance" :placeholder="$t('table.importance')" clearable style="width: 90px" class="filter-item">
         <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />
       </el-select>
       <!-- <el-select v-model="listQuery.type" :placeholder="$t('table.type')" clearable class="filter-item" style="width: 130px">
         <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name+'('+item.key+')'" :value="item.key" />
       </el-select> -->
-      <el-select v-model="listQuery.sort" style="width: 140px" class="filter-item" @change="handleFilter">
-        <el-option v-for="item in sortOptions" :key="item.key" :label="item.label" :value="item.key" />
+      <el-select v-model="listQuery.sort" style="width: 150px" class="filter-item" @change="handleFilter">
+        <el-option v-for="item in sortOptions" :key="item.key" :label="$t('table.'+item.label)" :value="item.key" />
       </el-select>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         {{ $t('table.search') }}
@@ -33,7 +33,7 @@
       :data="list"
       fit
       highlight-current-row
-      style="width: 100%;border-radius: .428rem;"
+      style="width: 100%;border-radius: .428rem; word-break: break-word;"
       @sort-change="sortChange"
     >
       <el-table-column :label="$t('table.code')" prop="id" sortable="custom" align="center" width="90">
@@ -56,9 +56,17 @@
           <span>{{ currencyFormatEU(scope.row.price/100, 2) }}</span>
         </template>
       </el-table-column>
-      <el-table-column colspan="2" :label="$t('articles.discount') + $t(' (%)')" width="130px" align="center">
+      <el-table-column :label="$t('articles.discount') + $t(' (%) ') + $t(' Silv  Gold  Prem')" width="155px" align="center">
         <template slot-scope="scope">
-          <span>{{ currencyFormatEU(scope.row.discount/10, 1) }}</span>
+          <template>
+            <span>{{ currencyFormatEU(scope.row.discount_silver/10, 1) }} |</span>
+          </template>
+          <template>
+            <span>{{ currencyFormatEU(scope.row.discount_gold/10, 1) }} |</span>
+          </template>
+          <template>
+            <span>{{ currencyFormatEU(scope.row.discount_premium/10, 1) }}</span>
+          </template>
         </template>
       </el-table-column>
       <el-table-column :label="$t('articles.in_stock')" width="120px" align="center">
@@ -241,11 +249,13 @@ export default {
         title: undefined,
         type: undefined,
         sort: '+id',
+        keyword: '',
       },
+      // codes: this.getCodes(),
       importanceOptions: [1, 2, 3],
       calendarTypeOptions,
       checkRole,
-      sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
+      sortOptions: [{ label: 'ascending', key: '+id' }, { label: 'descending', key: '-id' }],
       statusOptions: ['published', 'draft', 'deleted'],
       showReviewer: false,
       temp: {
@@ -290,7 +300,11 @@ export default {
     },
     handleFilter() {
       this.listQuery.page = 1;
+      // this.listQuery.keyword = this.keyword;
       this.getList();
+    },
+    async getCodes() {
+      // test
     },
     handleModifyStatus(row, status) {
       this.$message({
@@ -431,12 +445,15 @@ export default {
       }));
     },
     currencyFormatEU(num, fixed) {
-      return (
-        num
-          .toFixed(fixed) // always two decimal digits
-          .replace('.', ',') // replace decimal point character with ,
-          .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
-      ); // use . as a separator
+      if (fixed !== 1){
+        return (
+          num
+            .toFixed(fixed) // always 'fixed' decimal digits
+            .replace('.', ',') // replace decimal point character with ,
+            .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
+        ); // use . as a separator
+      }
+      return num;
     },
   },
 };

@@ -8,6 +8,14 @@ export function fetchList(query) {
   });
 }
 
+export function searchKeyword(query) {
+  return request({
+    url: '/article',
+    method: 'get',
+    params: query,
+  });
+}
+
 export function fetchArticle(id) {
   return request({
     url: '/article/preview/' + id,

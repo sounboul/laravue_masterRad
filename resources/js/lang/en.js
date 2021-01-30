@@ -123,6 +123,8 @@ export default {
     imageUploadTips: 'Since I was using only the vue@1 version, and it is not compatible with mockjs at the moment, I modified it myself, and if you are going to use it, it is better to use official version.',
   },
   table: {
+    ascending: 'Ascending',
+    descending: 'Descending',
     description: 'Description',
     dynamicTips1: 'Fixed header, sorted by header order',
     dynamicTips2: 'Not fixed header, sorted by click order',
@@ -264,6 +266,9 @@ export default {
     currency: 'EUR',
     price: 'Price',
     discount: 'Discount',
+    discount_silver: 'Price for silver customers',
+    discount_gold: 'Price for gold customers',
+    discount_premium: 'Price for premium customers',
     in_stock: 'In stock',
   },
 };
