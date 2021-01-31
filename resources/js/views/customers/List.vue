@@ -14,7 +14,7 @@
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         {{ $t('table.search') }}
       </el-button>
-      <el-checkbox class="filter-item" style="margin-left:15px;" @change="showActiveCustomers === false ? activeCustomers() : getAllCustomers()">{{ $t('customers.active_customers') }}
+      <el-checkbox class="filter-item" style="margin-left: 15px;" @change="showActiveCustomers === false ? activeCustomers() : getAllCustomers()">{{ $t('customers.active_customers') }}
       </el-checkbox>
       <div style="float: right;">
         <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
@@ -225,7 +225,7 @@
 </template>
 
 <script>
-import { fetchList, fetchPv, fetchActiveCustomers, fetchCustomer, createCustomer, updateCustomer, deleteCustomer, fetchAllCustomers } from '@/api/customer';
+import { fetchList, fetchPv, fetchCustomer, createCustomer, updateCustomer, deleteCustomer, fetchAllCustomers } from '@/api/customer';
 import waves from '@/directive/waves'; // Waves directive
 import { parseTime } from '@/utils';
 import checkRole from '@/utils/role';
@@ -340,7 +340,7 @@ export default {
       this.listLoading = true;
       this.listQuery.showActiveCustomers = !this.showActiveCustomers;
       console.log(this.listQuery.showActiveCustomers);
-      const { data } = await fetchActiveCustomers(this.listQuery);
+      const { data } = await fetchAllCustomers(this.listQuery);
       this.showActiveCustomers = !this.showActiveCustomers;
       this.list = data.items;
       this.total = data.total;

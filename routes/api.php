@@ -51,7 +51,6 @@ Route::namespace('Api')->group(function() {
         // Customers
         Route::get('/customers', 'CustomersController@fetchCustomers');
         Route::get('/all_customers', 'CustomersController@fetchAllCustomers');
-        Route::get('/active_customers', 'CustomersController@fetchAllCustomers');
 
         // Stores
         Route::get('/stores', 'StoresController@fetchStores');

@@ -15,7 +15,7 @@ class CustomersController extends BaseController
         $keyword = $request->keyword;
         $sort = $request->sort;
         $limit = $request->limit;
-        
+
 
         if ($request->sort == "+id") {
             $order = 'asc';
@@ -54,6 +54,7 @@ class CustomersController extends BaseController
     	return response()->json(new JsonResponse(['items' => $customers, 'total' => count($customers)]));
     }
 
+
     public function fetchAllCustomers(Request $request)
     {
         $showActiveCustomers = filter_var($request->showActiveCustomers, FILTER_VALIDATE_BOOLEAN);
@@ -64,7 +65,7 @@ class CustomersController extends BaseController
         else {
             $order = 'desc';
         }
-        //dd($showActiveCustomers);
+
         if (!$showActiveCustomers || (!$showActiveCustomers && ($request->sort == "-id"))) {
             $customers = Customers::orderBy('id', $order)->get();
         }
@@ -74,29 +75,7 @@ class CustomersController extends BaseController
 
     	return response()->json(new JsonResponse(['items' => $customers, 'total' => count($customers)]));
     }
-    
-    public function fetchActiveCustomers(Request $request)
-    {
-        $showActiveCustomers = filter_var($request->showActiveCustomers, FILTER_VALIDATE_BOOLEAN);
 
-        if ($request->sort == "+id") {
-            $order = 'asc';
-        }
-        else {
-            $order = 'desc';
-        }
-
-        
-        if (!$showActiveCustomers || ($showActiveCustomers && ($request->sort == "-id"))) {
-
-            $customers = Customers::orderBy('id', $order)->get();
-        }
-        else {
-            $customers = Customers::where('active', 'active')->orderBy('id', $order)->get();
-        }
-
-        return response()->json(new JsonResponse(['items' => $customers, 'total' => count($customers)]));
-    }
 
     public function fetchDeletedCustomers()
     {

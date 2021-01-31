@@ -4,7 +4,7 @@
       <h3 class="title">
         {{ $t('login.title') }}
       </h3>
-      <lang-select class="set-language" />
+      <lang-select class="set-language" style="cursor: pointer;" />
       <el-form-item prop="email">
         <span class="svg-container">
           <svg-icon icon-class="user" />
@@ -220,6 +220,7 @@ $light_gray:#eee;
     position: absolute;
     top: 40px;
     right: 35px;
+    border-radius: 14px;
   }
 }
 @media screen and (orientation:landscape) and (max-width:1024px) {

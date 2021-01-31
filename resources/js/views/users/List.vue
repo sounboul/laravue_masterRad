@@ -531,6 +531,7 @@ export default {
   }
   .filters {
     padding: 10px 10px 5px 10px;
+    margin-top: 4px;
     margin-bottom: 15px;
     border-radius: .428rem;
     background-color: #283046;
