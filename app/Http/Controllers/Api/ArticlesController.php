@@ -27,17 +27,7 @@ class ArticlesController extends BaseController
                                     ->orWhere('title', 'LIKE', '%' .$keyword . '%')
                                     ->get();
         }
-       /* else {
-            if (!empty($sort)) {
-                if ($sort == '+id') {
-                    $articleQuery = DB::table('articles')->orderBy('id', 'asc')->get();
-                }
-                else {
-                    $articleQuery = DB::table('articles')->orderBy('id', 'desc')->get();
-                }
-            }
-        }*/
-
+        
         foreach ($articleQuery as $key => $article) {
             $store[$key] = $article->store;
         }

@@ -1,10 +1,10 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="query.keyword" :placeholder="$t('table.keyword')" style="width: 150px;;" class="filter-item" @keyup.native="handleFilter" />
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
+      <el-input v-model="query.keyword" :placeholder="$t('table.keyword')" style="width: 250px;;" class="filter-item" @keyup.native="handleFilter" />
+      <!-- <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         {{ $t('table.search') }}
-      </el-button>
+      </el-button> -->
       <div style="float: right;">
         <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-plus" @click="handleCreate">
           {{ $t('table.add') }}
@@ -531,7 +531,7 @@ export default {
   }
   .filters {
     padding: 10px 10px 5px 10px;
-    margin-top: 4px;
+    //margin-top: 4px;
     margin-bottom: 15px;
     border-radius: .428rem;
     background-color: #283046;

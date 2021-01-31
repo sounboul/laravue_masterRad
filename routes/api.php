@@ -55,6 +55,10 @@ Route::namespace('Api')->group(function() {
         // Stores
         Route::get('/stores', 'StoresController@fetchStores');
 
+        // Categories
+        Route::get('/categories', 'CategoriesController@fetchCategories');
+
+
     });
 });
 

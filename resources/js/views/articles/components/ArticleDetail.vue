@@ -315,6 +315,9 @@ export default {
 }
 </style>
 <style>
+.createPost-container{
+  margin-top: 50px !important;
+  }
 .createPost-container label.el-form-item__label {
   text-align: left;
 }

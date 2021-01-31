@@ -14,26 +14,26 @@
 
     <el-table-column width="180px" align="center" label="Date">
       <template slot-scope="scope">
-        <span>{{ scope.row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+        <span>{{ scope.row.code }}</span>
       </template>
     </el-table-column>
 
     <el-table-column min-width="300px" label="Title">
       <template slot-scope="scope">
         <span>{{ scope.row.title }}</span>
-        <el-tag>{{ scope.row.type }}</el-tag>
+        <el-tag>{{ scope.row.price }}</el-tag>
       </template>
     </el-table-column>
 
     <el-table-column width="110px" align="center" label="Author">
       <template slot-scope="scope">
-        <span>{{ scope.row.author }}</span>
+        <span>{{ scope.row.amount }}</span>
       </template>
     </el-table-column>
 
     <el-table-column width="120px" label="Importance">
       <template slot-scope="scope">
-        <svg-icon v-for="n in +scope.row.importance" :key="n" icon-class="star" />
+        <svg-icon v-for="n in +scope.row.rating" :key="n" icon-class="star" />
       </template>
     </el-table-column>
 

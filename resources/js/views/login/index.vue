@@ -220,7 +220,7 @@ $light_gray:#eee;
     position: absolute;
     top: 40px;
     right: 35px;
-    border-radius: 14px;
+    border-radius: .428rem;
   }
 }
 @media screen and (orientation:landscape) and (max-width:1024px) {

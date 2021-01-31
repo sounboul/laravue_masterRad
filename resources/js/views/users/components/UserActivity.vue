@@ -187,7 +187,6 @@ export default {
     return {
       activeActivity: 'first',
       carouselImages: [
-        'images/zdravko.jpg',
         'https://cdn.laravue.dev/photo1.png',
         'https://cdn.laravue.dev/photo2.png',
         'https://cdn.laravue.dev/photo3.jpg',
