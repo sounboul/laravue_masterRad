@@ -42,32 +42,38 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="left" :label="$t('user.name')">
+      <el-table-column align="left" :label="$t('user.name')" class="col">
         <template slot-scope="scope">
           <div style="font-family: 'Poppins', sans-serif; font-size: 12pt; margin-top: 2px;">{{ scope.row.name }}</div>
           <div style="font-size: 9pt;color: #6a8295;">{{ scope.row.email }}</div>
         </template>
       </el-table-column>
 
-      <el-table-column align="left" :label="$t('user.role')" width="120">
+      <el-table-column align="left" :label="$t('user.role')" class="col">
         <template slot-scope="scope">
           <span>{{ scope.row.roles.join(', ') }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column align="left" :label="$t('stores.location')">
+      <el-table-column align="left" :label="$t('stores.location')" class="col">
         <template slot-scope="scope">
           <span>{{ scope.row.store }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column align="left" :label="$t('user.phone')">
+      <el-table-column align="left" :label="$t('stores.department')" class="col">
+        <template slot-scope="scope">
+          <span>{{ scope.row.department }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column align="left" :label="$t('user.phone')" class="col">
         <template slot-scope="scope">
           <span>{{ scope.row.phone }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column align="left" :label="$t('stores.status')">
+      <el-table-column align="left" :label="$t('stores.status')" width="110">
         <template slot-scope="scope">
           <el-tag :type="scope.row.active | statusFilter">
             <span v-if="scope.row.active == 'active'">{{ $t('customers.active') | lowercaseFirst }}</span>
@@ -80,14 +86,14 @@
       <el-table-column align="center" :label="$t('table.actions')" width="350">
         <template slot-scope="scope">
           <router-link v-if="!scope.row.roles.includes('admin')" :to="'/administrator/users/edit/'+scope.row.id">
-            <el-button v-permission="['manage user']" type="success" size="small" icon="el-icon-edit">
+            <el-button v-permission="['manage user']" type="success" size="mini" icon="el-icon-edit">
               {{ $t('table.edit') }}
             </el-button>
           </router-link>
-          <el-button v-if="!scope.row.roles.includes('admin')" v-permission="['manage permission']" style="background-color: #f58938; color: #000;" size="small" icon="el-icon-tickets" @click="handleEditPermissions(scope.row.id);">
+          <el-button v-if="!scope.row.roles.includes('admin')" v-permission="['manage permission']" style="background-color: #f58938; color: #000;" size="mini" icon="el-icon-tickets" @click="handleEditPermissions(scope.row.id);">
             {{ $t('route.permission') }}
           </el-button>
-          <el-button v-if="scope.row.roles.includes('visitor')" v-permission="['manage user']" type="danger" size="small" icon="el-icon-delete" @click="handleDelete(scope.row.id, scope.row.name);">
+          <el-button v-if="scope.row.roles.includes('visitor')" v-permission="['manage user']" type="danger" size="mini" icon="el-icon-delete" @click="handleDelete(scope.row.id, scope.row.name);">
             {{ $t('table.delete') }}
           </el-button>
         </template>

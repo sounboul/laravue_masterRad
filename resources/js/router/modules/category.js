@@ -16,7 +16,7 @@ const categoryRoutes = {
     {
       path: 'category',
       component: () => import('@/views/categories/List'),
-      name: 'ArticleList',
+      name: 'categoryList',
       meta: { title: 'categoryList', icon: 'list', permissions: ['view menu'] },
     },
     {

@@ -27,6 +27,11 @@ class CreateUsersTable extends Migration
                                         ->onUpdate('cascade')
                                         ->onDelete('cascade')
                                         ->nullable();
+            $table->unsignedBigInteger('department_id');
+            $table->foreign('department_id')->references('id')
+                                        ->on('department')
+                                        ->onUpdate('cascade')
+                                        ->onDelete('cascade');
             $table->string('active')->default('active');
             $table->rememberToken();
             $table->timestamp('created_at')->useCurrent();

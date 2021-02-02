@@ -120,9 +120,9 @@
           </el-tag>
         </template>
       </el-table-column> -->
-      <el-table-column :label="$t('table.actions')" align="center" width="200" class-name="small-padding fixed-width">
+      <el-table-column v-if="checkRole(['admin','manager', 'editor'])" :label="$t('table.actions')" align="center" width="200" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
-          <el-button type="success" size="mini" @click="handleUpdate(row)">
+          <el-button v-if="checkRole(['admin','manager', 'editor'])" type="success" size="mini" @click="handleUpdate(row)">
             {{ $t('table.edit') }}
           </el-button>
           <el-button v-if="checkRole(['admin','manager']) && row.id!='deleted'" size="mini" type="danger" @click="handleDelete(row.id)">

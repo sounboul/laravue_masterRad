@@ -134,6 +134,20 @@ export const constantRoutes = [
     ],
   },
   articleRoutes,
+  categoryRoutes,
+  {
+    path: '/discounts',
+    component: Layout,
+    redirect: '/discounts/index',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/discounts/index'),
+        name: 'Discounts',
+        meta: { title: 'discounts', icon: 'dollar', noCache: true },
+      },
+    ],
+  },
   {
     path: '/guide',
     component: Layout,
@@ -151,7 +165,6 @@ export const constantRoutes = [
 ];
 
 export const asyncRoutes = [
-  categoryRoutes,
   permissionRoutes,
   componentRoutes,
   chartsRoutes,

@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Laravue\Models\User;
+use App\Laravue\Models\Department;
 
 class UserResource extends JsonResource
 {
@@ -23,6 +24,7 @@ class UserResource extends JsonResource
             'store' => $this->stores->name,
             'status' => $this->email_verified_at,
             'active' => $this->active,
+            'department' => Department::find($this->department_id)->name,
             'roles' => array_map(
                 function ($role) {
                     return $role['name'];

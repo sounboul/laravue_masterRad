@@ -16,6 +16,11 @@ class Stores extends Model
     	return $this->hasMany(Articles::class);
     }
 
+    public function department()
+    {
+        return $this->hasMany(Department::class);
+    }
+
     public function users()
     {
     	return $this->hasOne(User::class);

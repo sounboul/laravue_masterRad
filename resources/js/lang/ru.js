@@ -78,6 +78,7 @@ export default {
     categoryList: 'Список категорий',
     createCategory: 'Создать категорию',
     editCategory: 'Изменить категорию',
+    discounts: 'Скидки',
   },
   navbar: {
     logOut: 'Выход',
@@ -234,7 +235,15 @@ export default {
     'create_new_customer': 'Создать нового клиента',
     'edit_customer': 'Редактировать данные клиентов',
     'member_since': 'Член от:',
+    'member_level': 'Уровень участника',
+    'discount_definition': 'Определения скидок',
+    'from': 'От',
+    'to': 'до',
+    'over': 'Над',
+    'total_points1': 'баллов',
+    'total_points2': 'Очки Определение',
     'total_points': 'Точки',
+    'level': 'Член',
     'last_change': 'Последняя активность',
     'active': 'Активный',
     'pending': 'В ожидании',
@@ -266,6 +275,7 @@ export default {
   stores: {
     'location': 'Mестонахождение',
     'status': 'Cтатус',
+    'department': 'Отдел',
   },
   articles: {
     name: 'Название',

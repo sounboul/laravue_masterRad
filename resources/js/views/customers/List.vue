@@ -46,18 +46,24 @@
           <!-- <el-tag>{{ row.title }}</el-tag> -->
         </template>
       </el-table-column>
-      <el-table-column :label="$t('customers.total_points')" width="100px" align="center">
+      <el-table-column :label="$t('customers.total_points')" class="col" align="center">
         <template slot-scope="{row}">
           <span>{{ row.total_points }}</span>
           <!-- <el-tag>{{ row.title }}</el-tag> -->
         </template>
       </el-table-column>
-      <el-table-column :label="$t('customers.member_since')" width="130px" align="center">
+      <el-table-column :label="$t('customers.level')" class="col" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.level }}</span>
+          <!-- <el-tag>{{ row.title }}</el-tag> -->
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('customers.member_since')" class="col" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.member_since | parseTime('{d}.{m}.{y}.') }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('customers.last_change')" width="160px" align="center">
+      <el-table-column :label="$t('customers.last_change')" class="col" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.updated_at | parseTime('{d}.{m}.{y}.') }}</span>
         </template>
@@ -77,7 +83,7 @@
           <svg-icon v-for="n in +scope.row.rating" :key="n" icon-class="star" class="meta-item__icon" />
         </template>
       </el-table-column> -->
-      <el-table-column :label="$t('table.readings')" align="center" width="95">
+      <el-table-column :label="$t('table.readings')" align="center" class="col">
         <template slot-scope="{row}">
           <span v-if="row.pageviews" class="link-type" @click="handleFetchPv(row.pageviews)">{{ row.pageviews }}</span>
           <span v-else>0</span>
@@ -90,7 +96,7 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.actions')" align="center" width="250" class-name="small-padding fixed-width">
+      <el-table-column v-if="checkRole(['admin','manager', 'editor'])" :label="$t('table.actions')" align="center" width="250" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
           <el-button v-if="checkRole(['admin','manager','editor']) && row.active!='deleted'" type="success" size="mini" @click="handleUpdate(row)">
             {{ $t('table.edit') }}

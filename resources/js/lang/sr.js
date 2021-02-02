@@ -78,6 +78,7 @@ export default {
     categoryList: 'Lista kategorija',
     createCategory: 'Kreiraj kategoriju',
     editCategory: 'Uredi kategoriju',
+    discounts: 'Sniženja',
   },
   navbar: {
     logOut: 'Odjava',
@@ -236,7 +237,15 @@ export default {
     'create_new_customer': 'Kreiranje novog kupca',
     'edit_customer': 'Uredi podatke o kupcu',
     'member_since': 'Član od:',
+    'member_level': 'Nivoi članstva',
+    'discount_definition': 'Definicije sniženja',
+    'from': 'Od',
+    'to': 'do',
+    'over': 'Preko',
+    'total_points1': 'bodova',
+    'total_points2': 'Definicija bodova',
     'total_points': 'Bodovi',
+    'level': 'Član',
     'last_change': 'Poslednja aktivnost',
     'active': 'Aktivan',
     'pending': 'Nepotvrđen',
@@ -268,6 +277,7 @@ export default {
   stores: {
     'location': 'Lokacija',
     'status': 'Status',
+    'department': 'Odeljenje',
   },
   articles: {
     name: 'Naziv',

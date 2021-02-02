@@ -87,6 +87,7 @@ class UserController extends BaseController
 
         return UserResource::collection($userQuery->paginate($limit));
     }
+    
 
     /**
      * Store a newly created resource in storage.

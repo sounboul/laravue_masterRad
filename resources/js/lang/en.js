@@ -78,6 +78,7 @@ export default {
     categoryList: 'Category List',
     createCategory: 'Create Category',
     editCategory: 'Edit Category',
+    discounts: 'Discounts',
   },
   navbar: {
     logOut: 'Log Out',
@@ -234,7 +235,15 @@ export default {
     'create_new_customer': 'Create new customer',
     'edit_customer': 'Edit customers data',
     'member_since': 'Member from:',
+    'member_level': 'Member Level',
+    'discount_definition': 'Discounts definitions',
+    'from': 'From',
+    'to': 'to',
+    'over': 'Over',
+    'total_points1': 'Point',
+    'total_points2': 'Points Definition',
     'total_points': 'Points',
+    'level': 'Member',
     'last_change': 'Last Activity',
     'active': 'Active',
     'pending': 'Pending',
@@ -266,6 +275,7 @@ export default {
   stores: {
     'location': 'Location',
     'status': 'Status',
+    'department': 'Department',
   },
   articles: {
     name: 'Name',
