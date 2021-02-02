@@ -276,6 +276,8 @@ export default {
     discount_gold: 'Цена для gold клиентов',
     discount_premium: 'Цена для premium клиентов',
     in_stock: 'В наличии',
+    pieces: 'шт',
     categories: 'Категории',
+    category: 'Категория',
   },
 };

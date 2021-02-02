@@ -525,4 +525,5 @@ export default {
   .filter-container {
     // margin-bottom: 5px;
   }
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@1,300;1,400&family=Raleway:wght@500&display=swap');
 </style>

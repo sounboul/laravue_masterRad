@@ -278,6 +278,8 @@ export default {
     discount_gold: 'Cena za gold kupce',
     discount_premium: 'Cena za premium kupce',
     in_stock: 'Na stanju',
+    pieces: 'komada',
     categories: 'Kategorije',
+    category: 'Kategorija',
   },
 };

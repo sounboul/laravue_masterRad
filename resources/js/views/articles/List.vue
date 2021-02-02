@@ -51,27 +51,45 @@
           <span style="font-size: 12pt; margin-top: 2px; cursor: pointer;" @click="previewArticle(row)">{{ row.title }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('articles.price') + $t(' (') + $t('articles.currency')+ $t(')')" width="120px" align="center">
+      <el-table-column :label="$t('articles.price') + ' (' + $t('articles.currency') + ')'" width="120px" align="center">
         <template slot-scope="scope">
           <span>{{ currencyFormatEU(scope.row.price/100, 2) }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('articles.discount') + $t(' (%) ') + $t(' Silv  Gold  Prem')" width="155px" align="center">
+      <el-table-column :label="$t('articles.discount') + ' (%) '" width="80px" align="center">
         <template slot-scope="scope">
-          <template>
-            <span>{{ currencyFormatEU(scope.row.discount_silver/10, 1) }} |</span>
-          </template>
-          <template>
-            <span>{{ currencyFormatEU(scope.row.discount_gold/10, 1) }} |</span>
-          </template>
-          <template>
-            <span>{{ currencyFormatEU(scope.row.discount_premium/10, 1) }}</span>
-          </template>
+          <span>{{ currencyFormatEU(scope.row.discount/10, 1) }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('articles.in_stock')" width="120px" align="center">
+      <el-table-column :label="$t('articles.discount_silver') + ' (' + $t('articles.currency') + ')'" width="155px" align="center">
+        <template slot-scope="scope">
+          <span>{{ discountPrice(scope.row.discount_silver, scope.row.price) }}</span>
+          <br>
+          <span style="color: #4f637d;">{{ '(' + currencyFormatEU(scope.row.discount_silver/10, 1) + ' %) ' }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('articles.discount_gold') + ' (' + $t('articles.currency') + ')'" width="155px" align="center">
+        <template slot-scope="scope">
+          <span>{{ discountPrice(scope.row.discount_gold, scope.row.price) }}</span>
+          <br>
+          <span style="color: #4f637d;">{{ '(' + currencyFormatEU(scope.row.discount_gold/10, 1) + ' %) ' }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('articles.discount_premium') + ' (' + $t('articles.currency') + ')'" width="155px" align="center">
+        <template slot-scope="scope">
+          <span>{{ discountPrice(scope.row.discount_premium, scope.row.price) }}</span>
+          <br>
+          <span style="color: #4f637d;">{{ '(' + currencyFormatEU(scope.row.discount_premium/10, 1) + ' %) ' }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('articles.in_stock') + ' (' + $t('articles.pieces') + ')'" width="120px" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.amount }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('articles.category')" width="120px" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.categories.name }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('stores.location')" width="180px" align="center">
@@ -79,7 +97,7 @@
           <span v-for="(n, index) in scope.row.store" :key="index">{{ scope.row.store[index].address }}<br></span>
         </template>
       </el-table-column>
-      <el-table-column v-if="showReviewer" :label="$t('table.reviewer')" width="110px" align="center">
+      <!-- <el-table-column v-if="showReviewer" :label="$t('table.reviewer')" width="110px" align="center">
         <template slot-scope="scope">
           <span style="color:red;">{{ scope.row.reviewer }}</span>
         </template>
@@ -101,7 +119,7 @@
             {{ row.status }}
           </el-tag>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column :label="$t('table.actions')" align="center" width="200" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
           <el-button type="success" size="mini" @click="handleUpdate(row)">
@@ -424,13 +442,13 @@ export default {
     handleDownload() {
       this.downloadLoading = true;
       import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['timestamp', 'title', 'type', 'importance', 'status'];
-        const filterVal = ['timestamp', 'title', 'type', 'importance', 'status'];
+        const tHeader = [this.$t('table.code'), this.$t('articles.name'), this.$t('articles.category'), this.$t('articles.price') + ' (' + this.$t('articles.currency') + ')', this.$t('articles.discount') + ' (%)', this.$t('articles.discount_silver') + ' (' + this.$t('articles.currency') + ')', this.$t('articles.discount_gold') + ' (' + this.$t('articles.currency') + ')', this.$t('articles.discount_premium') + ' (' + this.$t('articles.currency') + ')'];
+        const filterVal = ['code', 'title', 'category_id', 'price', 'discount', 'discount_silver', 'discount_gold', 'discount_premium'];
         const data = this.formatJson(filterVal, this.list);
         excel.export_json_to_excel({
           header: tHeader,
           data,
-          filename: 'table-list',
+          filename: this.$t('route.articlesList'),
         });
         this.downloadLoading = false;
       });
@@ -439,6 +457,15 @@ export default {
       return jsonData.map(v => filterVal.map(j => {
         if (j === 'timestamp') {
           return parseTime(v[j]);
+        }
+        if (j === 'price') {
+          return this.currencyFormatEU(v[j] / 100, 2);
+        }
+        if (j === 'discount') {
+          return this.currencyFormatEU(v[j] / 10, 1);
+        }
+        if (j === 'discount_silver' || j === 'discount_gold' || j === 'discount_premium') {
+          return this.currencyFormatEU(((1 - this.currencyFormatEU(v[j] / 10, 1) / 100) * v['price']) / 100, 2);
         } else {
           return v[j];
         }
@@ -455,6 +482,9 @@ export default {
       }
       return num;
     },
+    discountPrice(discount, price){
+      return this.currencyFormatEU(((1 - this.currencyFormatEU(discount / 10, 1) / 100) * price) / 100, 2);
+    },
   },
 };
 </script>
@@ -463,4 +493,5 @@ export default {
     width: 100%;
     border-radius: 15px;
   }
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@1,300;1,400&family=Raleway:wght@500&display=swap');
 </style>

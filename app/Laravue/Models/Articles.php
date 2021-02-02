@@ -9,7 +9,7 @@ class Articles extends Model
 {
     protected $guarded = [];
 
-    public function category()
+    public function categories()
     {
     	return $this->belongsTo(Categories::class);
     }

@@ -1,158 +1,122 @@
 <template>
   <div class="app-container">
-    <div class="categoryList">
-      <div class="filter-container">
-        <el-input v-model="listQuery.keyword" :placeholder="$t('table.keyword')" style="width: 250px;" class="filter-item" @keyup.native="handleFilter" />
-        <!-- <el-select v-model="listQuery.importance" :placeholder="$t('table.importance')" clearable style="width: 90px" class="filter-item">
-          <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />
-        </el-select> -->
-        <!-- <el-select v-model="listQuery.type" :placeholder="$t('table.type')" clearable class="filter-item" style="width: 130px">
-          <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name+'('+item.key+')'" :value="item.key" />
-        </el-select> -->
-        <el-select v-model="listQuery.sort" style="width: 120px;" class="filter-item" @change="handleFilter">
-          <el-option v-for="item in sortOptions" :key="item.key" :label="$t('table.'+item.label)" :value="item.key" />
-        </el-select>
-        <!-- <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
-          {{ $t('table.search') }}
-        </el-button> -->
-        <!-- <el-checkbox v-model="showReviewer" class="filter-item" style="margin-left:15px;" @change="tableKey=tableKey+1">
-          {{ $t('table.reviewer') }}
-        </el-checkbox> -->
-        <div style="float: right;">
-          <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
-            {{ $t('table.add') }}
-          </el-button>
-          <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
-            {{ $t('table.export') }}
-          </el-button>
-        </div>
+    <div class="filter-container">
+      <el-input v-model="listQuery.keyword" :placeholder="$t('table.keyword')" style="width: 250px;" class="filter-item" @keyup.native="handleFilter" />
+      <!-- <el-select v-model="listQuery.importance" :placeholder="$t('table.importance')" clearable style="width: 90px" class="filter-item">
+        <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />
+      </el-select> -->
+      <!-- <el-select v-model="listQuery.type" :placeholder="$t('table.type')" clearable class="filter-item" style="width: 130px">
+        <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name+'('+item.key+')'" :value="item.key" />
+      </el-select> -->
+      <el-select v-model="listQuery.sort" style="width: 150px;" class="filter-item" @change="handleFilter">
+        <el-option v-for="item in sortOptions" :key="item.key" :label="$t('table.'+item.label)" :value="item.key" />
+      </el-select>
+      <!-- <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
+        {{ $t('table.search') }}
+      </el-button> -->
+      <!-- <el-checkbox v-model="showReviewer" class="filter-item" style="margin-left:15px;" @change="tableKey=tableKey+1">
+        {{ $t('table.reviewer') }}
+      </el-checkbox> -->
+      <div style="float: right;">
+        <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
+          {{ $t('table.add') }}
+        </el-button>
+        <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
+          {{ $t('table.export') }}
+        </el-button>
       </div>
-
-      <el-table
-        :key="tableKey"
-        v-loading="listLoading"
-        :data="list"
-        fit
-        highlight-current-row
-        style="width: 100%;border-radius: .428rem; word-break: break-word;"
-        @sort-change="sortChange"
-      >
-        <!-- <el-table-column :label="$t('table.code')" prop="id" sortable="custom" align="center" width="90">
-          <template slot-scope="scope">
-            <span>{{ scope.row.code }}</span>
-          </template>
-        </el-table-column> -->
-        <!-- <el-table-column :label="$t('table.date')" width="120px" align="center">
-          <template slot-scope="scope">
-            <span>{{ scope.row.created_at | parseTime('{d}.{m}.{y}.') }}</span>
-          </template>
-        </el-table-column> -->
-        <el-table-column label="" prop="id" align="center" width="40">
-          <template>
-            <span>{{ }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column :label="$t('articles.name')" min-width="120px">
-          <template slot-scope="{row}">
-            <span style="font-size: 12pt; margin-top: 2px; cursor: pointer;" @click="previewArticle(row)">{{ row.name }}</span>
-          </template>
-        </el-table-column>
-        <!-- <el-table-column :label="$t('articles.price') + $t(' (') + $t('articles.currency')+ $t(')')" width="120px" align="center">
-          <template slot-scope="scope">
-            <span>{{ currencyFormatEU(scope.row.price/100, 2) }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column :label="$t('articles.discount') + $t(' (%) ') + $t(' Silv  Gold  Prem')" width="155px" align="center">
-          <template slot-scope="scope">
-            <template>
-              <span>{{ currencyFormatEU(scope.row.discount_silver/10, 1) }} |</span>
-            </template>
-            <template>
-              <span>{{ currencyFormatEU(scope.row.discount_gold/10, 1) }} |</span>
-            </template>
-            <template>
-              <span>{{ currencyFormatEU(scope.row.discount_premium/10, 1) }}</span>
-            </template>
-          </template>
-        </el-table-column>
-        <el-table-column :label="$t('articles.in_stock')" width="120px" align="center">
-          <template slot-scope="scope">
-            <span>{{ scope.row.amount }}</span>
-          </template>
-        </el-table-column> -->
-        <!-- <el-table-column :label="$t('stores.location')" width="180px" align="center">
-          <template slot-scope="scope">
-            <span v-for="(n, index) in scope.row.store" :key="index">{{ scope.row.store[index].address }}<br></span>
-          </template>
-        </el-table-column> -->
-        <!-- <el-table-column v-if="showReviewer" :label="$t('table.reviewer')" width="110px" align="center">
-          <template slot-scope="scope">
-            <span style="color:red;">{{ scope.row.reviewer }}</span>
-          </template>
-        </el-table-column> -->
-        <!-- <el-table-column :label="$t('table.importance')" width="80px">
-          <template slot-scope="scope">
-            <svg-icon v-for="n in +scope.row.rating" :key="n" icon-class="star" class="meta-item__icon" />
-          </template>
-        </el-table-column> -->
-        <el-table-column :label="$t('table.readings')" align="center" width="95">
-          <template slot-scope="{row}">
-            <span v-if="row.pageviews" class="link-type" @click="handleFetchPv(row.pageviews)">{{ row.pageviews }}</span>
-            <span v-else>0</span>
-          </template>
-        </el-table-column>
-        <!-- <el-table-column :label="$t('table.status')" class-name="status-col" width="100">
-          <template slot-scope="{row}">
-            <el-tag :type="row.status | statusFilter">
-              {{ row.status }}
-            </el-tag>
-          </template>
-        </el-table-column> -->
-        <el-table-column :label="$t('table.actions')" align="center" width="200" class-name="small-padding fixed-width">
-          <template slot-scope="{row}">
-            <el-button type="success" size="mini" @click="handleUpdate(row)">
-              {{ $t('table.edit') }}
-            </el-button>
-            <el-button v-if="checkRole(['admin','manager']) && row.id!='deleted'" size="mini" type="danger" @click="handleDelete(row.id)">
-              {{ $t('table.delete') }}
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
     </div>
 
-    <div class="categoryList2">
-      <el-table
-        :key="tableKey"
-        v-loading="listLoading"
-        :data="list"
-        fit
-        highlight-current-row
-        style="width: 100%;border-radius: .428rem; word-break: break-word;"
-        @sort-change="sortChange"
-      >
-        <!-- <el-table-column :label="$t('table.code')" prop="id" sortable="custom" align="center" width="90">
-          <template slot-scope="scope">
-            <span>{{ scope.row.code }}</span>
-          </template>
-        </el-table-column> -->
-        <!-- <el-table-column :label="$t('table.date')" width="120px" align="center">
-          <template slot-scope="scope">
-            <span>{{ scope.row.created_at | parseTime('{d}.{m}.{y}.') }}</span>
-          </template>
-        </el-table-column> -->
-        <el-table-column label="" prop="id" align="center" width="40">
+    <el-table
+      :key="tableKey"
+      v-loading="listLoading"
+      :data="list"
+      fit
+      highlight-current-row
+      style="width: 100%;border-radius: .428rem; word-break: break-word;"
+      @sort-change="sortChange"
+    >
+      <!-- <el-table-column :label="$t('table.code')" prop="id" sortable="custom" align="center" width="90">
+        <template slot-scope="scope">
+          <span>{{ scope.row.code }}</span>
+        </template>
+      </el-table-column> -->
+      <!-- <el-table-column :label="$t('table.date')" width="120px" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.created_at | parseTime('{d}.{m}.{y}.') }}</span>
+        </template>
+      </el-table-column> -->
+      <el-table-column label="" prop="id" align="center" width="40">
+        <template>
+          <span>{{ }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('articles.name')" min-width="120px">
+        <template slot-scope="{row}">
+          <span style="font-size: 12pt; margin-top: 2px; cursor: pointer;" @click="previewArticle(row)">{{ row.name }}</span>
+        </template>
+      </el-table-column>
+      <!-- <el-table-column :label="$t('articles.price') + $t(' (') + $t('articles.currency')+ $t(')')" width="120px" align="center">
+        <template slot-scope="scope">
+          <span>{{ currencyFormatEU(scope.row.price/100, 2) }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('articles.discount') + $t(' (%) ') + $t(' Silv  Gold  Prem')" width="155px" align="center">
+        <template slot-scope="scope">
           <template>
-            <span>{{ }}</span>
+            <span>{{ currencyFormatEU(scope.row.discount_silver/10, 1) }} |</span>
           </template>
-        </el-table-column>
-        <el-table-column :label="$t('articles.name')" min-width="120px">
-          <template slot-scope="{row}">
-            <span style="font-size: 12pt; margin-top: 2px; cursor: pointer;" @click="previewArticle(row)">{{ row.name }}</span>
+          <template>
+            <span>{{ currencyFormatEU(scope.row.discount_gold/10, 1) }} |</span>
           </template>
-        </el-table-column>
-      </el-table>
-    </div>
+          <template>
+            <span>{{ currencyFormatEU(scope.row.discount_premium/10, 1) }}</span>
+          </template>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('articles.in_stock')" width="120px" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.amount }}</span>
+        </template>
+      </el-table-column> -->
+      <!-- <el-table-column :label="$t('stores.location')" width="180px" align="center">
+        <template slot-scope="scope">
+          <span v-for="(n, index) in scope.row.store" :key="index">{{ scope.row.store[index].address }}<br></span>
+        </template>
+      </el-table-column> -->
+      <!-- <el-table-column v-if="showReviewer" :label="$t('table.reviewer')" width="110px" align="center">
+        <template slot-scope="scope">
+          <span style="color:red;">{{ scope.row.reviewer }}</span>
+        </template>
+      </el-table-column> -->
+      <!-- <el-table-column :label="$t('table.importance')" width="80px">
+        <template slot-scope="scope">
+          <svg-icon v-for="n in +scope.row.rating" :key="n" icon-class="star" class="meta-item__icon" />
+        </template>
+      </el-table-column> -->
+      <el-table-column :label="$t('table.description')" align="left">
+        <template slot-scope="{row}">
+          <span>{{ row.description }}</span>
+        </template>
+      </el-table-column>
+      <!-- <el-table-column :label="$t('table.status')" class-name="status-col" width="100">
+        <template slot-scope="{row}">
+          <el-tag :type="row.status | statusFilter">
+            {{ row.status }}
+          </el-tag>
+        </template>
+      </el-table-column> -->
+      <el-table-column :label="$t('table.actions')" align="center" width="200" class-name="small-padding fixed-width">
+        <template slot-scope="{row}">
+          <el-button type="success" size="mini" @click="handleUpdate(row)">
+            {{ $t('table.edit') }}
+          </el-button>
+          <el-button v-if="checkRole(['admin','manager']) && row.id!='deleted'" size="mini" type="danger" @click="handleDelete(row.id)">
+            {{ $t('table.delete') }}
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
@@ -464,8 +428,8 @@ export default {
     handleDownload() {
       this.downloadLoading = true;
       import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['timestamp', 'title', 'type', 'importance', 'status'];
-        const filterVal = ['timestamp', 'title', 'type', 'importance', 'status'];
+        const tHeader = ['id', this.$t('articles.categories'), this.$t('table.description')];
+        const filterVal = ['id', 'name', 'description'];
         const data = this.formatJson(filterVal, this.list);
         excel.export_json_to_excel({
           header: tHeader,
@@ -504,12 +468,12 @@ export default {
     border-radius: 15px;
   }
   .categoryList{
-    width: 40%;
+    width: 40% !important;
     float: left;
   }
   .categoryList2{
-    width: 40%;
-    height: 350px;
+    width: 40% !important;
     float: right;
   }
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@1,300;1,400&family=Raleway:wght@500&display=swap');
 </style>

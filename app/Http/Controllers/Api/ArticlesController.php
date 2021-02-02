@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Laravue\Models\Articles;
+use App\Laravue\Models\Categories;
 use App\Laravue\Models\Stores;
 use App\Laravue\JsonResponse;
 use App\Laravue\Models\User;
@@ -44,7 +45,7 @@ class ArticlesController extends BaseController
             $order = 'desc';
         }
 
-        $articles = Articles::orderBy('id', $order)->get();
+        $articles = Articles::orderBy('title', $order)->get();
     	
         $keyword = $request->keyword;
         $sort = $request->sort;
@@ -53,13 +54,20 @@ class ArticlesController extends BaseController
         if (!empty($keyword)) {
             $articles = Articles::where('code', 'LIKE', '%' .$keyword . '%')
                                 ->orWhere('title', 'LIKE', '%' .$keyword . '%')
-                                ->orderBy('id', $order)
+                                ->orderBy('title', $order)
                                 ->get();
         }
 
         foreach ($articles as $key => $article) {
             $store[$key] = $article->store;
         }
+
+        foreach ($articles as $key => $article) {
+            $category[$key] = $article->categories;
+        }
+
+        //$category = $articles->category_id;
+        // dd($category);
 
     	return response()->json(new JsonResponse(['items' => $articles, 'total' => count($articles), 'sort' => $request->sort]));
     }

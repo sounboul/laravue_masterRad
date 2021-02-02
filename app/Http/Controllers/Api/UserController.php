@@ -48,22 +48,41 @@ class UserController extends BaseController
         $active = Arr::get($searchParams, 'active', '');
         $keyword = Arr::get($searchParams, 'keyword', '');
 
+
+
+        if (empty($role) && empty($active) && empty($store)) {
+            $userQuery->where('name', 'LIKE', '%' . $keyword . '%')
+                        ->orWhere('email', 'LIKE', '%' . $keyword . '%');
+        }
+
         if (!empty($role)) {
             $userQuery->whereHas('roles', function($q) use ($role) { $q->where('name', $role); });
         }
 
         if (!empty($active)) {
-            $userQuery->where('active', $active);
+            if (!empty($keyword)) {
+                $userQuery->where('active', $active)
+                            ->where('name', 'LIKE', '%' . $keyword . '%')
+                            ->Where('email', 'LIKE', '%' . $keyword . '%');
+            }
+            else
+            {
+                $userQuery->where('active', $active);
+            }
         }
 
         if (!empty($store)) {
-            $location = Stores::where('name', $store)->first();
-            $userQuery->where('stores_id', $location->id);
-        }
 
-        if (!empty($keyword)) {
-            $userQuery->where('name', 'LIKE', '%' . $keyword . '%')
-                        ->orWhere('email', 'LIKE', '%' . $keyword . '%');
+            $location = Stores::where('name', $store)->first();
+            if (!empty($keyword)) {
+                $userQuery->where('stores_id', $location->id)
+                        ->where('name', 'LIKE', '%' . $keyword . '%')
+                        ->Where('email', 'LIKE', '%' . $keyword . '%');
+            }
+            else
+            {
+                $userQuery->where('stores_id', $location->id);
+            }
         }
 
         return UserResource::collection($userQuery->paginate($limit));

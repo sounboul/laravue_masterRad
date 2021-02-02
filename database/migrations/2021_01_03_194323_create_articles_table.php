@@ -17,10 +17,11 @@ class CreateArticlesTable extends Migration
             $table->bigIncrements('id');
             $table->integer('code')->unique();
             $table->string('title');
-            $table->unsignedBigInteger('category_id');
-            $table->foreign('category_id')->references('id')->on('categories')->onUpdate('cascade')->onDelete('cascade');
+            $table->unsignedBigInteger('categories_id');
+            $table->foreign('categories_id')->references('id')->on('categories')->onUpdate('cascade')->onDelete('cascade');
             $table->integer('price');
             $table->integer('amount');
+            $table->integer('discount')->default(0);
             $table->integer('discount_silver')->default(0);
             $table->integer('discount_gold')->default(0);
             $table->integer('discount_premium')->default(0);

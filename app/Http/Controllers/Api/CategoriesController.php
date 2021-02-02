@@ -35,7 +35,7 @@ class CategoriesController extends BaseController
             $order = 'desc';
         }
 
-        $categories = Categories::orderBy('id', $order)->get();
+        $categories = Categories::orderBy('name', $order)->get();
     	
         $keyword = $request->keyword;
         $sort = $request->sort;
@@ -43,7 +43,7 @@ class CategoriesController extends BaseController
 
         if (!empty($keyword)) {
             $categories = Categories::where('name', 'LIKE', '%' .$keyword . '%')
-                                ->orderBy('id', $order)
+                                ->orderBy('name', $order)
                                 ->get();
         }
 
