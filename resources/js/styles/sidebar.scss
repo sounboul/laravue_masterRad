@@ -55,6 +55,13 @@
       overflow: hidden;
     }
 
+    li {    
+      &:hover {        
+        transition-duration: .3s;
+        transform: translate3d(5px, 0, 0);
+      }
+    }
+
     .svg-icon {
       margin-right: 16px;
     }
@@ -80,7 +87,7 @@
     & .nest-menu .el-submenu>.el-submenu__title,
     & .el-submenu .el-menu-item {
       min-width: $sideBarWidth !important;
-      background-color: $subMenuBg !important;
+      // background-color: $subMenuBg !important;
 
       &:hover {
         background-color: $subMenuHover !important;

@@ -5,9 +5,9 @@ namespace App\Laravue\Models;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Model;
 
-class member_level extends Model
+class memberLevel extends Model
 {
     public $guarded = [];
-    protected $table = "member_level";
+    protected $table = "memberLevel";
     public $timestamps = false;
 }

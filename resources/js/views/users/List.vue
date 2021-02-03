@@ -17,19 +17,23 @@
 
     <div class="filters">
       <div class="filter-container">
-        <div style="margin-left: 1.3%;">
-          <div style="font-size: 15pt; color: #6a8295; margin-bottom: 25px;">{{ $t('table.filters') }}</div>
+        <div style="margin-left: 2.5%;">
+          <div style="font-size: 15pt; color: #6a8295; margin: 5px 0 25px 0;">{{ $t('table.filters') }}</div>
 
-          <el-select v-model="query.role" :placeholder="$t('user.role')" clearable style="width: 30%; margin-right: 4%;" class="filter-item" @change="handleFilter">
+          <el-select v-model="query.role" :placeholder="$t('user.role')" clearable style="margin-right: 4%; width: 21%" class="filter-item" @change="handleFilter">
             <el-option v-for="item in roles" :key="item" :label="item | uppercaseFirst" :value="item" />
           </el-select>
 
-          <el-select v-model="query.store" :placeholder="$t('stores.location')" clearable style="width: 30%; margin-right: 4%;" class="filter-item" @change="handleFilter">
+          <el-select v-model="query.store" :placeholder="$t('stores.location')" clearable style="margin-right: 4%; width: 21%" class="filter-item" @change="handleFilter">
             <el-option v-for="item in stores" :key="item.id" :label="item.name | uppercaseFirst" :value="item.name" />
           </el-select>
 
-          <el-select v-model="query.active" :placeholder="$t('table.status')" clearable style="width: 30%" class="filter-item" @change="handleFilter">
+          <el-select v-model="query.active" :placeholder="$t('table.status')" clearable style="margin-right: 4%; width: 21%" class="filter-item" @change="handleFilter">
             <el-option v-for="item in actives" :key="item" :label="$t('customers.'+item)" :value="item" />
+          </el-select>
+
+          <el-select v-model="query.department" :placeholder="$t('stores.department')" clearable class="filter-item" style=" width: 21%" @change="handleFilter">
+            <el-option v-for="item in departments" :key="item.id" :label="item.name" :value="item.name" />
           </el-select>
         </div>
       </div>
@@ -171,6 +175,7 @@ import Pagination from '@/components/Pagination'; // Secondary package based on 
 import UserResource from '@/api/user';
 import Resource from '@/api/resource';
 import { fetchStores } from '@/api/stores';
+import { fetchDepartments } from '@/api/department';
 import waves from '@/directive/waves'; // Waves directive
 import permission from '@/directive/permission'; // Permission directive
 import checkPermission from '@/utils/permission'; // Permission checking
@@ -213,9 +218,11 @@ export default {
         role: '',
         store: '',
         active: '',
+        department: '',
       },
       roles: ['admin', 'manager', 'editor', 'user', 'visitor'],
       stores: this.getStores(),
+      departments: this.getDepartments(),
       actives: ['active', 'deleted', 'pending'],
       nonAdminRoles: ['editor', 'user', 'visitor'],
       newUser: {},
@@ -345,6 +352,10 @@ export default {
       this.stores = data.stores;
       // this.total = data.total;
       // this.listLoading = false;
+    },
+    async getDepartments() {
+      const { data } = await fetchDepartments();
+      this.departments = data.departments;
     },
     handleFilter() {
       this.query.page = 1;

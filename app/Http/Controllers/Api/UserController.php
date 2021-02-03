@@ -16,6 +16,7 @@ use App\Laravue\Models\Permission;
 use App\Laravue\Models\Role;
 use App\Laravue\Models\User;
 use App\Laravue\Models\Stores;
+use App\Laravue\Models\Department;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Arr;
@@ -46,11 +47,11 @@ class UserController extends BaseController
         $role = Arr::get($searchParams, 'role', '');
         $store = Arr::get($searchParams, 'store', '');
         $active = Arr::get($searchParams, 'active', '');
+        $department = Arr::get($searchParams, 'department', '');
         $keyword = Arr::get($searchParams, 'keyword', '');
 
 
-
-        if (empty($role) && empty($active) && empty($store)) {
+        if (empty($role) && empty($active) && empty($store) && empty($department)) {
             $userQuery->where('name', 'LIKE', '%' . $keyword . '%')
                         ->orWhere('email', 'LIKE', '%' . $keyword . '%');
         }
@@ -82,7 +83,24 @@ class UserController extends BaseController
             else
             {
                 $userQuery->where('stores_id', $location->id);
+                
             }
+        }
+
+        if(!empty($department)) {
+
+            $department = Department::where('name', $department)->first();
+            if (!empty($keyword)) {
+                    $userQuery->where('department_id', $department->id)
+                            ->where('name', 'LIKE', '%' . $keyword . '%')
+                            ->Where('email', 'LIKE', '%' . $keyword . '%');
+                }
+            else
+            {
+                $userQuery->where('department_id', $department->id);
+                
+            }
+
         }
 
         return UserResource::collection($userQuery->paginate($limit));

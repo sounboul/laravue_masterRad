@@ -144,7 +144,7 @@ export const constantRoutes = [
         path: 'index',
         component: () => import('@/views/discounts/index'),
         name: 'Discounts',
-        meta: { title: 'discounts', icon: 'dollar', noCache: true },
+        meta: { title: 'discounts', icon: 'star', noCache: true },
       },
     ],
   },

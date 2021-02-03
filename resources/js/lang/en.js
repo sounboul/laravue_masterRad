@@ -240,7 +240,7 @@ export default {
     'from': 'From',
     'to': 'to',
     'over': 'Over',
-    'total_points1': 'Point',
+    'total_points1': 'Points',
     'total_points2': 'Points Definition',
     'total_points': 'Points',
     'level': 'Member',

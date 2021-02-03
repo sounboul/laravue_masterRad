@@ -58,8 +58,11 @@ Route::namespace('Api')->group(function() {
         // Categories
         Route::get('/categories', 'CategoriesController@fetchCategories');
 
+        // Departments
+        Route::get('/departments', 'DepartmentsController@fetchDepartments');
+
         // Discounts
-        Route::get('/members', 'Member_levelController@index');
+        Route::get('/members', 'MemberLevelController@index');
 
 
 

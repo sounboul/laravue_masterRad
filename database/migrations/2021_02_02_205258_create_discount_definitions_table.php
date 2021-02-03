@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMemberLevelTable extends Migration
+class CreateDiscountDefinitionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class CreateMemberLevelTable extends Migration
      */
     public function up()
     {
-        Schema::create('memberLevel', function (Blueprint $table) {
+        Schema::create('discount_definitions', function (Blueprint $table) {
             $table->id();
-            $table->integer('regular')->default(0);
-            $table->integer('silver')->default(0);
-            $table->integer('gold')->default(0);
-            $table->integer('premium')->default(0);
+            $table->string('name')->nullable();
+            $table->integer('discount')->default(0);
+            $table->timestamps();
         });
     }
 
@@ -29,6 +28,6 @@ class CreateMemberLevelTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('memberLevel');
+        Schema::dropIfExists('discount_definitions');
     }
 }

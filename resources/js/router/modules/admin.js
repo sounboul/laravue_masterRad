@@ -34,7 +34,7 @@ const adminRoutes = {
       name: 'RoleList',
       meta: { title: 'rolePermission', icon: 'role', permissions: ['manage permission'] },
     },
-    {
+    /* {
       path: 'articles/create',
       component: () => import('@/views/articles/Create'),
       name: 'CreateArticle',
@@ -53,7 +53,7 @@ const adminRoutes = {
       component: () => import('@/views/articles/List'),
       name: 'ArticleList',
       meta: { title: 'articleList', icon: 'shopping', permissions: ['manage article'] },
-    },
+    }, */
   ],
 };
 

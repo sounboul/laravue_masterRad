@@ -11,19 +11,27 @@
         <el-button type="success" size="mini" @click="handleUpdate(row)">
           {{ $t('table.edit') }}
         </el-button>
-        <el-button type="warning" size="mini" @click="handleUpdate(row)">
-          {{ $t('table.add') }}
-        </el-button>
       </template>
     </el-table-column>
 
-    <el-table-column class="col" align="center" label="Regular">
+    <el-table-column class="col" align="center" label="Bodovi">
       <template slot-scope="scope">
-        <span>{{ $t('customers.from') }} 0 {{ $t('customers.to') }} {{ scope.row.regular }} {{ $t('customers.total_points1') }}</span>
+        <span>{{ $t('customers.from') }} {{ scope.row.from_point }}  {{ $t('customers.to') }} {{ scope.row.to_point }} {{ $t('customers.total_points1') }}
+        </span>
+        <span>{{ $t('customers.from') }} {{ scope.row.name }}  {{ $t('customers.to') }}
+        </span>
       </template>
     </el-table-column>
 
-    <el-table-column class="col" align="center" label="Silver">
+    <el-table-column class="col" align="center" label="Nivo">
+      <template slot-scope="scope">
+        <span>
+          {{ scope.row.level | uppercaseFirst }}
+        </span>
+      </template>
+    </el-table-column>
+
+    <!-- <el-table-column class="col" align="center" label="Silver">
       <template slot-scope="scope">
         <span>{{ $t('customers.from') }} {{ scope.row.regular }} {{ $t('customers.to') }} {{ scope.row.silver }} {{ $t('customers.total_points1') }}</span>
       </template>
@@ -39,7 +47,7 @@
       <template slot-scope="scope">
         <span>{{ $t('customers.over') }} {{ scope.row.gold }} {{ $t('customers.total_points1') }}</span>
       </template>
-    </el-table-column>
+    </el-table-column> -->
 
     <!-- <el-table-column width="120px" label="Importance">
       <template slot-scope="scope">
@@ -80,7 +88,7 @@ export default {
   props: {
     type: {
       type: String,
-      default: 'DI',
+      default: 'ME',
     },
   },
   data() {
@@ -101,7 +109,7 @@ export default {
   methods: {
     async getList() {
       this.loading = true;
-      this.$emit('create'); // for test
+      this.$emit('type', this.type); // for tests
       const { data } = await fetchList(this.listQuery);
       this.list = data.items;
       this.loading = false;
