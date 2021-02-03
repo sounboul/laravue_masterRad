@@ -90,14 +90,14 @@
       <el-table-column align="center" :label="$t('table.actions')" width="350">
         <template slot-scope="scope">
           <router-link v-if="!scope.row.roles.includes('admin')" :to="'/administrator/users/edit/'+scope.row.id">
-            <el-button v-permission="['manage user']" type="success" size="mini" icon="el-icon-edit">
+            <el-button v-permission="['manage user']" type="success" size="mini">
               {{ $t('table.edit') }}
             </el-button>
           </router-link>
-          <el-button v-if="!scope.row.roles.includes('admin')" v-permission="['manage permission']" style="background-color: #f58938; color: #000;" size="mini" icon="el-icon-tickets" @click="handleEditPermissions(scope.row.id);">
+          <el-button v-if="!scope.row.roles.includes('admin')" v-permission="['manage permission']" style="background-color: #f58938; color: #000;" size="mini" @click="handleEditPermissions(scope.row.id);">
             {{ $t('route.permission') }}
           </el-button>
-          <el-button v-if="scope.row.roles.includes('visitor')" v-permission="['manage user']" type="danger" size="mini" icon="el-icon-delete" @click="handleDelete(scope.row.id, scope.row.name);">
+          <el-button v-if="scope.row.roles.includes('visitor')" v-permission="['manage user']" type="danger" size="mini" @click="handleDelete(scope.row.id, scope.row.name);">
             {{ $t('table.delete') }}
           </el-button>
         </template>

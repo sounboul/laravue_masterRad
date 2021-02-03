@@ -17,7 +17,8 @@ class CreateDiscountDefinitionsTable extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->integer('discount')->default(0);
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
         });
     }
 

@@ -6,9 +6,9 @@
       <template v-if="device!=='mobile'">
         <search id="header-search" class="right-menu-item" />
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
-        <el-tooltip :content="$t('navbar.size')" effect="dark" placement="bottom">
+        <!-- <el-tooltip :content="$t('navbar.size')" effect="dark" placement="bottom">
           <size-select id="size-select" class="right-menu-item hover-effect" />
-        </el-tooltip>
+        </el-tooltip> -->
         <lang-select class="right-menu-item hover-effect" />
       </template>
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
@@ -46,7 +46,7 @@ import { mapGetters } from 'vuex';
 import Breadcrumb from '@/components/Breadcrumb';
 import Hamburger from '@/components/Hamburger';
 import Screenfull from '@/components/Screenfull';
-import SizeSelect from '@/components/SizeSelect';
+// import SizeSelect from '@/components/SizeSelect';
 import LangSelect from '@/components/LangSelect';
 import Search from '@/components/HeaderSearch';
 
@@ -55,7 +55,7 @@ export default {
     Breadcrumb,
     Hamburger,
     Screenfull,
-    SizeSelect,
+    // SizeSelect,
     LangSelect,
     Search,
   },

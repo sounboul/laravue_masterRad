@@ -18,8 +18,6 @@
       <template slot-scope="scope">
         <span>{{ $t('customers.from') }} {{ scope.row.from_point }}  {{ $t('customers.to') }} {{ scope.row.to_point }} {{ $t('customers.total_points1') }}
         </span>
-        <span>{{ $t('customers.from') }} {{ scope.row.name }}  {{ $t('customers.to') }}
-        </span>
       </template>
     </el-table-column>
 
