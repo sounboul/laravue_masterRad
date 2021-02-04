@@ -23,6 +23,15 @@ $--table-border:1px solid #dfe6ec;
 
 $--select-border-color: #384361;
 
+$--dialog-background-color: $--table-tr;
+$--border-radius-small:.45rem;
+$--dialog-box-shadow: #fff;
+$--color-dilog-text-regular: red;
+$--color-text-title: $--border-color-light;
+$--dialog-input-color: #9ea9c7;
+$--dialog-border-color: blue;
+$--dialog-text-color: #000;
+
 /* icon font path, required */
 $--font-path: '~element-ui/lib/theme-chalk/fonts';
 

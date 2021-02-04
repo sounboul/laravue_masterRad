@@ -1,33 +1,43 @@
 <template>
   <div class="tab-container">
-    <el-tabs v-model="activeName" style="margin-top:15px;" type="border-card">
-      <el-tab-pane v-for="item in tabMapOptions" :key="item.key" :label="$t(item.label)" :name="item.key">
-        <keep-alive>
-          <tab-pane v-if="activeName==item.key" :type="item.key" />
-        </keep-alive>
-      </el-tab-pane>
-    </el-tabs>
+    <el-card>
+      <div>
+        <h3 style="text-align: center; width: 100%">{{ $t('discounts.dialog_title') }}</h3>
+        <el-button type="warning" size="small" @click="handleCreate()">
+          {{ $t('table.add') }}
+        </el-button>
+        <el-tabs v-model="activeTab">
+          <el-tab-pane v-for="item in tabMapOptions" :key="item.level" :label="item.level | uppercaseFirst" :name="item.level">
+            <div>
+              <keep-alive>
+                <tab-pane v-if="activeTab==item.level" :type="item.level" class="mt-4" />
+              </keep-alive>
+            </div>
+          </el-tab-pane>
+        </el-tabs>
+      </div>
+    </el-card>
   </div>
 </template>
 
 <script>
 import TabPane from './components/TabPane.vue';
+import { fetchLevels } from '@/api/discounts';
 
 export default {
   name: 'Tab',
   components: { TabPane },
   data() {
     return {
-      tabMapOptions: [
-        { label: 'customers.member_level', key: 'ME' },
-        { label: 'customers.discount_definition', key: 'DI' },
-        { label: 'customers.total_points2', key: 'PO' },
-      ],
-      activeName: 'ME',
+      tabMapOptions: this.getLevels(),
+      activeTab: 'regular',
     };
   },
   methods: {
-
+    async getLevels() {
+      const { data } = await fetchLevels();
+      this.tabMapOptions = data.levels;
+    },
   },
 };
 </script>
@@ -37,4 +47,12 @@ export default {
     margin: 75px 50px;
     padding: 15px;
   }
+  /*.el-card {
+    min-width: 380px;
+    margin-right: 20px;
+    transition: all .5s;
+  }
+  .el-card:hover{
+    margin-top: -5px;
+  }*/
 </style>

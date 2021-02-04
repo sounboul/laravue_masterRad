@@ -290,4 +290,11 @@ export default {
     categories: 'Kategorien',
     category: 'Kategorie',
   },
+  discounts: {
+    dialog_title: 'DEFINITIONEN von PUNKTEN und RABATTEN',
+    customers_level: 'Kundenebene',
+    discount_percentage: 'Rabattprozentsatz',
+    edit_discount: 'Aktualisieren Sie Rabatte und Punkte',
+    create_discount: 'Erstellen Sie Rabatte und Punkte',
+  },
 };

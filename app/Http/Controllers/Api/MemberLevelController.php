@@ -24,9 +24,24 @@ class MemberLevelController extends Controller
             $order = 'desc';
         }
 
-    	$discount = MemberLevel::orderBy('from_point', $order)->get();
+    	$discount = MemberLevel::orderBy('to_point', $order)
+    								->where('level', $type)
+    								->get();
         
 
     	return response()->json(new JsonResponse(['items' => $discount, 'type' => $type, 'limit' => $limit]));
+    }
+
+    public function fetchLevels()
+    {
+    	$levels = MemberLevel::orderBy('to_point', 'asc')->get();
+    	return response()->json(new JsonResponse(['levels' => $levels]));
+    }
+
+    public function updateLevel()
+    {
+    	$level_id = MemberLevel::where('level', $type)->first();
+    	$level = MemberLevel::find($level_id);
+    	
     }
 }

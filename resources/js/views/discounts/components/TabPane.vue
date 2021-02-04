@@ -1,78 +1,108 @@
 <template>
-  <el-table :data="list" border fit highlight-current-row style="width: 100%">
-    <el-table-column
-      v-loading="loading"
-      align="center"
-      label=""
-      width="170"
-      element-loading-text="Please be patient！"
-    >
-      <template slot-scope="{row}">
-        <el-button type="success" size="mini" @click="handleUpdate(row)">
-          {{ $t('table.edit') }}
-        </el-button>
-      </template>
-    </el-table-column>
-
-    <el-table-column class="col" align="center" label="Bodovi">
-      <template slot-scope="scope">
-        <span>{{ $t('customers.from') }} {{ scope.row.from_point }}  {{ $t('customers.to') }} {{ scope.row.to_point }} {{ $t('customers.total_points1') }}
-        </span>
-      </template>
-    </el-table-column>
-
-    <el-table-column class="col" align="center" label="Nivo">
-      <template slot-scope="scope">
+  <div>
+    <el-table :data="list" border fit highlight-current-row style="width: 100%">
+      <el-table-column
+        v-loading="loading"
+        align="center"
+        label=""
+        width="80"
+        element-loading-text="Please be patient！"
+      >
         <span>
-          {{ scope.row.level | uppercaseFirst }}
+          {{ }}
         </span>
-      </template>
-    </el-table-column>
+      </el-table-column>
 
-    <!-- <el-table-column class="col" align="center" label="Silver">
-      <template slot-scope="scope">
-        <span>{{ $t('customers.from') }} {{ scope.row.regular }} {{ $t('customers.to') }} {{ scope.row.silver }} {{ $t('customers.total_points1') }}</span>
-      </template>
-    </el-table-column>
+      <el-table-column class="col" align="center" :label="$t('customers.total_points')">
+        <template slot-scope="scope">
+          <span>{{ $t('customers.from') }} {{ scope.row.from_point }} {{ $t('customers.to') }} {{ scope.row.to_point }} {{ $t('customers.total_points1') }}
+          </span>
+        </template>
+      </el-table-column>
 
-    <el-table-column class="col" align="center" label="Gold">
-      <template slot-scope="scope">
-        <span>{{ $t('customers.from') }} {{ scope.row.silver }} {{ $t('customers.to') }} {{ scope.row.gold }} {{ $t('customers.total_points1') }}</span>
-      </template>
-    </el-table-column>
+      <el-table-column class="col" align="center" :label="$t('discounts.customers_level')">
+        <template slot-scope="scope">
+          <span>
+            {{ scope.row.level | uppercaseFirst }}
+          </span>
+        </template>
+      </el-table-column>
 
-    <el-table-column class="col" align="center" label="Premium">
-      <template slot-scope="scope">
-        <span>{{ $t('customers.over') }} {{ scope.row.gold }} {{ $t('customers.total_points1') }}</span>
-      </template>
-    </el-table-column> -->
+      <el-table-column class="col" align="center" :label="$t('discounts.discount_percentage')">
+        <template slot-scope="scope">
+          <span>
+            {{ scope.row.discount_percent / 10 }} %
+          </span>
+        </template>
+      </el-table-column>
 
-    <!-- <el-table-column width="120px" label="Importance">
-      <template slot-scope="scope">
-        <svg-icon v-for="n in +scope.row.rating" :key="n" icon-class="star" />
-      </template>
-    </el-table-column> -->
+      <el-table-column align="center" :label="$t('table.actions')">
+        <template slot-scope="{row}">
+          <el-button v-if="checkRole(['admin','manager', 'editor'])" type="success" size="mini" @click="handleUpdate(row)">
+            {{ $t('table.edit') }}
+          </el-button>
+          <el-button v-if="checkRole(['admin','manager'])" type="danger" size="mini" @click="handleDelete(scope.row.id);">
+            {{ $t('table.delete') }}
+          </el-button>
+        </template>
+      </el-table-column>
 
-    <!-- <el-table-column align="center" label="Readings" width="95">
-      <template slot-scope="scope">
-        <span>{{ scope.row.pageviews }}</span>
-      </template>
-    </el-table-column> -->
+    </el-table>
 
-    <!-- <el-table-column class-name="status-col" label="Status" width="110">
-      <template slot-scope="scope">
-        <el-tag :type="scope.row.status | statusFilter">
-          {{ scope.row.status }}
-        </el-tag>
-      </template>
-    </el-table-column> -->
-  </el-table>
+    <el-dialog :title="textMap[dialogStatus] = 'edit' ? $t('discounts.edit_discount') : $t('discounts.create_discount')" :visible.sync="dialogFormVisible">
+      <h3 style="width:100%; margin: -35px 0 20px 0;text-align: center;">{{ $t('discounts.customers_level') + ': ' }} {{ type | uppercaseFirst }}</h3>
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-width="100px">
+        <span class="x">
+          <div class="total_points">
+            <span>{{ $t('customers.total_points') }}</span>
+            <el-form-item>
+              <span>{{ $t('customers.from') }}</span>
+              <el-input v-model="temp.from_point" />
+            </el-form-item>
+            <el-form-item>
+              <span>{{ $t('customers.to') }}</span>
+              <el-input v-model="temp.to_point" />
+            </el-form-item>
+          </div>
+        </span>
+        <!-- <el-form-item :label="$t('table.status')">
+          <el-select v-model="temp.status" class="filter-item" placeholder="Please select">
+            <el-option v-for="item in statusOptions" :key="item" :label="item" :value="item" />
+          </el-select>
+        </el-form-item>
+        <el-form-item :label="$t('table.importance')">
+          <el-rate v-model="temp.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="3" style="margin-top:8px;" />
+        </el-form-item> -->
+        <span class="x">
+          <el-form-item :label="$t('discounts.discount_percentage')" class="discount_percentage" style="word-break: break-word;">
+            <el-input v-model="temp.discount_percent" />
+          </el-form-item>
+        </span>
+        <span class="x">
+          <el-form-item :label="$t('table.date')" class="timepick">
+            <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="Please pick a date" />
+          </el-form-item>
+        </span>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">
+          {{ $t('table.cancel') }}
+        </el-button>
+        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
+          {{ $t('table.confirm') }}
+        </el-button>
+      </div>
+    </el-dialog>
+  </div>
 </template>
 
 <script>
-import { fetchList } from '@/api/discounts';
+import { fetchList, updateLevel } from '@/api/discounts';
+import checkRole from '@/utils/role';
+import waves from '@/directive/waves';
 
 export default {
+  directives: { waves },
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -86,7 +116,7 @@ export default {
   props: {
     type: {
       type: String,
-      default: 'ME',
+      default: 'regular',
     },
   },
   data() {
@@ -98,7 +128,30 @@ export default {
         type: this.type,
         sort: '+id',
       },
+      temp: {
+        id: undefined,
+        from_point: 0,
+        to_point: 0,
+        timestamp: new Date(),
+        type: '',
+        discount_percent: '',
+        created_at: '',
+        updated_at: '',
+      },
       loading: false,
+      checkRole,
+      dialogFormVisible: false,
+      dialogStatus: '',
+      activeTab: '',
+      textMap: {
+        update: 'Edit',
+        create: 'Create',
+      },
+      rules: {
+        type: [{ required: true, message: this.$t('type_is_required'), trigger: 'change' }],
+        timestamp: [{ type: 'date', required: true, message: this.$t('timestamp_is_required'), trigger: 'change' }],
+        title: [{ required: true, message: this.$t('title_is_required'), trigger: 'blur' }],
+      },
     };
   },
   created() {
@@ -107,12 +160,88 @@ export default {
   methods: {
     async getList() {
       this.loading = true;
-      this.$emit('type', this.type); // for tests
       const { data } = await fetchList(this.listQuery);
       this.list = data.items;
       this.loading = false;
+    },
+    handleUpdate(row) {
+      this.temp = Object.assign({}, row); // copy obj
+      this.temp.timestamp = new Date(this.temp.timestamp);
+      this.dialogStatus = 'update';
+      this.dialogFormVisible = true;
+      this.$nextTick(() => {
+        this.$refs['dataForm'].clearValidate();
+      });
+    },
+    updateData() {
+      this.$refs['dataForm'].validate((valid) => {
+        if (valid) {
+          const tempData = Object.assign({}, this.temp);
+          tempData.timestamp = +new Date(tempData.timestamp); // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
+          updateLevel(tempData).then(() => {
+            for (const v of this.list) {
+              if (v.id === this.temp.id) {
+                const index = this.list.indexOf(v);
+                this.list.splice(index, 1, this.temp);
+                break;
+              }
+            }
+            this.dialogFormVisible = false;
+            this.$notify({
+              title: this.$t('table.success'),
+              message: this.$t('table.updated_successfully'),
+              type: 'success',
+              duration: 2000,
+            });
+          });
+        }
+      });
     },
   },
 };
 </script>
 
+<style scoped>
+  .timepick {
+    /*position: relative;
+    right: 20px;
+    width: 100%;*/
+    border: 2px solid #000;
+    box-shadow: 5px 10px 10px #001133, -5px 10px 10px #001133 !important;
+    /*padding: 10px 20px;
+    margin: 25px 15px;*/
+    border-radius: .45rem;
+    /* float: right !important; */
+   /* width: 30%;*/
+  }
+  .discount_percentage {
+    /*position: relative;*/
+    border: 2px solid #000;
+    box-shadow: 5px 10px 10px #001133, -5px 10px 10px #001133 !important;
+    padding: 10px 20px;
+    margin: 25px 15px;
+    /*width: 30%;*/
+    border-radius: .45rem;
+    /*float:right;*/
+  }
+  .total_points {
+    /*display: list-item;
+    list-style: none;
+    position: relative;*/
+    border: 2px solid #000;
+    box-shadow: 5px 10px 10px #001133, -5px 10px 10px #001133 !important;
+    /*width: 330px;*/
+    padding: 10px 30px;
+    margin: 15px;
+    border-radius: .45rem;
+    /*width: 30%;
+    float: left;*/
+  }
+  .total_points input {
+      width: 45px;
+  }
+
+  span.x {
+    display: block;
+  }
+</style>

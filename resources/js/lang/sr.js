@@ -292,4 +292,11 @@ export default {
     categories: 'Kategorije',
     category: 'Kategorija',
   },
+  discounts: {
+    dialog_title: 'DEFINISANJE BODOVA i POPUSTA',
+    customers_level: 'Nivo kupca',
+    discount_percentage: 'Procenat popusta',
+    edit_discount: 'Ažuriranje popusta i bodova',
+    create_discount: 'Unos novih popusta i bodova',
+  },
 };

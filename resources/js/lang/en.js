@@ -290,4 +290,11 @@ export default {
     categories: 'Categories',
     category: 'Category',
   },
+  discounts: {
+    dialog_title: 'DEFINITIONS of POINTS and DISCOUNTS',
+    customers_level: 'Customer\'s level',
+    discount_percentage: 'Discount percentage',
+    edit_discount: 'Update discounts and points',
+    create_discount: 'Create discounts and points',
+  },
 };

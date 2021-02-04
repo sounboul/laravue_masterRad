@@ -7,3 +7,24 @@ export function fetchList(query) {
     params: query,
   });
 }
+
+export function fetchLevels() {
+  return request({
+    url: '/fetchLevels',
+    method: 'get',
+  });
+}
+/* export function updateLevel() {
+  return request({
+    url: '/updateLevel',
+    method: 'get',
+  });
+} */
+
+export function updateLevel(data) {
+  return request({
+    url: '/discount/update',
+    method: 'post',
+    data,
+  });
+}

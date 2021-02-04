@@ -15,10 +15,12 @@ class CreateMemberLevelTable extends Migration
     {
         Schema::create('memberLevel', function (Blueprint $table) {
             $table->id();
-            $table->integer('regular')->default(0);
-            $table->integer('silver')->default(0);
-            $table->integer('gold')->default(0);
-            $table->integer('premium')->default(0);
+            $table->integer('from_point')->default(0);
+            $table->integer('to_point')->default(0);
+            $table->string('level')->default('regular');
+            $table->integer('discount_percent')->nullable();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
         });
     }
 

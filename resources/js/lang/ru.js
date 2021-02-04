@@ -290,4 +290,11 @@ export default {
     categories: 'Категории',
     category: 'Категория',
   },
+  discounts: {
+    dialog_title: 'ОПРЕДЕЛЕНИЯ БАЛЛОВ и СКИДК',
+    customers_level: 'Уровень клиента',
+    discount_percentage: 'Процент скидки',
+    edit_discount: 'Обновите скидки и баллы',
+    create_discount: 'Создавайте скидки и баллы',
+  },
 };
