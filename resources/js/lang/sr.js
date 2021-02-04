@@ -167,6 +167,9 @@ export default {
     created_successfully: 'Kreiranje uspešno!',
     updated_successfully: 'Ažuriranje uspešno!',
     deleted_successfully: 'Uspešno obrisano!',
+    create_failed: 'Kreiranje neuspešno!',
+    update_failed: 'Ažuriranje neuspešno!',
+    delete_failed: 'Brisanje neuspešno!',
   },
   errorLog: {
     tips: 'Please click the bug icon in the upper right corner',
@@ -298,5 +301,6 @@ export default {
     discount_percentage: 'Procenat popusta',
     edit_discount: 'Ažuriranje popusta i bodova',
     create_discount: 'Unos novih popusta i bodova',
+    date_less_than: 'Početni datum ne može biti veći od krajnjeg datuma!',
   },
 };

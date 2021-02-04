@@ -166,6 +166,9 @@ export default {
     created_successfully: 'Created successfully!',
     updated_successfully: 'Updated successfully!',
     deleted_successfully: 'Deleted successfully!',
+    create_failed: 'Create failed!',
+    update_failed: 'Update failed!',
+    delete_failed: 'Delete failed!',
   },
   errorLog: {
     tips: 'Please click the bug icon in the upper right corner',
@@ -296,5 +299,6 @@ export default {
     discount_percentage: 'Discount percentage',
     edit_discount: 'Update discounts and points',
     create_discount: 'Create discounts and points',
+    date_less_than: 'Start date cannot be greater than end date!',
   },
 };

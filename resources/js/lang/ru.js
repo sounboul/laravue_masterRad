@@ -166,6 +166,9 @@ export default {
     created_successfully: 'Создано успешно!',
     updated_successfully: 'Успешно Обновлено!',
     deleted_successfully: 'Удалено успешно!',
+    create_failed: 'Создать не удалось!',
+    update_failed: 'Не удалось обновить!',
+    delete_failed: 'Не удалось удалить!',
   },
   errorLog: {
     tips: 'Пожалуйста, нажмите на иконку "бага" в правом верхнем углу',
@@ -296,5 +299,6 @@ export default {
     discount_percentage: 'Процент скидки',
     edit_discount: 'Обновите скидки и баллы',
     create_discount: 'Создавайте скидки и баллы',
+    date_less_than: 'Дата начала не может быть больше даты окончания!',
   },
 };

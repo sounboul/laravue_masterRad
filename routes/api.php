@@ -65,7 +65,7 @@ Route::namespace('Api')->group(function() {
         Route::get('/members', 'MemberLevelController@index');
         Route::get('/fetchLevels', 'MemberLevelController@fetchLevels');
         Route::get('/updateLevel', 'MemberLevelController@updateLevel');
-        Route::post('/discount/update', 'MemberLevelController@updateLevel');
+        Route::post('/discount/update', 'MemberLevelController@updateLevelData');
 
 
 

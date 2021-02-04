@@ -31,7 +31,7 @@
       <el-table-column class="col" align="center" :label="$t('discounts.discount_percentage')">
         <template slot-scope="scope">
           <span>
-            {{ scope.row.discount_percent / 10 }} %
+            {{ scope.row.discount_percent }} %
           </span>
         </template>
       </el-table-column>
@@ -105,6 +105,7 @@
 import { fetchList, updateLevel } from '@/api/discounts';
 import checkRole from '@/utils/role';
 import waves from '@/directive/waves';
+// import { parseTime } from '@/utils';
 
 export default {
   directives: { waves },
@@ -154,9 +155,9 @@ export default {
         create: 'Create',
       },
       rules: {
-        type: [{ required: true, message: this.$t('type_is_required'), trigger: 'change' }],
-        timestamp: [{ type: 'date', required: true, message: this.$t('timestamp_is_required'), trigger: 'change' }],
-        title: [{ required: true, message: this.$t('title_is_required'), trigger: 'blur' }],
+        type: [{ required: true, message: 'type_is_required', trigger: 'change' }],
+        timestamp: [{ type: 'date', required: true, message: 'timestamp_is_required', trigger: 'change' }],
+        title: [{ required: true, message: 'title_is_required', trigger: 'blur' }],
       },
     };
   },
@@ -183,9 +184,9 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           const tempData = Object.assign({}, this.temp);
-          tempData.timestamp1 = +new Date(tempData.timestamp1); // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
-          tempData.timestamp2 = +new Date(tempData.timestamp2); // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
-          updateLevel(tempData).then(() => {
+          tempData.timestamp1 = new Date(tempData.timestamp1).toLocaleString('en-EN', { timeZone: 'Europe/Belgrade' });
+          tempData.timestamp2 = new Date(tempData.timestamp2).toLocaleString('en-EN', { timeZone: 'Europe/Belgrade' });
+          updateLevel(tempData).then((response) => {
             for (const v of this.list) {
               if (v.id === this.temp.id) {
                 const index = this.list.indexOf(v);
@@ -195,10 +196,10 @@ export default {
             }
             this.dialogFormVisible = false;
             this.$notify({
-              title: this.$t('table.success'),
-              message: this.$t('table.updated_successfully'),
-              type: 'success',
-              duration: 2000,
+              title: this.$t(response.data.title),
+              message: this.$t(response.data.message),
+              type: response.data.type,
+              duration: 3000,
             });
           });
         }

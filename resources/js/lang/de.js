@@ -166,6 +166,9 @@ export default {
     created_successfully: 'Created successfully!',
     updated_successfully: 'Updated successfully!',
     deleted_successfully: 'Deleted successfully!',
+    create_failed: 'Erstellen fehlgeschlagen!',
+    update_failed: 'Aktualisieren fehlgeschlagen!',
+    delete_failed: 'Löschen fehlgeschlagen!',
   },
   errorLog: {
     tips: 'Please click the bug icon in the upper right corner',
@@ -296,5 +299,6 @@ export default {
     discount_percentage: 'Rabattprozentsatz',
     edit_discount: 'Aktualisieren Sie Rabatte und Punkte',
     create_discount: 'Erstellen Sie Rabatte und Punkte',
+    date_less_than: 'Startdatum darf nicht größer als Enddatum sein!',
   },
 };
