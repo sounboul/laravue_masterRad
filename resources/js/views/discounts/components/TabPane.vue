@@ -51,16 +51,16 @@
 
     <el-dialog :title="textMap[dialogStatus] = 'edit' ? $t('discounts.edit_discount') : $t('discounts.create_discount')" :visible.sync="dialogFormVisible">
       <h3 style="width:100%; margin: -35px 0 20px 0;text-align: center;">{{ $t('discounts.customers_level') + ': ' }} {{ type | uppercaseFirst }}</h3>
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-width="100px">
+      <el-form ref="dataForm" :model="temp" label-width="100px">
         <span class="x">
           <div class="total_points">
-            <span>{{ $t('customers.total_points') }}</span>
-            <el-form-item>
-              <span>{{ $t('customers.from') }}</span>
+            <!-- <span>{{  }}</span> -->
+            <el-form-item :label="$t('customers.total_points') + ': ' + $t('customers.from')">
+              <!-- <span>{{  }}</span> -->
               <el-input v-model="temp.from_point" />
             </el-form-item>
-            <el-form-item>
-              <span>{{ $t('customers.to') }}</span>
+            <el-form-item :label="$t('customers.to')">
+              <!-- <span>{{ $t('customers.to') }}</span> -->
               <el-input v-model="temp.to_point" />
             </el-form-item>
           </div>
@@ -77,11 +77,16 @@
           <el-form-item :label="$t('discounts.discount_percentage')" class="discount_percentage" style="word-break: break-word;">
             <el-input v-model="temp.discount_percent" />
           </el-form-item>
-        </span>
-        <span class="x">
-          <el-form-item :label="$t('table.date')" class="timepick">
-            <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="Please pick a date" />
-          </el-form-item>
+          <span>
+            <el-form-item :label="$t('table.date')" class="timepick">
+              <el-date-picker v-model="temp.timestamp1" type="datetime" placeholder="Please pick a date" />
+            </el-form-item>
+          </span>
+          <span>
+            <el-form-item :label="$t('table.date')" class="timepick">
+              <el-date-picker v-model="temp.timestamp2" type="datetime" placeholder="Please pick a date" />
+            </el-form-item>
+          </span>
         </span>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -132,7 +137,8 @@ export default {
         id: undefined,
         from_point: 0,
         to_point: 0,
-        timestamp: new Date(),
+        timestamp1: new Date(),
+        timestamp2: new Date(),
         type: '',
         discount_percent: '',
         created_at: '',
@@ -177,7 +183,8 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           const tempData = Object.assign({}, this.temp);
-          tempData.timestamp = +new Date(tempData.timestamp); // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
+          tempData.timestamp1 = +new Date(tempData.timestamp1); // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
+          tempData.timestamp2 = +new Date(tempData.timestamp2); // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
           updateLevel(tempData).then(() => {
             for (const v of this.list) {
               if (v.id === this.temp.id) {
@@ -208,11 +215,11 @@ export default {
     width: 100%;*/
     border: 2px solid #000;
     box-shadow: 5px 10px 10px #001133, -5px 10px 10px #001133 !important;
-    /*padding: 10px 20px;
-    margin: 25px 15px;*/
+    padding: 10px 20px;
+    margin: 25px 15px;
     border-radius: .45rem;
     /* float: right !important; */
-   /* width: 30%;*/
+    /*width: 30%;*/
   }
   .discount_percentage {
     /*position: relative;*/
@@ -225,23 +232,32 @@ export default {
     /*float:right;*/
   }
   .total_points {
+    margin: 0 auto;
+    width: 60%;
+    border: 2px solid #000;
+    box-shadow: 5px 10px 10px #001133, -5px 10px 10px #001133 !important;
+    padding: 25px 30px 5px 30px;
+    border-radius: .45rem;
+  }
+  .total_points1 {
     /*display: list-item;
     list-style: none;
     position: relative;*/
     border: 2px solid #000;
     box-shadow: 5px 10px 10px #001133, -5px 10px 10px #001133 !important;
     /*width: 330px;*/
-    padding: 10px 30px;
-    margin: 15px;
+    padding: 10px 150px 10px 50px;
+    /*margin: 0 35px 25px 35px;*/
+    margin: auto;
     border-radius: .45rem;
-    /*width: 30%;
+    /*width: 33%;
     float: left;*/
   }
   .total_points input {
-      width: 45px;
+      width: 25px;
   }
 
   span.x {
-    display: block;
+    display: inline-block;
   }
 </style>

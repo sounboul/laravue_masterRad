@@ -44,7 +44,7 @@ export default {
 
 <style scoped>
   .tab-container {
-    margin: 75px 50px;
+    margin: 75px 150px;
     padding: 15px;
   }
   /*.el-card {
