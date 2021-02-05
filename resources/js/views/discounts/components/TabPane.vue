@@ -36,6 +36,24 @@
         </template>
       </el-table-column>
 
+      <el-table-column class="col" align="center" :label="$t('discounts.discount_start_date')">
+        <template slot-scope="scope">
+          <span v-if="scope.row.discount_start_date !== null">
+            {{ scope.row.discount_start_date | parseTime('{d}.{m}.{y}.') }}
+          </span>
+          <span v-else>{{ '-' }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column class="col" align="center" :label="$t('discounts.discount_end_date')">
+        <template slot-scope="scope">
+          <span v-if="scope.row.discount_end_date !== null">
+            {{ scope.row.discount_end_date | parseTime('{d}.{m}.{y}.') }}
+          </span>
+          <span v-else>{{ '-' }}</span>
+        </template>
+      </el-table-column>
+
       <el-table-column align="center" :label="$t('table.actions')">
         <template slot-scope="{row}">
           <el-button v-if="checkRole(['admin','manager', 'editor'])" type="success" size="mini" @click="handleUpdate(row)">
@@ -92,11 +110,11 @@
               <el-switch v-model="temp.no_switch" :active-value="1" :inactive-value="0" />
             </el-form-item>
           </span>
-          <span class="x">
+          <!-- <span class="x">
             <el-input-number v-model="valueNew[0]" :max="10" :min="0" @change="numberChange" />
             <el-slider v-model="value" range show-stops class="discount_percentage" />
             <el-input-number v-model="valueNew[1]" :max="30" :min="0" @change="numberChange" />
-          </span>
+          </span> -->
         </span>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -112,10 +130,10 @@
 </template>
 
 <script>
-import { fetchList, updateLevel } from '@/api/discounts';
+import { fetchList, updateLevel, fetchLevels } from '@/api/discounts';
+import { parseTime } from '@/utils';
 import checkRole from '@/utils/role';
 import waves from '@/directive/waves';
-// import { parseTime } from '@/utils';
 
 export default {
   directives: { waves },
@@ -153,15 +171,18 @@ export default {
         timestamp2: new Date(),
         type: '',
         discount_percent: '',
+        discount_start_date: '',
+        discount_end_date: '',
         created_at: '',
         updated_at: '',
       },
       loading: false,
       checkRole,
+      parseTime,
       dialogFormVisible: false,
       dialogStatus: '',
-      value: [1, 3],
-      activeTab: '',
+      // value: [1, 3],
+      // activeTab: '',
       textMap: {
         update: 'Edit',
         create: 'Create',
@@ -173,11 +194,11 @@ export default {
       },
     };
   },
-  computed: {
+  /* computed: {
     valueNew() {
       return JSON.parse(JSON.stringify(this.value));
     },
-  },
+  }, */
   created() {
     this.getList();
   },
@@ -187,6 +208,10 @@ export default {
       const { data } = await fetchList(this.listQuery);
       this.list = data.items;
       this.loading = false;
+    },
+    async getLevels() {
+      const { data } = await fetchLevels();
+      this.tabMapOptions = data.levels;
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row); // copy obj
@@ -219,12 +244,25 @@ export default {
               duration: 3000,
             });
           });
+          this.getLevels();
         }
       });
     },
-    numberChange() {
-      this.value = this.valueNew;
+    resetTemp() {
+      this.temp = {
+        id: undefined,
+        importance: 1,
+        remark: '',
+        timestamp: new Date(),
+        title: '',
+        code: '',
+        status: 'published',
+        type: '',
+      };
     },
+    /* numberChange() {
+      this.value = this.valueNew;
+    }, */
   },
 };
 </script>

@@ -307,5 +307,10 @@ export default {
     timestamp_is_required: 'Datum je obavezno polje!',
     title_is_required: 'Naziv je obavezno polje!',
     pick_date: 'Izaberite datum',
+    points_greater_than: 'Početni bodovi ne mogu biti veći ili jednaki krajnjim!',
+    discount_start_date: 'Početak popusta:',
+    discount_end_date: 'Kraj popusta:',
+    to_points_overload: 'Bodovi gornje granice prevazilaze dozvoljene vrednosti!',
+    from_points_overload: 'Bodovi donje granice prevazilaze dozvoljene vrednosti!',
   },
 };

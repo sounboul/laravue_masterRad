@@ -54,7 +54,7 @@ class MemberLevelController extends Controller
 		  	return($v);
 		}
 
-    	$levels = MemberLevel::orderBy('to_point', 'asc')->get();
+    	$levels = MemberLevel::orderBy('level_strength', 'asc')->get();
     	
     	foreach ($levels as $level) {
     		$level = myFunction($level);
@@ -77,41 +77,144 @@ class MemberLevelController extends Controller
 
     public function updateLevelData(Request $request)
     {    	
-    	if($request->no_switch === 0)
+
+    	if($request->no_switch === 0)    // Ukoliko je cekirano dugme za zahtev unosa datuma
     	{
 	    	if ($request->timestamp1 === 'Invalid Date' || $request->timestamp2 === 'Invalid Date' ||
 	    		$request->timestamp1 === '1/1/1970, 1:00:00 AM' || $request->timestamp2 === '1/1/1970, 1:00:00 AM' ||
-	    		$request->timestamp1 === null || $request->timestamp2 === null) 
+	    		$request->timestamp1 === null || $request->timestamp2 === null)  
 	    	{
 	    		$title = 'discounts.warning';
 	    		$message = 'discounts.timestamp_is_required';
 	    		$type = 'error';
+    		
+    			return response()->json(new JsonResponse(['title' => $title, 'message' => $message, 'type' => $type ]));
 	    	}
 
-	    	elseif (date_format(date_create($request->timestamp1), 'd.m.Y. H:i:s') > date_format(date_create($request->timestamp2), 'd.m.Y. H:i:s')) 
+	    	if (date_format(date_create($request->timestamp1), 'Y-m-d H:i:s') > date_format(date_create($request->timestamp2), 'Y-m-d H:i:s')) 
 	    	{
 	    		$title = 'table.update_failed';
 	    		$message = 'discounts.date_less_than';
 	    		$type = 'error';
+    			
+    			return response()->json(new JsonResponse(['title' => $title, 'message' => $message, 'type' => $type ]));
 	    	}
 	    }
-    	else 
-    	{
-    		if($request->no_switch === 0) 
-    		{
-    			$discount_start_date = date_format(date_create($request->timestamp1), 'd.m.Y. H:i:s');
-    			$discount_end_date = date_format(date_create($request->timestamp2), 'd.m.Y. H:i:s');
-    		}
-    		else 
-    		{
-    			$discount_start_date = null;
-    			$discount_end_date = null;
-    		}
 
-    		$title = 'table.success';
-    		$message = 'table.updated_successfully';
-    		$type = 'success';
-    	}
+	    if ($request->from_point >= $request->to_point) {  // pocetni bodovi veci ili jednaki krajnjim
+
+	    	$title = 'discounts.warning';
+    		$message = 'discounts.points_greater_than';
+    		$type = 'error';
+			
+			return response()->json(new JsonResponse(['title' => $title, 'message' => $message, 'type' => $type ]));
+	    }
+
+	    if ($request->from_point < 0) {   // pocetni bodovi manji od nule
+
+	    	$title = 'discounts.warning';
+    		$message = 'discounts.from_points_overload';
+    		$type = 'error';
+			
+			return response()->json(new JsonResponse(['title' => $title, 'message' => $message, 'type' => $type ]));
+	    }
+
+    	$level = MemberLevel::where('level', $request->level)->first();		// definisanje izabranog nivoa
+    	$level_num_levels = count(MemberLevel::all());		// ukupan broj nivoa
+		$helper_from_point = MemberLevel::where('level_strength', $request->level_strength + 1)->first();  	// pomocni red (row) sa prvom visom 																											vaznoscu nivoa 
+		$helper_to_point = MemberLevel::where('level_strength', $request->level_strength - 1)->first();		// pomocni red (row) sa prvom nizom 																											vaznoscu nivoa 
+		$last_level_strength = MemberLevel::find($level_num_levels)->pluck('level_strength')->last();		// najvisi nivo vaznosti u tabeli
+
+	    
+	    if ($request->level_strength < $last_level_strength)		// ukoliko se radi o bilo kom nivou nizem od najjaceg
+	    {	
+		    if ($request->from_point >= $helper_from_point->from_point)		// slucaj kada su pocetni bodovi request-a veci ili jednaki pocetnim 																	bodovima iz odgovarajuceg reda viseg nivoa
+		    {		    	
+		    	$title = 'discounts.warning';
+	    		$message = 'discounts.to_points_overload';
+	    		$type = 'error';
+				
+				return response()->json(new JsonResponse(['title' => $title, 'message' => $message, 'type' => $type ]));
+		    }
+		}
+
+		if ($request->level_strength > 1)		// slucaj kada se radi o bilo kom nivou jacem od prvog
+		{
+		    if ($request->from_point <= $helper_to_point->from_point) {		// ukoliko su pocetni bodovi request-a manji ili jednaki krajnjim 																		bodovima prvog nizeg nivoa 
+		    	$title = 'discounts.warning';
+	    		$message = 'discounts.from_points_overload';
+	    		$type = 'error';
+				
+				return response()->json(new JsonResponse(['title' => $title, 'message' => $message, 'type' => $type ]));
+		    }
+
+		    if ($request->to_point < $helper_to_point->to_point || 
+		    	$request->from_point <= $helper_to_point->from_point) {		// slucaj kada su krajnji bodovi request-a manji od krajnjih bodova 																prvog nizeg nivoa ili pocetni bodovi request-a su manji ili 																	jednaki pocetnim bodovima prvog nizeg nivoa
+		       	$title = 'table.update_failed';
+	    		$message = 'discounts.to_points_overload';
+	    		$type = 'error';
+				
+				return response()->json(new JsonResponse(['title' => $title, 'message' => $message, 'type' => $type ]));
+		    }
+
+		    /*if ($request->from_point <= $helper_to_point->from_point) {		// ukoliko su pocetni bodovi request-a manji ili jednaki pocetnim 																		bodovima prvog nizeg nivoa
+		    	
+		    	$title = 'table.update_failed';
+	    		$message = 'discounts.to_points_overload';
+	    		$type = 'error';
+				
+				return response()->json(new JsonResponse(['title' => $title, 'message' => $message, 'type' => $type ]));
+		    }*/
+
+			if ($request->level_strength < $level_num_levels)		// u slucaju jacine nivoa manjeg od najjaceg
+			{
+				$helper_from_point->from_point = $request->to_point + 1;		// pomocnom redu (redu viseg nivoa) se za pocetne bodove 																			dodeljuju krajnji bodovi request-a uvecani za 1
+				$helper_from_point->updated_at = date('Y-m-d H:i:s');
+				$helper_from_point->update();
+			}
+
+			$helper_to_point->to_point = $request->from_point - 1;		// pomocnom redu (redu viseg nivoa) se za krajnje bodove dodeljuju 																		pocetni bodovi request-a umanjeni za 1
+			$helper_to_point->updated_at = date('Y-m-d H:i:s');
+			$helper_to_point->update();
+		}
+		else
+		{
+			if ($request->to_point > $helper_from_point->to_point) {
+				
+		    	$title = 'discounts.warning';
+	    		$message = 'discounts.from_points_overload';
+	    		$type = 'error';
+				
+				return response()->json(new JsonResponse(['title' => $title, 'message' => $message, 'type' => $type ]));
+			}
+		}
+
+
+		if($request->no_switch === 0) 
+		{
+			$level->discount_start_date =  date_format(date_create($request->timestamp1), 'Y-m-d H:i:s');
+			$level->discount_end_date = date_format(date_create($request->timestamp2), 'Y-m-d H:i:s');
+		}
+		else 
+		{
+			$level->discount_start_date = null;
+			$level->discount_end_date = null;
+		}
+
+		if ($request->level_strength == 1)
+		{
+			$level->from_point = 0;
+		}
+
+		$level->updated_at = date('Y-m-d H:i:s');
+		$level->from_point = $request->from_point;
+		$level->to_point = $request->to_point;
+		$level->discount_percent = $request->discount_percent * 10;
+		$level->update();
+
+		$title = 'table.success';
+		$message = 'table.updated_successfully';
+		$type = 'success';
 
     	return response()->json(new JsonResponse(['title' => $title, 'message' => $message, 'type' => $type ]));
     }

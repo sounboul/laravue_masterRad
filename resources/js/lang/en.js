@@ -305,5 +305,10 @@ export default {
     timestamp_is_required: 'Timestamp is required!',
     title_is_required: 'Title is required!',
     pick_date: 'Please pick a date',
+    points_greater_than: 'Starting points cannot be greater than or equal to ending points!',
+    discount_start_date: 'The discount starts from:',
+    discount_end_date: 'The discount ends on:',
+    to_points_overload: 'Upper limit points exceed the allowed values!',
+    from_points_overload: 'Lower limit points exceed the allowed values!',
   },
 };

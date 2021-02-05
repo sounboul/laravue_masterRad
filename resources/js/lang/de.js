@@ -305,5 +305,10 @@ export default {
     timestamp_is_required: 'Zeitstempel ist erforderlich!',
     title_is_required: 'Titel ist erforderlich!',
     pick_date: 'Bitte wählen Sie ein Datum',
+    points_greater_than: 'Startpunkte dürfen nicht größer oder gleich Endpunkten sein!',
+    discount_start_date: 'Der Rabatt beginnt bei:',
+    discount_end_date: 'Der Rabatt endet am:',
+    to_points_overload: 'Obere Grenzpunkte überschreiten die zulässigen Werte!',
+    from_points_overload: 'Die unteren Grenzpunkte überschreiten die zulässigen Werte!',
   },
 };
