@@ -345,7 +345,6 @@ export default {
     async activeCustomers() {
       this.listLoading = true;
       this.listQuery.showActiveCustomers = !this.showActiveCustomers;
-      console.log(this.listQuery.showActiveCustomers);
       const { data } = await fetchAllCustomers(this.listQuery);
       this.showActiveCustomers = !this.showActiveCustomers;
       this.list = data.items;
@@ -355,7 +354,6 @@ export default {
     async getAllCustomers() {
       this.listLoading = true;
       this.listQuery.showActiveCustomers = !this.showActiveCustomers;
-      console.log(this.listQuery.showActiveCustomers);
       const { data } = await fetchAllCustomers(this.listQuery);
       this.showActiveCustomers = !this.showActiveCustomers;
       this.list = data.items;

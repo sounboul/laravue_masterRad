@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Laravue\Models\Customers;
+use App\Laravue\Models\MemberLevel;
 use App\Laravue\JsonResponse;
 
 class CustomersController extends BaseController
@@ -66,13 +67,17 @@ class CustomersController extends BaseController
             $order = 'desc';
         }
 
+        $helper_customer_level = memberLevel::findLevel($request->to_point);
+        // dd($helper_customer_level);
+
+
         if (!$showActiveCustomers || (!$showActiveCustomers && ($request->sort == "-id"))) {
             $customers = Customers::orderBy('id', $order)->get();
         }
         else {
             $customers = Customers::where('active', 'active')->orderBy('id', $order)->get();
         }
-
+$customers->level = $helper_customer_level;
     	return response()->json(new JsonResponse(['items' => $customers, 'total' => count($customers)]));
     }
 
