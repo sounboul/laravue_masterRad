@@ -300,5 +300,10 @@ export default {
     edit_discount: 'Обновите скидки и баллы',
     create_discount: 'Создавайте скидки и баллы',
     date_less_than: 'Дата начала не может быть больше даты окончания!',
+    warning: 'ПРЕДУПРЕЖДЕНИЕ!',
+    type_is_required: 'Тип обязателен!',
+    timestamp_is_required: 'Отметка времени обязательна!',
+    title_is_required: 'Требуется название!',
+    pick_date: 'Выберите дату',
   },
 };

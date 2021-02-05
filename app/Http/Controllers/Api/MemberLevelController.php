@@ -35,16 +35,16 @@ class MemberLevelController extends Controller
     								->where('level', $type)
     								->get();
 
-
     	foreach ($discounts as $discount) {
-
     		$discount = myFunction($discount);
-
     	}
-    	//dd($discounts);      
+
+
 
     	return response()->json(new JsonResponse(['items' => $discounts, 'type' => $type, 'limit' => $limit]));
     }
+
+
 
     public function fetchLevels()
     {
@@ -57,38 +57,62 @@ class MemberLevelController extends Controller
     	$levels = MemberLevel::orderBy('to_point', 'asc')->get();
     	
     	foreach ($levels as $level) {
-
     		$level = myFunction($level);
-
     	}
 
     	return response()->json(new JsonResponse(['levels' => $levels]));
     }
 
+
+
     public function updateLevel(Request $request)
     {
     	$level_id = MemberLevel::where('level', $request->type)->first();
     	$level = MemberLevel::find($level_id);
-    	$pom = $level->discount_percent/10;
-    	$level->discount_percent = $pom;
-dd($level);
+
     	return response()->json(new JsonResponse(['items' => $level, 'type' => $request->type, 'limit' => $request->limit]));
     }
 
+
+
     public function updateLevelData(Request $request)
     {    	
-    	if ($request->timestamp1 > $request->timestamp2) {
-    		$title = 'table.update_failed';
-    		$message = 'discounts.date_less_than';
-    		$type_of_result = 'error';
-    	}
-    	else {
+    	if($request->no_switch === 0)
+    	{
+	    	if ($request->timestamp1 === 'Invalid Date' || $request->timestamp2 === 'Invalid Date' ||
+	    		$request->timestamp1 === '1/1/1970, 1:00:00 AM' || $request->timestamp2 === '1/1/1970, 1:00:00 AM' ||
+	    		$request->timestamp1 === null || $request->timestamp2 === null) 
+	    	{
+	    		$title = 'discounts.warning';
+	    		$message = 'discounts.timestamp_is_required';
+	    		$type = 'error';
+	    	}
+
+	    	elseif (date_format(date_create($request->timestamp1), 'd.m.Y. H:i:s') > date_format(date_create($request->timestamp2), 'd.m.Y. H:i:s')) 
+	    	{
+	    		$title = 'table.update_failed';
+	    		$message = 'discounts.date_less_than';
+	    		$type = 'error';
+	    	}
+	    }
+    	else 
+    	{
+    		if($request->no_switch === 0) 
+    		{
+    			$discount_start_date = date_format(date_create($request->timestamp1), 'd.m.Y. H:i:s');
+    			$discount_end_date = date_format(date_create($request->timestamp2), 'd.m.Y. H:i:s');
+    		}
+    		else 
+    		{
+    			$discount_start_date = null;
+    			$discount_end_date = null;
+    		}
+
     		$title = 'table.success';
     		$message = 'table.updated_successfully';
-    		$type_of_result = 'success';
+    		$type = 'success';
     	}
-    	$test = date_format(date_create($request->timestamp1), 'd.m.Y. H:i:s');
 
-    	return response()->json(new JsonResponse(['title' => $title, 'message' => $message, 'type' => $type_of_result ]));
+    	return response()->json(new JsonResponse(['title' => $title, 'message' => $message, 'type' => $type ]));
     }
 }

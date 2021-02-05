@@ -300,5 +300,10 @@ export default {
     edit_discount: 'Aktualisieren Sie Rabatte und Punkte',
     create_discount: 'Erstellen Sie Rabatte und Punkte',
     date_less_than: 'Startdatum darf nicht größer als Enddatum sein!',
+    warning: 'WARNUNG!',
+    type_is_required: 'Typ ist erforderlich!',
+    timestamp_is_required: 'Zeitstempel ist erforderlich!',
+    title_is_required: 'Titel ist erforderlich!',
+    pick_date: 'Bitte wählen Sie ein Datum',
   },
 };

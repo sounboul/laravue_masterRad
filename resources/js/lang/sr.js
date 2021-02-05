@@ -302,5 +302,10 @@ export default {
     edit_discount: 'Ažuriranje popusta i bodova',
     create_discount: 'Unos novih popusta i bodova',
     date_less_than: 'Početni datum ne može biti veći od krajnjeg datuma!',
+    warning: 'UPOZORENJE!',
+    type_is_required: 'Type obavezno polje!',
+    timestamp_is_required: 'Datum je obavezno polje!',
+    title_is_required: 'Naziv je obavezno polje!',
+    pick_date: 'Izaberite datum',
   },
 };

@@ -51,7 +51,7 @@
 
     <el-dialog :title="textMap[dialogStatus] = 'edit' ? $t('discounts.edit_discount') : $t('discounts.create_discount')" :visible.sync="dialogFormVisible">
       <h3 style="width:100%; margin: -35px 0 20px 0;text-align: center;">{{ $t('discounts.customers_level') + ': ' }} {{ type | uppercaseFirst }}</h3>
-      <el-form ref="dataForm" :model="temp" label-width="100px">
+      <el-form ref="dataForm" :model="temp" label-width="150px">
         <span class="x">
           <div class="total_points">
             <!-- <span>{{  }}</span> -->
@@ -77,15 +77,25 @@
           <el-form-item :label="$t('discounts.discount_percentage')" class="discount_percentage" style="word-break: break-word;">
             <el-input v-model="temp.discount_percent" />
           </el-form-item>
-          <span>
+          <span class="x">
             <el-form-item :label="$t('table.date')" class="timepick">
-              <el-date-picker v-model="temp.timestamp1" type="datetime" placeholder="Please pick a date" />
+              <el-date-picker v-model="temp.timestamp1" type="datetime" :placeholder="$t('discounts.pick_date')" />
             </el-form-item>
           </span>
-          <span>
+          <span class="x">
             <el-form-item :label="$t('table.date')" class="timepick">
-              <el-date-picker v-model="temp.timestamp2" type="datetime" placeholder="Please pick a date" />
+              <el-date-picker v-model="temp.timestamp2" type="datetime" :placeholder="$t('discounts.pick_date')" />
             </el-form-item>
+          </span>
+          <span class="x">
+            <el-form-item label="no_time_limit" class="discount_percentage" style="word-break: break-word;">
+              <el-switch v-model="temp.no_switch" :active-value="1" :inactive-value="0" />
+            </el-form-item>
+          </span>
+          <span class="x">
+            <el-input-number v-model="valueNew[0]" :max="10" :min="0" @change="numberChange" />
+            <el-slider v-model="value" range show-stops class="discount_percentage" />
+            <el-input-number v-model="valueNew[1]" :max="30" :min="0" @change="numberChange" />
           </span>
         </span>
       </el-form>
@@ -138,6 +148,7 @@ export default {
         id: undefined,
         from_point: 0,
         to_point: 0,
+        timestamp: new Date(),
         timestamp1: new Date(),
         timestamp2: new Date(),
         type: '',
@@ -149,17 +160,23 @@ export default {
       checkRole,
       dialogFormVisible: false,
       dialogStatus: '',
+      value: [1, 3],
       activeTab: '',
       textMap: {
         update: 'Edit',
         create: 'Create',
       },
       rules: {
-        type: [{ required: true, message: 'type_is_required', trigger: 'change' }],
-        timestamp: [{ type: 'date', required: true, message: 'timestamp_is_required', trigger: 'change' }],
-        title: [{ required: true, message: 'title_is_required', trigger: 'blur' }],
+        type: [{ required: true, message: this.$t('discounts.type_is_required'), trigger: 'change' }],
+        timestamp: [{ type: 'date', required: true, message: this.$t('discounts.timestamp_is_required'), trigger: 'change' }],
+        title: [{ required: true, message: this.$t('discounts.title_is_required'), trigger: 'blur' }],
       },
     };
+  },
+  computed: {
+    valueNew() {
+      return JSON.parse(JSON.stringify(this.value));
+    },
   },
   created() {
     this.getList();
@@ -204,6 +221,9 @@ export default {
           });
         }
       });
+    },
+    numberChange() {
+      this.value = this.valueNew;
     },
   },
 };

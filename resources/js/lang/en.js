@@ -300,5 +300,10 @@ export default {
     edit_discount: 'Update discounts and points',
     create_discount: 'Create discounts and points',
     date_less_than: 'Start date cannot be greater than end date!',
+    warning: 'WARNING!',
+    type_is_required: 'Type is required!',
+    timestamp_is_required: 'Timestamp is required!',
+    title_is_required: 'Title is required!',
+    pick_date: 'Please pick a date',
   },
 };
