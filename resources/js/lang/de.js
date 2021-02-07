@@ -267,6 +267,7 @@ export default {
     'email_required': 'Email is required',
     'mobile_required': 'Mobile is required',
     'edit_success': 'Kundeninformationen wurden erfolgreich aktualisiert!',
+    'account': 'Konto',
   },
   errors: {
     'back': 'Back',

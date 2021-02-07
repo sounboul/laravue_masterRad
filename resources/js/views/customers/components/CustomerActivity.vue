@@ -148,7 +148,7 @@
           </el-timeline>
         </div>
       </el-tab-pane>
-      <el-tab-pane v-loading="updating" label="Account" name="third" class="third">
+      <el-tab-pane v-loading="updating" :label="$t('customers.account')" name="third" class="third">
         <el-form-item :label="$t('customers.customer_name')">
           <el-input v-model="customer.name" />
         </el-form-item>
@@ -169,7 +169,12 @@
           <el-input v-model="customer.dob" />
         </el-form-item> -->
         <el-form-item :label="$t('customers.ID_number')">
-          {{ customer.ID_number }}
+          <span v-if="customer.ID_number != null && customer.ID_number.length == 13">
+            {{ customer.ID_number }}
+          </span>
+          <div v-else>
+            <el-input v-model="customer.ID_number" />
+          </div>
         </el-form-item>
         <el-form-item :label="$t('customers.street')">
           <el-input v-model="customer.street" />

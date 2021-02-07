@@ -269,6 +269,7 @@ export default {
     'email_required': 'Email je obavezan',
     'mobile_required': 'Mobilni telefon je obavezan',
     'edit_success': 'Informacije o kupcu uspešno ažurirane!',
+    'account': 'Nalog',
   },
   errors: {
     'back': 'Nazad',

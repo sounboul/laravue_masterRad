@@ -12,7 +12,7 @@ use Illuminate\Support\Arr;
 
 class CustomersController extends BaseController
 {
-    const ITEM_PER_PAGE = 15;
+    const ITEM_PER_PAGE = 10;
     
     public function fetchCustomers(Request $request)
     {
@@ -66,51 +66,59 @@ class CustomersController extends BaseController
     public function fetchAllCustomers(Request $request)
     {
 
-        $showActiveCustomers = filter_var($request->showActiveCustomers, FILTER_VALIDATE_BOOLEAN);
 
         $searchParams = $request->all();
+        $showActiveCustomers = filter_var($request->showActiveCustomers, FILTER_VALIDATE_BOOLEAN);
         $customerQuery = Customers::query();
         $limit = Arr::get($searchParams, 'limit', static::ITEM_PER_PAGE);
         $active = Arr::get($searchParams, 'active', '');
         $keyword = Arr::get($searchParams, 'keyword', '');
+        $sort = Arr::get($searchParams, 'sort', '');
 
-        if ($request->sort == "+id") {
+        if ($sort == "+id") {
             $order = 'asc';
         }
         else {
             $order = 'desc';
         }
+//dd($showActiveCustomers);
+        if(!$showActiveCustomers || (!$showActiveCustomers && ($order == "-id"))) {
+            
+            $customerQuery->orderBy('id', $order);
 
-        $customerQuery->where('active', 'active');
+            if (!empty($keyword)) {
+                $customerQuery->where(function($query) use ($keyword) {
+                                $query->orWhere('name', 'LIKE', '%' . $keyword . '%')
+                                        ->orWhere('member_since', 'LIKE', '%' . $keyword . '%')
+                                        ->orWhere('updated_at', 'LIKE', '%' . $keyword . '%');
+                                })
+                                ->orderBy('id', $order);
+            }
+        }
+        else 
+        {
+            $customerQuery->where('active', 'active')->orderBy('id', $order);
+         
+            if (!empty($keyword)) {
+                $customerQuery->where('active', 'active')
+                                ->where(function($query) use ($keyword) {
+                                $query->orWhere('name', 'LIKE', '%' . $keyword . '%')
+                                        ->orWhere('member_since', 'LIKE', '%' . $keyword . '%')
+                                        ->orWhere('updated_at', 'LIKE', '%' . $keyword . '%');
+                                })
+                                ->orderBy('id', $order);
+            }
+        }
+
+
+        //$customerQuery->where('active', 'active')->orderBy('id', $order);
 
         return CustomerResources::collection($customerQuery->paginate($limit));
-
-
-
-/*
-        $helper_customer_level = memberLevel::findLevel($request->to_point);
-        // dd($helper_customer_level);
-        
-
-        if (!$showActiveCustomers || (!$showActiveCustomers && ($request->sort == "-id"))) {
-            $customers = Customers::orderBy('id', $order)->get();
-        }
-        else {
-            $customers = Customers::where('active', 'active')->orderBy('id', $order)->get();
-        }
-
-        $data[] = $customers->toArray();
-        dd($data);
-
-    	return response()->json(new JsonResponse(['items' => $data]));*/
     }
 
     
     public function fetchCustomer($id)
     {
-
-        //$customerQuery = Customers::query();
-        //$limit = Arr::get($searchParams, 'limit', static::ITEM_PER_PAGE);
 
         $customerQuery = Customers::where('id', $id)->first();
 
@@ -127,8 +135,7 @@ class CustomersController extends BaseController
         $customer->name = $request->name;
         $customer->email = $request->email;
         $customer->mobile = $request->mobile;
-        // $customer->dob = $request->dob;
-        // $customer->ID_number = $request->ID_number;
+        $customer->ID_number = $request->ID_number;
         $customer->street = $request->street;
         $customer->number = $request->number;
         $customer->city = $request->city;

@@ -276,7 +276,7 @@ export default {
       total: 0,
       listQuery: {
         page: 1,
-        limit: 15,
+        limit: 10,
         importance: undefined,
         title: undefined,
         name: undefined,
@@ -338,16 +338,19 @@ export default {
   methods: {
     async getList() {
       this.listLoading = true;
+      this.listQuery.showActiveCustomers = !this.showActiveCustomers;
       const { limit, page } = this.listQuery;
       const { data, meta } = await fetchAllCustomers(this.listQuery);
+      this.showActiveCustomers = !this.showActiveCustomers;
       this.list = data;
+      console.log(this.showActiveCustomers);
       this.list.forEach((element, index) => {
         element['index'] = (page - 1) * limit + index + 1;
       });
       this.total = meta.total;
       this.listLoading = false;
     },
-    /* async activeCustomers() {
+    async activeCustomers() {
       this.listLoading = true;
       this.listQuery.showActiveCustomers = !this.showActiveCustomers;
       const { data, meta } = await fetchAllCustomers(this.listQuery);
@@ -356,7 +359,7 @@ export default {
       console.log(data);
       this.total = meta.total;
       this.listLoading = false;
-    }, */
+    },
     async getAllCustomers() {
       this.listLoading = true;
       this.listQuery.showActiveCustomers = !this.showActiveCustomers;

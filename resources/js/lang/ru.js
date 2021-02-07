@@ -267,6 +267,7 @@ export default {
     'email_required': 'Электронная почта требуется',
     'mobile_required': 'Требуется мобильный',
     'edit_success': 'Информация о клиентах успешно обновлена!',
+    'account': 'Cчет',
   },
   errors: {
     'back': 'Назад',
