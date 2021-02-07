@@ -19,7 +19,7 @@ class CreateCustomersTable extends Migration
             $table->string('email')->unique();
             $table->string('mobile')->unique();
             $table->date('dob')->nullable();
-            $table->integer('ID_number')->nullable();
+            $table->integer('ID_number')->nullable()->unique();
             $table->string('street')->nullable();
             $table->integer('number')->nullable();
             $table->string('city')->nullable();

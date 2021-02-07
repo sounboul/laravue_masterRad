@@ -114,6 +114,9 @@ class CustomersController extends BaseController
 
         $customerQuery = Customers::where('id', $id)->first();
 
+        $customerQuery->dob = date_format(date_create($customerQuery->dob), "d.m.Y.");
+        $customerQuery->member_since = date_format(date_create($customerQuery->member_since), "d.m.Y.");
+
         return response()->json(new JsonResponse(['items' => $customerQuery]));
     }
 
@@ -124,14 +127,13 @@ class CustomersController extends BaseController
         $customer->name = $request->name;
         $customer->email = $request->email;
         $customer->mobile = $request->mobile;
-        $customer->dob = $request->dob;
-        $customer->ID_number = $request->ID_number;
+        // $customer->dob = $request->dob;
+        // $customer->ID_number = $request->ID_number;
         $customer->street = $request->street;
         $customer->number = $request->number;
         $customer->city = $request->city;
         $customer->postal_code = $request->postal_code;
         $customer->country = $request->country;
-        $customer->order_id = $request->order_id;
         $customer->updated_at = date("Y-m-d H:i:s");
         $customer->save();
 

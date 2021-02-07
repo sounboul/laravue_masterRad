@@ -148,12 +148,52 @@
           </el-timeline>
         </div>
       </el-tab-pane>
-      <el-tab-pane v-loading="updating" label="Account" name="third">
-        <el-form-item label="Name">
+      <el-tab-pane v-loading="updating" label="Account" name="third" class="third">
+        <el-form-item :label="$t('customers.customer_name')">
           <el-input v-model="customer.name" />
         </el-form-item>
-        <el-form-item label="Email">
+        <el-form-item label="E-mail">
           <el-input v-model="customer.email" />
+        </el-form-item>
+        <el-form-item :label="$t('customers.mobile')">
+          <el-input v-model="customer.mobile" />
+        </el-form-item>
+        <el-form-item :label="$t('customers.dob') + ': ' + customer.dob" class="timepick">
+          <!-- <el-date-picker
+            v-model="timestamp1"
+            type="datetime"
+            :placeholder="$t('discounts.pick_date')"
+          /> -->
+        </el-form-item>
+        <!-- <el-form-item :label="$t('customers.dob')">
+          <el-input v-model="customer.dob" />
+        </el-form-item> -->
+        <el-form-item :label="$t('customers.ID_number')">
+          {{ customer.ID_number }}
+        </el-form-item>
+        <el-form-item :label="$t('customers.street')">
+          <el-input v-model="customer.street" />
+        </el-form-item>
+        <el-form-item :label="$t('customers.number')">
+          <el-input v-model="customer.number" />
+        </el-form-item>
+        <el-form-item :label="$t('customers.city')">
+          <el-input v-model="customer.city" />
+        </el-form-item>
+        <el-form-item :label="$t('customers.postal_code')">
+          <el-input v-model="customer.postal_code" />
+        </el-form-item>
+        <el-form-item :label="$t('customers.country')">
+          <el-input v-model="customer.country" />
+        </el-form-item>
+        <el-form-item :label="$t('customers.member_since')">
+          {{ customer.member_since }}
+        </el-form-item>
+        <el-form-item :label="$t('customers.total_points')">
+          {{ customer.total_points }}
+        </el-form-item>
+        <el-form-item :label="$t('customers.level')">
+          {{ customer.level }}
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit">
@@ -167,6 +207,7 @@
 
 <script>
 import CustomerResource from '@/api/resource';
+import { parseTime } from '@/utils';
 const customerResource = new CustomerResource('customers');
 
 export default {
@@ -197,6 +238,7 @@ export default {
   methods: {
     handleClick(tab, event) {
       console.log('Switching tab ', tab, event);
+      console.log(parseTime);
     },
     onSubmit() {
       this.updating = true;
@@ -289,5 +331,14 @@ export default {
   .el-carousel__item:nth-child(2n+1) {
     background-color: #d3dce6;
   }
+}
+.third {
+  background-color:#283046 !important;
+  padding: 10px;
+  border-radius: .428rem;
+  .el-input {
+   width:250px;
+  }
+  color: #6699ff;
 }
 </style>
