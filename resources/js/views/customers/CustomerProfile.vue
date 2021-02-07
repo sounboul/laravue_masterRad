@@ -1,13 +1,13 @@
 <template>
   <div class="app-container">
-    <el-form v-if="user" :model="user">
+    <el-form v-if="customer" :model="customer">
       <el-row :gutter="20">
         <el-col :span="6">
-          <user-card :user="user" />
-          <user-bio />
+          <customer-card :customer="customer" />
+          <customer-bio />
         </el-col>
         <el-col :span="18">
-          <user-activity :user="user" />
+          <customer-activity :customer="customer" />
         </el-col>
       </el-row>
     </el-form>
@@ -15,36 +15,38 @@
 </template>
 
 <script>
-import Resource from '@/api/resource';
-import UserBio from './components/UserBio';
-import UserCard from './components/UserCard';
-import UserActivity from './components/UserActivity';
+// import CustomerResource from '@/api/customer';
+import CustomerBio from './components/CustomerBio';
+import CustomerCard from './components/CustomerCard';
+import CustomerActivity from './components/CustomerActivity';
+import { fetchCustomer } from '@/api/customer';
 
-const userResource = new Resource('users');
+// const customerResource = new CustomerResource('customers');
 export default {
-  name: 'EditUser',
-  components: { UserBio, UserCard, UserActivity },
+  name: 'EditCustomer',
+  components: { CustomerBio, CustomerCard, CustomerActivity },
   data() {
     return {
-      user: {},
+      customer: {},
     };
   },
   watch: {
-    '$route': 'getUser',
+    '$route': 'getCustomer',
   },
   created() {
     const id = this.$route.params && this.$route.params.id;
-    const currentUserId = this.$store.getters.userId;
+    /* const currentCustomerId = this.$store.getters.userId;
     if (id === currentUserId) {
       this.$router.push('/profile/edit');
       return;
-    }
-    this.getUser(id);
+    } */
+    this.getCustomer(id);
   },
   methods: {
-    async getUser(id) {
-      const { data } = await userResource.get(id);
-      this.user = data;
+    async getCustomer(id) {
+      const { data } = await fetchCustomer(id);
+      this.customer = data.items;
+      // console.log(data.items);
     },
   },
 };

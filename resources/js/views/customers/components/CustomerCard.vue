@@ -1,15 +1,15 @@
 <template>
-  <el-card v-if="user.name">
+  <el-card v-if="customer.name">
     <div class="user-profile">
-      <div class="user-avatar box-center">
+      <!--  <div class="user-avatar box-center">
         <pan-thumb :image="user.avatar" :height="'100px'" :width="'100px'" :hoverable="false" />
-      </div>
+      </div> -->
       <div class="box-center">
         <div class="user-name text-center">
-          {{ user.name }}
+          {{ customer.name }}
         </div>
         <div class="user-role text-center text-muted">
-          {{ getRole() }}
+          {{ test }}
         </div>
       </div>
       <div class="box-social">
@@ -32,25 +32,25 @@
 </template>
 
 <script>
-import PanThumb from '@/components/PanThumb';
+// import PanThumb from '@/components/PanThumb';
 
 export default {
-  components: { PanThumb },
+  // components: { PanThumb },
   props: {
-    user: {
+    customer: {
       type: Object,
       default: () => {
         return {
           name: '',
           email: '',
-          avatar: '',
-          roles: [],
+          mobile: '',
         };
       },
     },
   },
   data() {
     return {
+      test: 'Proba',
       social: [
         {
           'name': 'Facebook: ',
@@ -68,10 +68,7 @@ export default {
     };
   },
   methods: {
-    getRole() {
-      const roles = this.user.roles.map(value => this.$options.filters.uppercaseFirst(value));
-      return roles.join(' | ');
-    },
+
   },
 };
 </script>

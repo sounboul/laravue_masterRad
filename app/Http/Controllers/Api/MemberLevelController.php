@@ -123,7 +123,7 @@ class MemberLevelController extends Controller
 		$helper_from_point = MemberLevel::where('level_strength', $request->level_strength + 1)->first();  	// pomocni red (row) sa prvom visom 																											vaznoscu nivoa 
 		$helper_to_point = MemberLevel::where('level_strength', $request->level_strength - 1)->first();		// pomocni red (row) sa prvom nizom 																											vaznoscu nivoa 
 		$last_level_strength = MemberLevel::find($level_num_levels)->level_strength;		// najvisi nivo vaznosti u tabeli
-//dd($last_level_strength);
+
 	    
 	    if ($request->level_strength < $last_level_strength)		// ukoliko se radi o bilo kom nivou nizem od najjaceg
 	    {	
@@ -156,27 +156,29 @@ class MemberLevelController extends Controller
 				return response()->json(new JsonResponse(['title' => $title, 'message' => $message, 'type' => $type ]));
 		    }
 
-			if ($request->level_strength < $level_num_levels)		// u slucaju jacine nivoa manjeg od najjaceg
-			{
-				$helper_from_point->from_point = $request->to_point + 1;		// pomocnom redu (redu viseg nivoa) se za pocetne bodove 																			dodeljuju krajnji bodovi request-a uvecani za 1
-				$helper_from_point->updated_at = date('Y-m-d H:i:s');
-				$helper_from_point->update();
-			}
-
 			$helper_to_point->to_point = $request->from_point - 1;		// pomocnom redu (redu viseg nivoa) se za krajnje bodove dodeljuju 																		pocetni bodovi request-a umanjeni za 1
 			$helper_to_point->updated_at = date('Y-m-d H:i:s');
 			$helper_to_point->update();
 		}
 		
-		if ($request->to_point > $helper_from_point->to_point) {
-			
-	    	$title = 'discounts.warning';
-    		$message = 'discounts.from_points_overload';
-    		$type = 'error';
-			
-			return response()->json(new JsonResponse(['title' => $title, 'message' => $message, 'type' => $type ]));
+		if($request->level_strength < $level_num_levels)
+		{
+			if ($request->to_point > $helper_from_point->to_point) {
+				
+		    	$title = 'discounts.warning';
+	    		$message = 'discounts.from_points_overload';
+	    		$type = 'error';
+				
+				return response()->json(new JsonResponse(['title' => $title, 'message' => $message, 'type' => $type ]));
+			}
 		}
 
+		if ($request->level_strength < $level_num_levels)		// u slucaju jacine nivoa manjeg od najjaceg
+		{
+			$helper_from_point->from_point = $request->to_point + 1;		// pomocnom redu (redu viseg nivoa) se za pocetne bodove 																			dodeljuju krajnji bodovi request-a uvecani za 1
+			$helper_from_point->updated_at = date('Y-m-d H:i:s');
+			$helper_from_point->update();
+		}
 
 		if($request->no_switch === 0) 
 		{

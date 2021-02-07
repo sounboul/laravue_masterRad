@@ -6,11 +6,18 @@ use Illuminate\Http\Request;
 use App\Laravue\Models\Customers;
 use App\Laravue\Models\MemberLevel;
 use App\Laravue\JsonResponse;
+use App\Http\Resources\CustomerResources;
+use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Support\Arr;
 
 class CustomersController extends BaseController
 {
+    const ITEM_PER_PAGE = 15;
+    
     public function fetchCustomers(Request $request)
     {
+
+       /* $data = [];
         $showActiveCustomers = filter_var($request->showActiveCustomers, FILTER_VALIDATE_BOOLEAN);
 
         $keyword = $request->keyword;
@@ -51,14 +58,21 @@ class CustomersController extends BaseController
                                     ->get();
             }
         }
-
-    	return response()->json(new JsonResponse(['items' => $customers, 'total' => count($customers)]));
+        $data[] = $customers->toArray();
+    	return response()->json(new JsonResponse(['items' => $data]));*/
     }
 
 
     public function fetchAllCustomers(Request $request)
     {
+
         $showActiveCustomers = filter_var($request->showActiveCustomers, FILTER_VALIDATE_BOOLEAN);
+
+        $searchParams = $request->all();
+        $customerQuery = Customers::query();
+        $limit = Arr::get($searchParams, 'limit', static::ITEM_PER_PAGE);
+        $active = Arr::get($searchParams, 'active', '');
+        $keyword = Arr::get($searchParams, 'keyword', '');
 
         if ($request->sort == "+id") {
             $order = 'asc';
@@ -67,9 +81,16 @@ class CustomersController extends BaseController
             $order = 'desc';
         }
 
+        $customerQuery->where('active', 'active');
+
+        return CustomerResources::collection($customerQuery->paginate($limit));
+
+
+
+/*
         $helper_customer_level = memberLevel::findLevel($request->to_point);
         // dd($helper_customer_level);
-
+        
 
         if (!$showActiveCustomers || (!$showActiveCustomers && ($request->sort == "-id"))) {
             $customers = Customers::orderBy('id', $order)->get();
@@ -77,14 +98,51 @@ class CustomersController extends BaseController
         else {
             $customers = Customers::where('active', 'active')->orderBy('id', $order)->get();
         }
-$customers->level = $helper_customer_level;
-    	return response()->json(new JsonResponse(['items' => $customers, 'total' => count($customers)]));
+
+        $data[] = $customers->toArray();
+        dd($data);
+
+    	return response()->json(new JsonResponse(['items' => $data]));*/
+    }
+
+    
+    public function fetchCustomer($id)
+    {
+
+        //$customerQuery = Customers::query();
+        //$limit = Arr::get($searchParams, 'limit', static::ITEM_PER_PAGE);
+
+        $customerQuery = Customers::where('id', $id)->first();
+
+        return response()->json(new JsonResponse(['items' => $customerQuery]));
+    }
+
+
+    public function editCustomer(Request $request, $id)
+    {
+        $customer = Customers::find($id);
+        $customer->name = $request->name;
+        $customer->email = $request->email;
+        $customer->mobile = $request->mobile;
+        $customer->dob = $request->dob;
+        $customer->ID_number = $request->ID_number;
+        $customer->street = $request->street;
+        $customer->number = $request->number;
+        $customer->city = $request->city;
+        $customer->postal_code = $request->postal_code;
+        $customer->country = $request->country;
+        $customer->order_id = $request->order_id;
+        $customer->updated_at = date("Y-m-d H:i:s");
+        $customer->save();
+
+        return;
     }
 
 
     public function fetchDeletedCustomers()
-    {
+    {        $data = [];
     	$customers = Customers::where('active', 'deleted')->get();
-    	return response()->json(new JsonResponse(['items' => $customers, 'total' => count($customers)]));
+        $data[] = $customers;
+    	return response()->json(new JsonResponse(['items' => $data]));
     }
 }

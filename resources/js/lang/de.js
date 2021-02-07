@@ -79,6 +79,7 @@ export default {
     createCategory: 'Kategorie erstellen',
     editCategory: 'Kategorie bearbeiten',
     discounts: 'Rabatte',
+    EditCustomer: 'Kunden bearbeiten',
   },
   navbar: {
     logOut: 'Log Out',
@@ -265,6 +266,7 @@ export default {
     'name_required': 'Name is required',
     'email_required': 'Email is required',
     'mobile_required': 'Mobile is required',
+    'edit_success': 'Kundeninformationen wurden erfolgreich aktualisiert!',
   },
   errors: {
     'back': 'Back',
@@ -305,6 +307,7 @@ export default {
     timestamp_is_required: 'Zeitstempel ist erforderlich!',
     title_is_required: 'Titel ist erforderlich!',
     pick_date: 'Bitte wählen Sie ein Datum',
+    no_time_limit: 'Keine Zeitbegrenzung',
     points_greater_than: 'Startpunkte dürfen nicht größer oder gleich Endpunkten sein!',
     discount_start_date: 'Der Rabatt beginnt bei:',
     discount_end_date: 'Der Rabatt endet am:',

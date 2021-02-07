@@ -79,6 +79,7 @@ export default {
     createCategory: 'Kreiraj kategoriju',
     editCategory: 'Uredi kategoriju',
     discounts: 'Sniženja',
+    EditCustomer: 'Ažuriranje kupca',
   },
   navbar: {
     logOut: 'Odjava',
@@ -267,6 +268,7 @@ export default {
     'name_required': 'Ime je obavezno',
     'email_required': 'Email je obavezan',
     'mobile_required': 'Mobilni telefon je obavezan',
+    'edit_success': 'Informacije o kupcu uspešno ažurirane!',
   },
   errors: {
     'back': 'Nazad',
@@ -307,6 +309,7 @@ export default {
     timestamp_is_required: 'Datum je obavezno polje!',
     title_is_required: 'Naziv je obavezno polje!',
     pick_date: 'Izaberite datum',
+    no_time_limit: 'Bez vremenskog ograničenja',
     points_greater_than: 'Početni bodovi ne mogu biti veći ili jednaki krajnjim!',
     discount_start_date: 'Početak popusta:',
     discount_end_date: 'Kraj popusta:',

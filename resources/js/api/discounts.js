@@ -14,6 +14,13 @@ export function fetchLevels() {
     method: 'get',
   });
 }
+
+export function test() {
+  return request({
+    url: '/test',
+    method: 'get',
+  });
+}
 /* export function updateLevel() {
   return request({
     url: '/updateLevel',

@@ -123,7 +123,7 @@ export const constantRoutes = [
   {
     path: '/customers',
     component: Layout,
-    redirect: '/profile/customers',
+    redirect: '/customers',
     children: [
       {
         path: 'index',
@@ -131,8 +131,29 @@ export const constantRoutes = [
         name: 'CustomerList',
         meta: { title: 'Customers', icon: 'peoples', noCache: true },
       },
+      {
+        path: '/customers/edit/:id(\\d+)',
+        component: () => import('@/views/customers/CustomerProfile'),
+        name: 'EditCustomer',
+        meta: { title: 'EditCustomer', icon: 'people', noCache: true },
+        hidden: true,
+      },
     ],
   },
+  /* {
+    path: '/customer',
+    component: Layout,
+    redirect: '/customer/profile/edit',
+    children: [
+      {
+        path: 'edit',
+        component: () => import('@/views/customers/CustomerProfile'),
+        name: 'CustomerList',
+        meta: { title: 'EditCustomers', icon: 'people', noCache: true },
+        hidden: true,
+      },
+    ],
+  }, */
   articleRoutes,
   categoryRoutes,
   {

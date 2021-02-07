@@ -49,7 +49,10 @@ Route::namespace('Api')->group(function() {
         Route::get('/article/delete/{id}', 'ArticlesController@deleteArticle');
 
         // Customers
+        Route::get('/test', 'CustomersController@test');
         Route::get('/customers', 'CustomersController@fetchCustomers');
+        Route::put('/customers/{id}', 'CustomersController@editCustomer');
+        Route::get('/customer/preview/{id}', 'CustomersController@fetchCustomer');
         Route::get('/all_customers', 'CustomersController@fetchAllCustomers');
 
         // Stores

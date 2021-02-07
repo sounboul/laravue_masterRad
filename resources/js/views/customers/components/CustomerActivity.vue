@@ -1,5 +1,5 @@
 <template>
-  <el-card v-if="user.name">
+  <el-card v-if="customer.name">
     <el-tabs v-model="activeActivity" @tab-click="handleClick">
       <el-tab-pane label="Activity" name="first">
         <div class="user-activity">
@@ -150,13 +150,13 @@
       </el-tab-pane>
       <el-tab-pane v-loading="updating" label="Account" name="third">
         <el-form-item label="Name">
-          <el-input v-model="user.name" :disabled="user.role === 'admin'" />
+          <el-input v-model="customer.name" />
         </el-form-item>
         <el-form-item label="Email">
-          <el-input v-model="user.email" :disabled="user.role === 'admin'" />
+          <el-input v-model="customer.email" />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" :disabled="user.role === 'admin'" @click="onSubmit">
+          <el-button type="primary" @click="onSubmit">
             {{ $t('user.update') }}
           </el-button>
         </el-form-item>
@@ -166,19 +166,18 @@
 </template>
 
 <script>
-import Resource from '@/api/resource';
-const userResource = new Resource('users');
+import CustomerResource from '@/api/resource';
+const customerResource = new CustomerResource('customers');
 
 export default {
   props: {
-    user: {
+    customer: {
       type: Object,
       default: () => {
         return {
           name: '',
           email: '',
-          avatar: '',
-          roles: [],
+          mobile: '',
         };
       },
     },
@@ -187,7 +186,6 @@ export default {
     return {
       activeActivity: 'first',
       carouselImages: [
-        'images/zdravko.jpg',
         'https://cdn.laravue.dev/photo1.png',
         'https://cdn.laravue.dev/photo2.png',
         'https://cdn.laravue.dev/photo3.jpg',
@@ -202,12 +200,12 @@ export default {
     },
     onSubmit() {
       this.updating = true;
-      userResource
-        .update(this.user.id, this.user)
+      customerResource
+        .update(this.customer.id, this.customer)
         .then(response => {
           this.updating = false;
           this.$message({
-            message: this.$t('user.edit_success'),
+            message: this.$t('customers.edit_success'),
             type: 'success',
             duration: 5 * 1000,
           });

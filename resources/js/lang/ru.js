@@ -79,6 +79,7 @@ export default {
     createCategory: 'Создать категорию',
     editCategory: 'Изменить категорию',
     discounts: 'Скидки',
+    EditCustomer: 'Изменить клиента',
   },
   navbar: {
     logOut: 'Выход',
@@ -265,6 +266,7 @@ export default {
     'name_required': 'Имя обязательно',
     'email_required': 'Электронная почта требуется',
     'mobile_required': 'Требуется мобильный',
+    'edit_success': 'Информация о клиентах успешно обновлена!',
   },
   errors: {
     'back': 'Назад',
@@ -305,6 +307,7 @@ export default {
     timestamp_is_required: 'Отметка времени обязательна!',
     title_is_required: 'Требуется название!',
     pick_date: 'Выберите дату',
+    no_time_limit: 'Без ограничения по времени',
     points_greater_than: 'Начальные точки не могут быть больше или равны конечным точкам!',
     discount_start_date: 'Скидка начинается от:',
     discount_end_date: 'Скидка заканчивается:',

@@ -79,6 +79,7 @@ export default {
     createCategory: 'Create Category',
     editCategory: 'Edit Category',
     discounts: 'Discounts',
+    EditCustomer: 'Edit Customer',
   },
   navbar: {
     logOut: 'Log Out',
@@ -265,6 +266,7 @@ export default {
     'name_required': 'Name is required',
     'email_required': 'Email is required',
     'mobile_required': 'Mobile is required',
+    'edit_success': 'Customer\'s information has been updated successfully!',
   },
   errors: {
     'back': 'Back',
@@ -305,6 +307,7 @@ export default {
     timestamp_is_required: 'Timestamp is required!',
     title_is_required: 'Title is required!',
     pick_date: 'Please pick a date',
+    no_time_limit: 'No time limit',
     points_greater_than: 'Starting points cannot be greater than or equal to ending points!',
     discount_start_date: 'The discount starts from:',
     discount_end_date: 'The discount ends on:',

@@ -42,7 +42,7 @@
       </el-table-column>
       <el-table-column :label="$t('customers.customer_name')" min-width="120px">
         <template slot-scope="{row}">
-          <span class="" style="font-weight: bold;cursor: pointer;" @click="previewCustomer(row)">{{ row.name }}</span>
+          <router-link class="" style="font-weight: bold;cursor: pointer;" :to="'/customers/edit/'+row.id">{{ row.name }}</router-link>
           <!-- <el-tag>{{ row.title }}</el-tag> -->
         </template>
       </el-table-column>
@@ -231,12 +231,13 @@
 </template>
 
 <script>
-import { fetchList, fetchPv, fetchCustomer, createCustomer, updateCustomer, deleteCustomer, fetchAllCustomers } from '@/api/customer';
+import { fetchPv, createCustomer, updateCustomer, deleteCustomer, fetchAllCustomers } from '@/api/customer';
 import waves from '@/directive/waves'; // Waves directive
 import { parseTime } from '@/utils';
 import checkRole from '@/utils/role';
 import Pagination from '@/components/Pagination'; // Secondary package based on el-pagination
 
+// const customerResources = new CustomerResources();
 const calendarTypeOptions = [
   { key: 'CN', display_name: 'China' },
   { key: 'US', display_name: 'USA' },
@@ -271,11 +272,11 @@ export default {
     return {
       tableKey: 0,
       list: null,
-      total: 0,
       listLoading: true,
+      total: 0,
       listQuery: {
         page: 1,
-        limit: 20,
+        limit: 15,
         importance: undefined,
         title: undefined,
         name: undefined,
@@ -331,33 +332,38 @@ export default {
     };
   },
   created() {
-    // this.getList();
-    this.activeCustomers();
+    this.getList();
+    // this.activeCustomers();
   },
   methods: {
     async getList() {
       this.listLoading = true;
-      const { data } = await fetchList(this.listQuery);
-      this.list = data.items;
-      this.total = data.total;
+      const { limit, page } = this.listQuery;
+      const { data, meta } = await fetchAllCustomers(this.listQuery);
+      this.list = data;
+      this.list.forEach((element, index) => {
+        element['index'] = (page - 1) * limit + index + 1;
+      });
+      this.total = meta.total;
       this.listLoading = false;
     },
-    async activeCustomers() {
+    /* async activeCustomers() {
       this.listLoading = true;
       this.listQuery.showActiveCustomers = !this.showActiveCustomers;
-      const { data } = await fetchAllCustomers(this.listQuery);
+      const { data, meta } = await fetchAllCustomers(this.listQuery);
       this.showActiveCustomers = !this.showActiveCustomers;
-      this.list = data.items;
-      this.total = data.total;
+      this.list = data;
+      console.log(data);
+      this.total = meta.total;
       this.listLoading = false;
-    },
+    }, */
     async getAllCustomers() {
       this.listLoading = true;
       this.listQuery.showActiveCustomers = !this.showActiveCustomers;
-      const { data } = await fetchAllCustomers(this.listQuery);
+      const { data, meta } = await fetchAllCustomers(this.listQuery);
       this.showActiveCustomers = !this.showActiveCustomers;
-      this.list = data.items;
-      this.total = data.total;
+      this.list = data;
+      this.total = meta.total;
       this.listLoading = false;
     },
     handleFilter() {
@@ -445,10 +451,11 @@ export default {
         }
       });
     },
-    previewCustomer(row) {
-      fetchCustomer(row.id);
+    /* previewCustomer(row) {
+      const { data } = fetchCustomer(row.id);
+      this.temp = data;
       this.modalCustomerPreview = true;
-    },
+    }, */
     handleUpdate(row) {
       this.temp = Object.assign({}, row); // copy obj
       this.temp.timestamp = new Date(this.temp.timestamp);
