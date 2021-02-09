@@ -296,6 +296,11 @@ export default {
     categories: 'Kategorien',
     category: 'Kategorie',
   },
+  categories: {
+    code: 'Kode',
+    name: 'Name',
+    description: 'Beschreibung',
+  },
   discounts: {
     dialog_title: 'DEFINITIONEN von PUNKTEN und RABATTEN',
     customers_level: 'Kundenebene',

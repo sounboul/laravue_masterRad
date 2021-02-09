@@ -60,6 +60,10 @@ Route::namespace('Api')->group(function() {
 
         // Categories
         Route::get('/categories', 'CategoriesController@fetchCategories');
+        Route::post('/categories/update', 'CategoriesController@updateCategory');
+        Route::post('/categories/create', 'CategoriesController@createCategory');
+        Route::get('/categories/delete/{id}', 'CategoriesController@deleteCategory');
+        Route::get('/categories/getCategories', 'CategoriesController@getCategories');
 
         // Departments
         Route::get('/departments', 'DepartmentsController@fetchDepartments');

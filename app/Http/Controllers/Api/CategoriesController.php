@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 class CategoriesController extends BaseController
 {
-    const ITEM_PER_PAGE = 15;
+    const ITEM_PER_PAGE = 10;
 
     public function index(Request $request)
     {
@@ -20,7 +20,7 @@ class CategoriesController extends BaseController
         $limit = $request->limit;
 
         if (!empty($keyword)) {
-            $categoryQuery = Categories::where('name', 'LIKE', '%' .$keyword . '%')->get();
+            $categoryQuery = Categories::where('name', 'LIKE', '%' .$keyword . '%')->paginate($limit);
         }
 
         return response()->json(new JsonResponse(['items' => $categoryQuery, 'limit' => $limit]));
@@ -28,14 +28,19 @@ class CategoriesController extends BaseController
 
     public function fetchCategories(Request $request)
     {
-        if ($request->sort == "+id") {
-            $order = 'asc';
-        }
-        else {
+
+        $keyword = $request->keyword;
+        $sort = $request->sort;
+        $limit = $request->limit;
+
+        if ($request->sort == "-id") {
             $order = 'desc';
         }
+        else {
+            $order = 'asc';
+        }
 
-        $categories = Categories::orderBy('name', $order)->get();
+        $categories = Categories::orderBy('name', $order)->paginate($limit);
     	
         $keyword = $request->keyword;
         $sort = $request->sort;
@@ -44,15 +49,26 @@ class CategoriesController extends BaseController
         if (!empty($keyword)) {
             $categories = Categories::where('name', 'LIKE', '%' .$keyword . '%')
                                 ->orderBy('name', $order)
-                                ->get();
+                                ->paginate($limit);
         }
 
-    	return response()->json(new JsonResponse(['items' => $categories, 'total' => count($categories), 'sort' => $request->sort]));
+        return response()->json(new JsonResponse(['items' => $categories]));
+    	//return response()->json(new JsonResponse(['items' => $categories, 'total' => count($categories), 'sort' => $request->sort]));
     }
 
-    public function previewCategory($id)
+    public function getCategories(Request $request)
     {
         
+        if ($request->sort == "-id") {
+            $order = 'desc';
+        }
+        else {
+            $order = 'asc';
+        }
+
+        $categories = Categories::orderBy('name', $order)->get();
+        
+        return response()->json(new JsonResponse(['items' => $categories]));
     }
 
     public function createCategory(Request $request, Categories $categories)
@@ -63,15 +79,22 @@ class CategoriesController extends BaseController
         ) {
             return response()->json(['error' => 'Permission denied'], 403);
         }
-        dd($request);
-    }
 
-    public function updateCategory(Request $request, Categories $categories)
-    {
-        if ($categories === null) {
-            return response()->json(['error' => 'category not found'], 404);
+        if (empty($request->code) || empty($request->name)) {
+            return response()->json(['error' => 'Nepotpuni podaci'], 404);
         }
 
+        $category = new Categories;
+
+        $category->code = $request->code;
+        $category->name = $request->name;
+        $category->description = $request->description;
+        $category->save();
+        return;
+    }
+
+    public function updateCategory(Request $request)
+    {
         $currentUser = Auth::user();
         if (!$currentUser->isAdmin()
             && !$currentUser->hasPermission(\App\Laravue\Acl::PERMISSION_category_MANAGE)
@@ -79,20 +102,15 @@ class CategoriesController extends BaseController
             return response()->json(['error' => 'Permission denied'], 403);
         }
 
-        $id = $request->id;
-        $category = Categories::find($id);
+        $category = Categories::find($request->id);
+
         if ($category === null) {
             return response()->json(['error' => 'category not found'], 404);
         }
 
         $category->code = $request->code;
-        $category->title = $request->title;
-        $category->price = $request->price;
-        $category->amount = $request->amount;
-        $category->brand = $request->brand;
-        $category->tags = $request->tags;
+        $category->name = $request->name;
         $category->description = $request->description;
-        $category->short_description = $request->short_description;
         $category->save();
         return;
     }
@@ -102,6 +120,6 @@ class CategoriesController extends BaseController
         $category = Categories::find($id);
         $category->delete();
         
-        return response()->json(['status' => $id]);
+        return;
     }
 }

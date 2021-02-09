@@ -298,6 +298,11 @@ export default {
     categories: 'Kategorije',
     category: 'Kategorija',
   },
+  categories: {
+    code: 'Šifra',
+    name: 'Naziv',
+    description: 'Opis',
+  },
   discounts: {
     dialog_title: 'DEFINISANJE BODOVA i POPUSTA',
     customers_level: 'Nivo kupca',

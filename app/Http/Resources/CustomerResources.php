@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Laravue\Models\Customers;
+use App\Laravue\Models\MemberLevel;
 
 class CustomerResources extends JsonResource
 {

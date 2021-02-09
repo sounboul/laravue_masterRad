@@ -24,6 +24,7 @@ const categoryRoutes = {
       component: () => import('@/views/categories/Create'),
       name: 'CreateCategory',
       meta: { title: 'createCategory', icon: 'skill', permissions: ['manage article'] },
+      hidden: true,
     },
     {
       path: 'category/edit/:id(\\d+)',

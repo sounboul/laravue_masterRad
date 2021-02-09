@@ -52,7 +52,7 @@
           <!-- <el-tag>{{ row.title }}</el-tag> -->
         </template>
       </el-table-column>
-      <el-table-column :label="$t('customers.level')" class="col" align="center">
+      <el-table-column :label="$t('discounts.customers_level')" class="col" align="center">
         <template slot-scope="{row}">
           <span>{{ row.level }}</span>
           <!-- <el-tag>{{ row.title }}</el-tag> -->
@@ -285,7 +285,7 @@ export default {
         updated_at: '',
         sort: '+id',
         keyword: '',
-        showActiveCustomers: !this.showActiveCustomers,
+        showActiveCustomers: true,
       },
       importanceOptions: [1, 2, 3],
       calendarTypeOptions,
@@ -343,7 +343,7 @@ export default {
       const { data, meta } = await fetchAllCustomers(this.listQuery);
       this.showActiveCustomers = !this.showActiveCustomers;
       this.list = data;
-      console.log(this.showActiveCustomers);
+      // console.log(this.showActiveCustomers);
       this.list.forEach((element, index) => {
         element['index'] = (page - 1) * limit + index + 1;
       });
@@ -353,10 +353,10 @@ export default {
     async activeCustomers() {
       this.listLoading = true;
       this.listQuery.showActiveCustomers = !this.showActiveCustomers;
+      console.log(this.showActiveCustomers);
       const { data, meta } = await fetchAllCustomers(this.listQuery);
       this.showActiveCustomers = !this.showActiveCustomers;
       this.list = data;
-      console.log(data);
       this.total = meta.total;
       this.listLoading = false;
     },

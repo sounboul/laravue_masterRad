@@ -8,6 +8,21 @@ export function fetchList(query) {
   });
 }
 
+export function fetchCategories(query) {
+  return request({
+    url: '/categories',
+    method: 'get',
+    params: query,
+  });
+}
+
+export function getCategories() {
+  return request({
+    url: '/categories/getCategories',
+    method: 'get',
+  });
+}
+
 export function searchKeyword(query) {
   return request({
     url: '/article',
@@ -16,9 +31,9 @@ export function searchKeyword(query) {
   });
 }
 
-export function fetchArticle(id) {
+export function showCategory(id) {
   return request({
-    url: '/article/preview/' + id,
+    url: '/categories/preview/' + id,
     method: 'get',
   });
 }
@@ -30,25 +45,25 @@ export function fetchPv(id) {
   });
 }
 
-export function createArticle(data) {
+export function createCategory(data) {
   return request({
-    url: '/article/create',
+    url: '/categories/create',
     method: 'post',
     data,
   });
 }
 
-export function updateArticle(data) {
+export function updateCategory(data) {
   return request({
-    url: '/article/update',
+    url: '/categories/update',
     method: 'post',
     data,
   });
 }
 
-export function deleteArticle(id) {
+export function deleteCategory(id) {
   return request({
-    url: '/article/delete/' + id,
+    url: '/categories/delete/' + id,
     method: 'get',
   });
 }

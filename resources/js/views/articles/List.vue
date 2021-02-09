@@ -14,9 +14,9 @@
       <!-- <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         {{ $t('table.search') }}
       </el-button> -->
-      <el-checkbox v-model="showReviewer" class="filter-item" style="margin-left:15px;" @change="tableKey=tableKey+1">
+      <!-- <el-checkbox v-model="showReviewer" class="filter-item" style="margin-left:15px;" @change="tableKey=tableKey+1">
         {{ $t('table.reviewer') }}
-      </el-checkbox>
+      </el-checkbox> -->
       <div style="float: right;">
         <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
           {{ $t('table.add') }}
@@ -135,11 +135,11 @@
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="170px" style="width: 400px; margin-left:50px;">
         <el-form-item :label="$t('table.code')" prop="code">
           <el-input v-model="temp.code" />
         </el-form-item>
-        <el-form-item :label="$t('table.title')" prop="title">
+        <el-form-item :label="$t('table.title')">
           <el-input v-model="temp.title" />
         </el-form-item>
         <!-- <el-form-item :label="$t('table.date')" prop="timestamp">
@@ -153,6 +153,11 @@
         <el-form-item :label="$t('table.importance')">
           <el-rate v-model="temp.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="3" style="margin-top:8px;" />
         </el-form-item> -->
+        <el-form-item :label="$t('articles.categories')" width="180px" align="center">
+          <el-select v-model="temp.category" :placeholder="$t('articles.categories')" clearable style="margin-right: 4%; width: 100%" class="filter-item">
+            <el-option v-for="item in categories" :key="item.id" :label="item.name | uppercaseFirst" :value="item.id" />
+          </el-select>
+        </el-form-item>
         <el-form-item :label="$t('table.remark')">
           <el-input v-model="temp.remark" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" placeholder="Please input" />
         </el-form-item>
@@ -191,6 +196,11 @@
         <el-form-item :label="$t('table.importance')">
           <el-rate v-model="temp.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="3" style="margin-top:8px;" />
         </el-form-item> -->
+        <el-table-column :label="$t('stores.location')" width="180px" align="center">
+          <template slot-scope="scope">
+            <span v-for="(n, index) in scope.row.store" :key="index">{{ scope.row.store[index].address }}<br></span>
+          </template>
+        </el-table-column>
         <el-form-item :label="$t('table.remark')">
           <el-input v-model="temp.remark" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" placeholder="Please input" />
         </el-form-item>
@@ -219,6 +229,8 @@
 
 <script>
 import { fetchList, fetchPv, fetchArticle, createArticle, updateArticle, deleteArticle } from '@/api/article';
+import { fetchStores } from '@/api/stores';
+import { getCategories } from '@/api/category';
 import waves from '@/directive/waves'; // Waves directive
 import { parseTime } from '@/utils';
 import checkRole from '@/utils/role';
@@ -260,16 +272,16 @@ export default {
       list: null,
       total: 0,
       listLoading: true,
+      // test: [],
       listQuery: {
         page: 1,
-        limit: 20,
+        limit: 10,
         importance: undefined,
         title: undefined,
         type: undefined,
         sort: '+id',
         keyword: '',
       },
-      // codes: this.getCodes(),
       importanceOptions: [1, 2, 3],
       calendarTypeOptions,
       checkRole,
@@ -278,13 +290,14 @@ export default {
       showReviewer: false,
       temp: {
         id: undefined,
-        importance: 1,
+        // importance: 1,
         remark: '',
-        timestamp: new Date(),
-        title: '',
+        // timestamp: new Date(),
+        // title: '',
         type: '',
         code: '',
-        status: 'published',
+        // status: 'published',
+        category: '',
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -292,6 +305,8 @@ export default {
         update: 'Edit',
         create: 'Create',
       },
+      categories: this.getCategories(),
+      // stores: this.getStores(),
       dialogPvVisible: false,
       modalArticlePreview: false,
       pvData: [],
@@ -310,19 +325,28 @@ export default {
     async getList() {
       this.listLoading = true;
       const { data } = await fetchList(this.listQuery);
-      this.list = data.items;
-      this.total = data.total;
-
-      // Just to simulate the time of the request
+      this.list = data.items.data;
+      this.total = data.items.total;
+      /* for (var i = 0; i < this.list.length; i++) {
+        this.test[i] = this.list[i].categories;
+      } */
       this.listLoading = false;
     },
     handleFilter() {
       this.listQuery.page = 1;
-      // this.listQuery.keyword = this.keyword;
       this.getList();
     },
-    async getCodes() {
-      // test
+    async getStores() {
+      this.listLoading = true;
+      const { data } = await fetchStores();
+      this.stores = data.stores;
+      this.listLoading = false;
+    },
+    async getCategories() {
+      this.listLoading = true;
+      const { data } = await getCategories();
+      this.categories = data.items;
+      this.listLoading = false;
     },
     handleModifyStatus(row, status) {
       this.$message({
@@ -385,7 +409,6 @@ export default {
       });
     },
     previewArticle(row) {
-      // console.log(row);
       fetchArticle(row.id);
       this.modalArticlePreview = true;
     },
@@ -412,6 +435,7 @@ export default {
               }
             }
             this.dialogFormVisible = false;
+            this.getList();
             this.$notify({
               title: this.$t('table.success'),
               message: this.$t('table.updated_successfully'),

@@ -7,6 +7,8 @@ use App\Laravue\Models\Articles;
 use App\Laravue\Models\Categories;
 use App\Laravue\Models\Stores;
 use App\Laravue\JsonResponse;
+use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Http\Resources\Json\JsonResource;
 use App\Laravue\Models\User;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -15,7 +17,7 @@ use Validator;
 
 class ArticlesController extends BaseController
 {
-    const ITEM_PER_PAGE = 15;
+    const ITEM_PER_PAGE = 10;
 
     public function index(Request $request)
     {
@@ -32,9 +34,17 @@ class ArticlesController extends BaseController
         foreach ($articleQuery as $key => $article) {
             $store[$key] = $article->store;
         }
-
-        return response()->json(new JsonResponse(['items' => $articleQuery, 'limit' => $limit]));
+$articleQuery = toArray($articleQuery);
+        return response()->json(new JsonResponse([$articleQuery->paginate($limit)]));
+        //return response()->json(new JsonResponse(['items' => $articleQuery, 'limit' => $limit]));
     }
+
+
+    function objectToArray(&$object)
+    {
+        return @json_decode(json_encode($object), true);
+    }
+
 
     public function fetchArticles(Request $request)
     {
@@ -45,31 +55,29 @@ class ArticlesController extends BaseController
             $order = 'desc';
         }
 
-        $articles = Articles::orderBy('title', $order)->get();
-    	
         $keyword = $request->keyword;
         $sort = $request->sort;
         $limit = $request->limit;
 
-        if (!empty($keyword)) {
-            $articles = Articles::where('code', 'LIKE', '%' .$keyword . '%')
-                                ->orWhere('title', 'LIKE', '%' .$keyword . '%')
-                                ->orderBy('title', $order)
-                                ->get();
-        }
+        $articles = Articles::orderBy('title', $order)->paginate($limit);        
 
         foreach ($articles as $key => $article) {
             $store[$key] = $article->store;
-        }
-
-        foreach ($articles as $key => $article) {
             $category[$key] = $article->categories;
         }
 
-        //$category = $articles->category_id;
-        // dd($category);
-
-    	return response()->json(new JsonResponse(['items' => $articles, 'total' => count($articles), 'sort' => $request->sort]));
+        if (!empty($keyword)) {
+            $articles = Articles::where('code', 'LIKE', '%' .$keyword . '%')
+                                ->orWhere('title', 'LIKE', '%' .$keyword . '%')/*
+                                ->orWhere('title', 'LIKE', '%' .$keyword . '%')*/
+                                ->orderBy('title', $order)
+                                ->paginate($limit);
+        }
+//dd($articles);
+        //$array = $this->objectToArray($articles);
+//dd($array);
+    	return response()->json(new JsonResponse(['items' => $articles]));
+        //return response()->json(new JsonResponse(['items' => $articles, 'total' => count($articles), 'sort' => $request->sort]));
     }
 
     public function previewArticle($id)
@@ -109,6 +117,7 @@ class ArticlesController extends BaseController
 
         $article->code = $request->code;
         $article->title = $request->title;
+        $article->categories_id = $request->category;
         $article->price = $request->price;
         $article->amount = $request->amount;
         $article->brand = $request->brand;

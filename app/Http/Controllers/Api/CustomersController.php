@@ -17,55 +17,12 @@ class CustomersController extends BaseController
     public function fetchCustomers(Request $request)
     {
 
-       /* $data = [];
-        $showActiveCustomers = filter_var($request->showActiveCustomers, FILTER_VALIDATE_BOOLEAN);
 
-        $keyword = $request->keyword;
-        $sort = $request->sort;
-        $limit = $request->limit;
-
-
-        if ($request->sort == "+id") {
-            $order = 'asc';
-        }
-        else {
-            $order = 'desc';
-        }
-
-        if(!$showActiveCustomers || (!$showActiveCustomers && ($request->sort == "-id"))) {
-            $customers = Customers::orderBy('id', $order)->get();
-            if (!empty($keyword)) {
-                $customers = Customers::where(function($query) use ($keyword) {
-                                    $query->orWhere('name', 'LIKE', '%' . $keyword . '%')
-                                            ->orWhere('member_since', 'LIKE', '%' . $keyword . '%')
-                                            ->orWhere('updated_at', 'LIKE', '%' . $keyword . '%');
-                                    })
-                                    ->orderBy('id', $order)
-                                    ->get();
-            }
-        }
-        else {
-            $customers = Customers::where('active', 'active')->orderBy('id', $order)->get();
-
-            if (!empty($keyword)) {
-                $customers = Customers::where('active', 'active')
-                                ->where(function($query) use ($keyword) {
-                                    $query->orWhere('name', 'LIKE', '%' . $keyword . '%')
-                                            ->orWhere('member_since', 'LIKE', '%' . $keyword . '%')
-                                            ->orWhere('updated_at', 'LIKE', '%' . $keyword . '%');
-                                    })
-                                    ->orderBy('id', $order)
-                                    ->get();
-            }
-        }
-        $data[] = $customers->toArray();
-    	return response()->json(new JsonResponse(['items' => $data]));*/
     }
 
 
     public function fetchAllCustomers(Request $request)
     {
-
 
         $searchParams = $request->all();
         $showActiveCustomers = filter_var($request->showActiveCustomers, FILTER_VALIDATE_BOOLEAN);
@@ -81,37 +38,56 @@ class CustomersController extends BaseController
         else {
             $order = 'desc';
         }
-//dd($showActiveCustomers);
+
         if(!$showActiveCustomers || (!$showActiveCustomers && ($order == "-id"))) {
             
             $customerQuery->orderBy('id', $order);
 
             if (!empty($keyword)) {
-                $customerQuery->where(function($query) use ($keyword) {
-                                $query->orWhere('name', 'LIKE', '%' . $keyword . '%')
-                                        ->orWhere('member_since', 'LIKE', '%' . $keyword . '%')
-                                        ->orWhere('updated_at', 'LIKE', '%' . $keyword . '%');
-                                })
-                                ->orderBy('id', $order);
+                if($showActiveCustomers || (!$showActiveCustomers && ($order == "-id"))) {
+                    $customerQuery->where(function($query) use ($keyword) {
+                                    $query->orWhere('name', 'LIKE', '%' . $keyword . '%')
+                                            ->orWhere('email', 'LIKE', '%' . $keyword . '%');
+                                    })
+                                    ->orderBy('id', $order);
+                }
+                else
+                {
+                    $customerQuery->where('active', 'active')
+                                    ->where(function($query) use ($keyword) {
+                                    $query->orWhere('name', 'LIKE', '%' . $keyword . '%')
+                                            ->orWhere('email', 'LIKE', '%' . $keyword . '%');
+                                    })
+                                    ->orderBy('id', $order);
+                }
             }
         }
         else 
         {
+
             $customerQuery->where('active', 'active')->orderBy('id', $order);
          
             if (!empty($keyword)) {
-                $customerQuery->where('active', 'active')
-                                ->where(function($query) use ($keyword) {
-                                $query->orWhere('name', 'LIKE', '%' . $keyword . '%')
-                                        ->orWhere('member_since', 'LIKE', '%' . $keyword . '%')
-                                        ->orWhere('updated_at', 'LIKE', '%' . $keyword . '%');
-                                })
-                                ->orderBy('id', $order);
+                if(!$showActiveCustomers || ($showActiveCustomers && ($order == '+id'))) {
+                    $customerQuery->where('active', 'active')
+                                    ->where(function($query) use ($keyword) {
+                                    $query->orWhere('name', 'LIKE', '%' . $keyword . '%')
+                                            ->orWhere('email', 'LIKE', '%' . $keyword . '%');
+                                    })
+                                    ->orderBy('id', $order);
+                }
+                else
+                {
+                    $customerQuery->where(function($query) use ($keyword) {
+                                    $query->orWhere('name', 'LIKE', '%' . $keyword . '%')
+                                            ->orWhere('email', 'LIKE', '%' . $keyword . '%');
+                                    })
+                                    ->orderBy('id', $order);
+                }
             }
         }
+       
 
-
-        //$customerQuery->where('active', 'active')->orderBy('id', $order);
 
         return CustomerResources::collection($customerQuery->paginate($limit));
     }

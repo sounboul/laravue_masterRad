@@ -51,9 +51,9 @@
           <span>{{ }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('articles.name')" min-width="120px">
+      <el-table-column :label="$t('articles.name')" width="250px">
         <template slot-scope="{row}">
-          <span style="font-size: 12pt; margin-top: 2px; cursor: pointer;" @click="previewArticle(row)">{{ row.name }}</span>
+          <span style="font-size: 12pt;">{{ row.name }}</span>
         </template>
       </el-table-column>
       <!-- <el-table-column :label="$t('articles.price') + $t(' (') + $t('articles.currency')+ $t(')')" width="120px" align="center">
@@ -122,11 +122,11 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
-        <el-form-item :label="$t('table.code')" prop="code">
+        <el-form-item :label="$t('categories.code')" prop="code">
           <el-input v-model="temp.code" />
         </el-form-item>
-        <el-form-item :label="$t('table.title')" prop="title">
-          <el-input v-model="temp.title" />
+        <el-form-item :label="$t('categories.name')" :placeholder="temp.name">
+          <el-input v-model="temp.name" />
         </el-form-item>
         <!-- <el-form-item :label="$t('table.date')" prop="timestamp">
           <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="Please pick a date" />
@@ -139,8 +139,8 @@
         <el-form-item :label="$t('table.importance')">
           <el-rate v-model="temp.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="3" style="margin-top:8px;" />
         </el-form-item> -->
-        <el-form-item :label="$t('table.remark')">
-          <el-input v-model="temp.remark" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" placeholder="Please input" />
+        <el-form-item :label="$t('categories.description')">
+          <el-input v-model="temp.description" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" :placeholder="categories.description" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -153,8 +153,8 @@
       </div>
     </el-dialog>
 
-    <el-dialog :title="$t('route.articleDetails')" :visible.sync="modalArticlePreview">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
+    <el-dialog :title="$t('route.articleDetails')" :visible.sync="modalCategoryPreview">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="170px" style="width: 400px; margin-left:50px;">
         <el-form-item :label="$t('table.code')" prop="code">
           <el-input v-model="temp.code" />
         </el-form-item>
@@ -182,7 +182,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="modalArticlePreview = false">
+        <el-button @click="modalCategoryPreview = false">
           {{ $t('table.cancel') }}
         </el-button>
         <!-- <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
@@ -204,7 +204,7 @@
 </template>
 
 <script>
-import { fetchList, fetchPv, fetchArticle, createArticle, updateArticle, deleteArticle } from '@/api/category';
+import { fetchList, fetchPv, showCategory, createCategory, updateCategory, deleteCategory } from '@/api/category';
 import waves from '@/directive/waves'; // Waves directive
 import { parseTime } from '@/utils';
 import checkRole from '@/utils/role';
@@ -248,13 +248,14 @@ export default {
       listLoading: true,
       listQuery: {
         page: 1,
-        limit: 20,
+        limit: 10,
         importance: undefined,
         title: undefined,
         type: undefined,
         sort: '+id',
         keyword: '',
       },
+      categories: '',
       // codes: this.getCodes(),
       importanceOptions: [1, 2, 3],
       calendarTypeOptions,
@@ -264,13 +265,13 @@ export default {
       showReviewer: false,
       temp: {
         id: undefined,
-        importance: 1,
+        // importance: 1,
         remark: '',
-        timestamp: new Date(),
+        // timestamp: new Date(),
         title: '',
         type: '',
         code: '',
-        status: 'published',
+        // status: 'published',
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -279,7 +280,7 @@ export default {
         create: 'Create',
       },
       dialogPvVisible: false,
-      modalArticlePreview: false,
+      modalCategoryPreview: false,
       pvData: [],
       rules: {
         type: [{ required: true, message: 'type is required', trigger: 'change' }],
@@ -296,15 +297,14 @@ export default {
     async getList() {
       this.listLoading = true;
       const { data } = await fetchList(this.listQuery);
-      this.list = data.items;
-      this.total = data.total;
+      this.list = data.items.data;
+      this.total = data.items.total;
 
       // Just to simulate the time of the request
       this.listLoading = false;
     },
     handleFilter() {
       this.listQuery.page = 1;
-      // this.listQuery.keyword = this.keyword;
       this.getList();
     },
     async getCodes() {
@@ -354,9 +354,9 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          this.temp.id = parseInt(Math.random() * 100) + 1024; // mock a id
-          this.temp.author = 'laravue';
-          createArticle(this.temp).then(() => {
+          // this.temp.id = parseInt(Math.random() * 100) + 1024; // mock a id
+          // this.temp.author = 'laravue';
+          createCategory(this.temp).then(() => {
             this.list.unshift(this.temp);
             this.dialogFormVisible = true;
             this.$notify({
@@ -365,19 +365,19 @@ export default {
               type: 'success',
               duration: 2000,
             });
-            // this.getList();
+            this.dialogFormVisible = false;
           });
         }
       });
     },
     previewArticle(row) {
       // console.log(row);
-      fetchArticle(row.id);
-      this.modalArticlePreview = true;
+      showCategory(row.id);
+      this.modalCategoryPreview = true;
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row); // copy obj
-      this.temp.timestamp = new Date(this.temp.timestamp);
+      // this.temp.timestamp = new Date(this.temp.timestamp);
       this.dialogStatus = 'update';
       this.dialogFormVisible = true;
       this.$nextTick(() => {
@@ -388,8 +388,8 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           const tempData = Object.assign({}, this.temp);
-          tempData.timestamp = +new Date(tempData.timestamp); // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
-          updateArticle(tempData).then(() => {
+          // tempData.timestamp = +new Date(tempData.timestamp); // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
+          updateCategory(tempData).then(() => {
             for (const v of this.list) {
               if (v.id === this.temp.id) {
                 const index = this.list.indexOf(v);
@@ -409,7 +409,7 @@ export default {
       });
     },
     handleDelete(id) {
-      deleteArticle(id).then(() => {
+      deleteCategory(id).then(() => {
         this.$notify({
           title: this.$t('table.success'),
           message: this.$t('table.deleted_successfully'),
@@ -428,8 +428,8 @@ export default {
     handleDownload() {
       this.downloadLoading = true;
       import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['id', this.$t('articles.categories'), this.$t('table.description')];
-        const filterVal = ['id', 'name', 'description'];
+        const tHeader = ['id', this.$t('categories.code'), this.$t('articles.categories'), this.$t('table.description')];
+        const filterVal = ['id', 'code', 'name', 'description'];
         const data = this.formatJson(filterVal, this.list);
         excel.export_json_to_excel({
           header: tHeader,

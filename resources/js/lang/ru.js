@@ -296,6 +296,11 @@ export default {
     categories: 'Категории',
     category: 'Категория',
   },
+  categories: {
+    code: 'Код',
+    name: 'Имя',
+    description: 'Описание',
+  },
   discounts: {
     dialog_title: 'ОПРЕДЕЛЕНИЯ БАЛЛОВ и СКИДК',
     customers_level: 'Уровень клиента',
