@@ -43,6 +43,7 @@ Route::namespace('Api')->group(function() {
         // Articles
         Route::get('/article', 'ArticlesController@index');
         Route::get('/articles', 'ArticlesController@fetchArticles');
+        Route::get('/articles_selling', 'ArticlesController@fetchArticles1');
         Route::get('/article/preview/{id}', 'ArticlesController@previewArticle');
         Route::post('/article/create', 'ArticlesController@createArticle');
         Route::post('/article/update', 'ArticlesController@updateArticle');

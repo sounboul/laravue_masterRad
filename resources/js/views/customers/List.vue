@@ -38,7 +38,7 @@
       <el-table-column :label="$t('table.code')" prop="code" align="center" width="120">
         <template slot-scope="{row}">
           <router-link :to="'/selling/index/'+row.id">
-            <el-button size="mini" style="background-color: #f58938; color: #fff;">{{ row.code }}</el-button>
+            <el-button size="mini" style="background-color: #f58938; color: #fff; border-radius: .428rem">{{ row.code }}</el-button>
           </router-link>
         </template>
       </el-table-column>
@@ -283,8 +283,6 @@ export default {
         title: undefined,
         name: undefined,
         type: undefined,
-        member_since: '',
-        updated_at: '',
         sort: '+id',
         keyword: '',
         showActiveCustomers: true,
@@ -345,6 +343,7 @@ export default {
       const { data, meta } = await fetchAllCustomers(this.listQuery);
       this.showActiveCustomers = !this.showActiveCustomers;
       this.list = data;
+      this.level = data[0].level;
       // console.log(this.showActiveCustomers);
       this.list.forEach((element, index) => {
         element['index'] = (page - 1) * limit + index + 1;

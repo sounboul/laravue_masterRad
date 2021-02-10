@@ -7,7 +7,7 @@
           <customer-bio />
         </el-col>
         <el-col :span="18">
-          <customer-activity :customer="customer" />
+          <customer-activity :customer="customer" :level="level" />
         </el-col>
       </el-row>
     </el-form>
@@ -28,6 +28,7 @@ export default {
   data() {
     return {
       customer: {},
+      level: '', // Obavezan!
     };
   },
   watch: {
@@ -46,6 +47,7 @@ export default {
     async getCustomer(id) {
       const { data } = await fetchCustomer(id);
       this.customer = data.items;
+      this.level = data.level;
       // console.log(data.items);
     },
   },

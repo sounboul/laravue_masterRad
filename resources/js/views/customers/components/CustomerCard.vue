@@ -48,6 +48,7 @@ export default {
           email: '',
           mobile: '',
           dob: '',
+          facebook: this.customer.facebook_account,
         };
       },
     },
@@ -58,7 +59,7 @@ export default {
       social: [
         {
           'name': 'Facebook: ',
-          'account': 'facebook.account',
+          'account': this.customer.facebook,
         },
         {
           'name': 'Instagram: ',

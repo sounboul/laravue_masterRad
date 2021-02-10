@@ -251,7 +251,7 @@ export default {
     'total_points1': 'bodova',
     'total_points2': 'Definicija bodova',
     'total_points': 'Bodovi',
-    'level': 'Član',
+    'level': 'Nivo',
     'last_change': 'Poslednja aktivnost',
     'active': 'Aktivan',
     'pending': 'Nepotvrđen',

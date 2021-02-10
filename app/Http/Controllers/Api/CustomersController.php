@@ -104,7 +104,9 @@ class CustomersController extends BaseController
         }
         $customerQuery->member_since = date_format(date_create($customerQuery->member_since), "d.m.Y.");
 
-        return response()->json(new JsonResponse(['items' => $customerQuery]));
+        $level = MemberLevel::findLevel($customerQuery->total_points);
+//dd($customerQuery);
+        return response()->json(new JsonResponse(['items' => $customerQuery, 'level' => $level]));
     }
 
 

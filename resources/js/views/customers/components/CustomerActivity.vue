@@ -164,7 +164,16 @@
             type="datetime"
             :placeholder="$t('discounts.pick_date')"
           /> -->
-          <span>{{ customer.dob != null ? customer.dob : '' }}</span>
+          <div v-if="customer.dob != null">
+            {{ customer.dob }}
+          </div>
+          <div v-else>
+            <el-date-picker
+              v-model="customer.dob"
+              type="datetime"
+              :placeholder="$t('discounts.pick_date')"
+            />
+          </div>
         </el-form-item>
         <!-- <el-form-item :label="$t('customers.dob')">
           <el-input v-model="customer.dob" />
@@ -195,11 +204,11 @@
         <el-form-item :label="$t('customers.member_since')">
           {{ customer.member_since }}
         </el-form-item>
-        <el-form-item :label="$t('customers.total_points')">
+        <el-form-item :label="$t('customers.total_points') + ': '">
           {{ customer.total_points }}
         </el-form-item>
-        <el-form-item :label="$t('customers.level')">
-          {{ customer.level }}
+        <el-form-item :label="$t('customers.level') + ': '">
+          {{ level | uppercaseFirst() }}
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit">
@@ -228,6 +237,10 @@ export default {
         };
       },
       dob: '',
+    },
+    level: {
+      type: String,
+      default: '',
     },
   },
   data() {

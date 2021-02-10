@@ -85,6 +85,42 @@ $articleQuery = toArray($articleQuery);
         
     }
 
+
+
+    public function fetchArticles1(Request $request)
+    {
+        if ($request->sort == "+id") {
+            $order = 'asc';
+        }
+        else {
+            $order = 'desc';
+        }
+
+        $keyword = $request->keyword;
+        $sort = $request->sort;
+        $limit = $request->limit;
+
+        $articles = Articles::orderBy('title', $order)->get();        
+
+        foreach ($articles as $key => $article) {
+            //$store[$key] = $article->store;
+            $category[$key] = $article->categories;
+        }
+
+        if (!empty($keyword)) {
+            $articles = Articles::where('code', 'LIKE', '%' .$keyword . '%')
+                                ->orWhere('title', 'LIKE', '%' .$keyword . '%')/*
+                                ->orWhere('title', 'LIKE', '%' .$keyword . '%')*/
+                                ->orderBy('title', $order)
+                                ->get();
+        }
+
+        return response()->json(new JsonResponse(['items' => $articles]));
+        
+    }
+
+
+
     public function createArticle(Request $request, Articles $articles)
     {
         $currentUser = Auth::user();
@@ -95,6 +131,8 @@ $articleQuery = toArray($articleQuery);
         }
         dd($request);
     }
+
+
 
     public function updateArticle(Request $request, Articles $articles)
     {

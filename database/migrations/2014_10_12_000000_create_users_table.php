@@ -32,7 +32,7 @@ class CreateUsersTable extends Migration
                                         ->on('department')
                                         ->onUpdate('cascade')
                                         ->onDelete('cascade');
-            $table->string('active')->default('active');
+            $table->string('active')->default('pending');
             $table->rememberToken();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
