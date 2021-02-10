@@ -158,12 +158,13 @@
         <el-form-item :label="$t('customers.mobile')">
           <el-input v-model="customer.mobile" />
         </el-form-item>
-        <el-form-item :label="$t('customers.dob') + ': ' + customer.dob" class="timepick">
+        <el-form-item :label="$t('customers.dob') + ': ' " class="timepick">
           <!-- <el-date-picker
             v-model="timestamp1"
             type="datetime"
             :placeholder="$t('discounts.pick_date')"
           /> -->
+          <span>{{ customer.dob != null ? customer.dob : '' }}</span>
         </el-form-item>
         <!-- <el-form-item :label="$t('customers.dob')">
           <el-input v-model="customer.dob" />
@@ -212,7 +213,7 @@
 
 <script>
 import CustomerResource from '@/api/resource';
-import { parseTime } from '@/utils';
+// import { parseTime } from '@/utils';
 const customerResource = new CustomerResource('customers');
 
 export default {
@@ -226,6 +227,7 @@ export default {
           mobile: '',
         };
       },
+      dob: '',
     },
   },
   data() {
@@ -242,8 +244,8 @@ export default {
   },
   methods: {
     handleClick(tab, event) {
-      console.log('Switching tab ', tab, event);
-      console.log(parseTime);
+      // console.log('Switching tab ', tab, event);
+      // console.log(parseTime);
     },
     onSubmit() {
       this.updating = true;

@@ -9,13 +9,16 @@
           {{ customer.name }}
         </div>
         <div class="user-role text-center text-muted">
-          {{ test }}
+          {{ customer.email }}
+        </div>
+        <div class="user-role text-center text-muted">
+          {{ customer.mobile }}
         </div>
       </div>
       <div class="box-social">
         <el-table :data="social" :show-header="false">
           <el-table-column prop="name" label="Name" />
-          <el-table-column label="Count" align="right" width="250">
+          <el-table-column label="Count" align="right" width="200">
             <template slot-scope="scope">
               {{ scope.row.account }}
             </template>
@@ -44,6 +47,7 @@ export default {
           name: '',
           email: '',
           mobile: '',
+          dob: '',
         };
       },
     },

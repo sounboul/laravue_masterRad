@@ -18,6 +18,7 @@ class CustomerResources extends JsonResource
     {
         return [
             'id' => $this->id,
+            'code' => $this->code,
             'name' => $this->name,
             'email' => $this->email,
             'mobile' => $this->mobile,
@@ -31,7 +32,7 @@ class CustomerResources extends JsonResource
             'member_since' => $this->member_since,
             'order_id' => $this->order_id,
             'total_points' => $this->total_points,
-            'level' => $this->level,
+            'level' => MemberLevel::findLevel($this->total_points),
             'active' => $this->active,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

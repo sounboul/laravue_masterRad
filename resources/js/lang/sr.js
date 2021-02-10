@@ -80,6 +80,8 @@ export default {
     editCategory: 'Uredi kategoriju',
     discounts: 'Sniženja',
     EditCustomer: 'Ažuriranje kupca',
+    importArticles: 'Uvoz proizvoda',
+    selling: 'Prodaja',
   },
   navbar: {
     logOut: 'Odjava',

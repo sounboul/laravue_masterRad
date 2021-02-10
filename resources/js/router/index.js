@@ -108,6 +108,19 @@ export const constantRoutes = [
     ],
   },
   {
+    path: '/selling',
+    component: Layout,
+    redirect: '/selling/index',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/selling/Sale'),
+        name: 'Selling',
+        meta: { title: 'selling', icon: 'documentation', noCache: true },
+      },
+    ],
+  },
+  {
     path: '/profile',
     component: Layout,
     redirect: '/profile/edit',
@@ -154,7 +167,6 @@ export const constantRoutes = [
       },
     ],
   }, */
-  articleRoutes,
   // categoryRoutes,
   {
     path: '/categories',
@@ -199,6 +211,7 @@ export const constantRoutes = [
 ];
 
 export const asyncRoutes = [
+  articleRoutes,
   permissionRoutes,
   componentRoutes,
   chartsRoutes,

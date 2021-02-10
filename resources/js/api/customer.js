@@ -40,8 +40,8 @@ export function createCustomer(data) {
 
 export function updateCustomer(data) {
   return request({
-    url: '/customer/update',
-    method: 'post',
+    url: '/customers',
+    method: 'put',
     data,
   });
 }

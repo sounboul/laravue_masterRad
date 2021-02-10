@@ -35,9 +35,9 @@
       style="width: 100%;border-radius: .428rem;"
       @sort-change="sortChange"
     >
-      <el-table-column label="" prop="id" align="center" width="40">
-        <template>
-          <span>{{ }}</span>
+      <el-table-column :label="$t('table.code')" prop="code" align="center" width="120">
+        <template slot-scope="{row}">
+          <el-button size="mini" style="background-color: #f58938; color: #fff;">{{ row.code }}</el-button>
         </template>
       </el-table-column>
       <el-table-column :label="$t('customers.customer_name')" min-width="120px">
@@ -301,7 +301,7 @@ export default {
         title: '',
         email: '',
         mobile: '',
-        dob: '',
+        dob: new Date(),
         ID_number: '',
         street: '',
         number: '',
@@ -461,7 +461,7 @@ export default {
     }, */
     handleUpdate(row) {
       this.temp = Object.assign({}, row); // copy obj
-      this.temp.timestamp = new Date(this.temp.timestamp);
+      this.temp.timestamp = new Date(this.temp).toLocaleString('en-EN', { timeZone: 'Europe/Belgrade' });
       this.dialogStatus = 'update';
       this.dialogFormVisible = true;
       this.$nextTick(() => {
@@ -472,7 +472,7 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           const tempData = Object.assign({}, this.temp);
-          tempData.timestamp = +new Date(tempData.timestamp); // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
+          tempData.dob = new Date(tempData.dob).toLocaleString('en-EN', { timeZone: 'Europe/Belgrade' }); // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
           updateCustomer(tempData).then(() => {
             for (const v of this.list) {
               if (v.id === this.temp.id) {
@@ -481,6 +481,7 @@ export default {
                 break;
               }
             }
+            this.getList();
             this.dialogFormVisible = false;
             this.$notify({
               title: this.$t('table.success'),

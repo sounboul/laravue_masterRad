@@ -38,7 +38,7 @@ class CustomersController extends BaseController
         else {
             $order = 'desc';
         }
-
+/*
         if(!$showActiveCustomers || (!$showActiveCustomers && ($order == "-id"))) {
             
             $customerQuery->orderBy('id', $order);
@@ -63,19 +63,20 @@ class CustomersController extends BaseController
             }
         }
         else 
-        {
+        {*/
 
             $customerQuery->where('active', 'active')->orderBy('id', $order);
          
-            if (!empty($keyword)) {
-                if(!$showActiveCustomers || ($showActiveCustomers && ($order == '+id'))) {
+            if (!empty($keyword)) {/*
+                if($order == '+id') {*/
                     $customerQuery->where('active', 'active')
                                     ->where(function($query) use ($keyword) {
                                     $query->orWhere('name', 'LIKE', '%' . $keyword . '%')
+                                            ->orWhere('code', 'LIKE', '%' . $keyword . '%')
                                             ->orWhere('email', 'LIKE', '%' . $keyword . '%');
                                     })
                                     ->orderBy('id', $order);
-                }
+                /*}
                 else
                 {
                     $customerQuery->where(function($query) use ($keyword) {
@@ -83,9 +84,9 @@ class CustomersController extends BaseController
                                             ->orWhere('email', 'LIKE', '%' . $keyword . '%');
                                     })
                                     ->orderBy('id', $order);
-                }
+                }*/
             }
-        }
+        /*}*/
        
 
 
@@ -98,16 +99,19 @@ class CustomersController extends BaseController
 
         $customerQuery = Customers::where('id', $id)->first();
 
-        $customerQuery->dob = date_format(date_create($customerQuery->dob), "d.m.Y.");
+        if($customerQuery->dob != null) {
+            $customerQuery->dob = date_format(date_create($customerQuery->dob), "d.m.Y.");
+        }
         $customerQuery->member_since = date_format(date_create($customerQuery->member_since), "d.m.Y.");
 
         return response()->json(new JsonResponse(['items' => $customerQuery]));
     }
 
 
-    public function editCustomer(Request $request, $id)
+    public function editCustomer(Request $request, Customers $customers)
     {
-        $customer = Customers::find($id);
+        $customer = Customers::find($request->id);
+
         $customer->name = $request->name;
         $customer->email = $request->email;
         $customer->mobile = $request->mobile;
@@ -118,6 +122,7 @@ class CustomersController extends BaseController
         $customer->postal_code = $request->postal_code;
         $customer->country = $request->country;
         $customer->updated_at = date("Y-m-d H:i:s");
+        $customer->dob = date_format(date_create($request->dob), "Y-m-d");
         $customer->save();
 
         return;
@@ -130,4 +135,5 @@ class CustomersController extends BaseController
         $data[] = $customers;
     	return response()->json(new JsonResponse(['items' => $data]));
     }
+
 }

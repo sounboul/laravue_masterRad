@@ -80,6 +80,8 @@ export default {
     editCategory: 'Edit Category',
     discounts: 'Discounts',
     EditCustomer: 'Edit Customer',
+    importArticles: 'Articles Import',
+    selling: 'Selling',
   },
   navbar: {
     logOut: 'Log Out',

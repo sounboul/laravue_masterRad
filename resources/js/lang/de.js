@@ -80,6 +80,8 @@ export default {
     editCategory: 'Kategorie bearbeiten',
     discounts: 'Rabatte',
     EditCustomer: 'Kunden bearbeiten',
+    importArticles: 'Artikel Import',
+    selling: 'Verkauf',
   },
   navbar: {
     logOut: 'Log Out',

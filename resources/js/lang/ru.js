@@ -80,6 +80,8 @@ export default {
     editCategory: 'Изменить категорию',
     discounts: 'Скидки',
     EditCustomer: 'Изменить клиента',
+    importArticles: 'Импортировать предметы',
+    selling: 'Продажа',
   },
   navbar: {
     logOut: 'Выход',

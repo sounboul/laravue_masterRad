@@ -68,7 +68,7 @@ class MemberLevelController extends Controller
     public function updateLevel(Request $request)
     {
     	$level_id = MemberLevel::where('level', $request->type)->first();
-    	$level = MemberLevel::find($level_id);
+    	$level = MemberLevel::find($level_id->id);
 
     	return response()->json(new JsonResponse(['items' => $level, 'type' => $request->type, 'limit' => $request->limit]));
     }

@@ -14,10 +14,10 @@ class memberLevel extends Model
 
     public static function findLevel($customer_total_points)
     {
-    	$levels = memberLevel::all();
-    	foreach ($levels as $key => $level) {
-    		if ($customer_total_points >= $level->from_point && $customer_total_points < $level->to_point) {
-    			$pom = $level->level; 
+    	$members = memberLevel::all();
+    	foreach ($members as $member) {
+    		if ($customer_total_points >= $member->from_point && $customer_total_points <= $member->to_point) {
+    			$pom = $member->level; 
     		}
     	}
     	return $pom;
