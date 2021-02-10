@@ -111,9 +111,10 @@ export const constantRoutes = [
     path: '/selling',
     component: Layout,
     redirect: '/selling/index',
+    hidden: true,
     children: [
       {
-        path: 'index',
+        path: '/selling/index/:id(\\d+)',
         component: () => import('@/views/selling/Sale'),
         name: 'Selling',
         meta: { title: 'selling', icon: 'documentation', noCache: true },

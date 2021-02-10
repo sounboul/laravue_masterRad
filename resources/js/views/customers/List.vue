@@ -37,7 +37,9 @@
     >
       <el-table-column :label="$t('table.code')" prop="code" align="center" width="120">
         <template slot-scope="{row}">
-          <el-button size="mini" style="background-color: #f58938; color: #fff;">{{ row.code }}</el-button>
+          <router-link :to="'/selling/index/'+row.id">
+            <el-button size="mini" style="background-color: #f58938; color: #fff;">{{ row.code }}</el-button>
+          </router-link>
         </template>
       </el-table-column>
       <el-table-column :label="$t('customers.customer_name')" min-width="120px">

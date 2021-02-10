@@ -89,15 +89,15 @@ class UserController extends BaseController
 
         if(!empty($department)) {
 
-            $department = Department::where('name', $department)->first();
+            $department1 = Department::where('name', $department)->first();
             if (!empty($keyword)) {
-                    $userQuery->where('department_id', $department->id)
+                    $userQuery->where('department_id', $department1->id)
                             ->where('name', 'LIKE', '%' . $keyword . '%')
                             ->Where('email', 'LIKE', '%' . $keyword . '%');
                 }
             else
             {
-                $userQuery->where('department_id', $department->id);
+                $userQuery->where('department_id', $department1->id);
                 
             }
 
