@@ -299,6 +299,7 @@ export default {
     pieces: 'komada',
     categories: 'Kategorije',
     category: 'Kategorija',
+    unavailable: '-',
   },
   categories: {
     code: 'Šifra',

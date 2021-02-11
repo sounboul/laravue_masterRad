@@ -122,6 +122,8 @@ $articleQuery = toArray($articleQuery);
             $level = MemberLevel::findLevel($customer->total_points);
             $temp_percent = MemberLevel::where('level', $level)->first()->discount_percent / 10;
             $article->price = (1 - $temp_percent/100) * $article->price;
+            $store[$key] = $article->store;
+            $category[$key] = $article->categories;
         }
 //dd($articles);
         return response()->json(new JsonResponse(['items' => $articles]));

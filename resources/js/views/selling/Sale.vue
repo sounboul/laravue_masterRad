@@ -36,27 +36,6 @@
             <span>{{ currencyFormatEU(scope.row.discount/10, 1) }}</span>
           </template>
         </el-table-column>
-        <!-- <el-table-column :label="$t('articles.discount_silver') + ' (' + $t('articles.currency') + ')'" width="155px" align="center">
-          <template slot-scope="scope">
-            <span>{{ discountPrice(scope.row.discount_silver, scope.row.price) }}</span>
-            <br>
-            <span style="color: #4f637d;">{{ '(' + currencyFormatEU(scope.row.discount_silver/10, 1) + ' %) ' }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column :label="$t('articles.discount_gold') + ' (' + $t('articles.currency') + ')'" width="155px" align="center">
-          <template slot-scope="scope">
-            <span>{{ discountPrice(scope.row.discount_gold, scope.row.price) }}</span>
-            <br>
-            <span style="color: #4f637d;">{{ '(' + currencyFormatEU(scope.row.discount_gold/10, 1) + ' %) ' }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column :label="$t('articles.discount_premium') + ' (' + $t('articles.currency') + ')'" width="155px" align="center">
-          <template slot-scope="scope">
-            <span>{{ discountPrice(scope.row.discount_premium, scope.row.price) }}</span>
-            <br>
-            <span style="color: #4f637d;">{{ '(' + currencyFormatEU(scope.row.discount_premium/10, 1) + ' %) ' }}</span>
-          </template>
-        </el-table-column> -->
         <el-table-column :label="$t('articles.in_stock') + ' (' + $t('articles.pieces') + ')'" width="120px" align="center">
           <template slot-scope="scope">
             <span>{{ scope.row.amount }}</span>
@@ -66,12 +45,21 @@
           <template slot-scope="scope">
             <span>{{ scope.row.categories.name }}</span>
           </template>
-        </el-table-column>
-        <el-table-column :label="$t('stores.location')" width="180px" align="center">
-          <template slot-scope="scope">
-            <span v-for="(n, index) in scope.row.store" :key="index">{{ scope.row.store[index].address }}<br></span>
-          </template>
         </el-table-column> -->
+        <el-table-column :label="$t('stores.location')" width="120px" align="center">
+          <template slot-scope="scope">
+            <div v-if="scope.row.store.length > 0">
+              <div class="hasTooltip" @mouseover="previewArticle()">{{ scope.row.store.length }}
+                <span>
+                  <div v-for="(n, index) in scope.row.store" :key="index" style="padding: 2px 5px;">
+                    {{ scope.row.store[index].address }}
+                  </div>
+                </span>
+              </div>
+            </div>
+            <div v-else>{{ $t('-') }}</div>
+          </template>
+        </el-table-column>
       </el-table>
     </div>
     <div class="bill">
@@ -119,9 +107,9 @@ export default {
       this.listLoading = false;
     },
     async getCustomer() {
-      const id = this.$route.params && this.$route.params.id;
+      // const id = this.$route.params && this.$route.params.id;
       this.listLoading = true;
-      const { data } = await fetchCustomer(id);
+      const { data } = await fetchCustomer(this.listQuery.id);
       this.list1 = data.items;
       this.level = data.level;
       // console.log(this.list1);
@@ -147,7 +135,7 @@ export default {
       return this.currencyFormatEU(((1 - this.currencyFormatEU(discount / 10, 1) / 100) * price) / 100, 2);
     },
     previewArticle(row){
-
+      console.log(row);
     },
   },
 };
@@ -182,7 +170,7 @@ export default {
     border-radius: .428rem;
     padding: 7px;
     margin-top: 15px;
-    height: 800px;
+    max-height: 700px;
     overflow: hidden;
     overflow: scroll;
     // box-shadow: 5px 10px 10px #001133, -5px 10px 10px #001133 !important;
@@ -200,6 +188,57 @@ export default {
     overflow: hidden;
     overflow: scroll;
     // box-shadow: 5px 10px 10px #001133, -5px 10px 10px #001133 !important;
+  }
+
+  /* Tooltip container */
+  .tooltip {
+    position: relative;
+    display: inline-block;
+    //border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+  }
+
+  /* Tooltip text */
+  .tooltip .tooltiptext {
+    visibility: hidden;
+    width: 220px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 9999;
+    top: -5px;
+    right: 105%;
+  }
+
+  /* Show the tooltip text when you mouse over the tooltip container */
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+  }
+
+  .hasTooltip span {
+      display: none;
+      color: #000;
+      text-decoration: none;
+      padding: 3px;
+  }
+
+  .hasTooltip:hover span {
+      display: block;
+      z-index: 9999;
+      position: absolute;
+      top: -25px;
+      right: 75%;
+      color: #fff;
+      background-color: #283046;
+      border-radius: .428rem;
+      box-shadow: 5px 10px 10px #001133, -5px -5px 10px #001133 !important;
+      margin: 2px 10px;
+      width: 200px;
+      visibility: visible;
+      owerflow: visible;
   }
   @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@1,300;1,400&family=Raleway:wght@500&display=swap');
 </style>
