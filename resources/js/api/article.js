@@ -60,3 +60,10 @@ export function deleteArticle(id) {
     method: 'get',
   });
 }
+
+/* export function pom() {
+  return request({
+    url: '/pom',
+    method: 'get',
+  });
+} */

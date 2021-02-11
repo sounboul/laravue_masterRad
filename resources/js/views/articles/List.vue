@@ -61,7 +61,7 @@
           <span>{{ currencyFormatEU(scope.row.discount/10, 1) }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('articles.discount_silver') + ' (' + $t('articles.currency') + ')'" width="155px" align="center">
+      <!-- <el-table-column :label="$t('articles.discount_silver') + ' (' + $t('articles.currency') + ')'" width="155px" align="center">
         <template slot-scope="scope">
           <span>{{ discountPrice(scope.row.discount_silver, scope.row.price) }}</span>
           <br>
@@ -81,7 +81,7 @@
           <br>
           <span style="color: #4f637d;">{{ '(' + currencyFormatEU(scope.row.discount_premium/10, 1) + ' %) ' }}</span>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column :label="$t('articles.in_stock') + ' (' + $t('articles.pieces') + ')'" width="120px" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.amount }}</span>

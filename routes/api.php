@@ -47,6 +47,7 @@ Route::namespace('Api')->group(function() {
         Route::get('/article/preview/{id}', 'ArticlesController@previewArticle');
         Route::post('/article/create', 'ArticlesController@createArticle');
         Route::post('/article/update', 'ArticlesController@updateArticle');
+        // Route::get('/pom', 'ArticlesController@pom');
         Route::get('/article/delete/{id}', 'ArticlesController@deleteArticle');
 
         // Customers

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Laravue\Models\Articles;
 use App\Laravue\Models\Categories;
+use App\Laravue\Models\Customers;
+use App\Laravue\Models\MemberLevel;
 use App\Laravue\Models\Stores;
 use App\Laravue\JsonResponse;
 use Illuminate\Http\Resources\Json\ResourceCollection;
@@ -59,12 +61,7 @@ $articleQuery = toArray($articleQuery);
         $sort = $request->sort;
         $limit = $request->limit;
 
-        $articles = Articles::orderBy('title', $order)->paginate($limit);        
-
-        foreach ($articles as $key => $article) {
-            $store[$key] = $article->store;
-            $category[$key] = $article->categories;
-        }
+        $articles = Articles::orderBy('title', $order)->paginate($limit);    
 
         if (!empty($keyword)) {
             $articles = Articles::where('code', 'LIKE', '%' .$keyword . '%')
@@ -72,6 +69,11 @@ $articleQuery = toArray($articleQuery);
                                 ->orWhere('title', 'LIKE', '%' .$keyword . '%')*/
                                 ->orderBy('title', $order)
                                 ->paginate($limit);
+        }    
+
+        foreach ($articles as $key => $article) {
+            $store[$key] = $article->store;
+            $category[$key] = $article->categories;
         }
 //dd($articles);
         //$array = $this->objectToArray($articles);
@@ -89,32 +91,39 @@ $articleQuery = toArray($articleQuery);
 
     public function fetchArticles1(Request $request)
     {
+        $customer = Customers::find($request->id);
+/*
         if ($request->sort == "+id") {
             $order = 'asc';
         }
         else {
             $order = 'desc';
-        }
+        }*/
 
         $keyword = $request->keyword;
-        $sort = $request->sort;
-        $limit = $request->limit;
+        //$sort = $request->sort;
+        //$limit = $request->limit;
 
-        $articles = Articles::orderBy('title', $order)->get();        
+        $articles = Articles::orderBy('title', 'asc')->get();        
 
-        foreach ($articles as $key => $article) {
-            //$store[$key] = $article->store;
+     /*   foreach ($articles as $key => $article) {
+            $store[$key] = $article->store;
             $category[$key] = $article->categories;
         }
-
+*/
         if (!empty($keyword)) {
             $articles = Articles::where('code', 'LIKE', '%' .$keyword . '%')
                                 ->orWhere('title', 'LIKE', '%' .$keyword . '%')/*
                                 ->orWhere('title', 'LIKE', '%' .$keyword . '%')*/
-                                ->orderBy('title', $order)
+                                ->orderBy('title', 'asc')
                                 ->get();
         }
-
+        foreach ($articles as $key => $article) {
+            $level = MemberLevel::findLevel($customer->total_points);
+            $temp_percent = MemberLevel::where('level', $level)->first()->discount_percent / 10;
+            $article->price = (1 - $temp_percent/100) * $article->price;
+        }
+//dd($articles);
         return response()->json(new JsonResponse(['items' => $articles]));
         
     }
@@ -173,4 +182,22 @@ $articleQuery = toArray($articleQuery);
         
         return response()->json(['status' => $id]);
     }
+
+/*    public function pom()  // Upisuje u bazu random artikle od 402 do 1000
+    {
+        for ($i=402; $i < 1001; $i++) {  
+            $article = new Articles;
+            $article->code = 10000 + $i;
+            $article->title = 'Artikal'. $i;
+            $article->categories_id = rand(1,12);
+            $article->supplier_id = rand(1,4);
+            $article->price = rand(10000, 25000000);
+            $article->amount = rand(5,50);
+            $article->brand = 'Brend'. rand(1,10);
+            $article->tags = '';
+            $article->description = '';
+            $article->short_description = '';
+            $article->save();
+        } 
+    }*/
 }

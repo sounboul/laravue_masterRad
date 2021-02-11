@@ -100,6 +100,7 @@ export default {
         limit: 10,
         sort: '+id',
         keyword: '',
+        id: this.$route.params && this.$route.params.id,
       },
     };
   },
@@ -112,7 +113,6 @@ export default {
       this.listLoading = true;
       const { data } = await fetchList1(this.listQuery);
       this.list = data.items;
-      console.log(this.list);
       /* for (var i = 0; i < this.list.length; i++) {
         this.test[i] = this.list[i].categories;
       } */
@@ -145,6 +145,9 @@ export default {
     },
     discountPrice(discount, price){
       return this.currencyFormatEU(((1 - this.currencyFormatEU(discount / 10, 1) / 100) * price) / 100, 2);
+    },
+    previewArticle(row){
+
     },
   },
 };
@@ -179,7 +182,7 @@ export default {
     border-radius: .428rem;
     padding: 7px;
     margin-top: 15px;
-    height: 250px;
+    height: 800px;
     overflow: hidden;
     overflow: scroll;
     // box-shadow: 5px 10px 10px #001133, -5px 10px 10px #001133 !important;
