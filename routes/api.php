@@ -52,7 +52,8 @@ Route::namespace('Api')->group(function() {
         Route::get('/article/preview/{id}', 'ArticlesController@previewArticle');
         Route::post('/article/create', 'ArticlesController@createArticle');
         Route::post('/article/update', 'ArticlesController@update');
-        // Route::get('/pom', 'ArticlesController@pom');
+        Route::post('/articleUpdate1', 'ArticlesController@articleUpdate1');
+        //      
         Route::get('/article/delete/{id}', 'ArticlesController@deleteArticle');
 
         // Customers
@@ -62,6 +63,8 @@ Route::namespace('Api')->group(function() {
         Route::get('/customer/preview/{id}', 'CustomersController@fetchCustomer');
         Route::get('/all_customers', 'CustomersController@fetchAllCustomers');
         Route::post('/customer/create', 'CustomersController@createCustomer');
+        Route::post('/customerUpdate1', 'CustomersController@customerUpdate1');
+        //Route::get('/pom', 'CustomersController@pom');
 
         // Stores
         Route::get('/stores', 'StoresController@fetchStores');
@@ -82,7 +85,8 @@ Route::namespace('Api')->group(function() {
         Route::get('/updateLevel', 'MemberLevelController@updateLevel');
         Route::post('/discount/update', 'MemberLevelController@update');
 
-
+        // Bills
+        Route::post('/listItem1', 'BillController@listItem');
 
     });
 });

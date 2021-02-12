@@ -23,7 +23,7 @@
         </el-table-column>
         <el-table-column :label="$t('articles.name')" min-width="120px">
           <template slot-scope="{row}">
-            <span style="margin-top: 2px; cursor: pointer;" @click="articleList(row, billList.length)">{{ row.title }}</span>
+            <span style="margin-top: 2px; cursor: pointer;" @click="articleList(row)">{{ row.title }}</span>
           </template>
         </el-table-column>
         <el-table-column :label="$t('articles.price') + ' (' + $t('articles.currency') + ')'" width="150px" align="center">
@@ -65,7 +65,7 @@
     <div class="bill">
       <el-table
         :key="tableKey"
-        :data="billList"
+        :data="pomBill.billList"
         fit
         highlight-current-row
         style="width: 100%; word-break: break-word; font-size: 15pt; border-radius: .428rem; margin-bottom: 10px;"
@@ -88,14 +88,14 @@
       </el-table>
       <div style="display: inline;">
         <div style="float: left;">
-          {{ $t('articles.pieces') }}: {{ billList.length }}
+          {{ $t('articles.pieces') }}: {{ pomBill.billList.length }}
         </div>
         <div style="float:right;">
-          {{ $t('articles.total') }}: {{ currencyFormatEU(bill / 100, 2) }} {{ $t('articles.currency') }}
+          {{ $t('articles.total') }}: {{ currencyFormatEU(listItem.bill / 100, 2) }} {{ $t('articles.currency') }}
         </div>
       </div>
       <br>
-      <div style="float: right;">{{ $t('customers.total_points1') + ': ' + earnedPoints }}</div>
+      <div style="float: right;">{{ $t('customers.total_points1') + ': ' + listItem.earnedPoints }}</div>
       <br>
       <el-button style="float: left; margin-top: 12px; width: 150px;" type="danger" class="pan-btn light-blue-btn" @click="resetBill">Ponisti</el-button>
       <el-button style="float: right; margin-top: 12px; width: 150px;" type="success" class="pan-btn blue-btn" @click="submitBill">Kraj racuna</el-button>
@@ -105,6 +105,7 @@
 
 <script>
 
+import { billUpdate, listing } from '@/api/sale';
 import { fetchCustomer } from '@/api/customer';
 import { fetchList1 } from '@/api/article';
 import { parseTime } from '@/utils';
@@ -118,19 +119,25 @@ export default {
       list1: '',
       level: '',
       listLoading: true,
-      bill: 0,
-      cnt: 0,
-      earnedPoints: 0,
       default_point_value: 1000,
       max_points: 500,
-      dat: [],
-      billList: [],
       listQuery: {
         page: 1,
         limit: 10,
         sort: '+id',
         keyword: '',
         id: this.$route.params && this.$route.params.id,
+      },
+      listItem: {
+        id: this.$route.params && this.$route.params.id,
+        bill: 0,
+        earnedPoints: 0,
+        order_id: 0,
+        articleUpdate: '',
+        listItem1: [],
+      },
+      pomBill: {
+        billList: [],
       },
     };
   },
@@ -176,37 +183,46 @@ export default {
       return this.currencyFormatEU(((1 - this.currencyFormatEU(discount / 10, 1) / 100) * price) / 100, 2);
     },
     articleList(row){
-      const clicked_article = this.list.findIndex(x => x.id === row.id);
-      this.list[clicked_article].amount = this.list[clicked_article].amount - 1;
-      const pom = this.billList.concat(row);
-      this.billList = pom;
-      this.bill = this.bill + row.price;
-      this.earnedPoints = this.points(this.bill);
+      const clicked_article_list_id = this.list.findIndex(x => x.id === row.id);
+      const pom = this.pomBill.billList.concat(row);
+      this.pomBill.billList = pom;
+      this.list[clicked_article_list_id].amount = this.list[clicked_article_list_id].amount - 1;
+      this.listItem.bill = this.listItem.bill + row.price;
+      this.listItem.earnedPoints = this.points(this.listItem.bill);
     },
     articleUndo(row){
-      const clicked_article = this.billList.find(x => x.id === row.id);
+      const clicked_article = this.pomBill.billList.find(x => x.id === row.id);
       const added_row = this.list.find(x => x.code === row.code);
       added_row.amount = added_row.amount + 1;
-      for (var i = 0; i < this.billList.length; i++) {
-        if (this.billList[i].id === clicked_article.id) {
-          this.billList.splice(i, 1);
+      for (var i = 0; i < this.pomBill.billList.length; i++) {
+        if (this.pomBill.billList[i].id === clicked_article.id) {
+          this.pomBill.billList.splice(i, 1);
         }
       }
-      this.bill = this.bill - row.price;
+      this.listItem.bill = this.listItem.bill - row.price;
+      this.listItem.earnedPoints = this.points(this.listItem.bill);
     },
     test() {
     },
     points(bill) {
-      var temp = Math.floor((this.bill / 100) / this.default_point_value);
+      var temp = Math.floor((this.listItem.bill / 100) / this.default_point_value);
       return temp > this.max_points ? this.max_points : temp;
     },
-    submitBill(billList) {
-      // console.log(this.points(bill));
+    async submitBill() {
+      this.listLoading = true;
+      this.listItem.articleUpdate = await listing(this.pomBill);
+      console.log(this.listItem.articleUpdate.time);
+      const { data } = await billUpdate(this.listItem);
+      this.articleUpdate1 = data;
+      this.listLoading = false;
+      this.resetBill();
     },
     resetBill(){
-      this.bill = 0;
-      this.billList = [];
+      this.getCustomer();
       this.getList();
+      this.listItem.earnedPoints = 0;
+      this.listItem.bill = 0;
+      this.pomBill.billList = [];
     },
   },
 };

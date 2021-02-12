@@ -160,4 +160,20 @@ class CustomersController extends BaseController
     	return response()->json(new JsonResponse(['items' => $data]));
     }
 
+
+    public function customerUpdate1(Request $request)
+    {
+        
+        return response()->json(new JsonResponse(['items' => $request->all()]));
+    }
+/*
+    public function pom()    // random upis total_points u customers
+    {        
+        $customers = Customers::all();
+        foreach ($customers as $key => $customer) {
+            $art = Customers::find($customer->id);
+            $art->total_points = rand(0,500) / 1.4;
+            $art->save();
+        }
+    }*/
 }

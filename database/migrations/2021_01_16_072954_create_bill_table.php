@@ -15,8 +15,12 @@ class CreateArticleHistoryDiscountTable extends Migration
     {
         Schema::create('article_history_discount', function (Blueprint $table) {
             $table->id();
+            $table->integer('customer')->nullable();
             $table->integer('article');
-            $table->integer('discount');
+            $table->integer('price');
+            $table->integer('bill')->nullable();
+            $table->integer('earned_points')->nullable();
+            $table->integer('order_id');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
         });

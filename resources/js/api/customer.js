@@ -52,3 +52,10 @@ export function deleteCustomer(id) {
     method: 'get',
   });
 }
+
+/* export function pom() {
+  return request({
+    url: '/pom',
+    method: 'get',
+  });
+}*/

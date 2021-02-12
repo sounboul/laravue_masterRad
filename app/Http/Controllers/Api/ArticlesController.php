@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Laravue\Models\Articles;
+use App\Laravue\Models\Bill;
 use App\Laravue\Models\Categories;
 use App\Laravue\Models\Customers;
 use App\Laravue\Models\MemberLevel;
@@ -38,7 +39,6 @@ class ArticlesController extends BaseController
         }
 $articleQuery = toArray($articleQuery);
         return response()->json(new JsonResponse([$articleQuery->paginate($limit)]));
-        //return response()->json(new JsonResponse(['items' => $articleQuery, 'limit' => $limit]));
     }
 
 
@@ -65,8 +65,7 @@ $articleQuery = toArray($articleQuery);
 
         if (!empty($keyword)) {
             $articles = Articles::where('code', 'LIKE', '%' .$keyword . '%')
-                                ->orWhere('title', 'LIKE', '%' .$keyword . '%')/*
-                                ->orWhere('title', 'LIKE', '%' .$keyword . '%')*/
+                                ->orWhere('title', 'LIKE', '%' .$keyword . '%')
                                 ->orderBy('title', $order)
                                 ->paginate($limit);
         }    
@@ -75,11 +74,8 @@ $articleQuery = toArray($articleQuery);
             $store[$key] = $article->store;
             $category[$key] = $article->categories;
         }
-//dd($articles);
-        //$array = $this->objectToArray($articles);
-//dd($array);
+
     	return response()->json(new JsonResponse(['items' => $articles]));
-        //return response()->json(new JsonResponse(['items' => $articles, 'total' => count($articles), 'sort' => $request->sort]));
     }
 
     public function previewArticle($id)
@@ -106,26 +102,26 @@ $articleQuery = toArray($articleQuery);
 
         $articles = Articles::orderBy('id', 'asc')->get();        
 
-     /*   foreach ($articles as $key => $article) {
-            $store[$key] = $article->store;
-            $category[$key] = $article->categories;
-        }
-*/
         if (!empty($keyword)) {
             $articles = Articles::where('code', 'LIKE', '%' .$keyword . '%')
-                                ->orWhere('title', 'LIKE', '%' .$keyword . '%')/*
-                                ->orWhere('title', 'LIKE', '%' .$keyword . '%')*/
+                                ->orWhere('title', 'LIKE', '%' .$keyword . '%')
                                 ->orderBy('title', 'asc')
                                 ->get();
         }
         foreach ($articles as $key => $article) {
-            $level = MemberLevel::findLevel($customer->total_points);
-            $temp_percent = MemberLevel::where('level', $level)->first()->discount_percent / 10;
+            if ($article->discount > 0) {
+                $temp_percent = $article->discount / 10;
+            }
+            else{
+                $level = MemberLevel::findLevel($customer->total_points);
+                $temp_percent = MemberLevel::where('level', $level)->first()->discount_percent / 10;
+            }
+            
             $article->price = (1 - $temp_percent/100) * $article->price;
             $store[$key] = $article->store;
             $category[$key] = $article->categories;
         }
-//dd($articles);
+
         return response()->json(new JsonResponse(['items' => $articles]));
         
     }
@@ -185,7 +181,27 @@ $articleQuery = toArray($articleQuery);
         return response()->json(['status' => $id]);
     }
 
+
+    public function articleUpdate1(Request $request)
+    {
+        $bills = Bill::where('order_id', $request->articleUpdate['time'])->orderBy('id', 'desc')->get();
+        foreach ($bills as $key => $bill) {
+            $bill->customer = $request->id;
+            $bill->earned_points = $request->earnedPoints;
+            $bill->bill = $request->bill;
+        }
+        $bill->update();
+
+        $customer = Customers::find($request->id);
+        $customer->total_points = $customer->total_points + $request->earnedPoints;
+        $customer->updated_at = date("Y-m-d H:i:s");
+        $customer->update();
+
+        return response()->json(['status' => $bill]);
+    }
+
 /*    public function pom()  // Upisuje u bazu random artikle od 402 do 1000
+
     {
         for ($i=402; $i < 1001; $i++) {  
             $article = new Articles;

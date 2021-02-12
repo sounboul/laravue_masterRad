@@ -115,7 +115,7 @@ class MemberLevelController extends Controller
 	    	}
 	    }
 
-	    if ($request->from_point >= $request->to_point) {  // pocetni bodovi veci ili jednaki krajnjim
+	    if ($request->from_point > $request->to_point && ($request->from_point > 0 && $request->to_point > 0)) {  // pocetni bodovi veci ili jednaki krajnjim
 
 	    	$title = 'discounts.warning';
     		$message = 'discounts.points_greater_than';
