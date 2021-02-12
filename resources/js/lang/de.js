@@ -118,6 +118,8 @@ export default {
     delete: 'Delete',
     confirm: 'Confirm',
     cancel: 'Cancel',
+    permissions_successfully: 'Berechtigungen wurden erfolgreich aktualisiert',
+    Permission_denied: 'Zugang verweigert!',
   },
   guide: {
     description: 'The guide page is useful for some people who entered the project for the first time. You can briefly introduce the features of the project. Demo is based on ',
@@ -297,6 +299,7 @@ export default {
     pieces: 'Stücke',
     categories: 'Kategorien',
     category: 'Kategorie',
+    total: 'Gesamt',
   },
   categories: {
     code: 'Kode',

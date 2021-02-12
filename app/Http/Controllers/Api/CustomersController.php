@@ -9,6 +9,7 @@ use App\Laravue\JsonResponse;
 use App\Http\Resources\CustomerResources;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 
 class CustomersController extends BaseController
 {
@@ -110,8 +111,29 @@ class CustomersController extends BaseController
     }
 
 
-    public function editCustomer(Request $request, Customers $customers)
+
+    public function createCustomer(Request $request, Customers $customers)
     {
+        $currentUser = Auth::user();
+        if (!$currentUser->isAdmin()
+            && !$currentUser->hasPermission(\App\Laravue\Acl::PERMISSION_CUSTOMER_MANAGE)
+        ) {
+            return response()->json(['error' => 'Permission denied'], 403);
+        }
+        dd($request);
+    }
+
+
+
+    public function update(Request $request, Customers $customers)
+    {
+        $currentUser = Auth::user();
+        if (!$currentUser->isAdmin()
+            && !$currentUser->hasPermission(\App\Laravue\Acl::PERMISSION_CUSTOMER_MANAGE)
+        ) {
+            return response()->json(['error' => 'Permission denied'], 403);
+        }
+
         $customer = Customers::find($request->id);
 
         $customer->name = $request->name;

@@ -261,7 +261,7 @@ export default {
     statusFilter(active) {
       const statusMap = {
         active: 'success',
-        draft: 'info',
+        pending: 'info',
         deleted: 'danger',
       };
       return statusMap[active];

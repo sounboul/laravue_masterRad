@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Laravue\JsonResponse;
 use App\Laravue\Models\Department;
+use Illuminate\Support\Facades\Auth;
 
 class DepartmentsController extends Controller
 {

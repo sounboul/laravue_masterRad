@@ -39,7 +39,10 @@ final class Acl
     const PERMISSION_VIEW_MENU_I18N = 'view menu i18n';
 
     const PERMISSION_USER_MANAGE = 'manage user';
+    const PERMISSION_CUSTOMER_MANAGE = 'manage customer';
+    const PERMISSION_CATEGORY_MANAGE = 'manage category';
     const PERMISSION_ARTICLE_MANAGE = 'manage article';
+    const PERMISSION_DISCOUNT_MANAGE = 'manage discount';
     const PERMISSION_PERMISSION_MANAGE = 'manage permission';
 
     /**

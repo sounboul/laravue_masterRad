@@ -118,6 +118,8 @@ export default {
     delete: 'Удалить',
     confirm: 'Подтвердить',
     cancel: 'Отменить',
+    permissions_successfully: 'Разрешения успешно обновлены',
+    Permission_denied: 'Доступ запрещен!',
   },
   guide: {
     description: 'Инструкция полезна для тех, кто использует этот проект впервые. Вы можете кратко ознакомится с ним. Демо основано на',
@@ -297,6 +299,7 @@ export default {
     pieces: 'шт',
     categories: 'Категории',
     category: 'Категория',
+    total: 'Всего',
   },
   categories: {
     code: 'Код',

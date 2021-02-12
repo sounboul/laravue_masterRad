@@ -33,12 +33,17 @@ Route::namespace('Api')->group(function() {
         Route::apiResource('roles', 'RoleController')->middleware('permission:' . Acl::PERMISSION_PERMISSION_MANAGE);
         Route::apiResource('users', 'UserController')->middleware('permission:' . Acl::PERMISSION_USER_MANAGE);
         Route::apiResource('permissions', 'PermissionController')->middleware('permission:' . Acl::PERMISSION_PERMISSION_MANAGE);
+        Route::apiResource('customers', 'CustomersController')->middleware('permission:' . Acl::PERMISSION_CUSTOMER_MANAGE);
+        Route::apiResource('discounts', 'MemberLevelController')->middleware('permission:' . Acl::PERMISSION_DISCOUNT_MANAGE);
 
         // Custom routes
         Route::put('users/{user}', 'UserController@update');
         Route::get('users/{user}/permissions', 'UserController@permissions')->middleware('permission:' . Acl::PERMISSION_PERMISSION_MANAGE);
         Route::put('users/{user}/permissions', 'UserController@updatePermissions')->middleware('permission:' .Acl::PERMISSION_PERMISSION_MANAGE);
         Route::get('roles/{role}/permissions', 'RoleController@permissions')->middleware('permission:' . Acl::PERMISSION_PERMISSION_MANAGE);
+        Route::get('customers/{customer}/permissions', 'CustomersController@permissions')->middleware('permission:' . Acl::PERMISSION_PERMISSION_MANAGE);
+        Route::get('categories/{category}/permissions', 'CategoriesController@permissions')->middleware('permission:' . Acl::PERMISSION_PERMISSION_MANAGE);
+        Route::get('discounts/{discount}/permissions', 'MemberLevelController@permissions')->middleware('permission:' . Acl::PERMISSION_PERMISSION_MANAGE);
 
         // Articles
         Route::get('/article', 'ArticlesController@index');
@@ -46,16 +51,17 @@ Route::namespace('Api')->group(function() {
         Route::get('/articles_selling', 'ArticlesController@fetchArticles1');
         Route::get('/article/preview/{id}', 'ArticlesController@previewArticle');
         Route::post('/article/create', 'ArticlesController@createArticle');
-        Route::post('/article/update', 'ArticlesController@updateArticle');
+        Route::post('/article/update', 'ArticlesController@update');
         // Route::get('/pom', 'ArticlesController@pom');
         Route::get('/article/delete/{id}', 'ArticlesController@deleteArticle');
 
         // Customers
         Route::get('/test', 'CustomersController@test');
         Route::get('/customers', 'CustomersController@fetchCustomers');
-        Route::put('/customers/{id?}', 'CustomersController@editCustomer');
+        Route::put('/customers/{id?}', 'CustomersController@update');
         Route::get('/customer/preview/{id}', 'CustomersController@fetchCustomer');
         Route::get('/all_customers', 'CustomersController@fetchAllCustomers');
+        Route::post('/customer/create', 'CustomersController@createCustomer');
 
         // Stores
         Route::get('/stores', 'StoresController@fetchStores');
@@ -74,7 +80,7 @@ Route::namespace('Api')->group(function() {
         Route::get('/members', 'MemberLevelController@index');
         Route::get('/fetchLevels', 'MemberLevelController@fetchLevels');
         Route::get('/updateLevel', 'MemberLevelController@updateLevel');
-        Route::post('/discount/update', 'MemberLevelController@updateLevelData');
+        Route::post('/discount/update', 'MemberLevelController@update');
 
 
 

@@ -104,7 +104,7 @@ $articleQuery = toArray($articleQuery);
         //$sort = $request->sort;
         //$limit = $request->limit;
 
-        $articles = Articles::orderBy('title', 'asc')->get();        
+        $articles = Articles::orderBy('id', 'asc')->get();        
 
      /*   foreach ($articles as $key => $article) {
             $store[$key] = $article->store;
@@ -145,7 +145,7 @@ $articleQuery = toArray($articleQuery);
 
 
 
-    public function updateArticle(Request $request, Articles $articles)
+    public function update(Request $request, Articles $articles)
     {
         if ($articles === null) {
             return response()->json(['error' => 'Article not found'], 404);

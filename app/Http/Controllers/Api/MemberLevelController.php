@@ -8,7 +8,9 @@ use Illuminate\Support\Carbon;
 use App\Laravue\JsonResponse;
 use App\Laravue\Models\MemberLevel;
 use App\Laravue\Models\Discount_definitions;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 use App\Laravue\Models\PointsDefinitions;
+use Illuminate\Support\Facades\Auth;
 
 class MemberLevelController extends Controller
 {
@@ -67,6 +69,13 @@ class MemberLevelController extends Controller
 
     public function updateLevel(Request $request)
     {
+        $currentUser = Auth::user();
+        if (!$currentUser->isAdmin()
+            && $currentUser->id !== $user->id
+            && !$currentUser->hasPermission(\App\Laravue\Acl::PERMISSION_DISCOUNT_MANAGE)
+        ) {
+            return response()->json(['error' => 'Permission denied!'], 403);
+        }
     	$level_id = MemberLevel::where('level', $request->type)->first();
     	$level = MemberLevel::find($level_id->id);
 
@@ -74,8 +83,14 @@ class MemberLevelController extends Controller
     }
 
 
-    public function updateLevelData(Request $request)
-    {    	
+    public function update(Request $request)
+    {
+        $currentUser = Auth::user();
+        if (!$currentUser->isAdmin()
+            && !$currentUser->hasPermission(\App\Laravue\Acl::PERMISSION_DISCOUNT_MANAGE)
+        ) {
+            return response()->json(['error' => 'Permission denied!'], 403);
+        }    	
 
     	if($request->no_switch === 0)    // Ukoliko je cekirano dugme za zahtev unosa datuma
     	{

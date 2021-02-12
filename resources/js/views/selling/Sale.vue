@@ -1,5 +1,5 @@
 <template>
-  <div class="test">
+  <div class="sale-container">
     <el-input v-model="listQuery.keyword" :placeholder="$t('table.keyword')" style="width: 250px;" class="filter-item" @keyup.native="handleFilter" />
     <div class="customer" :data="list1">
       <span class="title">{{ $t('customers.customer') + ': ' }}</span><span>{{ list1.name }}</span>
@@ -14,7 +14,7 @@
         :data="list"
         fit
         highlight-current-row
-        style="width: 100%; word-break: break-word; font-size: 15pt;"
+        style="width: 100%; word-break: break-word; font-size: 15pt; border-radius: .428rem;"
       >
         <el-table-column :label="$t('table.code')" align="center" width="100">
           <template slot-scope="scope">
@@ -23,7 +23,7 @@
         </el-table-column>
         <el-table-column :label="$t('articles.name')" min-width="120px">
           <template slot-scope="{row}">
-            <span style="margin-top: 2px; cursor: pointer;" @click="previewArticle(row)">{{ row.title }}</span>
+            <span style="margin-top: 2px; cursor: pointer;" @click="articleList(row, billList.length)">{{ row.title }}</span>
           </template>
         </el-table-column>
         <el-table-column :label="$t('articles.price') + ' (' + $t('articles.currency') + ')'" width="150px" align="center">
@@ -49,7 +49,7 @@
         <el-table-column :label="$t('stores.location')" width="120px" align="center">
           <template slot-scope="scope">
             <div v-if="scope.row.store.length > 0">
-              <div class="hasTooltip" @mouseover="previewArticle()">{{ scope.row.store.length }}
+              <div class="hasTooltip" @mouseover="test">{{ scope.row.store.length }}
                 <span>
                   <div v-for="(n, index) in scope.row.store" :key="index" style="padding: 2px 5px;">
                     {{ scope.row.store[index].address }}
@@ -57,13 +57,48 @@
                 </span>
               </div>
             </div>
-            <div v-else>{{ $t('-') }}</div>
+            <div v-else>-</div>
           </template>
         </el-table-column>
       </el-table>
     </div>
     <div class="bill">
-      BBB
+      <el-table
+        :key="tableKey"
+        :data="billList"
+        fit
+        highlight-current-row
+        style="width: 100%; word-break: break-word; font-size: 15pt; border-radius: .428rem; margin-bottom: 10px;"
+      >
+        <el-table-column :label="$t('table.code')" align="center" width="100">
+          <template slot-scope="scope">
+            <span>{{ scope.row.code }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column :label="$t('articles.name')" min-width="120px">
+          <template slot-scope="{row}">
+            <span style="margin-top: 2px; cursor: pointer;" @click="articleUndo(row)">{{ row.title }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column :label="$t('articles.price') + ' (' + $t('articles.currency') + ')'" width="150px" align="center">
+          <template slot-scope="scope">
+            <span>{{ currencyFormatEU(scope.row.price/100, 2) }}</span>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div style="display: inline;">
+        <div style="float: left;">
+          {{ $t('articles.pieces') }}: {{ billList.length }}
+        </div>
+        <div style="float:right;">
+          {{ $t('articles.total') }}: {{ currencyFormatEU(bill / 100, 2) }} {{ $t('articles.currency') }}
+        </div>
+      </div>
+      <br>
+      <div style="float: right;">{{ $t('customers.total_points1') + ': ' + earnedPoints }}</div>
+      <br>
+      <el-button style="float: left; margin-top: 12px; width: 150px;" type="danger" class="pan-btn light-blue-btn" @click="resetBill">Ponisti</el-button>
+      <el-button style="float: right; margin-top: 12px; width: 150px;" type="success" class="pan-btn blue-btn" @click="submitBill">Kraj racuna</el-button>
     </div>
   </div>
 </template>
@@ -83,6 +118,13 @@ export default {
       list1: '',
       level: '',
       listLoading: true,
+      bill: 0,
+      cnt: 0,
+      earnedPoints: 0,
+      default_point_value: 1000,
+      max_points: 500,
+      dat: [],
+      billList: [],
       listQuery: {
         page: 1,
         limit: 10,
@@ -112,7 +154,6 @@ export default {
       const { data } = await fetchCustomer(this.listQuery.id);
       this.list1 = data.items;
       this.level = data.level;
-      // console.log(this.list1);
       console.log(parseTime);
       this.listLoading = false;
     },
@@ -134,22 +175,52 @@ export default {
     discountPrice(discount, price){
       return this.currencyFormatEU(((1 - this.currencyFormatEU(discount / 10, 1) / 100) * price) / 100, 2);
     },
-    previewArticle(row){
-      console.log(row);
+    articleList(row){
+      const clicked_article = this.list.findIndex(x => x.id === row.id);
+      this.list[clicked_article].amount = this.list[clicked_article].amount - 1;
+      const pom = this.billList.concat(row);
+      this.billList = pom;
+      this.bill = this.bill + row.price;
+      this.earnedPoints = this.points(this.bill);
+    },
+    articleUndo(row){
+      const clicked_article = this.billList.find(x => x.id === row.id);
+      const added_row = this.list.find(x => x.code === row.code);
+      added_row.amount = added_row.amount + 1;
+      for (var i = 0; i < this.billList.length; i++) {
+        if (this.billList[i].id === clicked_article.id) {
+          this.billList.splice(i, 1);
+        }
+      }
+      this.bill = this.bill - row.price;
+    },
+    test() {
+    },
+    points(bill) {
+      var temp = Math.floor((this.bill / 100) / this.default_point_value);
+      return temp > this.max_points ? this.max_points : temp;
+    },
+    submitBill(billList) {
+      // console.log(this.points(bill));
+    },
+    resetBill(){
+      this.bill = 0;
+      this.billList = [];
+      this.getList();
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-  .test {
+  .sale-container {
     margin: 45px;
     font-size: 17pt;
     color: #fff;
   }
   .customer {
     width:auto;
-    border: 2px solid #f58938;
+    // border: 2px solid #4d4d4d;
     border-radius: .428rem;
     padding: 7px;
     display: inline-block;
@@ -163,15 +234,16 @@ export default {
     margin-left:10px;
   }
   .articles {
+    z-index: 0;
     position: relative;
     display: inline-block;
     width: 59%;
-    border: 2px solid #f58938;
+    // border: 2px solid #4d4d4d;
     border-radius: .428rem;
-    padding: 7px;
+    padding: 10px 0 0 10px;
     margin-top: 15px;
     max-height: 700px;
-    overflow: hidden;
+    //overflow: hidden;
     overflow: scroll;
     // box-shadow: 5px 10px 10px #001133, -5px 10px 10px #001133 !important;
   }
@@ -179,66 +251,38 @@ export default {
     position: relative;
     display:inline-block;
     width: 39%;
-    border: 2px solid #f58938;
+    // border: 2px solid #4d4d4d;
     border-radius: .428rem;
-    padding: 7px;
+    padding: 10px 0 0 10px;
     margin-top: 15px;
     float: right;
-    height: 250px;
+    height: auto;
     overflow: hidden;
     overflow: scroll;
     // box-shadow: 5px 10px 10px #001133, -5px 10px 10px #001133 !important;
   }
 
-  /* Tooltip container */
-  .tooltip {
-    position: relative;
-    display: inline-block;
-    //border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
-  }
-
-  /* Tooltip text */
-  .tooltip .tooltiptext {
-    visibility: hidden;
-    width: 220px;
-    background-color: black;
-    color: #fff;
-    text-align: center;
-    padding: 5px 0;
-    border-radius: 6px;
-    /* Position the tooltip text - see examples below! */
-    position: absolute;
-    z-index: 9999;
-    top: -5px;
-    right: 105%;
-  }
-
-  /* Show the tooltip text when you mouse over the tooltip container */
-  .tooltip:hover .tooltiptext {
-    visibility: visible;
-  }
-
   .hasTooltip span {
-      display: none;
-      color: #000;
-      text-decoration: none;
-      padding: 3px;
+    display: none;
+    color: #000;
+    text-decoration: none;
+    padding: 3px;
   }
 
   .hasTooltip:hover span {
-      display: block;
-      z-index: 9999;
-      position: absolute;
-      top: -25px;
-      right: 75%;
-      color: #fff;
-      background-color: #283046;
-      border-radius: .428rem;
-      box-shadow: 5px 10px 10px #001133, -5px -5px 10px #001133 !important;
-      margin: 2px 10px;
-      width: 200px;
-      visibility: visible;
-      owerflow: visible;
+    display: block;
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    right: 75%;
+    color: #fff;
+    background-color: #283046;
+    border-radius: .428rem;
+    box-shadow: 5px 10px 10px #001133, -5px -5px 10px #001133 !important;
+    margin: 2px 10px;
+    width: 200px;
+    //visibility: visible;
+    overflow: visible;
   }
   @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@1,300;1,400&family=Raleway:wght@500&display=swap');
 </style>

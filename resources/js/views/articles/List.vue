@@ -463,11 +463,19 @@ export default {
         this.dialogPvVisible = true;
       });
     },
+    pom1(categories_id) {
+      return this.list.categories.name;
+    },
     handleDownload() {
       this.downloadLoading = true;
       import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = [this.$t('table.code'), this.$t('articles.name'), this.$t('articles.category'), this.$t('articles.price') + ' (' + this.$t('articles.currency') + ')', this.$t('articles.discount') + ' (%)', this.$t('articles.discount_silver') + ' (' + this.$t('articles.currency') + ')', this.$t('articles.discount_gold') + ' (' + this.$t('articles.currency') + ')', this.$t('articles.discount_premium') + ' (' + this.$t('articles.currency') + ')'];
-        const filterVal = ['code', 'title', 'category_id', 'price', 'discount', 'discount_silver', 'discount_gold', 'discount_premium'];
+        const tHeader = ['ID', this.$t('table.code'), this.$t('articles.name'), this.$t('articles.category'), this.$t('articles.price') + ' (' + this.$t('articles.currency') + ')', this.$t('articles.discount') + ' (%)'];
+        const filterVal = ['id', 'code', 'title', 'categories_id', 'price', 'discount'];
+        const pom = this.list;
+        for (var i = 0; i < pom.length; i++) {
+          this.list[i].categories_id = pom[i].categories.name;
+        }
+        // console.log(this.list);
         const data = this.formatJson(filterVal, this.list);
         excel.export_json_to_excel({
           header: tHeader,

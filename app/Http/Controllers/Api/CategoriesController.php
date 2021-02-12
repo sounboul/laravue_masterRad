@@ -75,7 +75,7 @@ class CategoriesController extends BaseController
     {
         $currentUser = Auth::user();
         if (!$currentUser->isAdmin()
-            && !$currentUser->hasPermission(\App\Laravue\Acl::PERMISSION_category_MANAGE)
+            && !$currentUser->hasPermission(\App\Laravue\Acl::PERMISSION_CATEGORY_MANAGE)
         ) {
             return response()->json(['error' => 'Permission denied'], 403);
         }
@@ -97,7 +97,7 @@ class CategoriesController extends BaseController
     {
         $currentUser = Auth::user();
         if (!$currentUser->isAdmin()
-            && !$currentUser->hasPermission(\App\Laravue\Acl::PERMISSION_category_MANAGE)
+            && !$currentUser->hasPermission(\App\Laravue\Acl::PERMISSION_CATEGORY_MANAGE)
         ) {
             return response()->json(['error' => 'Permission denied'], 403);
         }

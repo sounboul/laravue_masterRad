@@ -118,6 +118,8 @@ export default {
     delete: 'Obriši',
     confirm: 'Potvrdi',
     cancel: 'Otkaži',
+    permissions_successfully: 'Dozvole su uspešno ažurirane',
+    Permission_denied: 'Nemate dozvolu za ovu radnju!',
   },
   guide: {
     description: 'Stranica vodiča je korisna za neke ljude koji su prvi put ušli u projekat. Možete ukratko predstaviti karakteristike projekta. Demo je zasnovan na ',
@@ -299,7 +301,7 @@ export default {
     pieces: 'komada',
     categories: 'Kategorije',
     category: 'Kategorija',
-    unavailable: '-',
+    total: 'Ukupno',
   },
   categories: {
     code: 'Šifra',

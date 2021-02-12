@@ -183,7 +183,7 @@ export default {
 
       roleResource.update(this.currentRole.id, { permissions: checkedPermissions }).then(response => {
         this.$message({
-          message: 'Permissions has been updated successfully',
+          message: this.$t('permission.permissions_successfully'),
           type: 'success',
           duration: 5 * 1000,
         });
