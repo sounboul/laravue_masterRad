@@ -144,17 +144,15 @@
         <el-form-item :label="$t('customers.country')" prop="country">
           <el-input v-model="temp.country" />
         </el-form-item>
-        <!-- <el-form-item :label="$t('table.status')">
-          <el-select v-model="temp.status" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in statusOptions" :key="item" :label="item" :value="item" />
-          </el-select>
+        <el-form-item :label="$t('customers.facebook')">
+          <el-input v-model="temp.facebook" style="margin-top:8px;" />
         </el-form-item>
-        <el-form-item :label="$t('table.importance')">
-          <el-rate v-model="temp.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="3" style="margin-top:8px;" />
-        </el-form-item> -->
-        <!-- <el-form-item :label="$t('table.remark')">
-          <el-input v-model="temp.remark" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" :placeholder="$t('customers.please_input')" />
-        </el-form-item> -->
+        <el-form-item :label="$t('customers.instagram')">
+          <el-input v-model="temp.instagram" style="margin-top:8px;" />
+        </el-form-item>
+        <el-form-item :label="$t('customers.twitter')">
+          <el-input v-model="temp.twitter" />
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">
@@ -198,17 +196,15 @@
         <el-form-item :label="$t('customers.country')" prop="country">
           <el-input v-model="temp.country" />
         </el-form-item>
-        <!-- <el-form-item :label="$t('table.status')">
-          <el-select v-model="temp.status" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in statusOptions" :key="item" :label="item" :value="item" />
-          </el-select>
+        <el-form-item :label="$t('customers.facebook')">
+          <el-input v-model="temp.facebook" style="margin-top:8px;" />
         </el-form-item>
-        <el-form-item :label="$t('table.importance')">
-          <el-rate v-model="temp.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="3" style="margin-top:8px;" />
-        </el-form-item> -->
-        <!-- <el-form-item :label="$t('table.remark')">
-          <el-input v-model="temp.remark" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" :placeholder="$t('customers.please_input')" />
-        </el-form-item> -->
+        <el-form-item :label="$t('customers.instagram')">
+          <el-input v-model="temp.instagram" style="margin-top:8px;" />
+        </el-form-item>
+        <el-form-item :label="$t('customers.twitter')">
+          <el-input v-model="temp.twitter" />
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="modalCustomerPreview = false">
@@ -310,6 +306,9 @@ export default {
         country: '',
         type: '',
         code: '',
+        facebook: '',
+        instagram: '',
+        twitter: '',
         status: 'published',
       },
       dialogFormVisible: false,
@@ -440,8 +439,8 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          this.temp.id = parseInt(Math.random() * 100) + 1024; // mock a id
-          this.temp.author = 'laravue';
+          /* this.temp.id = parseInt(Math.random() * 100) + 1024; // mock a id
+          this.temp.author = 'laravue';*/
           createCustomer(this.temp).then(() => {
             this.list.unshift(this.temp);
             this.dialogFormVisible = true;
@@ -449,8 +448,10 @@ export default {
               title: this.$t('table.success'),
               message: this.$t('table.created_successfully'),
               type: 'success',
-              duration: 2000,
+              duration: 3000,
             });
+            this.dialogFormVisible = false;
+            this.getList();
           });
         }
       });

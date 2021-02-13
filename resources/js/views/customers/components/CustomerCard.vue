@@ -16,14 +16,26 @@
         </div>
       </div>
       <div class="box-social">
-        <el-table :data="social" :show-header="false">
-          <el-table-column prop="name" label="Name" />
-          <el-table-column label="Count" align="right" width="200">
-            <template slot-scope="scope">
-              {{ scope.row.account }}
-            </template>
-          </el-table-column>
-        </el-table>
+        <span style="float: left">
+          Facebook:
+        </span>
+        <span style="float: right;">
+          {{ customer.facebook_account }}
+        </span>
+        <br>
+        <span style="float: left">
+          Instagram:
+        </span>
+        <span style="float: right;">
+          {{ customer.instagram_account }}
+        </span>
+        <br>
+        <span style="float: left">
+          Twitter:
+        </span>
+        <span style="float: right">
+          {{ customer.twitter_account }}
+        </span>
       </div>
       <div class="user-follow">
         <el-button type="primary" style="width: 100%;">
@@ -35,10 +47,9 @@
 </template>
 
 <script>
-// import PanThumb from '@/components/PanThumb';
 
 export default {
-  // components: { PanThumb },
+
   props: {
     customer: {
       type: Object,
@@ -48,18 +59,17 @@ export default {
           email: '',
           mobile: '',
           dob: '',
-          facebook: this.customer.facebook_account,
+          facebook_account: '',
         };
       },
     },
   },
   data() {
     return {
-      test: 'Proba',
       social: [
         {
           'name': 'Facebook: ',
-          'account': this.customer.facebook,
+          'account': this.customer,
         },
         {
           'name': 'Instagram: ',
@@ -91,14 +101,18 @@ export default {
     font-weight: 400;
     font-size: 14px;
   }
-  .box-social {
-    padding-top: 30px;
-    .el-table {
-      border-top: 1px solid #dfe6ec;
-    }
-  }
   .user-follow {
     padding-top: 20px;
+  }
+}
+.box-social {
+  border-radius: .428rem;
+  margin-top: 10px;
+  padding: 30px 5px !important;
+  background-color: #283046;
+  color: #fff;
+  span{
+    display: inline;
   }
 }
 </style>

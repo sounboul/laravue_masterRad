@@ -120,7 +120,33 @@ class CustomersController extends BaseController
         ) {
             return response()->json(['error' => 'Permission denied'], 403);
         }
-        dd($request);
+        // dd($request);
+
+        if ($request->name == '' || $request->email == '' || $request->mobile == '') {
+            return response()->json(['error' => 'Fill the required fields'], 403);
+        }
+
+        $customer = new Customers;
+
+        $customer->name = $request->name;
+        $customer->email = $request->email;
+        $customer->mobile = $request->mobile;
+        $customer->ID_number = $request->ID_number;
+        $customer->street = $request->street;
+        $customer->number = $request->number;
+        $customer->city = $request->city;
+        $customer->postal_code = $request->postal_code;
+        $customer->country = $request->country;
+        $customer->facebook_account = $request->facebook;
+        $customer->instagram_account = $request->instagram;
+        $customer->twitter_account = $request->twitter;
+        $customer->updated_at = date("Y-m-d H:i:s");
+        //$customer->member_since = date("Y-m-d H:i:s");
+        $customer->dob = date_format(date_create($request->dob), "Y-m-d");
+        $customer->save();
+
+        $customer->code = $customer->id + 100000;
+        $customer->update();
     }
 
 
@@ -145,9 +171,12 @@ class CustomersController extends BaseController
         $customer->city = $request->city;
         $customer->postal_code = $request->postal_code;
         $customer->country = $request->country;
+        $customer->facebook_account = $request->facebook;
+        $customer->instagram_account = $request->instagram;
+        $customer->twitter_account = $request->twitter;
         $customer->updated_at = date("Y-m-d H:i:s");
         $customer->dob = date_format(date_create($request->dob), "Y-m-d");
-        $customer->save();
+        $customer->update();
 
         return;
     }

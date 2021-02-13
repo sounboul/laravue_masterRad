@@ -36,16 +36,6 @@
       style="width: 100%;border-radius: .428rem; word-break: break-word;"
       @sort-change="sortChange"
     >
-      <!-- <el-table-column :label="$t('table.code')" prop="id" sortable="custom" align="center" width="90">
-        <template slot-scope="scope">
-          <span>{{ scope.row.code }}</span>
-        </template>
-      </el-table-column> -->
-      <!-- <el-table-column :label="$t('table.date')" width="120px" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.created_at | parseTime('{d}.{m}.{y}.') }}</span>
-        </template>
-      </el-table-column> -->
       <el-table-column label="" prop="id" align="center" width="40">
         <template>
           <span>{{ }}</span>
@@ -56,56 +46,11 @@
           <span style="font-size: 12pt;">{{ row.name }}</span>
         </template>
       </el-table-column>
-      <!-- <el-table-column :label="$t('articles.price') + $t(' (') + $t('articles.currency')+ $t(')')" width="120px" align="center">
-        <template slot-scope="scope">
-          <span>{{ currencyFormatEU(scope.row.price/100, 2) }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('articles.discount') + $t(' (%) ') + $t(' Silv  Gold  Prem')" width="155px" align="center">
-        <template slot-scope="scope">
-          <template>
-            <span>{{ currencyFormatEU(scope.row.discount_silver/10, 1) }} |</span>
-          </template>
-          <template>
-            <span>{{ currencyFormatEU(scope.row.discount_gold/10, 1) }} |</span>
-          </template>
-          <template>
-            <span>{{ currencyFormatEU(scope.row.discount_premium/10, 1) }}</span>
-          </template>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('articles.in_stock')" width="120px" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.amount }}</span>
-        </template>
-      </el-table-column> -->
-      <!-- <el-table-column :label="$t('stores.location')" width="180px" align="center">
-        <template slot-scope="scope">
-          <span v-for="(n, index) in scope.row.store" :key="index">{{ scope.row.store[index].address }}<br></span>
-        </template>
-      </el-table-column> -->
-      <!-- <el-table-column v-if="showReviewer" :label="$t('table.reviewer')" width="110px" align="center">
-        <template slot-scope="scope">
-          <span style="color:red;">{{ scope.row.reviewer }}</span>
-        </template>
-      </el-table-column> -->
-      <!-- <el-table-column :label="$t('table.importance')" width="80px">
-        <template slot-scope="scope">
-          <svg-icon v-for="n in +scope.row.rating" :key="n" icon-class="star" class="meta-item__icon" />
-        </template>
-      </el-table-column> -->
       <el-table-column :label="$t('table.description')" align="left">
         <template slot-scope="{row}">
           <span>{{ row.description }}</span>
         </template>
       </el-table-column>
-      <!-- <el-table-column :label="$t('table.status')" class-name="status-col" width="100">
-        <template slot-scope="{row}">
-          <el-tag :type="row.status | statusFilter">
-            {{ row.status }}
-          </el-tag>
-        </template>
-      </el-table-column> -->
       <el-table-column :label="$t('table.actions')" align="center" width="200" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
           <el-button type="success" size="mini" @click="handleUpdate(row)">
@@ -122,23 +67,9 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
-        <el-form-item :label="$t('categories.code')" prop="code">
-          <el-input v-model="temp.code" />
-        </el-form-item>
         <el-form-item :label="$t('categories.name')" :placeholder="temp.name">
           <el-input v-model="temp.name" />
         </el-form-item>
-        <!-- <el-form-item :label="$t('table.date')" prop="timestamp">
-          <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="Please pick a date" />
-        </el-form-item>
-        <el-form-item :label="$t('table.status')">
-          <el-select v-model="temp.status" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in statusOptions" :key="item" :label="item" :value="item" />
-          </el-select>
-        </el-form-item>
-        <el-form-item :label="$t('table.importance')">
-          <el-rate v-model="temp.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="3" style="margin-top:8px;" />
-        </el-form-item> -->
         <el-form-item :label="$t('categories.description')">
           <el-input v-model="temp.description" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" :placeholder="categories.description" />
         </el-form-item>
@@ -158,25 +89,9 @@
         <el-form-item :label="$t('table.code')" prop="code">
           <el-input v-model="temp.code" />
         </el-form-item>
-        <!-- <el-form-item :label="$t('table.type')" prop="type">
-          <el-select v-model="temp.type" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
-          </el-select>
-        </el-form-item> -->
         <el-form-item :label="$t('table.title')" prop="title">
           <el-input v-model="temp.title" />
         </el-form-item>
-        <!-- <el-form-item :label="$t('table.date')" prop="timestamp">
-          <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="Please pick a date" />
-        </el-form-item>
-        <el-form-item :label="$t('table.status')">
-          <el-select v-model="temp.status" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in statusOptions" :key="item" :label="item" :value="item" />
-          </el-select>
-        </el-form-item>
-        <el-form-item :label="$t('table.importance')">
-          <el-rate v-model="temp.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="3" style="margin-top:8px;" />
-        </el-form-item> -->
         <el-form-item :label="$t('table.remark')">
           <el-input v-model="temp.remark" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" placeholder="Please input" />
         </el-form-item>
@@ -185,9 +100,6 @@
         <el-button @click="modalCategoryPreview = false">
           {{ $t('table.cancel') }}
         </el-button>
-        <!-- <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
-          {{ $t('table.confirm') }}
-        </el-button> -->
       </div>
     </el-dialog>
 
@@ -272,6 +184,7 @@ export default {
         type: '',
         code: '',
         // status: 'published',
+        last_code: '',
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -299,8 +212,10 @@ export default {
       const { data } = await fetchList(this.listQuery);
       this.list = data.items.data;
       this.total = data.items.total;
-
-      // Just to simulate the time of the request
+      var maxId = Math.max(...this.list.map(el => el.code)); // racuna poslednji code iz tabele
+      this.last_code = (maxId || this.last_code);
+      var newWatcherId = parseInt(this.last_code) + 1;
+      this.last_code = newWatcherId;
       this.listLoading = false;
     },
     handleFilter() {
@@ -354,8 +269,6 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          // this.temp.id = parseInt(Math.random() * 100) + 1024; // mock a id
-          // this.temp.author = 'laravue';
           createCategory(this.temp).then(() => {
             this.list.unshift(this.temp);
             this.dialogFormVisible = true;

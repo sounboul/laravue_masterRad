@@ -47,8 +47,8 @@ export default {
     async getCustomer(id) {
       const { data } = await fetchCustomer(id);
       this.customer = data.items;
+      // console.log(this.customer);
       this.level = data.level;
-      // console.log(data.items);
     },
   },
 };

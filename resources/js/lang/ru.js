@@ -275,6 +275,10 @@ export default {
     'mobile_required': 'Требуется мобильный',
     'edit_success': 'Информация о клиентах успешно обновлена!',
     'account': 'Cчет',
+    'bill_created': 'Счет успешно создан!',
+    'facebook': 'Facebook счет',
+    'instagram': 'Instagram счет',
+    'twitter': 'Twitter счет',
   },
   errors: {
     'back': 'Назад',

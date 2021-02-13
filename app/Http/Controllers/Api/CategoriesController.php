@@ -80,13 +80,13 @@ class CategoriesController extends BaseController
             return response()->json(['error' => 'Permission denied'], 403);
         }
 
-        if (empty($request->code) || empty($request->name)) {
+        if (empty($request->name)) {
             return response()->json(['error' => 'Nepotpuni podaci'], 404);
         }
 
         $category = new Categories;
 
-        $category->code = $request->code;
+        $category->code = $request->last_code;
         $category->name = $request->name;
         $category->description = $request->description;
         $category->save();
@@ -105,13 +105,13 @@ class CategoriesController extends BaseController
         $category = Categories::find($request->id);
 
         if ($category === null) {
-            return response()->json(['error' => 'category not found'], 404);
+            return response()->json(['error' => 'Category not found'], 404);
         }
 
-        $category->code = $request->code;
+        // $category->code = $request->code;
         $category->name = $request->name;
         $category->description = $request->description;
-        $category->save();
+        $category->update();
         return;
     }
 

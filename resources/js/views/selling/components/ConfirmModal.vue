@@ -25,7 +25,7 @@
         </el-table-column>
         <el-table-column :label="$t('articles.name')" min-width="120px">
           <template slot-scope="{row}">
-            <span style="margin-top: 2px; cursor: pointer;" @click="articleUndo(row)">{{ row.title }}</span>
+            <span style="margin-top: 2px;">{{ row.title }}</span>
           </template>
         </el-table-column>
         <el-table-column :label="$t('articles.price') + ' (' + $t('articles.currency') + ')'" width="150px" align="center">
@@ -54,7 +54,7 @@
       <el-button id="close-button" type="danger" @click.native="close">
         {{ $t('permission.cancel') }}
       </el-button>
-      <el-button id="save-button" type="success" :loading="loading" @click.native="confirm">
+      <el-button id="save-button" type="success" @click.native="confirm">
         {{ $t('permission.confirm') }}
       </el-button>
     </span>

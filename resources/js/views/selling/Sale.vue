@@ -10,7 +10,7 @@
     <div class="articles">
       <el-table
         :key="tableKey"
-        v-loading="listLoading"
+        v-loading="loading"
         :data="list"
         fit
         highlight-current-row
@@ -18,41 +18,54 @@
       >
         <el-table-column :label="$t('table.code')" align="center" width="100">
           <template slot-scope="scope">
-            <span>{{ scope.row.code }}</span>
+            <div v-show="scope.row.amount > 0">
+              <span>{{ scope.row.code }}</span>
+            </div>
           </template>
         </el-table-column>
         <el-table-column :label="$t('articles.name')" min-width="120px">
           <template slot-scope="{row}">
-            <span style="margin-top: 2px; cursor: pointer;" @click="articleList(row)">{{ row.title }}</span>
+            <div v-show="row.amount > 0">
+              <span style="margin-top: 2px; cursor: pointer;" @click="articleList(row)">{{ row.title }}</span>
+            </div>
+            <!-- <div v-else><span style="margin-top: 2px;">{{ row.title }}</span></div> -->
           </template>
         </el-table-column>
         <el-table-column :label="$t('articles.price') + ' (' + $t('articles.currency') + ')'" width="150px" align="center">
           <template slot-scope="scope">
-            <span>{{ currencyFormatEU(scope.row.price/100, 2) }}</span>
+            <div v-show="scope.row.amount > 0">
+              <span>{{ currencyFormatEU(scope.row.price/100, 2) }}</span>
+            </div>
           </template>
         </el-table-column>
         <el-table-column :label="$t('articles.discount') + ' (%) '" width="130px" align="center">
           <template slot-scope="scope">
-            <span>{{ currencyFormatEU(scope.row.discount/10, 1) }}</span>
+            <div v-show="scope.row.amount > 0">
+              <span>{{ currencyFormatEU(scope.row.discount/10, 1) }}</span>
+            </div>
           </template>
         </el-table-column>
         <el-table-column :label="$t('articles.in_stock') + ' (' + $t('articles.pieces') + ')'" width="120px" align="center">
           <template slot-scope="scope">
-            <span>{{ scope.row.amount }}</span>
+            <div v-show="scope.row.amount > 0">
+              <span>{{ scope.row.amount }}</span>
+            </div>
           </template>
         </el-table-column>
         <el-table-column :label="$t('stores.location')" width="120px" align="center">
           <template slot-scope="scope">
-            <div v-if="scope.row.store.length > 0">
-              <div class="hasTooltip" @mouseover="test">{{ scope.row.store.length }}
-                <span>
-                  <div v-for="(n, index) in scope.row.store" :key="index" style="padding: 2px 5px;">
-                    {{ scope.row.store[index].address }}
-                  </div>
-                </span>
+            <div v-show="scope.row.amount > 0">
+              <div v-if="scope.row.store.length > 0">
+                <div class="hasTooltip" @mouseover="test">{{ scope.row.store.length }}
+                  <span>
+                    <div v-for="(n, index) in scope.row.store" :key="index" style="padding: 2px 5px;">
+                      {{ scope.row.store[index].address }}
+                    </div>
+                  </span>
+                </div>
               </div>
+              <div v-else>-</div>
             </div>
-            <div v-else>-</div>
           </template>
         </el-table-column>
       </el-table>
@@ -92,7 +105,7 @@
       <br>
       <div style="float: right;">{{ $t('customers.total_points1') + ': ' + listItem.earnedPoints }}</div>
       <br>
-      <el-button style="float: left; margin-top: 12px; width: 150px;" type="danger" class="pan-btn light-blue-btn" @click="resetBill">{{ $t('permission.delete') }}</el-button>
+      <el-button style="float: left; margin-top: 12px; width: 150px;" type="danger" class="pan-btn blue-btn" @click="resetBill">{{ $t('permission.delete') }}</el-button>
       <el-button :disabled="pomBill.billList.length == 0" style="float: right; margin-top: 12px; width: 150px;" type="success" class="pan-btn blue-btn" @click="onClick">
         {{ $t('articles.end_of_bill') }}
       </el-button>
@@ -120,6 +133,7 @@ export default {
       list: null,
       list1: '',
       level: '',
+      loading: true,
       listLoading: true,
       default_point_value: 1000,
       max_points: 500,
@@ -149,22 +163,19 @@ export default {
   },
   methods: {
     async getList() {
-      this.listLoading = true;
+      this.loading = true;
       const { data } = await fetchList1(this.listQuery);
       this.list = data.items;
       /* for (var i = 0; i < this.list.length; i++) {
         this.test[i] = this.list[i].categories;
       } */
-      this.listLoading = false;
+      this.loading = false;
     },
     async getCustomer() {
-      // const id = this.$route.params && this.$route.params.id;
-      this.listLoading = true;
       const { data } = await fetchCustomer(this.listQuery.id);
       this.list1 = data.items;
       this.level = data.level;
       console.log(parseTime);
-      this.listLoading = false;
     },
     handleFilter() {
       this.listQuery.page = 1;
@@ -214,12 +225,16 @@ export default {
 
     },
     async submitBill() {
-      this.listLoading = true;
       this.listItem.articleUpdate = await listing(this.pomBill);
       console.log(this.listItem.articleUpdate.time);
       const { data } = await billUpdate(this.listItem);
       this.articleUpdate1 = data;
-      this.listLoading = false;
+      this.$notify({
+        title: this.$t('table.success'),
+        message: this.$t('customers.bill_created'),
+        type: 'success',
+        duration: 4500,
+      });
       this.resetBill();
     },
     resetBill(){
@@ -275,7 +290,7 @@ export default {
     margin-top: 15px;
     max-height: 700px;
     //overflow: hidden;
-    overflow: scroll;
+    overflow-y: scroll;
     // box-shadow: 5px 10px 10px #001133, -5px 10px 10px #001133 !important;
   }
   .bill {
@@ -289,7 +304,7 @@ export default {
     float: right;
     height: auto;
     overflow: hidden;
-    overflow: scroll;
+    overflow-y: scroll;
     // box-shadow: 5px 10px 10px #001133, -5px 10px 10px #001133 !important;
   }
   .hasTooltip span {

@@ -275,6 +275,10 @@ export default {
     'mobile_required': 'Mobile is required',
     'edit_success': 'Kundeninformationen wurden erfolgreich aktualisiert!',
     'account': 'Konto',
+    'bill_created': 'Rechnung erfolgreich erstellt!',
+    'facebook': 'Facebook-Account',
+    'instagram': 'Instagram-Account',
+    'twitter': 'Twitter-Account',
   },
   errors: {
     'back': 'Back',
