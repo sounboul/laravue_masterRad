@@ -174,6 +174,9 @@ export default {
     create_failed: 'Create failed!',
     update_failed: 'Update failed!',
     delete_failed: 'Delete failed!',
+    sure: 'Are you sure?',
+    yes: 'Yes',
+    no: 'No',
   },
   errorLog: {
     tips: 'Please click the bug icon in the upper right corner',
@@ -300,6 +303,7 @@ export default {
     categories: 'Categories',
     category: 'Category',
     total: 'Total',
+    end_of_bill: 'Finish the bill',
   },
   categories: {
     code: 'Code',

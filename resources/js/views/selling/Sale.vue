@@ -41,11 +41,6 @@
             <span>{{ scope.row.amount }}</span>
           </template>
         </el-table-column>
-        <!-- <el-table-column :label="$t('articles.category')" width="120px" align="center">
-          <template slot-scope="scope">
-            <span>{{ scope.row.categories.name }}</span>
-          </template>
-        </el-table-column> -->
         <el-table-column :label="$t('stores.location')" width="120px" align="center">
           <template slot-scope="scope">
             <div v-if="scope.row.store.length > 0">
@@ -97,8 +92,11 @@
       <br>
       <div style="float: right;">{{ $t('customers.total_points1') + ': ' + listItem.earnedPoints }}</div>
       <br>
-      <el-button style="float: left; margin-top: 12px; width: 150px;" type="danger" class="pan-btn light-blue-btn" @click="resetBill">Ponisti</el-button>
-      <el-button style="float: right; margin-top: 12px; width: 150px;" type="success" class="pan-btn blue-btn" @click="submitBill">Kraj racuna</el-button>
+      <el-button style="float: left; margin-top: 12px; width: 150px;" type="danger" class="pan-btn light-blue-btn" @click="resetBill">{{ $t('permission.delete') }}</el-button>
+      <el-button :disabled="pomBill.billList.length == 0" style="float: right; margin-top: 12px; width: 150px;" type="success" class="pan-btn blue-btn" @click="onClick">
+        {{ $t('articles.end_of_bill') }}
+      </el-button>
+      <confirm-modal ref="confirm" :test="pomBill.billList" :listitem="listItem" :title="$t('table.sure')" />
     </div>
   </div>
 </template>
@@ -109,9 +107,13 @@ import { billUpdate, listing } from '@/api/sale';
 import { fetchCustomer } from '@/api/customer';
 import { fetchList1 } from '@/api/article';
 import { parseTime } from '@/utils';
+import ConfirmModal from './components/ConfirmModal';
 
 export default {
   name: 'Selling',
+  components: {
+    ConfirmModal,
+  },
   data() {
     return {
       tableKey: 0,
@@ -208,6 +210,9 @@ export default {
       var temp = Math.floor((this.listItem.bill / 100) / this.default_point_value);
       return temp > this.max_points ? this.max_points : temp;
     },
+    confirmBill() {
+
+    },
     async submitBill() {
       this.listLoading = true;
       this.listItem.articleUpdate = await listing(this.pomBill);
@@ -223,6 +228,16 @@ export default {
       this.listItem.earnedPoints = 0;
       this.listItem.bill = 0;
       this.pomBill.billList = [];
+    },
+    onClick() {
+      this.$refs.confirm
+        .show()
+        .then(() => {
+          this.submitBill();
+        })
+        .catch(() => {
+
+        });
     },
   },
 };
@@ -277,14 +292,12 @@ export default {
     overflow: scroll;
     // box-shadow: 5px 10px 10px #001133, -5px 10px 10px #001133 !important;
   }
-
   .hasTooltip span {
     display: none;
     color: #000;
     text-decoration: none;
     padding: 3px;
   }
-
   .hasTooltip:hover span {
     display: block;
     z-index: 1;

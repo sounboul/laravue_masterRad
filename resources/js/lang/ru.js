@@ -174,6 +174,9 @@ export default {
     create_failed: 'Создать не удалось!',
     update_failed: 'Не удалось обновить!',
     delete_failed: 'Не удалось удалить!',
+    sure: 'Уверены ли вы?',
+    yes: 'Да',
+    no: 'Нет',
   },
   errorLog: {
     tips: 'Пожалуйста, нажмите на иконку "бага" в правом верхнем углу',
@@ -300,6 +303,7 @@ export default {
     categories: 'Категории',
     category: 'Категория',
     total: 'Всего',
+    end_of_bill: 'Закончить счет',
   },
   categories: {
     code: 'Код',

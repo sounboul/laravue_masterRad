@@ -1,0 +1,121 @@
+<template>
+  <el-dialog
+    class="confirm-modal"
+    center
+    v-bind="$attrs"
+    :modal-append-to-body="false"
+    :append-to-body="true"
+    :visible="isVisible"
+    :before-close="beforeClose"
+    @close="close"
+  >
+    <slot>
+      <span>{{ message }}</span>
+    </slot>
+    <span slot="footer" class="dialog-footer">
+      <el-button id="save-button" type="success" :loading="loading" @click.native="confirm">
+        {{ $t('permission.confirm') }}
+      </el-button>
+      <el-button id="close-button" type="danger" @click.native="close">
+        {{ $t('permission.cancel') }}
+      </el-button>
+    </span>
+  </el-dialog>
+</template>
+<script>
+import { Dialog } from 'element-ui';
+export default {
+  name: 'Confirm',
+  components: {
+    [Dialog.name]: Dialog,
+  },
+  props: {
+    syncViaProps: {
+      type: Boolean,
+      default: false,
+    },
+    visible: {
+      type: Boolean,
+      default: false,
+    },
+    message: {
+      type: String,
+      default: '',
+    },
+    cancelLabel: {
+      type: String,
+      default: 'Cancel',
+    },
+    confirmLabel: {
+      type: String,
+      default: 'Yes',
+    },
+    loading: {
+      type: Boolean,
+      default: false,
+    },
+    closeOnConfirm: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  data() {
+    return {
+      promise: undefined,
+      beforeConfirm: () => {},
+      beforeCancel: () => {},
+      internalVisible: false,
+      resolvePromise: undefined,
+      rejectPromise: undefined,
+    };
+  },
+  computed: {
+    isVisible() {
+      return this.visible || this.internalVisible;
+    },
+  },
+  methods: {
+    beforeClose(done) {
+      done();
+      this.updateVisible(false);
+    },
+    async close() {
+      const done = () => {
+        this.updateVisible(false);
+        this.rejectPromise();
+      };
+
+      if (this.isVisible && this.beforeCancel) {
+        await this.beforeCancel(done);
+      }
+      done();
+    },
+    updateVisible(value) {
+      if (this.syncViaProps) {
+        this.$emit('update:visible', value);
+      } else {
+        this.internalVisible = value;
+      }
+    },
+    async confirm() {
+      const done = () => {
+        this.updateVisible(false);
+        this.resolvePromise();
+      };
+      if (this.beforeConfirm) {
+        await this.beforeConfirm(done);
+      }
+      if (this.closeOnConfirm) {
+        done();
+      }
+    },
+    show() {
+      this.updateVisible(true);
+      return new Promise((resolve, reject) => {
+        this.resolvePromise = resolve;
+        this.rejectPromise = reject;
+      });
+    },
+  },
+};
+</script>

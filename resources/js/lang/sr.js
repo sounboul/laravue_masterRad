@@ -175,6 +175,9 @@ export default {
     create_failed: 'Kreiranje neuspešno!',
     update_failed: 'Ažuriranje neuspešno!',
     delete_failed: 'Brisanje neuspešno!',
+    sure: 'Da li ste sigurni?',
+    yes: 'Da',
+    no: 'Ne',
   },
   errorLog: {
     tips: 'Please click the bug icon in the upper right corner',
@@ -302,6 +305,7 @@ export default {
     categories: 'Kategorije',
     category: 'Kategorija',
     total: 'Ukupno',
+    end_of_bill: 'Završi račun',
   },
   categories: {
     code: 'Šifra',
