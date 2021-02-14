@@ -76,6 +76,10 @@ Route::namespace('Api')->group(function() {
         Route::get('/categories/delete/{id}', 'CategoriesController@deleteCategory');
         Route::get('/categories/getCategories', 'CategoriesController@getCategories');
 
+        // Suppliers
+        Route::get('/suppliers', 'SuppliersController@getSuppliers');
+
+
         // Departments
         Route::get('/departments', 'DepartmentsController@fetchDepartments');
 

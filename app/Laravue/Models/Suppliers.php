@@ -8,6 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Suppliers extends Model
 {
     public $guarded = [];
-    protected $table = "Suppliers";
+    protected $table = "suppliers";
     public $timestamps = false;
 }

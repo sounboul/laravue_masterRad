@@ -298,6 +298,7 @@ export default {
     name: 'Name',
     currency: '£',
     price: 'Price',
+    amount: 'Amount',
     discount: 'Sale',
     discount_silver: 'Silver customers price',
     discount_gold: 'Gold customers price',
@@ -308,11 +309,18 @@ export default {
     category: 'Category',
     total: 'Total',
     end_of_bill: 'Finish the bill',
+    brand: 'Brand',
+    Create_Article: 'Create Article',
+    Edit_Article: 'Edit Article',
   },
   categories: {
     code: 'Code',
     name: 'Name',
     description: 'Description',
+  },
+  suppliers: {
+    suppliers: 'Suppliers',
+    supplier: 'Supplier',
   },
   discounts: {
     dialog_title: 'DEFINITIONS of POINTS and DISCOUNTS',

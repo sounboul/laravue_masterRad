@@ -298,6 +298,7 @@ export default {
     name: 'Name',
     currency: 'EUR',
     price: 'Price',
+    amount: 'Menge',
     discount: 'Rabbat',
     discount_silver: 'Price for silver customers',
     discount_gold: 'Price for gold customers',
@@ -308,11 +309,18 @@ export default {
     category: 'Kategorie',
     total: 'Gesamt',
     end_of_bill: 'Füllen Sie Konto',
+    brand: 'Marke',
+    Create_Article: 'Artikel erstellen',
+    Edit_Article: 'Artikel bearbeiten',
   },
   categories: {
     code: 'Kode',
     name: 'Name',
     description: 'Beschreibung',
+  },
+  suppliers: {
+    suppliers: 'Lieferanten',
+    supplier: 'Lieferant',
   },
   discounts: {
     dialog_title: 'DEFINITIONEN von PUNKTEN und RABATTEN',

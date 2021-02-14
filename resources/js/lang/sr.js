@@ -300,6 +300,7 @@ export default {
     name: 'Naziv',
     currency: 'RSD',
     price: 'Cena',
+    amount: 'Količina',
     discount: 'Akcija',
     discount_silver: 'Cena za silver kupce',
     discount_gold: 'Cena za gold kupce',
@@ -310,11 +311,18 @@ export default {
     category: 'Kategorija',
     total: 'Ukupno',
     end_of_bill: 'Završi račun',
+    brand: 'Brend',
+    Create_Article: 'Kreiranje artikla',
+    Edit_Article: 'Ažuriranje artikla',
   },
   categories: {
     code: 'Šifra',
     name: 'Naziv',
     description: 'Opis',
+  },
+  suppliers: {
+    suppliers: 'Dobavljači',
+    supplier: 'Dobavljač',
   },
   discounts: {
     dialog_title: 'DEFINISANJE BODOVA i POPUSTA',

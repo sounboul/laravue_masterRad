@@ -298,6 +298,7 @@ export default {
     name: 'Название',
     currency: 'РУБ',
     price: 'Цена',
+    amount: 'Количество',
     discount: 'Скидка',
     discount_silver: 'Цена для silver клиентов',
     discount_gold: 'Цена для gold клиентов',
@@ -308,11 +309,18 @@ export default {
     category: 'Категория',
     total: 'Всего',
     end_of_bill: 'Закончить счет',
+    brand: 'Марка',
+    Create_Article: 'Создать статью',
+    Edit_Article: 'Редактировать статью',
   },
   categories: {
     code: 'Код',
     name: 'Имя',
     description: 'Описание',
+  },
+  suppliers: {
+    suppliers: 'Поставщики',
+    supplier: 'Поставщик',
   },
   discounts: {
     dialog_title: 'ОПРЕДЕЛЕНИЯ БАЛЛОВ и СКИДК',

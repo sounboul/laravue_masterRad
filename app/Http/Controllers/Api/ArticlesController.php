@@ -136,7 +136,43 @@ $articleQuery = toArray($articleQuery);
         ) {
             return response()->json(['error' => 'Permission denied'], 403);
         }
-        dd($request);
+//dd($price);
+
+        if($request->price1 == 0 || $request->amount == 0 || $request->supplier == 0 || $request->title == '' || $request->category == 0){
+
+            $title = 'discounts.warning';
+            $message = 'discounts.timestamp_is_required';
+            $type = 'error';
+        
+            return response()->json(new JsonResponse(['title' => $title, 'message' => $message, 'type' => $type ]));
+        }
+//dd($request->all());
+
+        $price = filter_var($request->price1 * 100, FILTER_SANITIZE_NUMBER_INT);
+
+        $article = new Articles;
+
+        $article->code = 0;
+        $article->title = $request->title;
+        $article->categories_id = $request->category;
+        $article->price = $price;
+        $article->supplier_id = $request->supplier;
+        $article->amount = $request->amount;
+        if($request->discount > 0){
+            $discount = filter_var($request->discount * 10, FILTER_SANITIZE_NUMBER_INT);
+            $article->discount = $discount;
+        }
+        $article->brand = $request->brand;
+        $article->tags = $request->tags;
+        $article->description = $request->description;
+        $article->short_description = $request->short_description;
+        $article->save();
+
+        $article = Articles::find($article->id);
+        $article->code = $article->id + 10000;
+        $article->update();
+
+        return;
     }
 
 
@@ -160,13 +196,20 @@ $articleQuery = toArray($articleQuery);
             return response()->json(['error' => 'Article not found'], 404);
         }
 
+        $price = filter_var($request->price1 * 100, FILTER_SANITIZE_NUMBER_INT);
+//dd($price);
         $article->code = $request->code;
         $article->title = $request->title;
-        $article->categories_id = $request->category;
-        $article->price = $request->price;
+        if($request->category){
+            $article->categories_id = $request->category;
+        }
+        if($request->price1){
+            $article->price = $price;
+        }
         $article->amount = $request->amount;
         $article->brand = $request->brand;
         $article->tags = $request->tags;
+        $article->supplier_id = $request->supplier;
         $article->description = $request->description;
         $article->short_description = $request->short_description;
         $article->save();

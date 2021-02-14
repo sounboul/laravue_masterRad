@@ -134,33 +134,62 @@
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="170px" style="width: 400px; margin-left:50px;">
-        <el-form-item :label="$t('table.code')" prop="code">
-          <el-input v-model="temp.code" />
-        </el-form-item>
-        <el-form-item :label="$t('table.title')">
-          <el-input v-model="temp.title" />
-        </el-form-item>
-        <!-- <el-form-item :label="$t('table.date')" prop="timestamp">
-          <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="Please pick a date" />
-        </el-form-item>
-        <el-form-item :label="$t('table.status')">
-          <el-select v-model="temp.status" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in statusOptions" :key="item" :label="item" :value="item" />
-          </el-select>
-        </el-form-item>
-        <el-form-item :label="$t('table.importance')">
-          <el-rate v-model="temp.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="3" style="margin-top:8px;" />
-        </el-form-item> -->
-        <el-form-item :label="$t('articles.categories')" width="180px" align="center">
-          <el-select v-model="temp.category" :placeholder="$t('articles.categories')" clearable style="margin-right: 4%; width: 100%" class="filter-item">
-            <el-option v-for="item in categories" :key="item.id" :label="item.name | uppercaseFirst" :value="item.id" />
-          </el-select>
-        </el-form-item>
-        <el-form-item :label="$t('table.remark')">
-          <el-input v-model="temp.remark" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" placeholder="Please input" />
-        </el-form-item>
+    <el-dialog :title="$t('articles.' + textMap[dialogStatus])" :visible.sync="dialogFormVisible">
+      <el-form ref="dataForm" :rules="rules" :model="temp">
+        <div class="mainForm">
+          <div class="formLeft">
+            <el-form-item v-show="textMap[dialogStatus]=='Edit_Article'" :label="$t('table.code')" prop="code">
+              <span> {{ temp.code }} </span>
+            </el-form-item>
+            <el-form-item :label="$t('table.title')">
+              <el-input v-model="temp.title" />
+            </el-form-item>
+            <!-- <el-form-item :label="$t('table.date')" prop="timestamp">
+              <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="Please pick a date" />
+            </el-form-item>
+            <el-form-item :label="$t('table.status')">
+              <el-select v-model="temp.status" class="filter-item" placeholder="Please select">
+                <el-option v-for="item in statusOptions" :key="item" :label="item" :value="item" />
+              </el-select>
+            </el-form-item>
+            <el-form-item :label="$t('table.importance')">
+              <el-rate v-model="temp.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="3" style="margin-top:8px;" />
+            </el-form-item> -->
+            <el-form-item :label="$t('articles.categories')" width="180px" align="center">
+              <el-select v-model="temp.category" :placeholder="$t('articles.categories')" clearable style="margin-right: 4%; width: 100%" class="filter-item">
+                <el-option v-for="item in categories" :key="item.id" :label="item.name | uppercaseFirst" :value="item.id" />
+              </el-select>
+            </el-form-item>
+            <el-form-item :label="$t('articles.price')">
+              <el-input v-model="temp.price1" />
+            </el-form-item>
+            <el-form-item :label="$t('suppliers.supplier')" width="180px" align="center">
+              <el-select v-model="temp.supplier" :placeholder="$t('suppliers.supplier')" clearable style="margin-right: 4%; width: 100%" class="filter-item">
+                <el-option v-for="item in suppliers" :key="item.id" :label="item.name | uppercaseFirst" :value="item.id" />
+              </el-select>
+            </el-form-item>
+            <el-form-item :label="$t('articles.amount')">
+              <el-input v-model="temp.amount" />
+            </el-form-item>
+            <el-form-item :label="$t('discounts.discount_percentage') + ' (%)'">
+              <el-input v-model="temp.discount" />
+            </el-form-item>
+          </div>
+          <div class="formRight">
+            <el-form-item :label="$t('articles.brand')">
+              <el-input v-model="temp.brand" />
+            </el-form-item>
+            <el-form-item :label="$t('table.tags')">
+              <el-input v-model="temp.tags" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" />
+            </el-form-item>
+            <el-form-item :label="$t('table.description')">
+              <el-input v-model="temp.description" :autosize="{ minRows: 4, maxRows: 8}" type="textarea" />
+            </el-form-item>
+            <el-form-item :label="$t('table.short_description')">
+              <el-input v-model="temp.short_description" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" />
+            </el-form-item>
+          </div>
+        </div>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">
@@ -231,6 +260,7 @@
 import { fetchList, fetchPv, fetchArticle, createArticle, updateArticle, deleteArticle } from '@/api/article';
 import { fetchStores } from '@/api/stores';
 import { getCategories } from '@/api/category';
+import { getSuppliers } from '@/api/supplier';
 import waves from '@/directive/waves'; // Waves directive
 import { parseTime } from '@/utils';
 import checkRole from '@/utils/role';
@@ -290,22 +320,22 @@ export default {
       showReviewer: false,
       temp: {
         id: undefined,
-        // importance: 1,
         remark: '',
-        // timestamp: new Date(),
-        // title: '',
         type: '',
         code: '',
-        // status: 'published',
         category: '',
+        supplier: '',
+        price1: this.price / 100,
       },
+      price: 0,
       dialogFormVisible: false,
       dialogStatus: '',
       textMap: {
-        update: 'Edit',
-        create: 'Create',
+        update: 'Edit_Article',
+        create: 'Create_Article',
       },
       categories: this.getCategories(),
+      suppliers: this.getSuppliers(),
       // stores: this.getStores(),
       dialogPvVisible: false,
       modalArticlePreview: false,
@@ -327,6 +357,14 @@ export default {
       const { data } = await fetchList(this.listQuery);
       this.list = data.items.data;
       this.total = data.items.total;
+      /* this.list.forEach(function(entry) {
+        entry.price = entry.price / 100;
+        // console.log(pom);
+      });*/
+      /* for (var i = 0; i < this.list.length; i++) {
+        this.list[i].price = this.currencyFormatEU(this.list[i].price, 2);
+      }*/
+      // console.log(this.list);
       /* for (var i = 0; i < this.list.length; i++) {
         this.test[i] = this.list[i].categories;
       } */
@@ -346,6 +384,12 @@ export default {
       this.listLoading = true;
       const { data } = await getCategories();
       this.categories = data.items;
+      this.listLoading = false;
+    },
+    async getSuppliers() {
+      this.listLoading = true;
+      const { data } = await getSuppliers();
+      this.suppliers = data.items;
       this.listLoading = false;
     },
     handleModifyStatus(row, status) {
@@ -372,13 +416,17 @@ export default {
     resetTemp() {
       this.temp = {
         id: undefined,
-        importance: 1,
-        remark: '',
-        timestamp: new Date(),
+        code: 0,
         title: '',
-        code: '',
-        status: 'published',
-        type: '',
+        category: 0,
+        price1: 0,
+        supplier: 0,
+        amount: 0,
+        discount: 0,
+        brand: '',
+        tags: '',
+        description: '',
+        short_description: '',
       };
     },
     handleCreate() {
@@ -392,8 +440,6 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          this.temp.id = parseInt(Math.random() * 100) + 1024; // mock a id
-          this.temp.author = 'laravue';
           createArticle(this.temp).then(() => {
             this.list.unshift(this.temp);
             this.dialogFormVisible = true;
@@ -401,9 +447,11 @@ export default {
               title: this.$t('table.success'),
               message: this.$t('table.created_successfully'),
               type: 'success',
-              duration: 2000,
+              duration: 4000,
             });
-            // this.getList();
+            this.getList();
+            this.getCategories();
+            this.dialogFormVisible = false;
           });
         }
       });
@@ -528,6 +576,34 @@ export default {
   .pagination-container {
     width: 100%;
     border-radius: 15px;
+  }
+  .dialog-footer {
+    .el-button {
+      width: 100px;
+      margin: 20px 0;
+    }
+    padding-right: 50px;
+  }
+  .formLeft {
+    label{
+      float: right;
+      width: 170px;
+      display:block;
+    }
+    display: inline-block;
+    width: 350px;
+    margin-left: 50px;
+  }
+  .formRight {
+    display: inline-block;
+    width: 350px;
+    justify-content: top;
+    float:right;
+    margin-right: 50px;
+  }
+  .mainForm {
+    margin-top: -65px !important;
+    padding-top: 35px;
   }
   @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@1,300;1,400&family=Raleway:wght@500&display=swap');
 </style>

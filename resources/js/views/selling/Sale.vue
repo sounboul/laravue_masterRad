@@ -7,6 +7,7 @@
       <span class="title">{{ $t('customers.level') + ': ' }}</span><span>{{ level | uppercaseFirst() }}</span>
       <span class="title">{{ $t('customers.last_change') + ': ' }}</span><span>{{ list1.updated_at | parseTime('{d}.{m}.{y}.') }}</span>
     </div>
+    <hr>
     <div class="articles">
       <el-table
         :key="tableKey"
