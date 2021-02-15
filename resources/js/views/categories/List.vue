@@ -41,7 +41,7 @@
           <span>{{ }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('articles.name')" width="250px">
+      <el-table-column :label="$t('articles.name')" width="350px">
         <template slot-scope="{row}">
           <span style="font-size: 12pt;">{{ row.name }}</span>
         </template>
@@ -51,7 +51,7 @@
           <span>{{ row.description }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.actions')" align="center" width="200" class-name="small-padding fixed-width">
+      <el-table-column :label="$t('table.actions')" align="center" width="400" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
           <el-button type="success" size="mini" @click="handleUpdate(row)">
             {{ $t('table.edit') }}
@@ -66,7 +66,7 @@
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="170px" style="width: 650px; margin-left:50px;">
         <el-form-item :label="$t('categories.name')" :placeholder="temp.name">
           <el-input v-model="temp.name" />
         </el-form-item>
@@ -321,7 +321,7 @@ export default {
         }
       });
     },
-    handleDelete(id) {
+    /* handleDelete(id) {
       deleteCategory(id).then(() => {
         this.$notify({
           title: this.$t('table.success'),
@@ -331,6 +331,26 @@ export default {
         });
         this.getList();
       });
+    },*/
+    handleDelete(id) {
+      this.$confirm(this.$t('table.sure'), this.$t('discounts.warning'), {
+        confirmButtonText: this.$t('permission.confirm'),
+        cancelButtonText: this.$t('permission.cancel'),
+        type: 'warning',
+      })
+        .then(async() => {
+          await deleteCategory(id);
+          this.$notify({
+            title: this.$t('table.success'),
+            message: this.$t('table.deleted_successfully'),
+            type: 'success',
+            duration: 3000,
+          });
+          this.getList();
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     handleFetchPv(pv) {
       fetchPv(pv).then(response => {

@@ -154,21 +154,6 @@ export const constantRoutes = [
       },
     ],
   },
-  /* {
-    path: '/customer',
-    component: Layout,
-    redirect: '/customer/profile/edit',
-    children: [
-      {
-        path: 'edit',
-        component: () => import('@/views/customers/CustomerProfile'),
-        name: 'CustomerList',
-        meta: { title: 'EditCustomers', icon: 'people', noCache: true },
-        hidden: true,
-      },
-    ],
-  }, */
-  // categoryRoutes,
   {
     path: '/categories',
     component: Layout,
@@ -183,6 +168,19 @@ export const constantRoutes = [
     ],
   },
   {
+    path: '/suppliers',
+    component: Layout,
+    redirect: '/suppliers/index',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/suppliers/List'),
+        name: 'supplierList',
+        meta: { title: 'suppliers', icon: 'example', permissions: ['view menu'] },
+      },
+    ],
+  },
+  {
     path: '/discounts',
     component: Layout,
     redirect: '/discounts/index',
@@ -192,6 +190,19 @@ export const constantRoutes = [
         component: () => import('@/views/discounts/index'),
         name: 'Discounts',
         meta: { title: 'discounts', icon: 'star', noCache: true },
+      },
+    ],
+  },
+  {
+    path: '/marketing',
+    component: Layout,
+    redirect: '/marketing/index',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/marketing/index'),
+        name: 'Marketing',
+        meta: { title: 'marketing', icon: 'dollar', noCache: true },
       },
     ],
   },

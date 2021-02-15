@@ -43,6 +43,7 @@ Route::namespace('Api')->group(function() {
         Route::get('roles/{role}/permissions', 'RoleController@permissions')->middleware('permission:' . Acl::PERMISSION_PERMISSION_MANAGE);
         Route::get('customers/{customer}/permissions', 'CustomersController@permissions')->middleware('permission:' . Acl::PERMISSION_PERMISSION_MANAGE);
         Route::get('categories/{category}/permissions', 'CategoriesController@permissions')->middleware('permission:' . Acl::PERMISSION_PERMISSION_MANAGE);
+        Route::get('suppliers/{supplier}/permissions', 'SuppliersController@permissions')->middleware('permission:' . Acl::PERMISSION_PERMISSION_MANAGE);
         Route::get('discounts/{discount}/permissions', 'MemberLevelController@permissions')->middleware('permission:' . Acl::PERMISSION_PERMISSION_MANAGE);
 
         // Articles
@@ -64,6 +65,7 @@ Route::namespace('Api')->group(function() {
         Route::get('/all_customers', 'CustomersController@fetchAllCustomers');
         Route::post('/customer/create', 'CustomersController@createCustomer');
         Route::post('/customerUpdate1', 'CustomersController@customerUpdate1');
+        Route::get('/customer/delete/{id}', 'CustomersController@deleteCustomer');
         //Route::get('/pom', 'CustomersController@pom');
 
         // Stores
@@ -74,10 +76,14 @@ Route::namespace('Api')->group(function() {
         Route::post('/categories/update', 'CategoriesController@updateCategory');
         Route::post('/categories/create', 'CategoriesController@createCategory');
         Route::get('/categories/delete/{id}', 'CategoriesController@deleteCategory');
-        Route::get('/categories/getCategories', 'CategoriesController@getCategories');
+        Route::get('/getCategories', 'CategoriesController@getCategories');
 
         // Suppliers
-        Route::get('/suppliers', 'SuppliersController@getSuppliers');
+        Route::get('/suppliers', 'SuppliersController@index');   
+        Route::get('/all_suppliers', 'SuppliersController@getSuppliers');   
+        Route::post('/suppliers/update', 'SuppliersController@updateSupplier');
+        Route::post('/suppliers/create', 'SuppliersController@createSupplier');
+        Route::get('/suppliers/delete/{id}', 'SuppliersController@deleteSupplier');
 
 
         // Departments
@@ -91,6 +97,7 @@ Route::namespace('Api')->group(function() {
 
         // Bills
         Route::post('/listItem1', 'BillController@listItem');
+        Route::post('/executeQuery', 'BillController@executeQuery');
 
     });
 });

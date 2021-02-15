@@ -16,10 +16,11 @@ export function fetchCategories(query) {
   });
 }
 
-export function getCategories() {
+export function getCategories(query) {
   return request({
-    url: '/categories/getCategories',
+    url: '/getCategories',
     method: 'get',
+    params: query,
   });
 }
 
@@ -65,5 +66,13 @@ export function deleteCategory(id) {
   return request({
     url: '/categories/delete/' + id,
     method: 'get',
+  });
+}
+
+export function executeQuery(data) {
+  return request({
+    url: '/executeQuery',
+    method: 'post',
+    data,
   });
 }

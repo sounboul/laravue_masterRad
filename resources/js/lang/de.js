@@ -82,6 +82,8 @@ export default {
     EditCustomer: 'Kunden bearbeiten',
     importArticles: 'Artikel Import',
     selling: 'Verkauf',
+    suppliers: 'Lieferanten',
+    marketing: 'Marketing',
   },
   navbar: {
     logOut: 'Log Out',
@@ -177,6 +179,8 @@ export default {
     sure: 'Bist du sicher?',
     yes: 'Ja',
     no: 'Nein',
+    tags: 'Stichworte',
+    short_description: 'Kurze Beschreibung',
   },
   errorLog: {
     tips: 'Please click the bug icon in the upper right corner',
@@ -220,6 +224,7 @@ export default {
     'name': 'Name',
     'email': 'Email',
     'phone': 'Phone',
+    'address': 'Adresse',
     'education': 'Education',
     'about_me': 'About user',
     'skills': 'Skills',
@@ -340,5 +345,12 @@ export default {
     discount_end_date: 'Der Rabatt endet am:',
     to_points_overload: 'Obere Grenzpunkte überschreiten die zulässigen Werte!',
     from_points_overload: 'Die unteren Grenzpunkte überschreiten die zulässigen Werte!',
+  },
+  marketing: {
+    choose_category: 'Artikelkategorie auswählen:',
+    criteria: 'Wählen Sie die Suchkriterien aus:',
+    newest: 'Neuere Artikel',
+    no_selled: 'Zumindest verkaufte Artikel',
+    criteria_date: 'Wählen Sie das Datum aus, bis zu dem Sie suchen möchten',
   },
 };

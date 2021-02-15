@@ -82,6 +82,8 @@ export default {
     EditCustomer: 'Ažuriranje kupca',
     importArticles: 'Uvoz proizvoda',
     selling: 'Prodaja',
+    suppliers: 'Dobavljači',
+    marketing: 'Marketing',
   },
   navbar: {
     logOut: 'Odjava',
@@ -175,9 +177,11 @@ export default {
     create_failed: 'Kreiranje neuspešno!',
     update_failed: 'Ažuriranje neuspešno!',
     delete_failed: 'Brisanje neuspešno!',
-    sure: 'Da li ste sigurni?',
+    sure: 'Da li ste sigurni u predstojeću radnju?',
     yes: 'Da',
     no: 'Ne',
+    tags: 'Tagovi',
+    short_description: 'Kratak opis',
   },
   errorLog: {
     tips: 'Please click the bug icon in the upper right corner',
@@ -221,6 +225,7 @@ export default {
     'name': 'Ime',
     'email': 'Email',
     'phone': 'Telefon',
+    'address': 'Adresa',
     'CreateNewUser': 'Kreiranje novog korisnika',
     'education': 'Obrazovanje',
     'about_me': 'O korisniku',
@@ -342,5 +347,12 @@ export default {
     discount_end_date: 'Kraj popusta:',
     to_points_overload: 'Bodovi gornje granice prevazilaze dozvoljene vrednosti!',
     from_points_overload: 'Bodovi donje granice prevazilaze dozvoljene vrednosti!',
+  },
+  marketing: {
+    choose_category: 'Izaberite kategoriju artikla:',
+    criteria: 'Izaberite kriterijum pretrage artikala:',
+    newest: 'Noviji artikli',
+    no_selled: 'Najmanje prodavani artikli',
+    criteria_date: 'Izaberite datum do koga želite da se vrši pretraga',
   },
 };

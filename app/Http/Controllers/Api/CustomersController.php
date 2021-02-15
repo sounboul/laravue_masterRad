@@ -39,6 +39,14 @@ class CustomersController extends BaseController
         else {
             $order = 'desc';
         }
+        if($showActiveCustomers === true)
+        {
+            $customerQuery->where('active', 'active')->orderBy('id', $order);            
+        }
+        else
+        {
+            $customerQuery->orderBy('id', $order);            
+        }
 /*
         if(!$showActiveCustomers || (!$showActiveCustomers && ($order == "-id"))) {
             
@@ -66,10 +74,9 @@ class CustomersController extends BaseController
         else 
         {*/
 
-            $customerQuery->where('active', 'active')->orderBy('id', $order);
          
-            if (!empty($keyword)) {/*
-                if($order == '+id') {*/
+            if (!empty($keyword)) {
+                if($showActiveCustomers === true) {
                     $customerQuery->where('active', 'active')
                                     ->where(function($query) use ($keyword) {
                                     $query->orWhere('name', 'LIKE', '%' . $keyword . '%')
@@ -77,7 +84,7 @@ class CustomersController extends BaseController
                                             ->orWhere('email', 'LIKE', '%' . $keyword . '%');
                                     })
                                     ->orderBy('id', $order);
-                /*}
+                }
                 else
                 {
                     $customerQuery->where(function($query) use ($keyword) {
@@ -85,7 +92,7 @@ class CustomersController extends BaseController
                                             ->orWhere('email', 'LIKE', '%' . $keyword . '%');
                                     })
                                     ->orderBy('id', $order);
-                }*/
+                }
             }
         /*}*/
        
@@ -194,6 +201,17 @@ class CustomersController extends BaseController
     {
         
         return response()->json(new JsonResponse(['items' => $request->all()]));
+    }
+
+
+
+    public function deleteCustomer($id)
+    {
+        $customer = Customers::find($id);
+        $customer->active = 'deleted';
+        $customer->update();
+        
+        return;
     }
 /*
     public function pom()    // random upis total_points u customers

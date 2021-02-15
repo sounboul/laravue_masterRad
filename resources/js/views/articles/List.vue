@@ -134,7 +134,7 @@
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
-    <el-dialog :title="$t('articles.' + textMap[dialogStatus])" :visible.sync="dialogFormVisible">
+    <el-dialog :title="textMap[dialogStatus] != null ? $t('articles.' + textMap[dialogStatus]) : ''" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp">
         <div class="mainForm">
           <div class="formLeft">

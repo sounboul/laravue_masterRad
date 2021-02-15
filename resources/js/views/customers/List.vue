@@ -14,7 +14,7 @@
       <!-- <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         {{ $t('table.search') }}
       </el-button> -->
-      <el-checkbox class="filter-item" style="margin-left: 15px;" @change="showActiveCustomers === false ? activeCustomers() : getAllCustomers()">{{ $t('customers.active_customers') }}
+      <el-checkbox class="filter-item" style="margin-left: 15px;" @change="ActiveCustomers">{{ $t('customers.active_customers') }}
       </el-checkbox>
       <div style="float: right;">
         <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
@@ -337,10 +337,8 @@ export default {
   methods: {
     async getList() {
       this.listLoading = true;
-      this.listQuery.showActiveCustomers = !this.showActiveCustomers;
       const { limit, page } = this.listQuery;
       const { data, meta } = await fetchAllCustomers(this.listQuery);
-      this.showActiveCustomers = !this.showActiveCustomers;
       this.list = data;
       this.level = data[0].level;
       // console.log(this.showActiveCustomers);
@@ -352,22 +350,22 @@ export default {
     },
     async activeCustomers() {
       this.listLoading = true;
-      this.listQuery.showActiveCustomers = !this.showActiveCustomers;
       console.log(this.showActiveCustomers);
       const { data, meta } = await fetchAllCustomers(this.listQuery);
-      this.showActiveCustomers = !this.showActiveCustomers;
       this.list = data;
       this.total = meta.total;
       this.listLoading = false;
     },
     async getAllCustomers() {
       this.listLoading = true;
-      this.listQuery.showActiveCustomers = !this.showActiveCustomers;
       const { data, meta } = await fetchAllCustomers(this.listQuery);
-      this.showActiveCustomers = !this.showActiveCustomers;
       this.list = data;
       this.total = meta.total;
       this.listLoading = false;
+    },
+    async ActiveCustomers() {
+      this.listQuery.showActiveCustomers = !this.listQuery.showActiveCustomers;
+      this.getList();
     },
     handleFilter() {
       this.listQuery.page = 1;
@@ -496,6 +494,26 @@ export default {
       });
     },
     handleDelete(id) {
+      this.$confirm(this.$t('table.sure'), this.$t('discounts.warning'), {
+        confirmButtonText: this.$t('permission.confirm'),
+        cancelButtonText: this.$t('permission.cancel'),
+        type: 'warning',
+      })
+        .then(async() => {
+          await deleteCustomer(id);
+          this.$notify({
+            title: this.$t('table.success'),
+            message: this.$t('table.deleted_successfully'),
+            type: 'success',
+            duration: 3000,
+          });
+          this.getList();
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    /* handleDelete(id) {
       deleteCustomer(id).then(() => {
         this.$notify({
           title: this.$t('table.success'),
@@ -505,7 +523,7 @@ export default {
         });
         this.getList();
       });
-    },
+    },*/
     handleFetchPv(pv) {
       fetchPv(pv).then(response => {
         this.pvData = response.data.pvData;

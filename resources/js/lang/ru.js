@@ -82,6 +82,8 @@ export default {
     EditCustomer: 'Изменить клиента',
     importArticles: 'Импортировать предметы',
     selling: 'Продажа',
+    suppliers: 'Поставщики',
+    marketing: 'Маркетинг',
   },
   navbar: {
     logOut: 'Выход',
@@ -177,6 +179,8 @@ export default {
     sure: 'Уверены ли вы?',
     yes: 'Да',
     no: 'Нет',
+    tags: 'Теги',
+    short_description: 'Краткое описание',
   },
   errorLog: {
     tips: 'Пожалуйста, нажмите на иконку "бага" в правом верхнем углу',
@@ -220,6 +224,7 @@ export default {
     'name': 'Имя',
     'email': 'Email',
     'phone': 'Телефон',
+    'address': 'Адрес',
     'education': 'Oбразование',
     'about_me': 'О пользователе',
     'skills': 'Навыки и умения',
@@ -340,5 +345,12 @@ export default {
     discount_end_date: 'Скидка заканчивается:',
     to_points_overload: 'Верхние предельные значения превышают допустимые значения!',
     from_points_overload: 'Точки нижнего предела превышают допустимые значения!',
+  },
+  marketing: {
+    choose_category: 'Выберите категорию товара:',
+    criteria: 'Выберите элементы критериев поиска:',
+    newest: 'Новые статьи',
+    no_selled: 'Хотя бы проданные статьи',
+    criteria_date: 'Выберите дату, по которой вы хотите искать',
   },
 };
