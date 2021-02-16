@@ -248,6 +248,8 @@ export default {
     'customers': 'Kupci',
     'customer': 'Kupac',
     'active_customers': 'Prikaži sve kupce',
+    'pending_customers': 'Prikaži nepotvrđene kupce',
+    'deleted_customers': 'Prikaži blokirane kupce',
     'customer_name': 'Ime kupca',
     'customerDetails': 'Podaci o kupcu',
     'create_new_customer': 'Kreiranje novog kupca',

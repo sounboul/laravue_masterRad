@@ -18,6 +18,7 @@ class CreateCustomersTable extends Migration
             $table->integer('code')->unique();
             $table->string('name');
             $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
             $table->string('mobile')->unique();
             $table->date('dob')->nullable();
             $table->string('ID_number')->nullable()->unique();
@@ -29,7 +30,7 @@ class CreateCustomersTable extends Migration
             $table->date('member_since');
             $table->integer('order_id')->nullable();
             $table->integer('total_points')->default(0);
-            $table->string('active')->default('active');
+            $table->string('active')->default('pending');
             $table->string('facebook_account')->nullable();
             $table->string('instagram_account')->nullable();
             $table->string('twitter_account')->nullable();

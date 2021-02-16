@@ -143,10 +143,12 @@ export default {
         limit: 10,
         sort: '+id',
         keyword: '',
+        max_points: this.max_points,
         id: this.$route.params && this.$route.params.id,
       },
       listItem: {
         id: this.$route.params && this.$route.params.id,
+        max_points: 500,
         bill: 0,
         earnedPoints: 0,
         order_id: 0,
@@ -227,7 +229,7 @@ export default {
     },
     async submitBill() {
       this.listItem.articleUpdate = await listing(this.pomBill);
-      console.log(this.listItem.articleUpdate.time);
+      console.log(this.listItem);
       const { data } = await billUpdate(this.listItem);
       this.articleUpdate1 = data;
       this.$notify({

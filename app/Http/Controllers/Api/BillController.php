@@ -37,39 +37,49 @@ class BillController extends Controller
 
     public function executeQuery(Request $request)
     {
-        //dd($request->all());
+        $bills = array();
+        $bills1 = array();
+        $orders = array();
+        $order = array();
+        $customers = array();
         $date = date_format(date_create($request->date1), "Y-m-d H:i:s");
-$cat = $request->category;
+        $cat = $request->category;
 
         $articles = Articles::select('*')
                             ->where('categories_id', '=', $cat)
                             ->where('created_at', '>=', $date)
-                            ->orderBy('created_at', 'asc')
                             ->get();
-//dd($articles);
-        foreach ($articles as $key => $article) {
-            $bills[$key] = Bill::where('article', $article->id)->get();
-        }
-//dd($bills);
-        for ($i=0; $i < count($bills); $i++) { 
-            //echo $bills[$i];
-            $poms = $bills[$i];
-            foreach ($poms as $key => $pom) {
-                if($pom->customer == null) {
-                    $customer[$i] = Bill::select('*')
-                            ->where('order_id', $pom->order_id)
-                            ->where('customer', '!==' , null)
-                            ->get();
-                }
-                else {
-                    $customer[$i] = Bill::select('*')
-                            ->where('order_id', $pom->order_id)
-                            ->where('customer', $pom->customer)
-                            ->get();
-                }
+
+
+        $cnt = 0;
+        foreach ($articles as $key => $article) {     
+            $bills[$key] = Bill::where('article', $article->id)->first();
+
+            if (isset($bills[$key]->article)) {
+                $bills1[$cnt] = $bills[$key];
+                $orders[$cnt] = $bills[$key]->order_id;
+
+                $cnt += 1;
             }
         }
-dd($customer);
-        return;
+    
+        $count_bills1 = count($bills1);
+
+        for ($i=0; $i < $count_bills1; $i++) { 
+            $customers[$i] = Bill::select('*')->where('order_id', $bills1[$i]->order_id)
+                                                ->where('customer', '!=', null)
+                                                ->get();
+        }
+
+for ($i=0; $i < count($customers); $i++) { 
+
+    foreach ($customers[$i] as $key => $value) {
+        //echo $value->customer.", ";
+    }
+}
+
+
+
+        return response()->json(['customers' => $customers]);
     }
 }

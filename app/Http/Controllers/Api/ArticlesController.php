@@ -237,6 +237,9 @@ $articleQuery = toArray($articleQuery);
 
         $customer = Customers::find($request->id);
         $customer->total_points = $customer->total_points + $request->earnedPoints;
+        if($customer->total_points > $request->max_points){
+            $customer->total_points = $request->max_points;
+        }
         $customer->updated_at = date("Y-m-d H:i:s");
         $customer->update();
 

@@ -27,6 +27,8 @@ class CustomersController extends BaseController
 
         $searchParams = $request->all();
         $showActiveCustomers = filter_var($request->showActiveCustomers, FILTER_VALIDATE_BOOLEAN);
+        $showPendingCustomers = filter_var($request->showPendingCustomers, FILTER_VALIDATE_BOOLEAN);
+        $showDeletedCustomers = filter_var($request->showDeletedCustomers, FILTER_VALIDATE_BOOLEAN);
         $customerQuery = Customers::query();
         $limit = Arr::get($searchParams, 'limit', static::ITEM_PER_PAGE);
         $active = Arr::get($searchParams, 'active', '');
@@ -39,9 +41,17 @@ class CustomersController extends BaseController
         else {
             $order = 'desc';
         }
-        if($showActiveCustomers === true)
+        if($showActiveCustomers === false)
         {
             $customerQuery->where('active', 'active')->orderBy('id', $order);            
+        }
+        if($showPendingCustomers === false)
+        {
+            $customerQuery->where('active', 'pending')->orderBy('id', $order);            
+        }
+        if($showDeletedCustomers === false)
+        {
+            $customerQuery->where('active', 'deleted')->orderBy('id', $order);            
         }
         else
         {

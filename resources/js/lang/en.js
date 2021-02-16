@@ -246,6 +246,8 @@ export default {
     'customers': 'Customers',
     'customer': 'Customer',
     'active_customers': 'Show all customers',
+    'pending_customers': 'Show pending customers',
+    'deleted_customers': 'Show blocked customers',
     'customer_name': 'Customer name',
     'customerDetails': 'Customer Details',
     'create_new_customer': 'Create new customer',

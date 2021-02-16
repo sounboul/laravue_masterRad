@@ -246,6 +246,8 @@ export default {
     'customers': 'Клиенты',
     'customer': 'Клиент',
     'active_customers': 'Показать всех клиентов',
+    'pending_customers': 'Показать ожидающих клиентов',
+    'deleted_customers': 'Показать заблокированных клиентов',
     'customer_name': 'Имя клиента',
     'customerDetails': 'Информация для клиентов',
     'create_new_customer': 'Создать нового клиента',

@@ -14,7 +14,11 @@
       <!-- <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         {{ $t('table.search') }}
       </el-button> -->
-      <el-checkbox class="filter-item" style="margin-left: 15px;" @change="ActiveCustomers">{{ $t('customers.active_customers') }}
+      <el-checkbox class="filter-item check1" style="margin-left: 15px;" @change="ActiveCustomers">{{ $t('customers.active_customers') }}
+      </el-checkbox>
+      <el-checkbox class="filter-item check2" style="margin-left: 15px;" @change="PendingCustomers">{{ $t('customers.pending_customers') }}
+      </el-checkbox>
+      <el-checkbox class="filter-item check3" style="margin-left: 15px;" @change="DeletedCustomers">{{ $t('customers.deleted_customers') }}
       </el-checkbox>
       <div style="float: right;">
         <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
@@ -38,7 +42,7 @@
       <el-table-column :label="$t('table.code')" prop="code" align="center" width="120">
         <template slot-scope="{row}">
           <router-link :to="'/selling/index/'+row.id">
-            <el-button size="mini" style="background-color: #f58938; color: #fff; border-radius: .428rem">{{ row.code }}</el-button>
+            <el-button v-show="row.active=='active'" size="mini" style="background-color: #f58938; color: #fff; border-radius: .428rem">{{ row.code }}</el-button>
           </router-link>
         </template>
       </el-table-column>
@@ -70,21 +74,6 @@
           <span>{{ scope.row.updated_at | parseTime('{d}.{m}.{y}.') }}</span>
         </template>
       </el-table-column>
-      <!-- <el-table-column :label="$t('table.author')" width="120px" align="center">
-        <template slot-scope="scope">
-          <span v-for="(n, index) in scope.row.store" :key="index">{{ scope.row.store[index].address }}<br></span>
-        </template>
-      </el-table-column> -->
-      <!-- <el-table-column v-if="showReviewer" :label="$t('table.reviewer')" width="110px" align="center">
-        <template slot-scope="scope">
-          <span style="color:red;">{{ scope.row.reviewer }}</span>
-        </template>
-      </el-table-column> -->
-      <!-- <el-table-column :label="$t('table.importance')" width="80px">
-        <template slot-scope="scope">
-          <svg-icon v-for="n in +scope.row.rating" :key="n" icon-class="star" class="meta-item__icon" />
-        </template>
-      </el-table-column> -->
       <el-table-column :label="$t('table.readings')" align="center" class="col">
         <template slot-scope="{row}">
           <span v-if="row.pageviews" class="link-type" @click="handleFetchPv(row.pageviews)">{{ row.pageviews }}</span>
@@ -94,7 +83,7 @@
       <el-table-column :label="$t('table.status')" class-name="status-col" width="100">
         <template slot-scope="{row}">
           <el-tag :type="row.active | statusFilter">
-            {{ row.active=='active' ? $t('customers.active') : $t('customers.deleted') }}
+            {{ $t('customers.' + row.active) }}
           </el-tag>
         </template>
       </el-table-column>
@@ -210,9 +199,6 @@
         <el-button @click="modalCustomerPreview = false">
           {{ $t('tagsView.close') }}
         </el-button>
-        <!-- <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
-          {{ $t('table.confirm') }}
-        </el-button> -->
       </div>
     </el-dialog>
 
@@ -235,7 +221,6 @@ import { parseTime } from '@/utils';
 import checkRole from '@/utils/role';
 import Pagination from '@/components/Pagination'; // Secondary package based on el-pagination
 
-// const customerResources = new CustomerResources();
 const calendarTypeOptions = [
   { key: 'CN', display_name: 'China' },
   { key: 'US', display_name: 'USA' },
@@ -257,7 +242,7 @@ export default {
     statusFilter(active) {
       const statusMap = {
         active: 'success',
-        pending: 'info',
+        pending: 'warning',
         deleted: 'danger',
       };
       return statusMap[active];
@@ -281,13 +266,15 @@ export default {
         type: undefined,
         sort: '+id',
         keyword: '',
-        showActiveCustomers: true,
+        showActiveCustomers: false,
+        showPendingCustomers: true,
+        showDeletedCustomers: true,
       },
       importanceOptions: [1, 2, 3],
       calendarTypeOptions,
       checkRole,
       sortOptions: [{ label: 'ascending', key: '+id' }, { label: 'descending', key: '-id' }],
-      statusOptions: ['active', 'draft', 'deleted'],
+      statusOptions: ['active', 'pending', 'deleted'],
       showActiveCustomers: false,
       temp: {
         id: undefined,
@@ -332,7 +319,6 @@ export default {
   },
   created() {
     this.getList();
-    // this.activeCustomers();
   },
   methods: {
     async getList() {
@@ -341,16 +327,14 @@ export default {
       const { data, meta } = await fetchAllCustomers(this.listQuery);
       this.list = data;
       this.level = data[0].level;
-      // console.log(this.showActiveCustomers);
       this.list.forEach((element, index) => {
         element['index'] = (page - 1) * limit + index + 1;
       });
       this.total = meta.total;
       this.listLoading = false;
     },
-    async activeCustomers() {
+    /* async activeCustomers() {
       this.listLoading = true;
-      console.log(this.showActiveCustomers);
       const { data, meta } = await fetchAllCustomers(this.listQuery);
       this.list = data;
       this.total = meta.total;
@@ -362,9 +346,19 @@ export default {
       this.list = data;
       this.total = meta.total;
       this.listLoading = false;
-    },
+    },*/
     async ActiveCustomers() {
       this.listQuery.showActiveCustomers = !this.listQuery.showActiveCustomers;
+      this.getList();
+    },
+    async PendingCustomers() {
+      this.listQuery.showActiveCustomers = !this.listQuery.showActiveCustomers;
+      this.listQuery.showPendingCustomers = !this.listQuery.showPendingCustomers;
+      this.getList();
+    },
+    async DeletedCustomers() {
+      this.listQuery.showActiveCustomers = !this.listQuery.showActiveCustomers;
+      this.listQuery.showDeletedCustomers = !this.listQuery.showDeletedCustomers;
       this.getList();
     },
     handleFilter() {
@@ -454,11 +448,6 @@ export default {
         }
       });
     },
-    /* previewCustomer(row) {
-      const { data } = fetchCustomer(row.id);
-      this.temp = data;
-      this.modalCustomerPreview = true;
-    }, */
     handleUpdate(row) {
       this.temp = Object.assign({}, row); // copy obj
       this.temp.timestamp = new Date(this.temp).toLocaleString('en-EN', { timeZone: 'Europe/Belgrade' });
@@ -472,7 +461,7 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           const tempData = Object.assign({}, this.temp);
-          tempData.dob = new Date(tempData.dob).toLocaleString('en-EN', { timeZone: 'Europe/Belgrade' }); // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
+          tempData.dob = new Date(tempData.dob).toLocaleString('en-EN', { timeZone: 'Europe/Belgrade' });
           updateCustomer(tempData).then(() => {
             for (const v of this.list) {
               if (v.id === this.temp.id) {
@@ -513,17 +502,6 @@ export default {
           console.log(err);
         });
     },
-    /* handleDelete(id) {
-      deleteCustomer(id).then(() => {
-        this.$notify({
-          title: this.$t('table.success'),
-          message: this.$t('table.deleted_successfully'),
-          type: 'success',
-          duration: 2000,
-        });
-        this.getList();
-      });
-    },*/
     handleFetchPv(pv) {
       fetchPv(pv).then(response => {
         this.pvData = response.data.pvData;
