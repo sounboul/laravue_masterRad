@@ -154,9 +154,9 @@ class CustomersController extends BaseController
         $customer->city = $request->city;
         $customer->postal_code = $request->postal_code;
         $customer->country = $request->country;
-        $customer->facebook_account = $request->facebook;
-        $customer->instagram_account = $request->instagram;
-        $customer->twitter_account = $request->twitter;
+        $customer->facebook_account = $request->facebook_account;
+        $customer->instagram_account = $request->instagram_account;
+        $customer->twitter_account = $request->twitter_account;
         $customer->updated_at = date("Y-m-d H:i:s");
         //$customer->member_since = date("Y-m-d H:i:s");
         $customer->dob = date_format(date_create($request->dob), "Y-m-d");
@@ -188,9 +188,9 @@ class CustomersController extends BaseController
         $customer->city = $request->city;
         $customer->postal_code = $request->postal_code;
         $customer->country = $request->country;
-        $customer->facebook_account = $request->facebook;
-        $customer->instagram_account = $request->instagram;
-        $customer->twitter_account = $request->twitter;
+        $customer->facebook_account = $request->facebook_account;
+        $customer->instagram_account = $request->instagram_account;
+        $customer->twitter_account = $request->twitter_account;
         $customer->updated_at = date("Y-m-d H:i:s");
         $customer->dob = date_format(date_create($request->dob), "Y-m-d");
         $customer->update();

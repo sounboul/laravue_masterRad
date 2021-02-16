@@ -72,7 +72,7 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="170px" style="width: 650px; margin-left:50px;">
-        <el-form-item :label="$t('suppliers.supplier')" :placeholder="temp.name">
+        <el-form-item :label="$t('suppliers.supplier')" :placeholder="temp.name" prop="name">
           <el-input v-model="temp.name" />
         </el-form-item>
         <el-form-item :label="$t('user.address')">
@@ -204,9 +204,7 @@ export default {
       modalCategoryPreview: false,
       pvData: [],
       rules: {
-        type: [{ required: true, message: 'type is required', trigger: 'change' }],
-        timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
-        title: [{ required: true, message: 'title is required', trigger: 'blur' }],
+        name: [{ required: true, message: this.$t('discounts.title_is_required'), trigger: 'blur' }],
       },
       downloadLoading: false,
     };
@@ -306,7 +304,6 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           const tempData = Object.assign({}, this.temp);
-          // tempData.timestamp = +new Date(tempData.timestamp); // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
           updateSupplier(tempData).then(() => {
             for (const v of this.list) {
               if (v.id === this.temp.id) {
@@ -382,8 +379,8 @@ export default {
           num
             .toFixed(fixed) // always 'fixed' decimal digits
             .replace('.', ',') // replace decimal point character with ,
-            .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
-        ); // use . as a separator
+            .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.') // use . as a separator
+        );
       }
       return num;
     },

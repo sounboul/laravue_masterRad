@@ -102,48 +102,54 @@
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
     <el-dialog :title="textMap[dialogStatus] == 'Create' ? $t('customers.create_new_customer') : $t('customers.edit_customer')" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="200px" style="width: 500px; margin-left:50px; word-break: break-word;">
-        <el-form-item :label="$t('customers.customer_name')" prop="name">
-          <el-input v-model="temp.name" />
-        </el-form-item>
-        <el-form-item :label="$t('login.email')" type="email" prop="email">
-          <el-input v-model="temp.email" />
-        </el-form-item>
-        <el-form-item :label="$t('customers.mobile')" prop="mobile">
-          <el-input v-model="temp.mobile" />
-        </el-form-item>
-        <el-form-item :label="$t('customers.dob')" prop="dob">
-          <el-date-picker v-model="temp.dob" type="date" :placeholder="$t('customers.pick_a_date')" />
-        </el-form-item>
-        <el-form-item :label="$t('customers.ID_number')" prop="ID_number">
-          <el-input v-model="temp.ID_number" />
-        </el-form-item>
-        <el-form-item :label="$t('customers.street')" prop="street">
-          <el-input v-model="temp.street" />
-        </el-form-item>
-        <el-form-item :label="$t('customers.number')" prop="number">
-          <el-input v-model="temp.number" />
-        </el-form-item>
-        <el-form-item :label="$t('customers.city')" prop="city">
-          <el-input v-model="temp.city" />
-        </el-form-item>
-        <el-form-item :label="$t('customers.postal_code')" prop="postal_code">
-          <el-input v-model="temp.postal_code" />
-        </el-form-item>
-        <el-form-item :label="$t('customers.country')" prop="country">
-          <el-input v-model="temp.country" />
-        </el-form-item>
-        <el-form-item :label="$t('customers.facebook')">
-          <el-input v-model="temp.facebook" style="margin-top:8px;" />
-        </el-form-item>
-        <el-form-item :label="$t('customers.instagram')">
-          <el-input v-model="temp.instagram" style="margin-top:8px;" />
-        </el-form-item>
-        <el-form-item :label="$t('customers.twitter')">
-          <el-input v-model="temp.twitter" />
-        </el-form-item>
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="150px" style="width: 600px; margin-left:20px; word-break: break-word;">
+        <div class="dialog0">
+          <div class="dialog1">
+            <el-form-item :label="$t('customers.customer_name')" prop="name">
+              <el-input v-model="temp.name" />
+            </el-form-item>
+            <el-form-item :label="$t('login.email')" type="email" prop="email">
+              <el-input v-model="temp.email" />
+            </el-form-item>
+            <el-form-item :label="$t('customers.mobile')" prop="mobile">
+              <el-input v-model="temp.mobile" />
+            </el-form-item>
+            <el-form-item :label="$t('customers.dob')" prop="dob">
+              <el-date-picker v-model="temp.dob" type="date" :placeholder="$t('customers.pick_a_date')" />
+            </el-form-item>
+            <el-form-item :label="$t('customers.ID_number')" prop="ID_number">
+              <el-input v-model="temp.ID_number" />
+            </el-form-item>
+            <el-form-item :label="$t('customers.street')" prop="street">
+              <el-input v-model="temp.street" />
+            </el-form-item>
+            <el-form-item :label="$t('customers.number')" prop="number">
+              <el-input v-model="temp.number" />
+            </el-form-item>
+          </div>
+          <div class="dialog2">
+            <el-form-item :label="$t('customers.city')" prop="city">
+              <el-input v-model="temp.city" />
+            </el-form-item>
+            <el-form-item :label="$t('customers.postal_code')" prop="postal_code">
+              <el-input v-model="temp.postal_code" />
+            </el-form-item>
+            <el-form-item :label="$t('customers.country')" prop="country">
+              <el-input v-model="temp.country" />
+            </el-form-item>
+            <el-form-item :label="$t('customers.facebook')">
+              <el-input v-model="temp.facebook_account" />
+            </el-form-item>
+            <el-form-item :label="$t('customers.instagram')">
+              <el-input v-model="temp.instagram_account" />
+            </el-form-item>
+            <el-form-item :label="$t('customers.twitter')">
+              <el-input v-model="temp.twitter_account" />
+            </el-form-item>
+          </div>
+        </div>
       </el-form>
-      <div slot="footer" class="dialog-footer">
+      <div slot="footer" class="dialog-footer" style="margin: 0 28px 15px 0">
         <el-button @click="dialogFormVisible = false">
           {{ $t('table.cancel') }}
         </el-button>
@@ -186,13 +192,13 @@
           <el-input v-model="temp.country" />
         </el-form-item>
         <el-form-item :label="$t('customers.facebook')">
-          <el-input v-model="temp.facebook" style="margin-top:8px;" />
+          <el-input v-model="temp.facebook_account" style="margin-top:8px;" />
         </el-form-item>
         <el-form-item :label="$t('customers.instagram')">
-          <el-input v-model="temp.instagram" style="margin-top:8px;" />
+          <el-input v-model="temp.instagram_account" style="margin-top:8px;" />
         </el-form-item>
         <el-form-item :label="$t('customers.twitter')">
-          <el-input v-model="temp.twitter" />
+          <el-input v-model="temp.twitter_account" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -293,9 +299,9 @@ export default {
         country: '',
         type: '',
         code: '',
-        facebook: '',
-        instagram: '',
-        twitter: '',
+        facebook_account: '',
+        instagram_account: '',
+        twitter_account: '',
         status: 'published',
       },
       dialogFormVisible: false,
@@ -333,20 +339,6 @@ export default {
       this.total = meta.total;
       this.listLoading = false;
     },
-    /* async activeCustomers() {
-      this.listLoading = true;
-      const { data, meta } = await fetchAllCustomers(this.listQuery);
-      this.list = data;
-      this.total = meta.total;
-      this.listLoading = false;
-    },
-    async getAllCustomers() {
-      this.listLoading = true;
-      const { data, meta } = await fetchAllCustomers(this.listQuery);
-      this.list = data;
-      this.total = meta.total;
-      this.listLoading = false;
-    },*/
     async ActiveCustomers() {
       this.listQuery.showActiveCustomers = !this.listQuery.showActiveCustomers;
       this.getList();
@@ -476,7 +468,7 @@ export default {
               title: this.$t('table.success'),
               message: this.$t('table.updated_successfully'),
               type: 'success',
-              duration: 2000,
+              duration: 3000,
             });
           });
         }
@@ -537,6 +529,18 @@ export default {
 <style lang="scss" scoped>
   .filter-container {
     // margin-bottom: 5px;
+  }
+  .dialog0 {
+    display: inline-flex;
+    text-align: center;
+  }
+  .dialog1 {
+    width: 370px;
+    margin: 0 90px 0 0;
+  }
+  .dialog2 {
+    width: 370px;
+    margin: 0 0 0 10px;
   }
   @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@1,300;1,400&family=Raleway:wght@500&display=swap');
 </style>

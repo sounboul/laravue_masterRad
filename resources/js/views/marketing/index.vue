@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <div class="category">
+    <div v-if="active1" class="category">
       <el-form ref="dataForm" :model="form">
         <!-- <el-form-item label="Activity name">
           <el-input v-model="form.name" />
@@ -47,6 +47,9 @@
         </div>
       </el-form>
     </div>
+    <div v-if="!active1">
+      <span style="color: #eee;">{{ message }}</span>
+    </div>
   </div>
 </template>
 
@@ -66,6 +69,8 @@ export default {
         category: '',
         desc: '',
       },
+      active1: true,
+      message: '',
       categories: this.getCategories(),
     };
   },
@@ -88,11 +93,13 @@ export default {
         desc: '',
       };
     },
-    executeQuery() {
+    async executeQuery() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           this.form.date1 = new Date(this.form.date1).toLocaleString('en-EN', { timeZone: 'Europe/Belgrade' });
-          executeQuery(this.form).then(() => {
+          executeQuery(this.form).then((response) => {
+            this.message = response.message;
+            console.log(this.message);
             this.$notify({
               title: this.$t('table.success'),
               message: this.$t('table.created_successfully'),
@@ -104,6 +111,7 @@ export default {
       });
     },
     onSubmit() {
+      this.active1 = !this.active1;
       this.executeQuery();
       // this.$message('submit!');
     },

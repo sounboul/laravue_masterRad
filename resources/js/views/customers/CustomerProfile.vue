@@ -36,11 +36,6 @@ export default {
   },
   created() {
     const id = this.$route.params && this.$route.params.id;
-    /* const currentCustomerId = this.$store.getters.userId;
-    if (id === currentUserId) {
-      this.$router.push('/profile/edit');
-      return;
-    } */
     this.getCustomer(id);
   },
   methods: {

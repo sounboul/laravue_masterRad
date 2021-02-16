@@ -34,6 +34,9 @@ class CustomerResources extends JsonResource
             'total_points' => $this->total_points,
             'level' => MemberLevel::findLevel($this->total_points),
             'active' => $this->active,
+            'facebook_account' => $this->facebook_account,
+            'instagram_account' => $this->instagram_account,
+            'twitter_account' => $this->twitter_account,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

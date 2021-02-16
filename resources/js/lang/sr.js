@@ -355,6 +355,6 @@ export default {
     criteria: 'Izaberite kriterijum pretrage artikala:',
     newest: 'Noviji artikli',
     no_selled: 'Najmanje prodavani artikli',
-    criteria_date: 'Izaberite datum do koga želite da se vrši pretraga',
+    criteria_date: 'Izaberite datum od koga želite da se vrši pretraga',
   },
 };

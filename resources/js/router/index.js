@@ -13,17 +13,17 @@ Vue.use(Router);
 import Layout from '@/layout';
 
 /* Router for modules */
-import elementUiRoutes from './modules/element-ui';
-import componentRoutes from './modules/components';
-import chartsRoutes from './modules/charts';
-import tableRoutes from './modules/table';
+// import elementUiRoutes from './modules/element-ui';
+// import componentRoutes from './modules/components';
+// import chartsRoutes from './modules/charts';
+// import tableRoutes from './modules/table';
 import adminRoutes from './modules/admin';
 import articleRoutes from './modules/article';
 // import categoryRoutes from './modules/category';
-import nestedRoutes from './modules/nested';
-import errorRoutes from './modules/error';
-import excelRoutes from './modules/excel';
-import permissionRoutes from './modules/permission';
+// import nestedRoutes from './modules/nested';
+// import errorRoutes from './modules/error';
+// import excelRoutes from './modules/excel';
+// import permissionRoutes from './modules/permission';
 
 /**
  * Sub-menu only appear when children.length>=1
@@ -210,6 +210,7 @@ export const constantRoutes = [
     path: '/guide',
     component: Layout,
     redirect: '/guide/index',
+    hidden: true,
     children: [
       {
         path: 'index',
@@ -219,21 +220,22 @@ export const constantRoutes = [
       },
     ],
   },
-  elementUiRoutes,
+  // elementUiRoutes,
 ];
 
 export const asyncRoutes = [
   articleRoutes,
-  permissionRoutes,
-  componentRoutes,
-  chartsRoutes,
-  nestedRoutes,
-  tableRoutes,
+  // permissionRoutes,
+  // componentRoutes,
+  // chartsRoutes,
+  // nestedRoutes,
+  // tableRoutes,
   adminRoutes,
   {
     path: '/theme',
     component: Layout,
     redirect: 'noredirect',
+    hidden: true,
     children: [
       {
         path: 'index',
@@ -247,6 +249,7 @@ export const asyncRoutes = [
     path: '/clipboard',
     component: Layout,
     redirect: 'noredirect',
+    hidden: true,
     meta: { permissions: ['view menu clipboard'] },
     children: [
       {
@@ -257,13 +260,14 @@ export const asyncRoutes = [
       },
     ],
   },
-  errorRoutes,
-  excelRoutes,
+  // errorRoutes,
+  // excelRoutes,
   {
     path: '/zip',
     component: Layout,
     redirect: '/zip/download',
-    alwaysShow: true,
+    hidden: true,
+    // alwaysShow: true,
     meta: { title: 'zip', icon: 'zip', permissions: ['view menu zip'] },
     children: [
       {
@@ -277,6 +281,7 @@ export const asyncRoutes = [
   {
     path: '/pdf',
     component: Layout,
+    hidden: true,
     redirect: '/pdf/index',
     meta: { title: 'pdf', icon: 'pdf', permissions: ['view menu pdf'] },
     children: [
@@ -285,6 +290,7 @@ export const asyncRoutes = [
         component: () => import('@/views/pdf'),
         name: 'Pdf',
         meta: { title: 'pdf' },
+        hidden: true,
       },
     ],
   },
@@ -303,12 +309,14 @@ export const asyncRoutes = [
         component: () => import('@/views/i18n'),
         name: 'I18n',
         meta: { title: 'i18n', icon: 'international' },
+        hidden: true,
       },
     ],
   },
   {
     path: '/external-link',
     component: Layout,
+    hidden: true,
     children: [
       {
         path: 'https://github.com/tuandm/laravue',

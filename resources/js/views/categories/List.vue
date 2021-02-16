@@ -2,21 +2,9 @@
   <div class="app-container">
     <div class="filter-container">
       <el-input v-model="listQuery.keyword" :placeholder="$t('table.keyword')" style="width: 250px;" class="filter-item" @keyup.native="handleFilter" />
-      <!-- <el-select v-model="listQuery.importance" :placeholder="$t('table.importance')" clearable style="width: 90px" class="filter-item">
-        <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />
-      </el-select> -->
-      <!-- <el-select v-model="listQuery.type" :placeholder="$t('table.type')" clearable class="filter-item" style="width: 130px">
-        <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name+'('+item.key+')'" :value="item.key" />
-      </el-select> -->
       <el-select v-model="listQuery.sort" style="width: 150px;" class="filter-item" @change="handleFilter">
         <el-option v-for="item in sortOptions" :key="item.key" :label="$t('table.'+item.label)" :value="item.key" />
       </el-select>
-      <!-- <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
-        {{ $t('table.search') }}
-      </el-button> -->
-      <!-- <el-checkbox v-model="showReviewer" class="filter-item" style="margin-left:15px;" @change="tableKey=tableKey+1">
-        {{ $t('table.reviewer') }}
-      </el-checkbox> -->
       <div style="float: right;">
         <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
           {{ $t('table.add') }}
@@ -67,11 +55,11 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="170px" style="width: 650px; margin-left:50px;">
-        <el-form-item :label="$t('categories.name')" :placeholder="temp.name">
+        <el-form-item :label="$t('categories.name')" :placeholder="temp.name" prop="name">
           <el-input v-model="temp.name" />
         </el-form-item>
         <el-form-item :label="$t('categories.description')">
-          <el-input v-model="temp.description" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" :placeholder="categories.description" />
+          <el-input v-model="temp.description" :autosize="{ minRows: 2, maxRos: 4}" type="textarea" :placeholder="categories.description" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -168,7 +156,6 @@ export default {
         keyword: '',
       },
       categories: '',
-      // codes: this.getCodes(),
       importanceOptions: [1, 2, 3],
       calendarTypeOptions,
       checkRole,
@@ -177,13 +164,10 @@ export default {
       showReviewer: false,
       temp: {
         id: undefined,
-        // importance: 1,
         remark: '',
-        // timestamp: new Date(),
         title: '',
         type: '',
         code: '',
-        // status: 'published',
         last_code: '',
       },
       dialogFormVisible: false,
@@ -196,9 +180,7 @@ export default {
       modalCategoryPreview: false,
       pvData: [],
       rules: {
-        type: [{ required: true, message: 'type is required', trigger: 'change' }],
-        timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
-        title: [{ required: true, message: 'title is required', trigger: 'blur' }],
+        name: [{ required: true, message: this.$t('discounts.title_is_required'), trigger: 'blur' }],
       },
       downloadLoading: false,
     };
@@ -276,7 +258,7 @@ export default {
               title: this.$t('table.success'),
               message: this.$t('table.created_successfully'),
               type: 'success',
-              duration: 2000,
+              duration: 3000,
             });
             this.dialogFormVisible = false;
           });
@@ -284,13 +266,11 @@ export default {
       });
     },
     previewArticle(row) {
-      // console.log(row);
       showCategory(row.id);
       this.modalCategoryPreview = true;
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row); // copy obj
-      // this.temp.timestamp = new Date(this.temp.timestamp);
       this.dialogStatus = 'update';
       this.dialogFormVisible = true;
       this.$nextTick(() => {
@@ -301,7 +281,6 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           const tempData = Object.assign({}, this.temp);
-          // tempData.timestamp = +new Date(tempData.timestamp); // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
           updateCategory(tempData).then(() => {
             for (const v of this.list) {
               if (v.id === this.temp.id) {

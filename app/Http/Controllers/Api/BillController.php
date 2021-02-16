@@ -39,25 +39,29 @@ class BillController extends Controller
     {
         $bills = array();
         $bills1 = array();
-        $orders = array();
-        $order = array();
         $customers = array();
         $date = date_format(date_create($request->date1), "Y-m-d H:i:s");
         $cat = $request->category;
+
+        $test_bills = Bill::all();
+        $length_of_table = $test_bills->count();
+        if ($length_of_table == 0) {
+            return response()->json(['message' => 'Nema podataka']);
+        }
+        //dd($length_of_table);
 
         $articles = Articles::select('*')
                             ->where('categories_id', '=', $cat)
                             ->where('created_at', '>=', $date)
                             ->get();
-
-
         $cnt = 0;
+
         foreach ($articles as $key => $article) {     
             $bills[$key] = Bill::where('article', $article->id)->first();
 
             if (isset($bills[$key]->article)) {
+
                 $bills1[$cnt] = $bills[$key];
-                $orders[$cnt] = $bills[$key]->order_id;
 
                 $cnt += 1;
             }
@@ -65,7 +69,8 @@ class BillController extends Controller
     
         $count_bills1 = count($bills1);
 
-        for ($i=0; $i < $count_bills1; $i++) { 
+        for ($i=0; $i < $count_bills1; $i++) {
+
             $customers[$i] = Bill::select('*')->where('order_id', $bills1[$i]->order_id)
                                                 ->where('customer', '!=', null)
                                                 ->get();
@@ -77,8 +82,6 @@ for ($i=0; $i < count($customers); $i++) {
         //echo $value->customer.", ";
     }
 }
-
-
 
         return response()->json(['customers' => $customers]);
     }

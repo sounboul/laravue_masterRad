@@ -103,7 +103,7 @@ export default {
     password_validate: 'Password cannot be less than 6 digits',
     any: 'any',
     thirdparty: 'Or connect with',
-    thirdpartyTips: 'Can not be simulated on local, so please combine you own business simulation! ! !',
+    thirdpartyTips: 'Can not be simulated on local, so please combine your own business simulation! ! !',
     email: 'Email',
   },
   documentation: {
@@ -353,6 +353,6 @@ export default {
     criteria: 'Select the search criteria items:',
     newest: 'Newer articles',
     no_selled: 'At least sold articles',
-    criteria_date: 'Select the date by which you want to search',
+    criteria_date: 'Select the date from which you want to search',
   },
 };

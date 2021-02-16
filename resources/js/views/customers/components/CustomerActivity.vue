@@ -224,7 +224,6 @@
 
 <script>
 import CustomerResource from '@/api/resource';
-// import { parseTime } from '@/utils';
 const customerResource = new CustomerResource('customers');
 
 export default {
