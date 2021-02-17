@@ -347,6 +347,7 @@ export default {
     discount_end_date: 'Скидка заканчивается:',
     to_points_overload: 'Верхние предельные значения превышают допустимые значения!',
     from_points_overload: 'Точки нижнего предела превышают допустимые значения!',
+    no_data: 'Нет данных!',
   },
   marketing: {
     choose_category: 'Выберите категорию товара:',

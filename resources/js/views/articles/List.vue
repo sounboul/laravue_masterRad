@@ -2,21 +2,9 @@
   <div class="app-container">
     <div class="filter-container">
       <el-input v-model="listQuery.keyword" :placeholder="$t('table.keyword')" style="width: 250px;" class="filter-item" @keyup.native="handleFilter" />
-      <!-- <el-select v-model="listQuery.importance" :placeholder="$t('table.importance')" clearable style="width: 90px" class="filter-item">
-        <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />
-      </el-select> -->
-      <!-- <el-select v-model="listQuery.type" :placeholder="$t('table.type')" clearable class="filter-item" style="width: 130px">
-        <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name+'('+item.key+')'" :value="item.key" />
-      </el-select> -->
       <el-select v-model="listQuery.sort" style="width: 150px" class="filter-item" @change="handleFilter">
         <el-option v-for="item in sortOptions" :key="item.key" :label="$t('table.'+item.label)" :value="item.key" />
       </el-select>
-      <!-- <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
-        {{ $t('table.search') }}
-      </el-button> -->
-      <!-- <el-checkbox v-model="showReviewer" class="filter-item" style="margin-left:15px;" @change="tableKey=tableKey+1">
-        {{ $t('table.reviewer') }}
-      </el-checkbox> -->
       <div style="float: right;">
         <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
           {{ $t('table.add') }}
@@ -41,11 +29,6 @@
           <span>{{ scope.row.code }}</span>
         </template>
       </el-table-column>
-      <!-- <el-table-column :label="$t('table.date')" width="120px" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.created_at | parseTime('{d}.{m}.{y}.') }}</span>
-        </template>
-      </el-table-column> -->
       <el-table-column :label="$t('articles.name')" min-width="120px">
         <template slot-scope="{row}">
           <span style="font-size: 12pt; margin-top: 2px; cursor: pointer;" @click="previewArticle(row)">{{ row.title }}</span>
@@ -61,27 +44,6 @@
           <span>{{ currencyFormatEU(scope.row.discount/10, 1) }}</span>
         </template>
       </el-table-column>
-      <!-- <el-table-column :label="$t('articles.discount_silver') + ' (' + $t('articles.currency') + ')'" width="155px" align="center">
-        <template slot-scope="scope">
-          <span>{{ discountPrice(scope.row.discount_silver, scope.row.price) }}</span>
-          <br>
-          <span style="color: #4f637d;">{{ '(' + currencyFormatEU(scope.row.discount_silver/10, 1) + ' %) ' }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('articles.discount_gold') + ' (' + $t('articles.currency') + ')'" width="155px" align="center">
-        <template slot-scope="scope">
-          <span>{{ discountPrice(scope.row.discount_gold, scope.row.price) }}</span>
-          <br>
-          <span style="color: #4f637d;">{{ '(' + currencyFormatEU(scope.row.discount_gold/10, 1) + ' %) ' }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('articles.discount_premium') + ' (' + $t('articles.currency') + ')'" width="155px" align="center">
-        <template slot-scope="scope">
-          <span>{{ discountPrice(scope.row.discount_premium, scope.row.price) }}</span>
-          <br>
-          <span style="color: #4f637d;">{{ '(' + currencyFormatEU(scope.row.discount_premium/10, 1) + ' %) ' }}</span>
-        </template>
-      </el-table-column> -->
       <el-table-column :label="$t('articles.in_stock') + ' (' + $t('articles.pieces') + ')'" width="120px" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.amount }}</span>
@@ -94,32 +56,20 @@
       </el-table-column>
       <el-table-column :label="$t('stores.location')" width="180px" align="center">
         <template slot-scope="scope">
-          <span v-for="(n, index) in scope.row.store" :key="index">{{ scope.row.store[index].address }}<br></span>
+          <div v-show="scope.row.amount > 0">
+            <div v-if="scope.row.store.length > 0">
+              <div class="hasTooltip" @mouseover="test">{{ scope.row.store.length }}
+                <span>
+                  <div v-for="(n, index) in scope.row.store" :key="index" style="padding: 2px 5px;">
+                    {{ scope.row.store[index].address }}
+                  </div>
+                </span>
+              </div>
+            </div>
+            <div v-else>-</div>
+          </div>
         </template>
       </el-table-column>
-      <!-- <el-table-column v-if="showReviewer" :label="$t('table.reviewer')" width="110px" align="center">
-        <template slot-scope="scope">
-          <span style="color:red;">{{ scope.row.reviewer }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.importance')" width="80px">
-        <template slot-scope="scope">
-          <svg-icon v-for="n in +scope.row.rating" :key="n" icon-class="star" class="meta-item__icon" />
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.readings')" align="center" width="95">
-        <template slot-scope="{row}">
-          <span v-if="row.pageviews" class="link-type" @click="handleFetchPv(row.pageviews)">{{ row.pageviews }}</span>
-          <span v-else>0</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.status')" class-name="status-col" width="100">
-        <template slot-scope="{row}">
-          <el-tag :type="row.status | statusFilter">
-            {{ row.status }}
-          </el-tag>
-        </template>
-      </el-table-column> -->
       <el-table-column v-if="checkRole(['admin','manager', 'editor'])" :label="$t('table.actions')" align="center" width="200" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
           <el-button v-if="checkRole(['admin','manager', 'editor'])" type="success" size="mini" @click="handleUpdate(row)">
@@ -134,7 +84,7 @@
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
-    <el-dialog :title="textMap[dialogStatus] != null ? $t('articles.' + textMap[dialogStatus]) : ''" :visible.sync="dialogFormVisible">
+    <el-dialog :title="textMap[dialogStatus] != null ? $t('articles.' + textMap[dialogStatus]) : ''" :visible.sync="dialogFormVisible" style="margin-top: -85px;">
       <el-form ref="dataForm" :rules="rules" :model="temp">
         <div class="mainForm">
           <div class="formLeft">
@@ -144,17 +94,6 @@
             <el-form-item :label="$t('table.title')">
               <el-input v-model="temp.title" />
             </el-form-item>
-            <!-- <el-form-item :label="$t('table.date')" prop="timestamp">
-              <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="Please pick a date" />
-            </el-form-item>
-            <el-form-item :label="$t('table.status')">
-              <el-select v-model="temp.status" class="filter-item" placeholder="Please select">
-                <el-option v-for="item in statusOptions" :key="item" :label="item" :value="item" />
-              </el-select>
-            </el-form-item>
-            <el-form-item :label="$t('table.importance')">
-              <el-rate v-model="temp.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="3" style="margin-top:8px;" />
-            </el-form-item> -->
             <el-form-item :label="$t('articles.categories')" width="180px" align="center">
               <el-select v-model="temp.category" :placeholder="$t('articles.categories')" clearable style="margin-right: 4%; width: 100%" class="filter-item">
                 <el-option v-for="item in categories" :key="item.id" :label="item.name | uppercaseFirst" :value="item.id" />
@@ -206,25 +145,9 @@
         <el-form-item :label="$t('table.code')" prop="code">
           <el-input v-model="temp.code" />
         </el-form-item>
-        <!-- <el-form-item :label="$t('table.type')" prop="type">
-          <el-select v-model="temp.type" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
-          </el-select>
-        </el-form-item> -->
         <el-form-item :label="$t('table.title')" prop="title">
           <el-input v-model="temp.title" />
         </el-form-item>
-        <!-- <el-form-item :label="$t('table.date')" prop="timestamp">
-          <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="Please pick a date" />
-        </el-form-item>
-        <el-form-item :label="$t('table.status')">
-          <el-select v-model="temp.status" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in statusOptions" :key="item" :label="item" :value="item" />
-          </el-select>
-        </el-form-item>
-        <el-form-item :label="$t('table.importance')">
-          <el-rate v-model="temp.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="3" style="margin-top:8px;" />
-        </el-form-item> -->
         <el-table-column :label="$t('stores.location')" width="180px" align="center">
           <template slot-scope="scope">
             <span v-for="(n, index) in scope.row.store" :key="index">{{ scope.row.store[index].address }}<br></span>
@@ -238,9 +161,6 @@
         <el-button @click="modalArticlePreview = false">
           {{ $t('table.cancel') }}
         </el-button>
-        <!-- <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
-          {{ $t('table.confirm') }}
-        </el-button> -->
       </div>
     </el-dialog>
 
@@ -266,18 +186,18 @@ import { parseTime } from '@/utils';
 import checkRole from '@/utils/role';
 import Pagination from '@/components/Pagination'; // Secondary package based on el-pagination
 
-const calendarTypeOptions = [
+/* const calendarTypeOptions = [
   { key: 'CN', display_name: 'China' },
   { key: 'US', display_name: 'USA' },
   { key: 'JA', display_name: 'Japan' },
   { key: 'VI', display_name: 'Vietnam' },
-];
+];*/
 
 // arr to obj ,such as { CN : "China", US : "USA" }
-const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
+/* const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
   acc[cur.key] = cur.display_name;
   return acc;
-}, {});
+}, {});*/
 
 export default {
   name: 'ComplexTable',
@@ -293,7 +213,7 @@ export default {
       return statusMap[status];
     },
     typeFilter(type) {
-      return calendarTypeKeyValue[type];
+      // return calendarTypeKeyValue[type];
     },
   },
   data() {
@@ -313,7 +233,6 @@ export default {
         keyword: '',
       },
       importanceOptions: [1, 2, 3],
-      calendarTypeOptions,
       checkRole,
       sortOptions: [{ label: 'ascending', key: '+id' }, { label: 'descending', key: '-id' }],
       statusOptions: ['published', 'draft', 'deleted'],
@@ -326,8 +245,10 @@ export default {
         category: '',
         supplier: '',
         price1: this.price / 100,
+        discount: this.discount / 10,
       },
       price: 0,
+      discount: 0,
       dialogFormVisible: false,
       dialogStatus: '',
       textMap: {
@@ -336,7 +257,6 @@ export default {
       },
       categories: this.getCategories(),
       suppliers: this.getSuppliers(),
-      // stores: this.getStores(),
       dialogPvVisible: false,
       modalArticlePreview: false,
       pvData: [],
@@ -357,17 +277,6 @@ export default {
       const { data } = await fetchList(this.listQuery);
       this.list = data.items.data;
       this.total = data.items.total;
-      /* this.list.forEach(function(entry) {
-        entry.price = entry.price / 100;
-        // console.log(pom);
-      });*/
-      /* for (var i = 0; i < this.list.length; i++) {
-        this.list[i].price = this.currencyFormatEU(this.list[i].price, 2);
-      }*/
-      // console.log(this.list);
-      /* for (var i = 0; i < this.list.length; i++) {
-        this.test[i] = this.list[i].categories;
-      } */
       this.listLoading = false;
     },
     handleFilter() {
@@ -473,7 +382,7 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           const tempData = Object.assign({}, this.temp);
-          tempData.timestamp = +new Date(tempData.timestamp); // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
+          tempData.timestamp = +new Date(tempData.timestamp);
           updateArticle(tempData).then(() => {
             for (const v of this.list) {
               if (v.id === this.temp.id) {
@@ -513,6 +422,8 @@ export default {
     },
     pom1(categories_id) {
       return this.list.categories.name;
+    },
+    test() {
     },
     handleDownload() {
       this.downloadLoading = true;
@@ -604,6 +515,27 @@ export default {
   .mainForm {
     margin-top: -65px !important;
     padding-top: 35px;
+  }
+  .hasTooltip span {
+    display: none;
+    color: #000;
+    text-decoration: none;
+    padding: 3px;
+  }
+  .hasTooltip:hover span {
+    display: block;
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    right: 75%;
+    color: #fff;
+    background-color: #283046;
+    border-radius: .428rem;
+    box-shadow: 5px 10px 10px #001133, -5px -5px 10px #001133 !important;
+    margin: 2px 10px;
+    width: 200px;
+    //visibility: visible;
+    overflow: visible;
   }
   @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@1,300;1,400&family=Raleway:wght@500&display=swap');
 </style>

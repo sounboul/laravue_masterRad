@@ -206,6 +206,9 @@ $articleQuery = toArray($articleQuery);
         if($request->price1){
             $article->price = $price;
         }
+        if($request->discount){
+            $article->discount = $request->discount * 10;
+        }
         $article->amount = $request->amount;
         $article->brand = $request->brand;
         $article->tags = $request->tags;

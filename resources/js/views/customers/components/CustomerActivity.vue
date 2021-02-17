@@ -2,74 +2,80 @@
   <el-card v-if="customer.name">
     <el-tabs v-model="activeActivity" @tab-click="handleClick">
       <el-tab-pane v-loading="updating" :label="$t('customers.account')" name="first" class="first">
-        <el-form-item :label="$t('customers.customer_name')">
-          <el-input v-model="customer.name" />
-        </el-form-item>
-        <el-form-item label="E-mail">
-          <el-input v-model="customer.email" />
-        </el-form-item>
-        <el-form-item :label="$t('customers.mobile')">
-          <el-input v-model="customer.mobile" />
-        </el-form-item>
-        <el-form-item :label="$t('customers.dob') + ': ' ">
-          <br>
-          <div v-if="customer.dob != null" style="border-radius: .25rem; background-color: #283046; color: #6699ff; padding-left: 15px;">
-            {{ customer.dob }}
+        <div class="main">
+          <div class="part1">
+            <el-form-item :label="$t('customers.customer_name')">
+              <el-input v-model="customer.name" />
+            </el-form-item>
+            <el-form-item label="E-mail">
+              <el-input v-model="customer.email" />
+            </el-form-item>
+            <el-form-item :label="$t('customers.mobile')">
+              <el-input v-model="customer.mobile" />
+            </el-form-item>
+            <el-form-item :label="$t('customers.dob') + ': ' ">
+              <br>
+              <div v-if="customer.dob != null" style="border-radius: .25rem; background-color: #283046; color: #6699ff; padding-left: 15px;">
+                {{ customer.dob }}
+              </div>
+              <div v-else>
+                <el-date-picker
+                  v-model="customer.dob"
+                  type="datetime"
+                  :placeholder="$t('discounts.pick_date')"
+                />
+              </div>
+            </el-form-item>
+            <el-form-item :label="$t('customers.ID_number')">
+              <span v-if="customer.ID_number != null && customer.ID_number.length == 13">
+                {{ customer.ID_number }}
+              </span>
+              <div v-else>
+                <el-input v-model="customer.ID_number" />
+              </div>
+            </el-form-item>
+            <el-form-item :label="$t('customers.street')">
+              <el-input v-model="customer.street" />
+            </el-form-item>
+            <el-form-item :label="$t('customers.number')">
+              <el-input v-model="customer.number" />
+            </el-form-item>
+            <el-form-item :label="$t('customers.city')">
+              <el-input v-model="customer.city" />
+            </el-form-item>
           </div>
-          <div v-else>
-            <el-date-picker
-              v-model="customer.dob"
-              type="datetime"
-              :placeholder="$t('discounts.pick_date')"
-            />
+          <div class="part2">
+            <el-form-item :label="$t('customers.postal_code')">
+              <el-input v-model="customer.postal_code" />
+            </el-form-item>
+            <el-form-item :label="$t('customers.country')">
+              <el-input v-model="customer.country" />
+            </el-form-item>
+            <el-form-item :label="$t('customers.member_since')">
+              {{ customer.member_since }}
+            </el-form-item>
+            <el-form-item :label="$t('customers.total_points') + ': '">
+              {{ customer.total_points }}
+            </el-form-item>
+            <el-form-item :label="$t('customers.level') + ': '">
+              {{ level | uppercaseFirst() }}
+            </el-form-item>
+            <el-form-item :label="$t('customers.facebook')">
+              <el-input v-model="customer.facebook_account" />
+            </el-form-item>
+            <el-form-item :label="$t('customers.instagram')">
+              <el-input v-model="customer.instagram_account" />
+            </el-form-item>
+            <el-form-item :label="$t('customers.twitter')">
+              <el-input v-model="customer.twitter_account" />
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" style="margin-top: 10px; float: right;" @click="onSubmit">
+                {{ $t('user.update') }}
+              </el-button>
+            </el-form-item>
           </div>
-        </el-form-item>
-        <el-form-item :label="$t('customers.ID_number')">
-          <span v-if="customer.ID_number != null && customer.ID_number.length == 13">
-            {{ customer.ID_number }}
-          </span>
-          <div v-else>
-            <el-input v-model="customer.ID_number" />
-          </div>
-        </el-form-item>
-        <el-form-item :label="$t('customers.street')">
-          <el-input v-model="customer.street" />
-        </el-form-item>
-        <el-form-item :label="$t('customers.number')">
-          <el-input v-model="customer.number" />
-        </el-form-item>
-        <el-form-item :label="$t('customers.city')">
-          <el-input v-model="customer.city" />
-        </el-form-item>
-        <el-form-item :label="$t('customers.postal_code')">
-          <el-input v-model="customer.postal_code" />
-        </el-form-item>
-        <el-form-item :label="$t('customers.country')">
-          <el-input v-model="customer.country" />
-        </el-form-item>
-        <el-form-item :label="$t('customers.member_since')">
-          {{ customer.member_since }}
-        </el-form-item>
-        <el-form-item :label="$t('customers.total_points') + ': '">
-          {{ customer.total_points }}
-        </el-form-item>
-        <el-form-item :label="$t('customers.level') + ': '">
-          {{ level | uppercaseFirst() }}
-        </el-form-item>
-        <el-form-item :label="$t('customers.facebook')">
-          <el-input v-model="customer.facebook_account" />
-        </el-form-item>
-        <el-form-item :label="$t('customers.instagram')">
-          <el-input v-model="customer.instagram_account" />
-        </el-form-item>
-        <el-form-item :label="$t('customers.twitter')">
-          <el-input v-model="customer.twitter_account" />
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="onSubmit">
-            {{ $t('user.update') }}
-          </el-button>
-        </el-form-item>
+        </div>
       </el-tab-pane>
       <el-tab-pane label="Activity" name="third">
         <div class="user-activity">
@@ -354,7 +360,7 @@ export default {
   }
 }
 .first {
-  width:35%;
+  /* width:35%; */
 }
 .third {
   background-color:#283046 !important;
@@ -364,5 +370,22 @@ export default {
    width:250px;
   }
   color: #6699ff;
+}
+.main {
+  padding: 0 !important;
+}
+.part1 {
+  display: inline-block;
+  position: relative;
+  width: 40%;
+  top: 30px;
+  margin: -30px 0 0 60px;
+}
+.part2 {
+  display: inline-block;
+  position: relative;
+  width: 40%;
+  top: -50px;
+  margin: 0 35px 0 90px;
 }
 </style>

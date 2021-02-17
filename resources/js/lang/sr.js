@@ -349,6 +349,7 @@ export default {
     discount_end_date: 'Kraj popusta:',
     to_points_overload: 'Bodovi gornje granice prevazilaze dozvoljene vrednosti!',
     from_points_overload: 'Bodovi donje granice prevazilaze dozvoljene vrednosti!',
+    no_data: 'Nema podataka!',
   },
   marketing: {
     choose_category: 'Izaberite kategoriju artikla:',

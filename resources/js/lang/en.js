@@ -347,6 +347,7 @@ export default {
     discount_end_date: 'The discount ends on:',
     to_points_overload: 'Upper limit points exceed the allowed values!',
     from_points_overload: 'Lower limit points exceed the allowed values!',
+    no_data: 'No data!',
   },
   marketing: {
     choose_category: 'Select item category:',

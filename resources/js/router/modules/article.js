@@ -23,7 +23,7 @@ const articleRoutes = {
       component: () => import('@/views/articles/Create'),
       name: 'CreateArticle',
       meta: { title: 'createArticle', icon: 'skill', roles: ['admin', 'manager', 'editor'] },
-      // hidden: true,
+      hidden: true,
     },
     {
       path: 'articles/import',

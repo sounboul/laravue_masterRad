@@ -347,6 +347,7 @@ export default {
     discount_end_date: 'Der Rabatt endet am:',
     to_points_overload: 'Obere Grenzpunkte überschreiten die zulässigen Werte!',
     from_points_overload: 'Die unteren Grenzpunkte überschreiten die zulässigen Werte!',
+    no_data: 'Keine Daten!',
   },
   marketing: {
     choose_category: 'Artikelkategorie auswählen:',

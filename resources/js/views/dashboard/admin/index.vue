@@ -2,9 +2,9 @@
   <div class="dashboard-editor-container">
     <github-corner style="position: absolute; top: 0px; border: 0; right: 0;" />
 
-    <panel-group @handleSetLineChartData="handleSetLineChartData" />
+    <panel-group style="border-radius: .428rem;" @handleSetLineChartData="handleSetLineChartData" />
 
-    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
+    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px; border-radius: .428rem; box-shadow: 0px 4px 4px #bfbfbf;">
       <line-chart :chart-data="lineChartData" />
     </el-row>
 
@@ -98,10 +98,14 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 .dashboard-editor-container {
+  border-radius: .428rem;
   padding: 32px;
-  background-color: rgb(240, 242, 245);
+  background-color: #141b2e;
+  /* background-color: rgb(240, 242, 245); */
   .chart-wrapper {
     background: #fff;
+    box-shadow: 0px -4px 4px #bfbfbf;
+    border-radius: .428rem;
     padding: 16px 16px 0;
     margin-bottom: 32px;
   }

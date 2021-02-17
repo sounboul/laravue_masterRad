@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Laravue\Models\Bill;
 use App\Laravue\Models\Articles;
+use App\Laravue\Models\Customers;
 
 class BillController extends Controller
 {
@@ -46,7 +47,7 @@ class BillController extends Controller
         $test_bills = Bill::all();
         $length_of_table = $test_bills->count();
         if ($length_of_table == 0) {
-            return response()->json(['message' => 'Nema podataka']);
+            return response()->json(['customers' => 'discounts.no_data']);
         }
         //dd($length_of_table);
 
@@ -79,10 +80,14 @@ class BillController extends Controller
 for ($i=0; $i < count($customers); $i++) { 
 
     foreach ($customers[$i] as $key => $value) {
-        //echo $value->customer.", ";
+
+            $final_customers[$i] = Customers::find($value->customer);
     }
 }
-
-        return response()->json(['customers' => $customers]);
+if(!isset($final_customers) || count($customers) == 0) {
+    $final_customers = 'discounts.no_data';
+}
+    //dd($final_customers);
+        return response()->json(['customers' => $final_customers]);
     }
 }

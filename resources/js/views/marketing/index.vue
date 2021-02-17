@@ -48,7 +48,36 @@
       </el-form>
     </div>
     <div v-if="!active1">
-      <span style="color: #eee;">{{ message }}</span>
+      <!-- <span style="color: #eee;">{{ message }}</span> -->
+      <el-table
+        v-loading="false"
+        :data="list"
+        style="width: 85%;padding: 15px; margin: 35px auto; text-align: center;"
+      >
+        <el-table-column class-name="col-6">
+          <template>
+            <el-checkbox v-model="mail" />
+          </template>
+        </el-table-column>
+        <el-table-column label="Ime kupca" class-name="col">
+          <template slot-scope="scope">
+            {{ scope.row.name }}
+          </template>
+        </el-table-column>
+        <el-table-column label="E-mail" class-name="col" align="center">
+          <template slot-scope="scope">
+            {{ scope.row.email }}
+          </template>
+        </el-table-column>
+        <el-table-column label="Telefon" class-name="col" align="center">
+          <template slot-scope="scope">
+            {{ scope.row.mobile }}
+            <!-- <el-tag :type="scope.row && scope.row.status ">
+              {{ scope.row && scope.row.status }}
+            </el-tag> -->
+          </template>
+        </el-table-column>
+      </el-table>
     </div>
   </div>
 </template>
@@ -56,10 +85,15 @@
 <script>
 
 import { getCategories, executeQuery } from '@/api/category';
+import { fetchAllCustomers } from '@/api/customer';
 
 export default {
   data() {
     return {
+      list: null,
+      listQuery: {
+
+      },
       form: {
         name: '',
         date1: '',
@@ -72,13 +106,29 @@ export default {
       active1: true,
       message: '',
       categories: this.getCategories(),
+      mail: undefined,
     };
   },
+  /* created() {
+    this.getList();
+  },*/
   methods: {
     async getCategories() {
       this.listLoading = true;
       const { data } = await getCategories(this.form);
       this.categories = data.items;
+      this.listLoading = false;
+    },
+    async getList() {
+      this.listLoading = true;
+      const { limit, page } = this.listQuery;
+      const { data, meta } = await fetchAllCustomers(this.listQuery);
+      this.list = data;
+      this.level = data[0].level;
+      this.list.forEach((element, index) => {
+        element['index'] = (page - 1) * limit + index + 1;
+      });
+      this.total = meta.total;
       this.listLoading = false;
     },
     resetTemp() {
@@ -93,29 +143,45 @@ export default {
         desc: '',
       };
     },
-    async executeQuery() {
+    executeQuery() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           this.form.date1 = new Date(this.form.date1).toLocaleString('en-EN', { timeZone: 'Europe/Belgrade' });
           executeQuery(this.form).then((response) => {
-            this.message = response.message;
-            console.log(this.message);
-            this.$notify({
+            if (response.customers.constructor !== Array) {
+              this.$notify({
+                title: this.$t('discounts.warning'),
+                message: this.$t(response.customers),
+                type: 'warning',
+                duration: 5000,
+              });
+            } else {
+              this.list = response.customers;
+              console.log(this.list);
+            }
+            /* this.$notify({
               title: this.$t('table.success'),
               message: this.$t('table.created_successfully'),
               type: 'success',
               duration: 3000,
-            });
+            });*/
           });
         }
       });
     },
+    /* async fetchData() {
+      const { data } = await fetchList();
+      this.list = data.items.slice(0, 8);
+      this.loading = false;
+    },*/
     onSubmit() {
       this.active1 = !this.active1;
       this.executeQuery();
-      // this.$message('submit!');
+      this.listLoading = false;
     },
-    onCancel() {},
+    select() {
+      this.mail.check = !this.mail.check;
+    },
   },
 };
 </script>

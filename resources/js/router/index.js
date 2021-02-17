@@ -206,11 +206,10 @@ export const constantRoutes = [
       },
     ],
   },
-  {
+  /* {
     path: '/guide',
     component: Layout,
     redirect: '/guide/index',
-    hidden: true,
     children: [
       {
         path: 'index',
@@ -220,7 +219,7 @@ export const constantRoutes = [
       },
     ],
   },
-  // elementUiRoutes,
+  elementUiRoutes,*/
 ];
 
 export const asyncRoutes = [
@@ -231,11 +230,10 @@ export const asyncRoutes = [
   // nestedRoutes,
   // tableRoutes,
   adminRoutes,
-  {
+  /* {
     path: '/theme',
     component: Layout,
     redirect: 'noredirect',
-    hidden: true,
     children: [
       {
         path: 'index',
@@ -249,7 +247,6 @@ export const asyncRoutes = [
     path: '/clipboard',
     component: Layout,
     redirect: 'noredirect',
-    hidden: true,
     meta: { permissions: ['view menu clipboard'] },
     children: [
       {
@@ -260,14 +257,13 @@ export const asyncRoutes = [
       },
     ],
   },
-  // errorRoutes,
-  // excelRoutes,
+  errorRoutes,
+  excelRoutes,
   {
     path: '/zip',
     component: Layout,
     redirect: '/zip/download',
-    hidden: true,
-    // alwaysShow: true,
+    alwaysShow: true,
     meta: { title: 'zip', icon: 'zip', permissions: ['view menu zip'] },
     children: [
       {
@@ -281,7 +277,6 @@ export const asyncRoutes = [
   {
     path: '/pdf',
     component: Layout,
-    hidden: true,
     redirect: '/pdf/index',
     meta: { title: 'pdf', icon: 'pdf', permissions: ['view menu pdf'] },
     children: [
@@ -290,7 +285,6 @@ export const asyncRoutes = [
         component: () => import('@/views/pdf'),
         name: 'Pdf',
         meta: { title: 'pdf' },
-        hidden: true,
       },
     ],
   },
@@ -309,14 +303,12 @@ export const asyncRoutes = [
         component: () => import('@/views/i18n'),
         name: 'I18n',
         meta: { title: 'i18n', icon: 'international' },
-        hidden: true,
       },
     ],
   },
   {
     path: '/external-link',
     component: Layout,
-    hidden: true,
     children: [
       {
         path: 'https://github.com/tuandm/laravue',
@@ -324,7 +316,7 @@ export const asyncRoutes = [
       },
     ],
   },
-  { path: '*', redirect: '/404', hidden: true },
+  { path: '*', redirect: '/404', hidden: true },*/
 ];
 
 const createRouter = () => new Router({
