@@ -61,8 +61,8 @@ laravel-tests:
         DB_DATABASE: database/database.sqlite
       run: vendor/bin/phpunit
 
-build:
-  runs-on: ubuntu-latest
+# build:
+#   runs-on: ubuntu-latest
 
   steps:
 
