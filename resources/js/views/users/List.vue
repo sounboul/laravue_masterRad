@@ -369,15 +369,15 @@ export default {
       });
     },
     handleDelete(id, name) {
-      this.$confirm('This will permanently delete user ' + name + '. Continue?', 'Warning', {
-        confirmButtonText: 'OK',
-        cancelButtonText: 'Cancel',
+      this.$confirm(this.$t('table.permanently_delete') + name + this.$t('table.continue'), this.$t('discounts.warning'), {
+        confirmButtonText: this.$t('table.yes'),
+        cancelButtonText: this.$t('table.no'),
         type: 'warning',
       }).then(() => {
         userResource.destroy(id).then(response => {
           this.$message({
             type: 'success',
-            message: 'Delete completed',
+            message: this.$t('table.deleted_successfully'),
           });
           this.handleFilter();
         }).catch(error => {
@@ -386,7 +386,7 @@ export default {
       }).catch(() => {
         this.$message({
           type: 'info',
-          message: 'Delete canceled',
+          message: this.$t('table.delete_canceled'),
         });
       });
     },
@@ -496,7 +496,7 @@ export default {
 
       userResource.updatePermission(this.currentUserId, { permissions: checkedPermissions }).then(response => {
         this.$message({
-          message: 'Permissions has been updated successfully',
+          message: this.$t('permission.permissions_successfully'),
           type: 'success',
           duration: 5 * 1000,
         });

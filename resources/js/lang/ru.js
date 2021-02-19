@@ -173,6 +173,9 @@ export default {
     created_successfully: 'Создано успешно!',
     updated_successfully: 'Успешно Обновлено!',
     deleted_successfully: 'Удалено успешно!',
+    delete_canceled: 'Удаление отменено!',
+    permanently_delete: 'Это навсегда удалит пользователя',
+    continue: '. Продолжать?',
     create_failed: 'Создать не удалось!',
     update_failed: 'Не удалось обновить!',
     delete_failed: 'Не удалось удалить!',
@@ -319,6 +322,7 @@ export default {
     brand: 'Марка',
     Create_Article: 'Создать статью',
     Edit_Article: 'Редактировать статью',
+    vat: 'НДС',
   },
   categories: {
     code: 'Код',

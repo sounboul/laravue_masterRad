@@ -99,6 +99,9 @@ Route::namespace('Api')->group(function() {
         Route::post('/listItem1', 'BillController@listItem');
         Route::post('/executeQuery', 'BillController@executeQuery');
 
+
+        Route::get('/posts','SellTicoController@index');
+
     });
 });
 

@@ -177,6 +177,9 @@ export default {
     create_failed: 'Kreiranje neuspešno!',
     update_failed: 'Ažuriranje neuspešno!',
     delete_failed: 'Brisanje neuspešno!',
+    delete_canceled: 'Brisanje otkazano!',
+    permanently_delete: 'Ova radnja će definitivno obrisati radnika ',
+    continue: '. Nastavljate?',
     sure: 'Da li ste sigurni u predstojeću radnju?',
     yes: 'Da',
     no: 'Ne',
@@ -321,6 +324,7 @@ export default {
     brand: 'Brend',
     Create_Article: 'Kreiranje artikla',
     Edit_Article: 'Ažuriranje artikla',
+    vat: 'Porez',
   },
   categories: {
     code: 'Šifra',

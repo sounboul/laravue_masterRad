@@ -173,6 +173,9 @@ export default {
     created_successfully: 'Created successfully!',
     updated_successfully: 'Updated successfully!',
     deleted_successfully: 'Deleted successfully!',
+    delete_canceled: 'Delete canceled!',
+    permanently_delete: 'This will permanently delete user ',
+    continue: '. Continue?',
     create_failed: 'Create failed!',
     update_failed: 'Update failed!',
     delete_failed: 'Delete failed!',
@@ -319,6 +322,7 @@ export default {
     brand: 'Brand',
     Create_Article: 'Create Article',
     Edit_Article: 'Edit Article',
+    vat: 'Vat',
   },
   categories: {
     code: 'Code',

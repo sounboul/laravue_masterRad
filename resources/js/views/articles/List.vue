@@ -31,37 +31,37 @@
       </el-table-column>
       <el-table-column :label="$t('articles.name')" min-width="120px">
         <template slot-scope="{row}">
-          <span style="font-size: 12pt; margin-top: 2px; cursor: pointer;" @click="previewArticle(row)">{{ row.title }}</span>
+          <span style="font-size: 12pt; margin-top: 2px; cursor: pointer;" @click="previewArticle(row)">{{ row.name }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('articles.price') + ' (' + $t('articles.currency') + ')'" width="120px" align="center">
         <template slot-scope="scope">
-          <span>{{ currencyFormatEU(scope.row.price/100, 2) }}</span>
+          <span>{{ currencyFormatEU(scope.row.basic_b2b_price, 2) }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('articles.discount') + ' (%) '" width="80px" align="center">
+      <el-table-column :label="$t('articles.vat') + ' (%) '" width="80px" align="center">
         <template slot-scope="scope">
-          <span>{{ currencyFormatEU(scope.row.discount/10, 1) }}</span>
+          <span>{{ currencyFormatEU(scope.row.vat.value, 1) }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('articles.in_stock') + ' (' + $t('articles.pieces') + ')'" width="120px" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.amount }}</span>
+          <span>{{ scope.row.stock[0].quantity }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('articles.category')" width="120px" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.categories.name }}</span>
+          <span>{{ scope.row.category.name }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('stores.location')" width="180px" align="center">
         <template slot-scope="scope">
           <div v-show="scope.row.amount > 0">
-            <div v-if="scope.row.store.length > 0">
-              <div class="hasTooltip" @mouseover="test">{{ scope.row.store.length }}
+            <div v-if="scope.row.measure != null && scope.row.measure.length > 0">
+              <div class="hasTooltip" @mouseover="test1">{{ scope.row.measure.length }}
                 <span>
-                  <div v-for="(n, index) in scope.row.store" :key="index" style="padding: 2px 5px;">
-                    {{ scope.row.store[index].address }}
+                  <div v-for="(n, index) in scope.row.measure" :key="index" style="padding: 2px 5px;">
+                    {{ scope.row.measure[index].name }}
                   </div>
                 </span>
               </div>
@@ -150,7 +150,7 @@
         </el-form-item>
         <el-table-column :label="$t('stores.location')" width="180px" align="center">
           <template slot-scope="scope">
-            <span v-for="(n, index) in scope.row.store" :key="index">{{ scope.row.store[index].address }}<br></span>
+            <span v-for="(n, index) in scope.row.measure" :key="index">{{ scope.row.measure[index].address }}<br></span>
           </template>
         </el-table-column>
         <el-form-item :label="$t('table.remark')">
@@ -177,7 +177,7 @@
 </template>
 
 <script>
-import { fetchList, fetchPv, fetchArticle, createArticle, updateArticle, deleteArticle } from '@/api/article';
+import { fetchList, fetchPv, fetchArticle, createArticle, updateArticle, deleteArticle, testPost } from '@/api/article';
 import { fetchStores } from '@/api/stores';
 import { getCategories } from '@/api/category';
 import { getSuppliers } from '@/api/supplier';
@@ -220,6 +220,7 @@ export default {
     return {
       tableKey: 0,
       list: null,
+      test2: null,
       total: 0,
       listLoading: true,
       // test: [],
@@ -269,9 +270,16 @@ export default {
     };
   },
   created() {
-    this.getList();
+    // this.getList();
+    this.testPost();
   },
   methods: {
+    testPost() {
+      testPost().then((response) => {
+        this.list = response.products;
+        console.log(this.list);
+      });
+    },
     async getList() {
       this.listLoading = true;
       const { data } = await fetchList(this.listQuery);
@@ -423,7 +431,7 @@ export default {
     pom1(categories_id) {
       return this.list.categories.name;
     },
-    test() {
+    test1() {
     },
     handleDownload() {
       this.downloadLoading = true;

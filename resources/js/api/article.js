@@ -61,6 +61,13 @@ export function deleteArticle(id) {
   });
 }
 
+export function testPost() {
+  return request({
+    url: '/posts',
+    method: 'get',
+  });
+}
+
 /* export function pom() {
   return request({
     url: '/pom',

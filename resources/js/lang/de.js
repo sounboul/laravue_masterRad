@@ -173,6 +173,9 @@ export default {
     created_successfully: 'Erfolgreich erstellt!',
     updated_successfully: 'Erfolgreich geupdated!',
     deleted_successfully: 'Erfolgreich gelöscht!',
+    delete_canceled: 'Löschen abgebrochen!',
+    permanently_delete: 'Dadurch wird der Benutzer dauerhaft gelöscht',
+    continue: '. Fortsetzen?',
     create_failed: 'Erstellen fehlgeschlagen!',
     update_failed: 'Aktualisieren fehlgeschlagen!',
     delete_failed: 'Löschen fehlgeschlagen!',
@@ -319,6 +322,7 @@ export default {
     brand: 'Marke',
     Create_Article: 'Artikel erstellen',
     Edit_Article: 'Artikel bearbeiten',
+    vat: 'Vat',
   },
   categories: {
     code: 'Kode',
