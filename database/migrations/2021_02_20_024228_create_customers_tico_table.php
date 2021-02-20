@@ -20,6 +20,12 @@ class CreateCustomersTicoTable extends Migration
             $table->integer('article_id');
             $table->integer('category_id');
             $table->integer('total_points');
+            $table->string('level');
+            $table->string('email');
+            $table->string('first_name')->nullable();
+            $table->string('last_name')->nullable();
+            $table->string('phone');
+            $table->string('name')->nullable();
             $table->timestamps('updated_at')->useCurrent();
         });
     }

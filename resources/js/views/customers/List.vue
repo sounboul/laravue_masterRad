@@ -1,29 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.keyword" :placeholder="$t('table.keyword')" style="width: 250px;" class="filter-item" @keyup.native="handleFilter" />
-      <!-- <el-select v-model="listQuery.importance" :placeholder="$t('table.importance')" clearable style="width: 90px" class="filter-item">
-        <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />
-      </el-select> -->
-      <!-- <el-select v-model="listQuery.type" :placeholder="$t('table.type')" clearable class="filter-item" style="width: 130px">
-        <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name+'('+item.key+')'" :value="item.key" />
-      </el-select> -->
-      <el-select v-model="listQuery.sort" style="width: 150px" class="filter-item" @change="handleFilter">
-        <el-option v-for="item in sortOptions" :key="item.key" :label="$t('table.'+item.label)" :value="item.key" />
-      </el-select>
-      <!-- <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
-        {{ $t('table.search') }}
-      </el-button> -->
-      <el-checkbox class="filter-item check1" style="margin-left: 15px;" @change="ActiveCustomers">{{ $t('customers.active_customers') }}
-      </el-checkbox>
-      <el-checkbox class="filter-item check2" style="margin-left: 15px;" @change="PendingCustomers">{{ $t('customers.pending_customers') }}
-      </el-checkbox>
-      <el-checkbox class="filter-item check3" style="margin-left: 15px;" @change="DeletedCustomers">{{ $t('customers.deleted_customers') }}
-      </el-checkbox>
       <div style="float: right;">
-        <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
-          {{ $t('table.add') }}
-        </el-button>
         <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
           {{ $t('table.export') }}
         </el-button>
@@ -39,73 +17,49 @@
       style="width: 100%;border-radius: .428rem;"
       @sort-change="sortChange"
     >
-      <el-table-column :label="$t('table.code')" prop="code" align="center" width="120">
+      <el-table-column label="ID" prop="code" align="center" width="120">
         <template slot-scope="{row}">
-          <router-link :to="'/selling/index/'+row.id">
-            <el-button v-show="row.active=='active'" size="mini" style="background-color: #f58938; color: #fff; border-radius: .428rem">{{ row.code }}</el-button>
+          <router-link to="#">
+            <el-button size="mini" style="background-color: #f58938; color: #fff; border-radius: .428rem">{{ row.customer_id }}</el-button>
           </router-link>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('customers.customer_name')" min-width="120px">
+      <el-table-column :label="$t('customers.customer_name')" class="col" align="center">
         <template slot-scope="{row}">
-          <span v-if="row.customer.name != null">{{ row.customer.name }}</span>
-          <span v-else>{{ row.customer.first_name }} {{ row.customer.last_name }}</span>
-          <!-- <el-tag>{{ row.title }}</el-tag> -->
+          <span v-if="row.name != null">{{ row.name }}</span>
+          <span v-else>{{ row.first_name }} {{ row.last_name }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('customers.total_points')" class="col" align="center">
         <template slot-scope="{row}">
-          <span v-show="row.customer.email != null">{{ row.customer.email }}</span>
-          <!-- <el-tag>{{ row.title }}</el-tag> -->
+          <span v-show="row.total_points != null">{{ row.total_points }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('discounts.customers_level')" class="col" align="center">
+      <el-table-column :label="$t('discounts.customers_level')" class-name="status-col" width="100">
         <template slot-scope="{row}">
-          <span v-show="row.customer.address != null">{{ row.customer.address }}</span>
-          <!-- <el-tag>{{ row.title }}</el-tag> -->
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('customers.member_since')" class="col" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.customer.city }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('customers.last_change')" class="col" align="center">
-        <template slot-scope="scope">
-          <span v-show="scope.row.customer.phone != null">{{ scope.row.customer.phone }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.readings')" align="center" class="col">
-        <template slot-scope="{row}">
-          <span v-if="row.pageviews" class="link-type" @click="handleFetchPv(row.pageviews)">{{ row.pageviews }}</span>
-          <span v-else>0</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.status')" class-name="status-col" width="100">
-        <template>
-          <el-tag :type="'gold' | statusFilter">
-            {{ $t('articles.gold') }}
+          <el-tag :type="row.level | statusFilter" style="width:80px;">
+            {{ $t('articles.' + row.level) }}
           </el-tag>
         </template>
       </el-table-column>
-      <!-- <el-table-column v-if="checkRole(['admin','manager', 'editor'])" :label="$t('table.actions')" align="center" width="250" class-name="small-padding fixed-width">
+      <el-table-column :label="$t('login.email')" class="col" align="center">
         <template slot-scope="{row}">
-          <el-button v-if="checkRole(['admin','manager','editor']) && row.active!='deleted'" type="success" size="mini" @click="handleUpdate(row)">
-            {{ $t('table.edit') }}
-          </el-button>
-          <el-button v-if="checkRole(['admin','manager']) && row.active!='deleted'" type="danger" size="mini" @click="handleDelete(row.id)">
-            {{ $t('table.delete') }}
-          </el-button>
+          <span v-show="row.email != null">{{ row.email }}</span>
         </template>
-      </el-table-column> -->
+      </el-table-column>
+      <el-table-column :label="$t('user.phone')" class="col" align="center">
+        <template slot-scope="{row}">
+          <span v-show="row.phone != null">{{ row.phone }}</span>
+        </template>
+      </el-table-column>
     </el-table>
 
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="customersTico" />
+    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="fetchListTico" />
   </div>
 </template>
 
 <script>
-import { fetchPv, createCustomer, updateCustomer, deleteCustomer, fetchAllCustomers, customersTico } from '@/api/customer';
+import { fetchPv, createCustomer, updateCustomer, deleteCustomer, fetchAllCustomers, customersTico, fetchListTico } from '@/api/customer';
 import waves from '@/directive/waves'; // Waves directive
 import { parseTime } from '@/utils';
 import checkRole from '@/utils/role';
@@ -131,8 +85,8 @@ export default {
   filters: {
     statusFilter(active) {
       const statusMap = {
-        regular: 'info',
-        silver: 'default',
+        regular: 'success',
+        silver: 'info',
         gold: 'warning',
         premium: 'danger',
       };
@@ -146,6 +100,7 @@ export default {
     return {
       tableKey: 0,
       list: null,
+      list1: null,
       listLoading: true,
       total: 0,
       listQuery: {
@@ -198,19 +153,13 @@ export default {
       dialogPvVisible: false,
       modalCustomerPreview: false,
       pvData: [],
-      rules: {
-        type: [{ required: true, message: 'type is required', trigger: 'change' }],
-        timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
-        name: [{ required: true, message: this.$t('customers.name_required'), trigger: 'blur' }],
-        email: [{ required: true, message: this.$t('customers.email_required'), trigger: 'blur' }],
-        mobile: [{ required: true, message: this.$t('customers.mobile_required'), trigger: 'blur' }],
-      },
       downloadLoading: false,
     };
   },
   created() {
     // this.getList();
     this.customersTico();
+    this.fetchListTico();
   },
   methods: {
     async getList() {
@@ -229,8 +178,22 @@ export default {
       this.listLoading = true;
       const { limit, page } = this.listQuery;
       const { data } = await customersTico(this.listQuery);
-      this.list = data.orders;
+      this.list1 = data.orders;
       // console.log(this.list);
+      // this.level = data[0].level;
+      this.list1.forEach((element, index) => {
+        element['index'] = (page - 1) * limit + index + 1;
+      });
+      // this.total = meta.total;
+      this.listLoading = false;
+    },
+    async fetchListTico() {
+      this.listLoading = true;
+      const { limit, page } = this.listQuery;
+      const { data } = await fetchListTico(this.listQuery);
+      this.list = data.data;
+      this.total = data.total;
+      console.log(this.total);
       // this.level = data[0].level;
       this.list.forEach((element, index) => {
         element['index'] = (page - 1) * limit + index + 1;
@@ -440,6 +403,9 @@ export default {
   .dialog2 {
     width: 370px;
     margin: 0 0 0 10px;
+  }
+  .testClass {
+    width: 100px;
   }
   @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@1,300;1,400&family=Raleway:wght@500&display=swap');
 </style>

@@ -102,6 +102,7 @@ Route::namespace('Api')->group(function() {
 
         Route::get('/articlesTico','SellTicoController@articles');
         Route::get('/customersTico','SellTicoController@customers');
+        Route::get('/fetchListTico','SellTicoController@fetchListTico');
 
     });
 });

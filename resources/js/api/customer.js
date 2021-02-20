@@ -61,6 +61,12 @@ export function customersTico(query) {
   });
 }
 
+export function fetchListTico() {
+  return request({
+    url: '/fetchListTico',
+    method: 'get',
+  });
+}
 /* export function pom() {
   return request({
     url: '/pom',
