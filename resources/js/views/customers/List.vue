@@ -35,7 +35,7 @@
           <span v-show="row.total_points != null">{{ row.total_points }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('discounts.customers_level')" class-name="status-col" width="100">
+      <el-table-column :label="$t('discounts.customers_level')" class="col" align="center">
         <template slot-scope="{row}">
           <el-tag :type="row.level | statusFilter" style="width:80px;">
             {{ $t('articles.' + row.level) }}
@@ -112,6 +112,7 @@ export default {
         type: undefined,
         sort: '+id',
         keyword: '',
+        current_page: 1,
         showActiveCustomers: false,
         showPendingCustomers: true,
         showDeletedCustomers: true,
@@ -193,12 +194,9 @@ export default {
       const { data } = await fetchListTico(this.listQuery);
       this.list = data.data;
       this.total = data.total;
-      console.log(this.total);
-      // this.level = data[0].level;
       this.list.forEach((element, index) => {
         element['index'] = (page - 1) * limit + index + 1;
       });
-      // this.total = meta.total;
       this.listLoading = false;
     },
     async ActiveCustomers() {

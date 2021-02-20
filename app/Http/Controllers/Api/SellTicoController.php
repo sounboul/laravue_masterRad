@@ -63,7 +63,6 @@ class SellTicoController extends Controller
 						$web_price = $pom[$i]['web_price'];
 
 			  			$customer_tico->total_points = points($quantity, $web_price);
-	  					//$customer_tico->level = MemberLevel::findLevel($customer_tico->total_points);
 			  			$customer_tico->save();
 			  		}
 		  		}
@@ -87,9 +86,11 @@ class SellTicoController extends Controller
         return response()->json(new JsonResponse($customers));
     }
 
-    public function fetchListTico()
+    public function fetchListTico(Request $request)
     {
-    	$customers = customers_tico::orderBy('customer_id', 'asc')->paginate(10);
+    	//dd($request->all());
+    	$limit = $request->limit;
+    	$customers = customers_tico::orderBy('customer_id', 'asc')->paginate($limit);
 
     	for ($i=0; $i < $customers->count() ; $i++) { 
     		$pom = 0;
