@@ -323,6 +323,10 @@ export default {
     Create_Article: 'Создать статью',
     Edit_Article: 'Редактировать статью',
     vat: 'НДС',
+    regular: 'Regular',
+    silver: 'Silver',
+    gold: 'Gold',
+    premium: 'Premium',
   },
   categories: {
     code: 'Код',

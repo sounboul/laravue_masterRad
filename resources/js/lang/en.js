@@ -323,6 +323,10 @@ export default {
     Create_Article: 'Create Article',
     Edit_Article: 'Edit Article',
     vat: 'Vat',
+    regular: 'Regular',
+    silver: 'Silver',
+    gold: 'Gold',
+    premium: 'Premium',
   },
   categories: {
     code: 'Code',

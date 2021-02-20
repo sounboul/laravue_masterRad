@@ -53,6 +53,14 @@ export function deleteCustomer(id) {
   });
 }
 
+export function customersTico(query) {
+  return request({
+    url: '/customersTico',
+    method: 'get',
+    query,
+  });
+}
+
 /* export function pom() {
   return request({
     url: '/pom',

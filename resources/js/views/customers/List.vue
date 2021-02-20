@@ -48,30 +48,31 @@
       </el-table-column>
       <el-table-column :label="$t('customers.customer_name')" min-width="120px">
         <template slot-scope="{row}">
-          <router-link class="" style="font-weight: bold;cursor: pointer;" :to="'/customers/edit/'+row.id">{{ row.name }}</router-link>
+          <span v-if="row.customer.name != null">{{ row.customer.name }}</span>
+          <span v-else>{{ row.customer.first_name }} {{ row.customer.last_name }}</span>
           <!-- <el-tag>{{ row.title }}</el-tag> -->
         </template>
       </el-table-column>
       <el-table-column :label="$t('customers.total_points')" class="col" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.total_points }}</span>
+          <span v-show="row.customer.email != null">{{ row.customer.email }}</span>
           <!-- <el-tag>{{ row.title }}</el-tag> -->
         </template>
       </el-table-column>
       <el-table-column :label="$t('discounts.customers_level')" class="col" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.level }}</span>
+          <span v-show="row.customer.address != null">{{ row.customer.address }}</span>
           <!-- <el-tag>{{ row.title }}</el-tag> -->
         </template>
       </el-table-column>
       <el-table-column :label="$t('customers.member_since')" class="col" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.member_since | parseTime('{d}.{m}.{y}.') }}</span>
+          <span>{{ scope.row.customer.city }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('customers.last_change')" class="col" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.updated_at | parseTime('{d}.{m}.{y}.') }}</span>
+          <span v-show="scope.row.customer.phone != null">{{ scope.row.customer.phone }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('table.readings')" align="center" class="col">
@@ -81,13 +82,13 @@
         </template>
       </el-table-column>
       <el-table-column :label="$t('table.status')" class-name="status-col" width="100">
-        <template slot-scope="{row}">
-          <el-tag :type="row.active | statusFilter">
-            {{ $t('customers.' + row.active) }}
+        <template>
+          <el-tag :type="'gold' | statusFilter">
+            {{ $t('articles.gold') }}
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column v-if="checkRole(['admin','manager', 'editor'])" :label="$t('table.actions')" align="center" width="250" class-name="small-padding fixed-width">
+      <!-- <el-table-column v-if="checkRole(['admin','manager', 'editor'])" :label="$t('table.actions')" align="center" width="250" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
           <el-button v-if="checkRole(['admin','manager','editor']) && row.active!='deleted'" type="success" size="mini" @click="handleUpdate(row)">
             {{ $t('table.edit') }}
@@ -96,132 +97,15 @@
             {{ $t('table.delete') }}
           </el-button>
         </template>
-      </el-table-column>
+      </el-table-column> -->
     </el-table>
 
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
-
-    <el-dialog :title="textMap[dialogStatus] == 'Create' ? $t('customers.create_new_customer') : $t('customers.edit_customer')" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="150px" style="width: 600px; margin-left:20px; word-break: break-word;">
-        <div class="dialog0">
-          <div class="dialog1">
-            <el-form-item :label="$t('customers.customer_name')" prop="name">
-              <el-input v-model="temp.name" />
-            </el-form-item>
-            <el-form-item :label="$t('login.email')" type="email" prop="email">
-              <el-input v-model="temp.email" />
-            </el-form-item>
-            <el-form-item :label="$t('customers.mobile')" prop="mobile">
-              <el-input v-model="temp.mobile" />
-            </el-form-item>
-            <el-form-item :label="$t('customers.dob')" prop="dob">
-              <el-date-picker v-model="temp.dob" type="date" :placeholder="$t('customers.pick_a_date')" />
-            </el-form-item>
-            <el-form-item :label="$t('customers.ID_number')" prop="ID_number">
-              <el-input v-model="temp.ID_number" />
-            </el-form-item>
-            <el-form-item :label="$t('customers.street')" prop="street">
-              <el-input v-model="temp.street" />
-            </el-form-item>
-            <el-form-item :label="$t('customers.number')" prop="number">
-              <el-input v-model="temp.number" />
-            </el-form-item>
-          </div>
-          <div class="dialog2">
-            <el-form-item :label="$t('customers.city')" prop="city">
-              <el-input v-model="temp.city" />
-            </el-form-item>
-            <el-form-item :label="$t('customers.postal_code')" prop="postal_code">
-              <el-input v-model="temp.postal_code" />
-            </el-form-item>
-            <el-form-item :label="$t('customers.country')" prop="country">
-              <el-input v-model="temp.country" />
-            </el-form-item>
-            <el-form-item :label="$t('customers.facebook')">
-              <el-input v-model="temp.facebook_account" />
-            </el-form-item>
-            <el-form-item :label="$t('customers.instagram')">
-              <el-input v-model="temp.instagram_account" />
-            </el-form-item>
-            <el-form-item :label="$t('customers.twitter')">
-              <el-input v-model="temp.twitter_account" />
-            </el-form-item>
-          </div>
-        </div>
-      </el-form>
-      <div slot="footer" class="dialog-footer" style="margin: 0 28px 15px 0">
-        <el-button @click="dialogFormVisible = false">
-          {{ $t('table.cancel') }}
-        </el-button>
-        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
-          {{ $t('table.confirm') }}
-        </el-button>
-      </div>
-    </el-dialog>
-
-    <el-dialog :title="$t('customers.customerDetails')" :visible.sync="modalCustomerPreview">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="200px" style="width: 400px; margin-left:50px; word-break: break-word;">
-        <el-form-item :label="$t('customers.customer_name')" prop="name">
-          <el-input v-model="temp.name" />
-        </el-form-item>
-        <el-form-item :label="$t('login.email')" type="email" prop="email">
-          <el-input v-model="temp.email" />
-        </el-form-item>
-        <el-form-item :label="$t('customers.mobile')" prop="mobile">
-          <el-input v-model="temp.mobile" />
-        </el-form-item>
-        <el-form-item :label="$t('customers.dob')" prop="dob">
-          <el-date-picker v-model="temp.dob" type="date" :placeholder="$t('customers.pick_a_date')" />
-        </el-form-item>
-        <el-form-item :label="$t('customers.ID_number')" prop="ID_number">
-          <el-input v-model="temp.ID_number" />
-        </el-form-item>
-        <el-form-item :label="$t('customers.street')" prop="street">
-          <el-input v-model="temp.street" />
-        </el-form-item>
-        <el-form-item :label="$t('customers.number')" prop="number">
-          <el-input v-model="temp.number" />
-        </el-form-item>
-        <el-form-item :label="$t('customers.city')" prop="city">
-          <el-input v-model="temp.city" />
-        </el-form-item>
-        <el-form-item :label="$t('customers.postal_code')" prop="postal_code">
-          <el-input v-model="temp.postal_code" />
-        </el-form-item>
-        <el-form-item :label="$t('customers.country')" prop="country">
-          <el-input v-model="temp.country" />
-        </el-form-item>
-        <el-form-item :label="$t('customers.facebook')">
-          <el-input v-model="temp.facebook_account" style="margin-top:8px;" />
-        </el-form-item>
-        <el-form-item :label="$t('customers.instagram')">
-          <el-input v-model="temp.instagram_account" style="margin-top:8px;" />
-        </el-form-item>
-        <el-form-item :label="$t('customers.twitter')">
-          <el-input v-model="temp.twitter_account" />
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="modalCustomerPreview = false">
-          {{ $t('tagsView.close') }}
-        </el-button>
-      </div>
-    </el-dialog>
-
-    <el-dialog :visible.sync="dialogPvVisible" title="Reading statistics">
-      <el-table :data="pvData" fit highlight-current-row style="width: 100%">
-        <el-table-column prop="key" label="Channel" />
-        <el-table-column prop="pv" label="Pv" />
-      </el-table>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogPvVisible = false">{{ $t('table.confirm') }}</el-button>
-      </span>
-    </el-dialog>
+    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="customersTico" />
   </div>
 </template>
 
 <script>
-import { fetchPv, createCustomer, updateCustomer, deleteCustomer, fetchAllCustomers } from '@/api/customer';
+import { fetchPv, createCustomer, updateCustomer, deleteCustomer, fetchAllCustomers, customersTico } from '@/api/customer';
 import waves from '@/directive/waves'; // Waves directive
 import { parseTime } from '@/utils';
 import checkRole from '@/utils/role';
@@ -247,9 +131,10 @@ export default {
   filters: {
     statusFilter(active) {
       const statusMap = {
-        active: 'success',
-        pending: 'warning',
-        deleted: 'danger',
+        regular: 'info',
+        silver: 'default',
+        gold: 'warning',
+        premium: 'danger',
       };
       return statusMap[active];
     },
@@ -290,7 +175,7 @@ export default {
         title: '',
         email: '',
         mobile: '',
-        dob: new Date(),
+        date: new Date(),
         ID_number: '',
         street: '',
         number: '',
@@ -324,7 +209,8 @@ export default {
     };
   },
   created() {
-    this.getList();
+    // this.getList();
+    this.customersTico();
   },
   methods: {
     async getList() {
@@ -337,6 +223,19 @@ export default {
         element['index'] = (page - 1) * limit + index + 1;
       });
       this.total = meta.total;
+      this.listLoading = false;
+    },
+    async customersTico() {
+      this.listLoading = true;
+      const { limit, page } = this.listQuery;
+      const { data } = await customersTico(this.listQuery);
+      this.list = data.orders;
+      // console.log(this.list);
+      // this.level = data[0].level;
+      this.list.forEach((element, index) => {
+        element['index'] = (page - 1) * limit + index + 1;
+      });
+      // this.total = meta.total;
       this.listLoading = false;
     },
     async ActiveCustomers() {
@@ -453,7 +352,7 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           const tempData = Object.assign({}, this.temp);
-          tempData.dob = new Date(tempData.dob).toLocaleString('en-EN', { timeZone: 'Europe/Belgrade' });
+          tempData.date = new Date(tempData.date).toLocaleString('en-EN', { timeZone: 'Europe/Belgrade' });
           updateCustomer(tempData).then(() => {
             for (const v of this.list) {
               if (v.id === this.temp.id) {

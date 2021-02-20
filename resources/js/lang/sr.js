@@ -325,6 +325,10 @@ export default {
     Create_Article: 'Kreiranje artikla',
     Edit_Article: 'Ažuriranje artikla',
     vat: 'Porez',
+    regular: 'Regular',
+    silver: 'Silver',
+    gold: 'Gold',
+    premium: 'Premium',
   },
   categories: {
     code: 'Šifra',

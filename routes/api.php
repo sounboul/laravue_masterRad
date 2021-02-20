@@ -100,7 +100,8 @@ Route::namespace('Api')->group(function() {
         Route::post('/executeQuery', 'BillController@executeQuery');
 
 
-        Route::get('/posts','SellTicoController@index');
+        Route::get('/articlesTico','SellTicoController@articles');
+        Route::get('/customersTico','SellTicoController@customers');
 
     });
 });

@@ -177,7 +177,7 @@
 </template>
 
 <script>
-import { fetchList, fetchPv, fetchArticle, createArticle, updateArticle, deleteArticle, testPost } from '@/api/article';
+import { fetchList, fetchPv, fetchArticle, createArticle, updateArticle, deleteArticle, articlesTico } from '@/api/article';
 import { fetchStores } from '@/api/stores';
 import { getCategories } from '@/api/category';
 import { getSuppliers } from '@/api/supplier';
@@ -275,8 +275,8 @@ export default {
   },
   methods: {
     testPost() {
-      testPost().then((response) => {
-        this.list = response.products;
+      articlesTico().then((response) => {
+        this.list = response.data.products;
         console.log(this.list);
       });
     },

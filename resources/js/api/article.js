@@ -61,9 +61,9 @@ export function deleteArticle(id) {
   });
 }
 
-export function testPost() {
+export function articlesTico() {
   return request({
-    url: '/posts',
+    url: '/articlesTico',
     method: 'get',
   });
 }
