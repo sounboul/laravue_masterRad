@@ -73,8 +73,6 @@ class SellTicoController extends Controller
   													->where('id', '!=', $trt->id)
   													->first();
   				if(is_array($help)){
-
-	  				//$help = customers_tico::find($trt->id); 
 	  				$test = $help->total_points;
 	  				$temp = 0; 				
 	  				for ($j=0; $j < count($items); $j++) { 
@@ -112,7 +110,6 @@ class SellTicoController extends Controller
     		$customers[$i]->level = MemberLevel::findLevel($customers[$i]->total_points);
     	}
   		
-    	//dd($customers);
     	return response()->json(new JsonResponse($customers));
     }
 

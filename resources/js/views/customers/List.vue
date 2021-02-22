@@ -1,6 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
+      <el-button type="danger" style="float:left;" @click="customersTico">Refresh</el-button>
       <div style="float: right;">
         <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
           {{ $t('table.export') }}
@@ -178,12 +179,9 @@ export default {
       const { limit, page } = this.listQuery;
       const { data } = await customersTico(this.listQuery);
       this.list1 = data.orders;
-      // console.log(this.list);
-      // this.level = data[0].level;
       this.list1.forEach((element, index) => {
         element['index'] = (page - 1) * limit + index + 1;
       });
-      // this.total = meta.total;
       this.listLoading = false;
     },
     async fetchListTico() {
