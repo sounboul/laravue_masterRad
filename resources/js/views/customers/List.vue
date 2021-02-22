@@ -17,17 +17,15 @@
       style="width: 100%;border-radius: .428rem;"
       @sort-change="sortChange"
     >
-      <el-table-column label="ID" prop="code" align="center" width="120">
+      <el-table-column label="ID" align="center" width="120">
         <template slot-scope="{row}">
-          <router-link to="#">
-            <el-button size="mini" style="background-color: #f58938; color: #fff; border-radius: .428rem">{{ row.customer_id }}</el-button>
-          </router-link>
+          <el-button size="mini" style="background-color: #f58938; color: #fff; border-radius: .428rem">{{ row.customer_id }}</el-button>
         </template>
       </el-table-column>
       <el-table-column :label="$t('customers.customer_name')" class="col" align="center">
-        <template slot-scope="{row}">
-          <span v-if="row.name != null">{{ row.name }}</span>
-          <span v-else>{{ row.first_name }} {{ row.last_name }}</span>
+        <template slot-scope="scope">
+          <span v-if="scope.row.name != null && scope.row.name != '' ">{{ scope.row.name }}</span>
+          <span v-else>{{ scope.row.first_name }} {{ scope.row.last_name }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('customers.total_points')" class="col" align="center">
@@ -159,7 +157,7 @@ export default {
   },
   created() {
     // this.getList();
-    this.customersTico();
+    // this.customersTico();
     this.fetchListTico();
   },
   methods: {

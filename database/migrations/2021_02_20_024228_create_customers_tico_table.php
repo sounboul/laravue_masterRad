@@ -16,9 +16,8 @@ class CreateCustomersTicoTable extends Migration
         Schema::create('customers_tico', function (Blueprint $table) {
             $table->id();
             $table->integer('customer_id');
-            $table->integer('order_id');
-            $table->integer('article_id');
-            $table->integer('category_id');
+            $table->integer('order_id')->default(0);
+            $table->integer('category_id')->nullable();
             $table->integer('total_points');
             $table->string('level');
             $table->string('email');
