@@ -235,6 +235,9 @@ export default {
     'update': 'Aktualisieren',
     'Create_new_user': 'Neuen Arbeitgeber schaffen',
     'Please_select_role': 'Bitte wählen Sie die Rolle',
+    'active': 'Aktiv',
+    'pending': 'Steht aus',
+    'deleted': 'Inaktiv',
   },
   roles: {
     description: {
@@ -332,6 +335,8 @@ export default {
     code: 'Kode',
     name: 'Name',
     description: 'Beschreibung',
+    category: 'Kategorie',
+    subcategory: 'Unterkategorie',
   },
   suppliers: {
     suppliers: 'Lieferanten',

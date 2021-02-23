@@ -113,4 +113,27 @@ class SellTicoController extends Controller
     	return response()->json(new JsonResponse($customers));
     }
 
+
+    public function marketing_tico($category_id){
+
+    	$response = Http::withBasicAuth($this->username, $this->pass)->get('http://dev.tico.rs/api/v1/b2c-orders');
+  		$customers = $response->json();
+
+    	$categories = customers_category_tico::where('category_id', $category_id)->get();
+    	$categories = $categories->unique('customer_id');
+    	
+    	$customer = [];
+    	
+    	foreach ($categories as $key => $category) {
+    		$i = 0;
+  			for ($i=0; $i < count($customers['orders']); $i++) {    		
+    			if ($customers['orders'][$i]['customer']['id'] == $category->customer_id) {
+    				$customer[$i] = $customers['orders'][$i]['customer'];
+    			}
+    		}
+
+  		}
+
+    	return response()->json(new JsonResponse($customer));
+    }
 }

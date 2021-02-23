@@ -8,6 +8,13 @@ export function fetchList(query) {
   });
 }
 
+export function fetchArticles() {
+  return request({
+    url: '/articlesTico',
+    method: 'get',
+  });
+}
+
 export function fetchList1(query) {
   return request({
     url: '/articles_selling',

@@ -79,10 +79,8 @@
 
       <el-table-column align="left" :label="$t('stores.status')" width="110">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.active | statusFilter">
-            <span v-if="scope.row.active == 'active'">{{ $t('customers.active') | lowercaseFirst }}</span>
-            <span v-else-if="scope.row.active == 'deleted'">{{ $t('customers.deleted') | lowercaseFirst }}</span>
-            <span v-else-if="scope.row.active == 'pending'">{{ $t('customers.pending') | lowercaseFirst }}</span>
+          <el-tag :type="scope.row.active | statusFilter" style="width:90px; text-align: center;">
+            {{ $t('user.' + scope.row.active) }}
           </el-tag>
         </template>
       </el-table-column>

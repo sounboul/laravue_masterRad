@@ -40,7 +40,7 @@
             <!-- <el-button @click="onCancel">
               {{ $t('permission.cancel') }}
             </el-button> -->
-            <el-button type="primary" @click="onSubmit">
+            <el-button type="primary" @click="onSubmit(form.category)">
               {{ $t('permission.confirm') }}
             </el-button>
           </el-form-item>
@@ -48,44 +48,47 @@
       </el-form>
     </div>
     <div v-if="!active1">
-      <!-- <span style="color: #eee;">{{ message }}</span> -->
+      <el-button style="background-color: #f58938; color: #fff; border-radius: .428rem" @click="active1 = true; mail=[]; phone = [];">Nazad</el-button>
       <el-table
         v-loading="false"
         :data="list"
-        style="width: 85%;padding: 15px; margin: 35px auto; text-align: center;"
+        style="width: 65%;padding: 15px; margin: 35px auto; text-align: center;"
       >
-        <el-table-column class-name="col-6">
+        <!-- <el-table-column width="70px">
           <template>
-            <el-checkbox v-model="mail" />
+            <el-button v-model="mail" />
+          </template>
+        </el-table-column> -->
+        <el-table-column :label="$t('customers.customer_name')" class-name="col">
+          <template slot-scope="scope">
+            <span v-if="scope.row.name != null && scope.row.name != '' ">{{ scope.row.name }}</span>
+            <span v-else>{{ scope.row.first_name }} {{ scope.row.last_name }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="Ime kupca" class-name="col">
+        <el-table-column :label="$t('login.email')" class-name="col" align="center">
           <template slot-scope="scope">
-            {{ scope.row.name }}
+            <span style="cursor: pointer;" @click="chooseEmail(scope.row)">{{ scope.row.email }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="E-mail" class-name="col" align="center">
+        <el-table-column :label="$t('user.phone')" class-name="col" align="center">
           <template slot-scope="scope">
-            {{ scope.row.email }}
-          </template>
-        </el-table-column>
-        <el-table-column label="Telefon" class-name="col" align="center">
-          <template slot-scope="scope">
-            {{ scope.row.mobile }}
+            <span style="cursor: pointer;" @click="choosePhone(scope.row)">{{ scope.row.phone }}</span>
             <!-- <el-tag :type="scope.row && scope.row.status ">
               {{ scope.row && scope.row.status }}
             </el-tag> -->
           </template>
         </el-table-column>
       </el-table>
+      <el-button style="background-color: #f58938; color: #fff; border-radius: .428rem" @click="send_mail">Pošalji mejl</el-button>
     </div>
   </div>
 </template>
 
 <script>
 
-import { getCategories, executeQuery } from '@/api/category';
-import { fetchAllCustomers } from '@/api/customer';
+import { fetchList, fetch_customers_category } from '@/api/category';
+import { fetchAllCustomers, send_mail } from '@/api/customer';
+import { fetchArticles } from '@/api/article';
 
 export default {
   data() {
@@ -95,6 +98,7 @@ export default {
 
       },
       form: {
+        id: 0,
         name: '',
         date1: '',
         delivery: false,
@@ -105,8 +109,10 @@ export default {
       },
       active1: true,
       message: '',
+      articles: '',
       categories: this.getCategories(),
-      mail: undefined,
+      mail: [],
+      phone: [],
     };
   },
   /* created() {
@@ -115,8 +121,15 @@ export default {
   methods: {
     async getCategories() {
       this.listLoading = true;
-      const { data } = await getCategories(this.form);
-      this.categories = data.items;
+      const { data } = await fetchList(this.form);
+      this.categories = data.categories;
+      // console.log(this.categories);
+      this.listLoading = false;
+    },
+    async getArticles() {
+      this.listLoading = true;
+      const { data } = await fetchArticles();
+      this.articles = data.products;
       this.listLoading = false;
     },
     async getList() {
@@ -131,6 +144,16 @@ export default {
       this.total = meta.total;
       this.listLoading = false;
     },
+    async send_mail() {
+      const res = await send_mail(this.mail);
+      this.$notify({
+        title: this.$t('table.success'),
+        message: this.$t('table.created_successfully'),
+        type: '',
+        duration: 3000,
+      });
+      //console.log(res);
+    },
     resetTemp() {
       this.form = {
         id: undefined,
@@ -143,44 +166,36 @@ export default {
         desc: '',
       };
     },
-    executeQuery() {
-      this.$refs['dataForm'].validate((valid) => {
-        if (valid) {
-          this.form.date1 = new Date(this.form.date1).toLocaleString('en-EN', { timeZone: 'Europe/Belgrade' });
-          executeQuery(this.form).then((response) => {
-            if (response.customers.constructor !== Array) {
-              this.$notify({
-                title: this.$t('discounts.warning'),
-                message: this.$t(response.customers),
-                type: 'warning',
-                duration: 5000,
-              });
-            } else {
-              this.list = response.customers;
-              console.log(this.list);
-            }
-            /* this.$notify({
-              title: this.$t('table.success'),
-              message: this.$t('table.created_successfully'),
-              type: 'success',
-              duration: 3000,
-            });*/
-          });
-        }
-      });
+    clickParent(subregion){
+      var countries = this.list.filter(country => country.subregion === subregion[0].subregion);
+      if (countries.find(country => !country.checked)){
+        countries.forEach(country => country.checked === true);
+      } else {
+        countries.forEach(country => country.checked === false);
+      }
     },
-    /* async fetchData() {
-      const { data } = await fetchList();
-      this.list = data.items.slice(0, 8);
-      this.loading = false;
-    },*/
-    onSubmit() {
+    async onSubmit(category_id) {
+      console.log(category_id);
       this.active1 = !this.active1;
-      this.executeQuery();
+      // this.executeQuery();
+      const { data } = await fetch_customers_category(category_id);
+      this.list = Object.values(data);
       this.listLoading = false;
     },
     select() {
       this.mail.check = !this.mail.check;
+    },
+    chooseEmail(row) {
+      // console.log(row.id);
+      var self = this;
+      self.mail.push(row.email);
+      console.log(self.mail);
+    },
+    choosePhone(row) {
+      // console.log(row.id);
+      var self = this;
+      self.phone.push(row.phone);
+      console.log(self.phone);
     },
   },
 };

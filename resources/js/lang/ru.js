@@ -235,6 +235,9 @@ export default {
     'update': 'Обновить',
     'Create_new_user': 'Создать нового работодателя',
     'Please_select_role': 'Пожалуйста, выберите роль',
+    'active': 'Активный',
+    'pending': 'В ожидании',
+    'deleted': 'Неактивный',
   },
   roles: {
     description: {
@@ -332,6 +335,8 @@ export default {
     code: 'Код',
     name: 'Имя',
     description: 'Описание',
+    category: 'Категория',
+    subcategory: 'Подкатегория',
   },
   suppliers: {
     suppliers: 'Поставщики',

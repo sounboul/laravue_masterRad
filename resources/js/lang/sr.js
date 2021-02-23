@@ -237,6 +237,9 @@ export default {
     'update': 'Ažuriraj',
     'Create_new_user': 'Kreiranje novog zaposlenog',
     'Please_select_role': 'Molimo, izaberite ulogu',
+    'active': 'Aktivan',
+    'pending': 'Nepotvrđen',
+    'deleted': 'Mirovanje',
   },
   roles: {
     description: {
@@ -334,6 +337,8 @@ export default {
     code: 'Šifra',
     name: 'Naziv',
     description: 'Opis',
+    category: 'Kategorija',
+    subcategory: 'Podkategorija',
   },
   suppliers: {
     suppliers: 'Dobavljači',

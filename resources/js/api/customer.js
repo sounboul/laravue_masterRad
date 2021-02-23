@@ -38,6 +38,14 @@ export function createCustomer(data) {
   });
 }
 
+export function send_mail(data) {
+  return request({
+    url: '/send_mail',
+    method: 'post',
+    data,
+  });
+}
+
 export function updateCustomer(data) {
   return request({
     url: '/customers',

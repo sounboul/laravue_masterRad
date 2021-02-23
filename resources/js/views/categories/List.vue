@@ -1,14 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.keyword" :placeholder="$t('table.keyword')" style="width: 250px;" class="filter-item" @keyup.native="handleFilter" />
-      <el-select v-model="listQuery.sort" style="width: 150px;" class="filter-item" @change="handleFilter">
-        <el-option v-for="item in sortOptions" :key="item.key" :label="$t('table.'+item.label)" :value="item.key" />
-      </el-select>
       <div style="float: right;">
-        <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
-          {{ $t('table.add') }}
-        </el-button>
         <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
           {{ $t('table.export') }}
         </el-button>
@@ -25,21 +18,26 @@
       @sort-change="sortChange"
     >
       <el-table-column label="" prop="id" align="center" width="40">
-        <template>
-          <span>{{ }}</span>
+        <template slot-scope="{row}">
+          <span>{{ row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('articles.name')" width="350px">
+      <el-table-column :label="$t('categories.category')" width="350px">
         <template slot-scope="{row}">
           <span style="font-size: 12pt;">{{ row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.description')" align="left">
+      <el-table-column :label="$t('categories.subcategory')" align="left" width="450px">
         <template slot-scope="{row}">
-          <span>{{ row.description }}</span>
+          <span v-for="item in row.childs" :key="item.id" :label="item.name | uppercaseFirst" :value="item.id">{{ item.name }}
+            <span v-if="item.childs.length>0">
+              <span v-for="kom in item.childs" :key="kom.id" style="float: right;"> <i class="el-icon-d-arrow-right" /> {{ kom.name }}</span>
+            </span><br>
+          </span><br>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.actions')" align="center" width="400" class-name="small-padding fixed-width">
+      <el-table-column />
+      <!-- <el-table-column :label="$t('table.actions')" align="center" width="400" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
           <el-button type="success" size="mini" @click="handleUpdate(row)">
             {{ $t('table.edit') }}
@@ -48,58 +46,11 @@
             {{ $t('table.delete') }}
           </el-button>
         </template>
-      </el-table-column>
+      </el-table-column> -->
     </el-table>
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="170px" style="width: 650px; margin-left:50px;">
-        <el-form-item :label="$t('categories.name')" :placeholder="temp.name" prop="name">
-          <el-input v-model="temp.name" />
-        </el-form-item>
-        <el-form-item :label="$t('categories.description')">
-          <el-input v-model="temp.description" :autosize="{ minRows: 2, maxRos: 4}" type="textarea" :placeholder="categories.description" />
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">
-          {{ $t('table.cancel') }}
-        </el-button>
-        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
-          {{ $t('table.confirm') }}
-        </el-button>
-      </div>
-    </el-dialog>
-
-    <el-dialog :title="$t('route.articleDetails')" :visible.sync="modalCategoryPreview">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="170px" style="width: 400px; margin-left:50px;">
-        <el-form-item :label="$t('table.code')" prop="code">
-          <el-input v-model="temp.code" />
-        </el-form-item>
-        <el-form-item :label="$t('table.title')" prop="title">
-          <el-input v-model="temp.title" />
-        </el-form-item>
-        <el-form-item :label="$t('table.remark')">
-          <el-input v-model="temp.remark" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" placeholder="Please input" />
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="modalCategoryPreview = false">
-          {{ $t('table.cancel') }}
-        </el-button>
-      </div>
-    </el-dialog>
-
-    <el-dialog :visible.sync="dialogPvVisible" title="Reading statistics">
-      <el-table :data="pvData" border fit highlight-current-row style="width: 100%">
-        <el-table-column prop="key" label="Channel" />
-        <el-table-column prop="pv" label="Pv" />
-      </el-table>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogPvVisible = false">{{ $t('table.confirm') }}</el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
 
@@ -192,12 +143,12 @@ export default {
     async getList() {
       this.listLoading = true;
       const { data } = await fetchList(this.listQuery);
-      this.list = data.items.data;
-      this.total = data.items.total;
+      this.list = data.categories;
+      /* this.total = data.items.total;
       var maxId = Math.max(...this.list.map(el => el.code)); // racuna poslednji code iz tabele
       this.last_code = (maxId || this.last_code);
       var newWatcherId = parseInt(this.last_code) + 1;
-      this.last_code = newWatcherId;
+      this.last_code = newWatcherId;*/
       this.listLoading = false;
     },
     handleFilter() {
@@ -311,6 +262,12 @@ export default {
         this.getList();
       });
     },*/
+    newChild(row) {
+      if (row.childs == null) {
+        return;
+      }
+      return { name: row.name, length: row.childs.length };
+    },
     handleDelete(id) {
       this.$confirm(this.$t('table.sure'), this.$t('discounts.warning'), {
         confirmButtonText: this.$t('permission.confirm'),
@@ -386,6 +343,9 @@ export default {
   .categoryList2{
     width: 40% !important;
     float: right;
+  }
+  th, td, tr .bottom_border {
+    border-bottom: 1px solid #fff !important;
   }
   @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@1,300;1,400&family=Raleway:wght@500&display=swap');
 </style>

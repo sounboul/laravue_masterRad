@@ -76,3 +76,10 @@ export function executeQuery(data) {
     data,
   });
 }
+
+export function fetch_customers_category(id) {
+  return request({
+    url: '/marketing_tico/' + id,
+    method: 'get',
+  });
+}

@@ -1,14 +1,14 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.keyword" :placeholder="$t('table.keyword')" style="width: 250px;" class="filter-item" @keyup.native="handleFilter" />
+      <!-- <el-input v-model="listQuery.keyword" :placeholder="$t('table.keyword')" style="width: 250px;" class="filter-item" @keyup.native="handleFilter" />
       <el-select v-model="listQuery.sort" style="width: 150px" class="filter-item" @change="handleFilter">
         <el-option v-for="item in sortOptions" :key="item.key" :label="$t('table.'+item.label)" :value="item.key" />
-      </el-select>
+      </el-select> -->
       <div style="float: right;">
-        <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
+        <!-- <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
           {{ $t('table.add') }}
-        </el-button>
+        </el-button> -->
         <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
           {{ $t('table.export') }}
         </el-button>
@@ -31,7 +31,7 @@
       </el-table-column>
       <el-table-column :label="$t('articles.name')" min-width="120px">
         <template slot-scope="{row}">
-          <span style="font-size: 12pt; margin-top: 2px; cursor: pointer;" @click="previewArticle(row)">{{ row.name }}</span>
+          <span style="font-size: 12pt; margin-top: 2px;">{{ row.name }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('articles.price') + ' (' + $t('articles.currency') + ')'" width="120px" align="center">
@@ -70,7 +70,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column v-if="checkRole(['admin','manager', 'editor'])" :label="$t('table.actions')" align="center" width="200" class-name="small-padding fixed-width">
+      <!-- <el-table-column v-if="checkRole(['admin','manager', 'editor'])" :label="$t('table.actions')" align="center" width="200" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
           <el-button v-if="checkRole(['admin','manager', 'editor'])" type="success" size="mini" @click="handleUpdate(row)">
             {{ $t('table.edit') }}
@@ -79,7 +79,7 @@
             {{ $t('table.delete') }}
           </el-button>
         </template>
-      </el-table-column>
+      </el-table-column> -->
     </el-table>
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
@@ -256,7 +256,7 @@ export default {
         update: 'Edit_Article',
         create: 'Create_Article',
       },
-      categories: this.getCategories(),
+      categories: null,
       suppliers: this.getSuppliers(),
       dialogPvVisible: false,
       modalArticlePreview: false,
@@ -277,7 +277,7 @@ export default {
     testPost() {
       articlesTico().then((response) => {
         this.list = response.data.products;
-        console.log(this.list);
+        // console.log(this.list);
       });
     },
     async getList() {

@@ -235,6 +235,9 @@ export default {
     'update': 'Update',
     'Create_new_user': 'Create new employer',
     'Please_select_role': 'Please select role',
+    'active': 'Active',
+    'pending': 'Pending',
+    'deleted': 'Inactive',
   },
   roles: {
     description: {
@@ -332,6 +335,8 @@ export default {
     code: 'Code',
     name: 'Name',
     description: 'Description',
+    category: 'Category',
+    subcategory: 'Subcategory',
   },
   suppliers: {
     suppliers: 'Suppliers',
