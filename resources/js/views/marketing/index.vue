@@ -21,8 +21,8 @@
           <div style="display: inline-flex; width: 550px;">
             <div class="title">{{ $t('marketing.newest') }}</div>
             <el-radio-group v-model="form.resource">
-              <el-radio label="Sponsor" />
-              <el-radio label="Venue" />
+              <el-radio label="Opcija1" />
+              <el-radio label="Opcija2" />
             </el-radio-group>
             <div class="title">
               {{ $t('marketing.no_selled') }}
@@ -50,36 +50,37 @@
     <div v-if="!active1">
       <el-button style="background-color: #f58938; color: #fff; border-radius: .428rem" @click="active1 = true; mail=[]; phone = [];">Nazad</el-button>
       <el-table
-        v-loading="false"
+        v-loading="listLoading"
         :data="list"
-        style="width: 65%;padding: 15px; margin: 35px auto; text-align: center;"
+        style="width: 65%;padding: 15px; margin: 35px auto; text-align: center; border-radius: .428rem"
       >
-        <!-- <el-table-column width="70px">
-          <template>
-            <el-button v-model="mail" />
+        <el-table-column width="70px">
+          <template slot-scope="scope">
+            <span>{{ scope.row.id }}</span>
           </template>
-        </el-table-column> -->
+        </el-table-column>
         <el-table-column :label="$t('customers.customer_name')" class-name="col">
           <template slot-scope="scope">
             <span v-if="scope.row.name != null && scope.row.name != '' ">{{ scope.row.name }}</span>
             <span v-else>{{ scope.row.first_name }} {{ scope.row.last_name }}</span>
           </template>
         </el-table-column>
-        <el-table-column :label="$t('login.email')" class-name="col" align="center">
+        <el-table-column :label="$t('login.email')" class-name="col">
           <template slot-scope="scope">
-            <span style="cursor: pointer;" @click="chooseEmail(scope.row)">{{ scope.row.email }}</span>
+            <span style="cursor: pointer;" @click="chooseEmail(scope.row);"> {{ scope.row.email }} </span>
           </template>
         </el-table-column>
-        <el-table-column :label="$t('user.phone')" class-name="col" align="center">
+        <el-table-column :label="$t('user.phone')" class-name="col">
           <template slot-scope="scope">
-            <span style="cursor: pointer;" @click="choosePhone(scope.row)">{{ scope.row.phone }}</span>
+            <span style="cursor: pointer;" @click="choosePhone(scope.row);">{{ scope.row.phone }}</span>
             <!-- <el-tag :type="scope.row && scope.row.status ">
               {{ scope.row && scope.row.status }}
             </el-tag> -->
           </template>
         </el-table-column>
       </el-table>
-      <el-button style="background-color: #f58938; color: #fff; border-radius: .428rem" @click="send_mail">Pošalji mejl</el-button>
+      <el-button :disabled="mail.length == 0" style="background-color: #f58938; color: #fff; border-radius: .428rem; margin: auto 50px;" @click="send_mail">{{ $t('marketing.send_mail') }}</el-button>
+      <el-button :disabled="phone.length == 0" style="float: right;background-color: #f58938; color: #fff; border-radius: .428rem; margin:auto 50px;" @click="send_sms">{{ $t('marketing.send_sms') }}</el-button>
     </div>
   </div>
 </template>
@@ -87,7 +88,7 @@
 <script>
 
 import { fetchList, fetch_customers_category } from '@/api/category';
-import { fetchAllCustomers, send_mail } from '@/api/customer';
+import { fetchAllCustomers, send_mail, send_sms } from '@/api/customer';
 import { fetchArticles } from '@/api/article';
 
 export default {
@@ -113,6 +114,8 @@ export default {
       categories: this.getCategories(),
       mail: [],
       phone: [],
+      clickedRow: true,
+      clickedId: 0,
     };
   },
   /* created() {
@@ -145,26 +148,26 @@ export default {
       this.listLoading = false;
     },
     async send_mail() {
+      this.listLoading = true;
       const res = await send_mail(this.mail);
+      this.listLoading = false;
       this.$notify({
-        title: this.$t('table.success'),
-        message: this.$t('table.created_successfully'),
-        type: '',
-        duration: 3000,
+        title: this.$t(res.title),
+        message: this.$t(res.message),
+        type: res.type,
+        duration: 4500,
       });
-      //console.log(res);
     },
-    resetTemp() {
-      this.form = {
-        id: undefined,
-        name: '',
-        date1: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        category: '',
-        desc: '',
-      };
+    async send_sms() {
+      this.listLoading = true;
+      const res = await send_sms(this.phone);
+      this.listLoading = false;
+      this.$notify({
+        title: this.$t(res.title),
+        message: this.$t(res.message),
+        type: res.type,
+        duration: 4500,
+      });
     },
     clickParent(subregion){
       var countries = this.list.filter(country => country.subregion === subregion[0].subregion);
@@ -175,27 +178,29 @@ export default {
       }
     },
     async onSubmit(category_id) {
-      console.log(category_id);
       this.active1 = !this.active1;
-      // this.executeQuery();
       const { data } = await fetch_customers_category(category_id);
       this.list = Object.values(data);
       this.listLoading = false;
-    },
-    select() {
-      this.mail.check = !this.mail.check;
+      // console.log(category_id);
     },
     chooseEmail(row) {
-      // console.log(row.id);
-      var self = this;
-      self.mail.push(row.email);
-      console.log(self.mail);
+      const self = this;
+      const index = self.mail.indexOf(row.email);
+      if (self.mail.includes(row.email)) {
+        self.mail.splice(index, 1);
+      } else {
+        self.mail.push(row.email);
+      }
     },
     choosePhone(row) {
-      // console.log(row.id);
-      var self = this;
-      self.phone.push(row.phone);
-      console.log(self.phone);
+      const self = this;
+      const index = self.phone.indexOf(row.phone);
+      if (self.phone.includes(row.phone)) {
+        self.phone.splice(index, 1);
+      } else {
+        self.phone.push(row.phone);
+      }
     },
   },
 };
@@ -237,5 +242,11 @@ export default {
     padding: 0;
     height: 50px;
   }
+}
+.color1{
+  color: red !important;
+}
+.color2{
+  color: orange !important;
 }
 </style>

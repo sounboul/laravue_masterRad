@@ -46,6 +46,14 @@ export function send_mail(data) {
   });
 }
 
+export function send_sms(data) {
+  return request({
+    url: '/send_sms',
+    method: 'post',
+    data,
+  });
+}
+
 export function updateCustomer(data) {
   return request({
     url: '/customers',

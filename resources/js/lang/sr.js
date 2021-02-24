@@ -303,6 +303,7 @@ export default {
     'check_url': 'Molimo proverite da li je URL koji ste uneli tačan. Kliknite na dugme ispod kako biste se vratili na početnu stranicu ili pošaljite izveštaj o grešci.',
     'or_go': 'Ili možete posetiti:',
     'show_picture': 'Prikaz slike :)',
+    'error_mail': 'Email(ovi) nije(su) poslat(i). Razlog nepoznat.',
   },
   stores: {
     'location': 'Lokacija',
@@ -370,5 +371,9 @@ export default {
     newest: 'Noviji artikli',
     no_selled: 'Najmanje prodavani artikli',
     criteria_date: 'Izaberite datum od koga želite da se vrši pretraga',
+    send_mail: 'Pošalji e-mail!',
+    send_sms: 'Pošalji sms(ove)!',
+    success_sending: 'E-mejl(ovi) uspešno poslat(i)!',
+    success_sms: 'Sms(ovi) poslat(i)!',
   },
 };

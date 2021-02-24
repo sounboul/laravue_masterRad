@@ -301,6 +301,7 @@ export default {
     'check_url': 'Bitte überprüfen Sie, ob die von Ihnen eingegebene URL korrekt ist. Klicken Sie auf die Schaltfläche unten, um zur Startseite zurückzukehren oder einen Fehlerbericht zu senden.',
     'or_go': 'Oder du kannst gehen:',
     'show_picture': 'Bild anzeigen :)',
+    'error_mail': 'Mail nicht gesendet. Grund unbekannt.',
   },
   stores: {
     'location': 'Ort',
@@ -368,5 +369,9 @@ export default {
     newest: 'Neuere Artikel',
     no_selled: 'Zumindest verkaufte Artikel',
     criteria_date: 'Wählen Sie das Datum aus, ab dem Sie suchen möchten',
+    send_mail: 'Mail senden!',
+    send_sms: 'SMS senden!',
+    success_sending: 'E-Mail(s) gesendet!',
+    success_sms: 'SMS gesendet!',
   },
 };

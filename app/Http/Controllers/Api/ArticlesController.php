@@ -37,7 +37,7 @@ class ArticlesController extends BaseController
         foreach ($articleQuery as $key => $article) {
             $store[$key] = $article->store;
         }
-$articleQuery = toArray($articleQuery);
+        $articleQuery = toArray($articleQuery);
         return response()->json(new JsonResponse([$articleQuery->paginate($limit)]));
     }
 

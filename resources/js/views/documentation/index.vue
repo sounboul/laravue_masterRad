@@ -1,8 +1,8 @@
 <template>
   <div class="app-container documentation-container">
-    <a class="document-btn" target="_blank" href="https://laravel.com/docs/5.8">{{ $t('documentation.laravel') }}</a>
+    <a class="document-btn" target="_blank" href="https://laravel.com/docs/7.x">{{ $t('documentation.laravel') }}</a>
     <a class="document-btn" target="_blank" href="https://vuejs.org/">VueJS</a>
-    <a class="document-btn" target="_blank" href="https://github.com/tuandm/laravue/">{{ $t('documentation.github') }}</a>
+    <a class="document-btn" target="_blank" href="https://github.com/bexterDesign/laravue_dev">{{ $t('documentation.github') }}</a>
     <dropdown-menu :items="articleList" style="float:left;margin-left:50px;" title="Components" />
   </div>
 </template>
@@ -15,7 +15,7 @@ export default {
   data() {
     return {
       articleList: [
-        { title: 'Laravel Envoy', href: 'https://laravel.com/docs/5.8/envoy' },
+        { title: 'Laravel Envoy', href: 'https://laravel.com/docs/7.x/envoy' },
         { title: 'Vuex', href: 'https://vuex.vuejs.org/' },
         { title: 'Vue Router', href: 'https://router.vuejs.org/' },
         { title: 'laravue-core', href: 'https://github.com/tuandm/laravue-core' },
@@ -29,7 +29,7 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 .documentation-container {
-  margin: 50px;
+  margin: 70px 220px;
   .document-btn {
     float: left;
     margin-left: 50px;

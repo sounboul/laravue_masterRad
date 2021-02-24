@@ -70,109 +70,9 @@
           </div>
         </template>
       </el-table-column>
-      <!-- <el-table-column v-if="checkRole(['admin','manager', 'editor'])" :label="$t('table.actions')" align="center" width="200" class-name="small-padding fixed-width">
-        <template slot-scope="{row}">
-          <el-button v-if="checkRole(['admin','manager', 'editor'])" type="success" size="mini" @click="handleUpdate(row)">
-            {{ $t('table.edit') }}
-          </el-button>
-          <el-button v-if="checkRole(['admin','manager']) && row.id!='deleted'" size="mini" type="danger" @click="handleDelete(row.id)">
-            {{ $t('table.delete') }}
-          </el-button>
-        </template>
-      </el-table-column> -->
     </el-table>
 
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
-
-    <el-dialog :title="textMap[dialogStatus] != null ? $t('articles.' + textMap[dialogStatus]) : ''" :visible.sync="dialogFormVisible" style="margin-top: -85px;">
-      <el-form ref="dataForm" :rules="rules" :model="temp">
-        <div class="mainForm">
-          <div class="formLeft">
-            <el-form-item v-show="textMap[dialogStatus]=='Edit_Article'" :label="$t('table.code')" prop="code">
-              <span> {{ temp.code }} </span>
-            </el-form-item>
-            <el-form-item :label="$t('table.title')">
-              <el-input v-model="temp.title" />
-            </el-form-item>
-            <el-form-item :label="$t('articles.categories')" width="180px" align="center">
-              <el-select v-model="temp.category" :placeholder="$t('articles.categories')" clearable style="margin-right: 4%; width: 100%" class="filter-item">
-                <el-option v-for="item in categories" :key="item.id" :label="item.name | uppercaseFirst" :value="item.id" />
-              </el-select>
-            </el-form-item>
-            <el-form-item :label="$t('articles.price')">
-              <el-input v-model="temp.price1" />
-            </el-form-item>
-            <el-form-item :label="$t('suppliers.supplier')" width="180px" align="center">
-              <el-select v-model="temp.supplier" :placeholder="$t('suppliers.supplier')" clearable style="margin-right: 4%; width: 100%" class="filter-item">
-                <el-option v-for="item in suppliers" :key="item.id" :label="item.name | uppercaseFirst" :value="item.id" />
-              </el-select>
-            </el-form-item>
-            <el-form-item :label="$t('articles.amount')">
-              <el-input v-model="temp.amount" />
-            </el-form-item>
-            <el-form-item :label="$t('discounts.discount_percentage') + ' (%)'">
-              <el-input v-model="temp.discount" />
-            </el-form-item>
-          </div>
-          <div class="formRight">
-            <el-form-item :label="$t('articles.brand')">
-              <el-input v-model="temp.brand" />
-            </el-form-item>
-            <el-form-item :label="$t('table.tags')">
-              <el-input v-model="temp.tags" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" />
-            </el-form-item>
-            <el-form-item :label="$t('table.description')">
-              <el-input v-model="temp.description" :autosize="{ minRows: 4, maxRows: 8}" type="textarea" />
-            </el-form-item>
-            <el-form-item :label="$t('table.short_description')">
-              <el-input v-model="temp.short_description" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" />
-            </el-form-item>
-          </div>
-        </div>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">
-          {{ $t('table.cancel') }}
-        </el-button>
-        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
-          {{ $t('table.confirm') }}
-        </el-button>
-      </div>
-    </el-dialog>
-
-    <el-dialog :title="$t('route.articleDetails')" :visible.sync="modalArticlePreview">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
-        <el-form-item :label="$t('table.code')" prop="code">
-          <el-input v-model="temp.code" />
-        </el-form-item>
-        <el-form-item :label="$t('table.title')" prop="title">
-          <el-input v-model="temp.title" />
-        </el-form-item>
-        <el-table-column :label="$t('stores.location')" width="180px" align="center">
-          <template slot-scope="scope">
-            <span v-for="(n, index) in scope.row.measure" :key="index">{{ scope.row.measure[index].address }}<br></span>
-          </template>
-        </el-table-column>
-        <el-form-item :label="$t('table.remark')">
-          <el-input v-model="temp.remark" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" placeholder="Please input" />
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="modalArticlePreview = false">
-          {{ $t('table.cancel') }}
-        </el-button>
-      </div>
-    </el-dialog>
-
-    <el-dialog :visible.sync="dialogPvVisible" title="Reading statistics">
-      <el-table :data="pvData" border fit highlight-current-row style="width: 100%">
-        <el-table-column prop="key" label="Channel" />
-        <el-table-column prop="pv" label="Pv" />
-      </el-table>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogPvVisible = false">{{ $t('table.confirm') }}</el-button>
-      </span>
-    </el-dialog>
+    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="testPost" />
   </div>
 </template>
 
@@ -180,24 +80,11 @@
 import { fetchList, fetchPv, fetchArticle, createArticle, updateArticle, deleteArticle, articlesTico } from '@/api/article';
 import { fetchStores } from '@/api/stores';
 import { getCategories } from '@/api/category';
-import { getSuppliers } from '@/api/supplier';
+// import { getSuppliers } from '@/api/supplier';
 import waves from '@/directive/waves'; // Waves directive
 import { parseTime } from '@/utils';
 import checkRole from '@/utils/role';
 import Pagination from '@/components/Pagination'; // Secondary package based on el-pagination
-
-/* const calendarTypeOptions = [
-  { key: 'CN', display_name: 'China' },
-  { key: 'US', display_name: 'USA' },
-  { key: 'JA', display_name: 'Japan' },
-  { key: 'VI', display_name: 'Vietnam' },
-];*/
-
-// arr to obj ,such as { CN : "China", US : "USA" }
-/* const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
-  acc[cur.key] = cur.display_name;
-  return acc;
-}, {});*/
 
 export default {
   name: 'ComplexTable',
@@ -257,7 +144,7 @@ export default {
         create: 'Create_Article',
       },
       categories: null,
-      suppliers: this.getSuppliers(),
+      // suppliers: this.getSuppliers(),
       dialogPvVisible: false,
       modalArticlePreview: false,
       pvData: [],
@@ -275,8 +162,10 @@ export default {
   },
   methods: {
     testPost() {
+      this.listLoading = true;
       articlesTico().then((response) => {
         this.list = response.data.products;
+        this.listLoading = false;
         // console.log(this.list);
       });
     },
@@ -303,12 +192,12 @@ export default {
       this.categories = data.items;
       this.listLoading = false;
     },
-    async getSuppliers() {
+    /* async getSuppliers() {
       this.listLoading = true;
       const { data } = await getSuppliers();
       this.suppliers = data.items;
       this.listLoading = false;
-    },
+    },*/
     handleModifyStatus(row, status) {
       this.$message({
         message: 'Successful operation',

@@ -301,6 +301,7 @@ export default {
     'check_url': 'Please check that the URL you entered is correct. Click the button below to return to the homepage or send an error report.',
     'or_go': 'Or you can go:',
     'show_picture': 'Show picture :)',
+    'error_mail': 'Mail(s) not sent. Reason unknown.',
   },
   stores: {
     'location': 'Location',
@@ -368,5 +369,9 @@ export default {
     newest: 'Newer articles',
     no_selled: 'At least sold articles',
     criteria_date: 'Select the date from which you want to search',
+    send_mail: 'Send mail!',
+    send_sms: 'Send sms!',
+    success_sending: 'Email(s) sent!',
+    success_sms: 'Sms sent!',
   },
 };

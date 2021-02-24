@@ -17,7 +17,7 @@
       style="width: 100%;border-radius: .428rem; word-break: break-word;"
       @sort-change="sortChange"
     >
-      <el-table-column label="" prop="id" align="center" width="40">
+      <el-table-column label="" prop="id" align="center" width="60">
         <template slot-scope="{row}">
           <span>{{ row.id }}</span>
         </template>
@@ -33,20 +33,10 @@
             <span v-if="item.childs.length>0">
               <span v-for="kom in item.childs" :key="kom.id" style="float: right;"> <i class="el-icon-d-arrow-right" /> {{ kom.name }}</span>
             </span><br>
-          </span><br>
+          </span>
         </template>
       </el-table-column>
       <el-table-column />
-      <!-- <el-table-column :label="$t('table.actions')" align="center" width="400" class-name="small-padding fixed-width">
-        <template slot-scope="{row}">
-          <el-button type="success" size="mini" @click="handleUpdate(row)">
-            {{ $t('table.edit') }}
-          </el-button>
-          <el-button v-if="checkRole(['admin','manager']) && row.id!='deleted'" size="mini" type="danger" @click="handleDelete(row.id)">
-            {{ $t('table.delete') }}
-          </el-button>
-        </template>
-      </el-table-column> -->
     </el-table>
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />

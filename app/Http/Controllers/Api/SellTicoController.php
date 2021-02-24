@@ -25,7 +25,94 @@ class SellTicoController extends Controller
         return response()->json(new JsonResponse($articles));
     }
 
-	public function customers()
+
+
+public function customers()
+    {
+    	$response = Http::withBasicAuth($this->username, $this->pass)->get('http://dev.tico.rs/api/v1/b2c-orders');
+  		$customers = $response->json();
+
+  		/*for ($i=0; $i < count($customers['orders']); $i++) {
+
+  			$customer_id = $customers['orders'][$i]['customer']['id'];
+  			$pom = customers_tico::where('customer_id', $customer_id)->first();
+
+  			$temp = 0;
+			$customer_tico = new customers_tico;
+
+
+			$customer_tico->updated_at = $customers['orders'][$i]['date'];
+			$cus[$i] = $customers['orders'][$i]['customer'];
+			$customer_tico->email = $cus[$i]['email'];
+			$customer_tico->first_name = $cus[$i]['first_name'];
+			$customer_tico->last_name = $cus[$i]['last_name'];
+			$customer_tico->name = $cus[$i]['name'];
+			$customer_tico->phone = $cus[$i]['phone'];	
+			$customer_tico->customer_id = $customer_id;
+
+			$items = $customers['orders'][$i]['items'];
+
+			for($j=0; $j < count($items); $j++){
+				$customer_tico->order_id = $items[$j]['order_id'];
+				if ($customer_tico->order_id != 0) {
+					$category_id = $items[$j]['article']['category_id'];
+					if ($category_id != null) {
+						$customer_tico->category_id = $category_id;
+						$customers_category_tico = new customers_category_tico;
+						$customers_category_tico->customer_id = $customer_id;
+						$customers_category_tico->category_id = $category_id;
+						$customers_category_tico->save();
+					}
+
+					$temp = $items[$j]['quantity'] * $items[$j]['article']['web_price'] + $temp;
+					if ($temp > 5000000) {
+						$temp = 5000000;
+					}
+					$customer_tico->total_points = $temp;
+				}
+			}
+
+			$customer_tico->total_points = intval($temp/1000);
+			$temp = 0;
+			$customer_tico->save();
+  			
+  		}
+
+  		for ($i=0; $i < count($customers['orders']); $i++) {
+
+  			$customer_id = $customers['orders'][$i]['customer']['id'];
+
+  			$pom = customers_tico::where('customer_id', $customer_id)->sum('total_points');
+
+  			$ret = customers_tico::where('customer_id', $customer_id)->first();
+  			$ret->total_points = $pom;
+  			$ret->update();
+
+  			$pom2 = customers_tico::select('*')->where('customer_id', $customer_id)->where('id', '!=', $ret->id)->get();
+
+  			foreach ($pom2 as $key => $value) {
+  				$value->delete();
+  			}
+
+  		}
+*/
+  		$helpers = customers_category_tico::all();
+  		foreach ($helpers as $key => $help) {
+  			$trt = customers_category_tico::select('*')->where('customer_id', $help->customer_id)->where('category_id', $help->category_id)->get();
+	  		foreach ($trt as $key => $value) {
+	  			if ($key > 0) {
+	  				$value->delete();
+	  			}
+	  		}
+  		}
+
+  		return;
+
+  	}
+
+
+
+	public function customers1()
     {
     	$response = Http::withBasicAuth($this->username, $this->pass)->get('http://dev.tico.rs/api/v1/b2c-orders');
   		$customers = $response->json();
@@ -68,9 +155,9 @@ class SellTicoController extends Controller
 				$customer_tico->save();
   			}
   			else {
-  				$trt = customers_tico::where('customer_id', $customer_id)->first();
+  				$first_customer = customers_tico::where('customer_id', $customer_id)->first();
   				$help = customers_tico::select('*')->where('customer_id', $customer_id)
-  													->where('id', '!=', $trt->id)
+  													->where('id', '!=', $first_customer->id)
   													->first();
   				if(is_array($help)){
 	  				$test = $help->total_points;
@@ -116,22 +203,12 @@ class SellTicoController extends Controller
 
     public function marketing_tico($category_id){
 
-    	$response = Http::withBasicAuth($this->username, $this->pass)->get('http://dev.tico.rs/api/v1/b2c-orders');
-  		$customers = $response->json();
-
     	$categories = customers_category_tico::where('category_id', $category_id)->get();
-    	$categories = $categories->unique('customer_id');
     	
     	$customer = [];
     	
     	foreach ($categories as $key => $category) {
-    		$i = 0;
-  			for ($i=0; $i < count($customers['orders']); $i++) {    		
-    			if ($customers['orders'][$i]['customer']['id'] == $category->customer_id) {
-    				$customer[$i] = $customers['orders'][$i]['customer'];
-    			}
-    		}
-
+    		$customer[$key] = customers_tico::where('customer_id', $category->customer_id)->first();
   		}
 
     	return response()->json(new JsonResponse($customer));
