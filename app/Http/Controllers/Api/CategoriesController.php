@@ -35,7 +35,17 @@ class CategoriesController extends BaseController
     	$response = Http::withBasicAuth($this->username, $this->pass)->get('http://dev.tico.rs/api/v1/categories');
   		$categories = $response->json();
   		//dd($categories);
+       /* $category = [];
+        $z = count($categories['categories']);
 
+        for ($i=0; $i < $z; $i++) { 
+            $category[$i] = $categories['categories'][$i];
+            if ($categories['categories'][$i]['childs'] != null) {
+                $category[$i+$z] = $categories['categories'][$i]['childs'];
+            }
+        }*/
+
+//dd($category);
 
 
         return response()->json(new JsonResponse($categories));

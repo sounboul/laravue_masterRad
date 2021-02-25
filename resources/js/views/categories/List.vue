@@ -133,12 +133,7 @@ export default {
     async getList() {
       this.listLoading = true;
       const { data } = await fetchList(this.listQuery);
-      this.list = data.categories;
-      /* this.total = data.items.total;
-      var maxId = Math.max(...this.list.map(el => el.code)); // racuna poslednji code iz tabele
-      this.last_code = (maxId || this.last_code);
-      var newWatcherId = parseInt(this.last_code) + 1;
-      this.last_code = newWatcherId;*/
+      this.list = Object.values(data.categories);
       this.listLoading = false;
     },
     handleFilter() {
