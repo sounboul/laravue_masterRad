@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="320" src="https://http://laravue.bexter.rs/public/images/SellTico.png">
+  <img width="320" src="https://http://laravue.bexter.rs/public/images/SellTico1.png">
 </p>
 <p align="center">
   <a href="https://laravel.com">
