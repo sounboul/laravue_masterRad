@@ -1,6 +1,6 @@
 <p align="center">
   <!-- <img width="320" src="https://laravue.bexter.rs/images/SellTico.png"> -->    
-  <img width="320" src="https://github.com/bexterDesign/laravue_masterRad/images/SellTico.png">
+  <img width="320" src="https://github.com/bexterDesign/laravue_masterRad/public/images/SellTico.png">
 </p>
 <p align="center">
   <a href="https://laravel.com">
