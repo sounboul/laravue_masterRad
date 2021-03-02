@@ -23,7 +23,7 @@ Documentation: [https://doc.laravue.dev](https://doc.laravue.dev)
 
 ## Screenshot
 <p align="center">
-  <img width="900" src="https://cdn.laravue.dev/screenshot.png">
+  <img width="900" src="images/SellTicoLoyalty.png">
 </p>
 
 ## Getting started
