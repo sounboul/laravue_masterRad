@@ -5,22 +5,35 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Hash;
 use App\Laravue\JsonResponse;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Laravue\Models\customers_tico;
 use App\Laravue\Models\customers_category_tico;
 use App\Laravue\Models\MemberLevel;
+use App\Laravue\Models\Credentials;
+use Validator;
 
 class SellTicoController extends Controller
 {
-	private $username = 'phoenix2208@gmail.com';
-	private $pass = 'sasazivkovic1';
-    const ITEM_PER_PAGE = 10;
+
+   //private $username = $this->loginAPI->username;
+   //private $pass = $this->loginAPI->password;
+  private function loginAPI()
+  {
+    $loginAPI = Credentials::find(1);
+    return $loginAPI;
+  }
+
+  const ITEM_PER_PAGE = 10;
 
 
-	public function articles()
+	public function articles(Request $request)
     {
-    	$response = Http::withBasicAuth($this->username, $this->pass)->get('http://dev.tico.rs/api/v1/articles');
+      $page = $request->page;
+      $limit = $request->limit;
+      //dd($this->loginAPI()->username);
+    	$response = Http::withBasicAuth(self::loginAPI()->username, self::loginAPI()->password)->get('http://dev.tico.rs/api/v1/articles?page='. $page . '&limit=' . $limit);
   		$articles = $response->json();
         return response()->json(new JsonResponse($articles));
     }
@@ -29,10 +42,10 @@ class SellTicoController extends Controller
 
 public function customers()
     {
-    	$response = Http::withBasicAuth($this->username, $this->pass)->get('http://dev.tico.rs/api/v1/b2c-orders');
+    	$response = Http::withBasicAuth(self::loginAPI()->username, self::loginAPI()->password)->get('http://dev.tico.rs/api/v1/b2c-orders');
   		$customers = $response->json();
 
-  		/*for ($i=0; $i < count($customers['orders']); $i++) {
+  		for ($i=0; $i < count($customers['orders']); $i++) {
 
   			$customer_id = $customers['orders'][$i]['customer']['id'];
   			$pom = customers_tico::where('customer_id', $customer_id)->first();
@@ -95,7 +108,7 @@ public function customers()
   			}
 
   		}
-*/
+
   		$helpers = customers_category_tico::all();
   		foreach ($helpers as $key => $help) {
   			$trt = customers_category_tico::select('*')->where('customer_id', $help->customer_id)->where('category_id', $help->category_id)->get();
@@ -114,7 +127,7 @@ public function customers()
 
 	public function customers1()
     {
-    	$response = Http::withBasicAuth($this->username, $this->pass)->get('http://dev.tico.rs/api/v1/b2c-orders');
+    	$response = Http::withBasicAuth(self::loginAPI()->username, self::loginAPI()->password)->get('http://dev.tico.rs/api/v1/b2c-orders');
   		$customers = $response->json();
 
   		for ($i=0; $i < count($customers['orders']); $i++) {
@@ -212,5 +225,62 @@ public function customers()
   		}
 
     	return response()->json(new JsonResponse($customer));
+    }
+
+    public function APIcredentials(Request $request)
+    {
+      $response = Http::withBasicAuth($request->username, $request->pass)->get('http://dev.tico.rs/api/v1/b2c-orders');
+      $credentials = $response->status();
+      if($credentials == 200)
+      { 
+
+        $validator = Validator::make(
+            $request->all(),
+            array_merge(
+                $this->getValidationRules(),
+                [
+                    'username' => ['required'],
+                    'pass' => ['required']
+                ]
+            )
+        );
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 403);
+        } else {
+            $params = $request->all();
+
+            $checkApi = Credentials::where('username', $params['username'])->first();
+            //dd($checkApi);
+            if ($checkApi !== null) {
+              return response()->json(['errors' => 'Podaci već upisani u bazu'], 403);
+            }
+
+            $user = Credentials::create([
+                'username' => $params['username'],
+                'password' => $params['pass'],
+            ]);
+
+            //return new UserResource($user);
+            return response()->json(['success' => 'Podaci snimljeni']);
+        }
+      } else {        
+            return response()->json(['errors' => 'Neispravni podaci za logovanje'], 403);
+      }
+    }
+
+
+    private function getValidationRules($isNew = true)
+    {
+        return [
+            'username' => 'required',
+            'pass' => 'required',
+        ];
+    }
+
+
+    private function checkAPI()
+    {
+
     }
 }

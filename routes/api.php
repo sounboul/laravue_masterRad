@@ -92,6 +92,7 @@ Route::namespace('Api')->group(function() {
         Route::get('/customersTico','SellTicoController@customers');
         Route::get('/fetchListTico','SellTicoController@fetchListTico');
         Route::get('/marketing_tico/{category_id}','SellTicoController@marketing_tico');
+        Route::post('/APIcredentials','SellTicoController@APIcredentials');
 
         // E-mail
         Route::post('/send_mail', 'MailController@send_mail');

@@ -9,7 +9,7 @@
           {{ user.name }}
         </div>
         <div class="user-role text-center text-muted">
-          {{ getRole() }}
+          {{ user.email }}
         </div>
       </div>
       <div class="box-social">
@@ -22,11 +22,11 @@
           </el-table-column>
         </el-table>
       </div>
-      <div class="user-follow">
+      <!-- <div class="user-follow">
         <el-button type="primary" style="width: 100%;">
           Follow
         </el-button>
-      </div>
+      </div> -->
     </div>
   </el-card>
 </template>
@@ -54,15 +54,15 @@ export default {
       social: [
         {
           'name': 'Facebook: ',
-          'account': 'facebook.account',
+          'account': 'facebook.com/bexter.rs',
         },
         {
           'name': 'Instagram: ',
-          'account': 'instagram.account',
+          'account': 'instagram.com/bexterserbia/',
         },
         {
           'name': 'Twitter: ',
-          'account': 'twitter.account',
+          'account': '-',
         },
       ],
     };

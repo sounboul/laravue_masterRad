@@ -163,7 +163,7 @@ export default {
   methods: {
     testPost() {
       this.listLoading = true;
-      articlesTico().then((response) => {
+      articlesTico(this.listQuery).then((response) => {
         this.list = response.data.products;
         this.listLoading = false;
         // console.log(this.list);

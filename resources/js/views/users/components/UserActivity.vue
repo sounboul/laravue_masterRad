@@ -3,90 +3,34 @@
     <el-tabs v-model="activeActivity" @tab-click="handleClick">
       <el-tab-pane label="Activity" name="first">
         <div class="user-activity">
-          <div class="post">
-            <div class="user-block">
-              <img
-                class="img-circle"
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDkaQO69Fro8SZLTVZQ75JH2R0T-sn5yIA_lKGwvvgQ0R0BoQtUQ"
-                alt="user image"
-              >
-              <span class="username text-muted">
-                <a href="#">Iron Man</a>
-                <a href="#" class="pull-right btn-box-tool">
-                  <i class="fa fa-times" />
-                </a>
-              </span>
-              <span class="description">Shared publicly - 7:30 PM today</span>
-            </div>
-            <p>
-              Lorem ipsum represents a long-held tradition for designers,
-              typographers and the like. Some people hate it and argue for
-              its demise, but others ignore the hate as they create awesome
-              tools to help create filler text for everyone from bacon lovers
-              to Charlie Sheen fans.
-            </p>
-            <ul class="list-inline">
-              <li>
-                <a href="#" class="link-black text-sm">
-                  <i class="el-icon-share" /> Share
-                </a>
-              </li>
-              <li>
-                <a href="#" class="link-black text-sm">
-                  <svg-icon icon-class="like" />Like
-                </a>
-              </li>
-              <li class="pull-right">
-                <a href="#" class="link-black text-sm">
-                  <svg-icon icon-class="comment" />Comments
-                  (5)
-                </a>
-              </li>
-            </ul>
-            <el-input placeholder="Type a comment" />
+          Unos parametara za integraciju preko API-ja
+          <div style="width: 350px; margin-top: 10px; ">
+            <el-form-item :label="$t('login.username')">
+              <el-input v-model="user.username" :disabled="user.role === 'admin'" style="width: 220px; float: right;" />
+            </el-form-item>
+            <el-form-item :label="$t('login.password')">
+              <el-input v-model="user.pass" :disabled="user.role === 'admin'" style="width: 220px; float: right;" />
+            </el-form-item>
           </div>
-          <div class="post">
-            <div class="user-block">
-              <img
-                class="img-circle"
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMMN-8f9CQQ3MKJpboBJIqaiJ2Wus2Tf4w_vx9STtalxrY3qGJ"
-                alt="user image"
-              >
-              <span class="username text-muted">
-                <a href="#">Captain American</a>
-                <a href="#" class="pull-right btn-box-tool">
-                  <i class="fa fa-times" />
-                </a>
-              </span>
-              <span class="description">Sent you a message - yesterday</span>
-            </div>
-            <p>
-              Lorem ipsum represents a long-held tradition for designers,
-              typographers and the like. Some people hate it and argue for
-              its demise, but others ignore the hate as they create awesome
-              tools to help create filler text for everyone from bacon lovers
-              to Charlie Sheen fans.
-            </p>
-            <el-input placeholder="Response">
-              <el-button slot="append">
-                Send
-              </el-button>
-            </el-input>
-          </div>
+          <el-form-item>
+            <el-button type="primary" :disabled="user.role === 'admin'" @click="APIcredentials">
+              {{ $t('permission.confirm') }}
+            </el-button>
+          </el-form-item>
           <div class="post">
             <div class="user-block">
               <img
                 class="img-circle img-bordered-sm"
-                src="https://cdn3.iconfinder.com/data/icons/movies-3/32/daredevil-superhero-marvel-comics-mutant-avatar-512.png"
+                src="images/Memorandum.png"
                 alt="User Image"
               >
               <span class="username">
-                <a href="#">Daredevil</a>
+                <a href="#">BexterDesign</a>
                 <a href="#" class="pull-right btn-box-tool">
                   <i class="fa fa-times" />
                 </a>
               </span>
-              <span class="description">Posted 4 photos - 2 days ago</span>
+              <span class="description">Neki od autorovih projekata</span>
             </div>
             <div class="user-images">
               <el-carousel :interval="6000" type="card" height="200px">
@@ -167,6 +111,7 @@
 
 <script>
 import Resource from '@/api/resource';
+import { APIcredentials } from '@/api/article';
 const userResource = new Resource('users');
 
 export default {
@@ -176,7 +121,9 @@ export default {
       default: () => {
         return {
           name: '',
+          username: '',
           email: '',
+          pass: '',
           avatar: '',
           roles: [],
         };
@@ -187,10 +134,10 @@ export default {
     return {
       activeActivity: 'first',
       carouselImages: [
-        'https://cdn.laravue.dev/photo1.png',
-        'https://cdn.laravue.dev/photo2.png',
-        'https://cdn.laravue.dev/photo3.jpg',
-        'https://cdn.laravue.dev/photo4.jpg',
+        'images/dental.jpeg',
+        'images/tours.jpeg',
+        'images/autoskola.jpeg',
+        'images/rachelle.jpeg',
       ],
       updating: false,
     };
@@ -215,6 +162,10 @@ export default {
           console.log(error);
           this.updating = false;
         });
+    },
+    async APIcredentials() {
+      const { data } = await APIcredentials(this.user);
+      console.log(data);
     },
   },
 };

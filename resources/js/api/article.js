@@ -68,10 +68,11 @@ export function deleteArticle(id) {
   });
 }
 
-export function articlesTico() {
+export function articlesTico(query) {
   return request({
     url: '/articlesTico',
     method: 'get',
+    params: query,
   });
 }
 
@@ -81,3 +82,11 @@ export function articlesTico() {
     method: 'get',
   });
 }*/
+
+export function APIcredentials(data) {
+  return request({
+    url: '/APIcredentials',
+    method: 'post',
+    data,
+  });
+}
