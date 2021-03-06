@@ -1,0 +1,34 @@
+├── app                        // Laravel app folder
+├── boostrap                   // Laravel boostrap folder
+├── database                   // Laravel database folder
+├── public                     // Laravel public folder
+│   ├── fonts
+│   │   └── css                
+│   │       └── vendor         // Vendor fontovi (element-ui...)
+│   └── static                 // Konfiguracioni fajl za SellTico Loyalty projekat
+├── resources                  // Laravel resources folder gde je smešten Vue deo aplikacije
+│   ├── js                     // Glavni SellTico Loyalty izvorni kod
+│   │   ├── api                // api servisi
+│   │   ├── assets             // modul assets gde se smeštaju fontovi, slike (obrađeni od strane webpack-a)
+│   │   ├── components         // globalne komponente
+│   │   ├── directive          // globalne direktive
+│   │   ├── filters            // globalni filteri
+│   │   ├── icons              // svg ikone
+│   │   ├── lang               // i18n folder višejezičnosti
+│   │   ├── router             // folder sa fajlovima za rutiranje
+│   │   ├── store              // store folder (Vuex ga koristi za smeštanje i čitanje stanja)
+│   │   ├── styles             // globalni css fajlovi
+│   │   ├── utils              // globalni utiliti fajlovi
+│   │   ├── vendor             // vendor biblioteke 
+│   │   ├── views              // pogledi - stranice
+│   │   ├── App.vue            // Glavna app komponenta
+│   │   ├── app.js             // app.js glavni fajl
+│   │   └── permission.js      // permission autentikacija
+│   └── views                  // Laravel blade templejti
+│       └── laravue.blade.php  // Glavna stranica SellTico Loyalty aplikacije
+├── tests                      // Testiranja
+├── .babelrc                   // babel konfiguracioni fajl
+├── .eslintrc.js               // eslint konfiguracioni fajl
+├── .gitignore                 // definisanje koji se fajlovi neće slati na Github
+├── composer.json              // fajl sa definicijama koje se biblioteke instaliraju prilikom instalacije za Laravel
+└── package.json               // fajl sa definicijama koje se biblioteke instaliraju prilikom instalacije za Vue

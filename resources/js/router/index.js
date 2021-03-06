@@ -85,7 +85,7 @@ export const constantRoutes = [
   {
     path: '',
     component: Layout,
-    redirect: '/profile/edit',
+    redirect: '/documentation',
     /* children: [
       {
         path: 'dashboard',
@@ -110,6 +110,19 @@ export const constantRoutes = [
     ],
   },
   {
+    path: '/documentation',
+    component: Layout,
+    redirect: '/documentation/index',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/documentation/index'),
+        name: 'Documentation',
+        meta: { title: 'documentation', icon: 'documentation', noCache: true },
+      },
+    ],
+  },
+  {
     path: '/profile',
     component: Layout,
     redirect: '/profile/edit',
@@ -123,15 +136,15 @@ export const constantRoutes = [
     ],
   },
   {
-    path: '/documentation',
+    path: '/discounts',
     component: Layout,
-    redirect: '/documentation/index',
+    redirect: '/discounts/index',
     children: [
       {
         path: 'index',
-        component: () => import('@/views/documentation/index'),
-        name: 'Documentation',
-        meta: { title: 'documentation', icon: 'documentation', noCache: true },
+        component: () => import('@/views/discounts/index'),
+        name: 'Discounts',
+        meta: { title: 'discounts', icon: 'star', noCache: true },
       },
     ],
   },
@@ -168,7 +181,7 @@ export const constantRoutes = [
       },
     ],
   },
-  {
+  /* {
     path: '/suppliers',
     component: Layout,
     redirect: '/suppliers/index',
@@ -180,20 +193,7 @@ export const constantRoutes = [
         meta: { title: 'suppliers', icon: 'example', permissions: ['view menu'] },
       },
     ],
-  },
-  {
-    path: '/discounts',
-    component: Layout,
-    redirect: '/discounts/index',
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/discounts/index'),
-        name: 'Discounts',
-        meta: { title: 'discounts', icon: 'star', noCache: true },
-      },
-    ],
-  },
+  },*/
   {
     path: '/marketing',
     component: Layout,

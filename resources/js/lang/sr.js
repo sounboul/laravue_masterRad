@@ -375,5 +375,7 @@ export default {
     send_sms: 'Pošalji sms(ove)!',
     success_sending: 'E-mejl(ovi) uspešno poslat(i)!',
     success_sms: 'Sms(ovi) poslat(i)!',
+    api_credentials: 'API podaci',
+    references: 'Reference',
   },
 };

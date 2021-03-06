@@ -373,5 +373,7 @@ export default {
     send_sms: 'SMS senden!',
     success_sending: 'E-Mail(s) gesendet!',
     success_sms: 'SMS gesendet!',
+    api_credentials: 'API Referenzen',
+    references: 'Verweise',
   },
 };

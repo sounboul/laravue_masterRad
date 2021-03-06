@@ -1,22 +1,8 @@
 <template>
   <el-card v-if="user.name">
     <el-tabs v-model="activeActivity" @tab-click="handleClick">
-      <el-tab-pane label="Activity" name="first">
+      <el-tab-pane :label="$t('marketing.references')" name="first">
         <div class="user-activity">
-          Unos parametara za integraciju preko API-ja
-          <div style="width: 350px; margin-top: 10px; ">
-            <el-form-item :label="$t('login.username')">
-              <el-input v-model="user.username" :disabled="user.role === 'admin'" style="width: 220px; float: right;" />
-            </el-form-item>
-            <el-form-item :label="$t('login.password')">
-              <el-input v-model="user.pass" :disabled="user.role === 'admin'" style="width: 220px; float: right;" />
-            </el-form-item>
-          </div>
-          <el-form-item>
-            <el-button type="primary" :disabled="user.role === 'admin'" @click="APIcredentials">
-              {{ $t('permission.confirm') }}
-            </el-button>
-          </el-form-item>
           <div class="post">
             <div class="user-block">
               <img
@@ -25,7 +11,7 @@
                 alt="User Image"
               >
               <span class="username">
-                <a href="#">BexterDesign</a>
+                <a href="https://bexter.rs" target="_blank">BexterDesign</a>
                 <a href="#" class="pull-right btn-box-tool">
                   <i class="fa fa-times" />
                 </a>
@@ -61,47 +47,48 @@
           </div>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="Timeline" name="second">
+      <el-tab-pane :label="$t('user.education')" name="second">
         <div class="block">
           <el-timeline>
-            <el-timeline-item timestamp="2019/4/17" placement="top">
+            <el-timeline-item timestamp="10.2013. - 12.2014." placement="top">
               <el-card>
-                <h4>Update Github template</h4>
-                <p>tuandm committed 2019/4/17 20:46</p>
+                <h4>Visoka Tehnička Škola STRUKOVNIH STUDIJA u Nišu</h4>
+                <p>Specijalističke Strukovne studije – Odsek Informacione tehnologije</p>
+                <p>Zvanje: Specijalista strukovni inženjer elektrotehnike i računarstva</p>
               </el-card>
             </el-timeline-item>
-            <el-timeline-item timestamp="2019/4/18" placement="top">
+            <el-timeline-item timestamp="10.1996. - 06.1999." placement="top">
               <el-card>
-                <h4>Update Github template</h4>
-                <p>tonynguyen committed 2019/4/18 20:46</p>
-              </el-card>
-              <el-card>
-                <h4>Update Github template</h4>
-                <p>tuandm committed 2019/4/19 21:16</p>
+                <h4>Viša tehnička škola u Nišu – smer elektrotehnika</h4>
+                <p>Zvanje: Inženjer elektrotehnike</p>
               </el-card>
             </el-timeline-item>
-            <el-timeline-item timestamp="2019/4/19" placement="top">
+            <el-timeline-item timestamp="09.1985. - 06.1989." placement="top">
               <el-card>
-                <h4>
-                  Deploy
-                  <a href="https://laravue.dev" target="_blank">laravue.dev</a>
-                </h4>
-                <p>tuandm deployed 2019/4/19 10:23</p>
+                <h4>ETŠ „Mija Stanimirović“ Niš</h4>
+                <p>Zvanje: Elektrotehničar za telekomunikacione uređaje</p>
+              </el-card>
+              <el-card>
+                <h4>ETŠ „Nikola Tesla“ Niš</h4>
+                <p>Usmereno obrazovanje</p>
               </el-card>
             </el-timeline-item>
           </el-timeline>
         </div>
       </el-tab-pane>
-      <el-tab-pane v-loading="updating" label="Account" name="third">
-        <el-form-item label="Name">
-          <el-input v-model="user.name" :disabled="user.role === 'admin'" />
-        </el-form-item>
-        <el-form-item label="Email">
-          <el-input v-model="user.email" :disabled="user.role === 'admin'" />
-        </el-form-item>
+      <el-tab-pane v-loading="updating" :label="$t('marketing.api_credentials')" name="third">
+        Unos parametara za integraciju preko API-ja
+        <div style="width: 350px; margin-top: 10px; ">
+          <el-form-item :label="$t('login.username')">
+            <el-input v-model="user.username" :disabled="user.role === 'admin'" style="width: 220px; float: right;" />
+          </el-form-item>
+          <el-form-item :label="$t('login.password')">
+            <el-input v-model="user.pass" :disabled="user.role === 'admin'" style="width: 220px; float: right;" />
+          </el-form-item>
+        </div>
         <el-form-item>
-          <el-button type="primary" :disabled="user.role === 'admin'" @click="onSubmit">
-            {{ $t('user.update') }}
+          <el-button type="primary" :disabled="user.role === 'admin'" @click="APIcredentials">
+            {{ $t('permission.confirm') }}
           </el-button>
         </el-form-item>
       </el-tab-pane>

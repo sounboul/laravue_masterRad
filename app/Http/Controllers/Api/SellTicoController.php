@@ -51,43 +51,43 @@ public function customers()
   			$pom = customers_tico::where('customer_id', $customer_id)->first();
 
   			$temp = 0;
-			$customer_tico = new customers_tico;
+  			$customer_tico = new customers_tico;
 
 
-			$customer_tico->updated_at = $customers['orders'][$i]['date'];
-			$cus[$i] = $customers['orders'][$i]['customer'];
-			$customer_tico->email = $cus[$i]['email'];
-			$customer_tico->first_name = $cus[$i]['first_name'];
-			$customer_tico->last_name = $cus[$i]['last_name'];
-			$customer_tico->name = $cus[$i]['name'];
-			$customer_tico->phone = $cus[$i]['phone'];	
-			$customer_tico->customer_id = $customer_id;
+  			$customer_tico->updated_at = $customers['orders'][$i]['date'];
+  			$cus[$i] = $customers['orders'][$i]['customer'];
+  			$customer_tico->email = $cus[$i]['email'];
+  			$customer_tico->first_name = $cus[$i]['first_name'];
+  			$customer_tico->last_name = $cus[$i]['last_name'];
+  			$customer_tico->name = $cus[$i]['name'];
+  			$customer_tico->phone = $cus[$i]['phone'];	
+  			$customer_tico->customer_id = $customer_id;
 
-			$items = $customers['orders'][$i]['items'];
+  			$items = $customers['orders'][$i]['items'];
 
-			for($j=0; $j < count($items); $j++){
-				$customer_tico->order_id = $items[$j]['order_id'];
-				if ($customer_tico->order_id != 0) {
-					$category_id = $items[$j]['article']['category_id'];
-					if ($category_id != null) {
-						$customer_tico->category_id = $category_id;
-						$customers_category_tico = new customers_category_tico;
-						$customers_category_tico->customer_id = $customer_id;
-						$customers_category_tico->category_id = $category_id;
-						$customers_category_tico->save();
-					}
+  			for($j=0; $j < count($items); $j++){
+  				$customer_tico->order_id = $items[$j]['order_id'];
+  				if ($customer_tico->order_id != 0) {
+  					$category_id = $items[$j]['article']['category_id'];
+  					if ($category_id != null) {
+  						$customer_tico->category_id = $category_id;
+  						$customers_category_tico = new customers_category_tico;
+  						$customers_category_tico->customer_id = $customer_id;
+  						$customers_category_tico->category_id = $category_id;
+  						$customers_category_tico->save();
+  					}
 
-					$temp = $items[$j]['quantity'] * $items[$j]['article']['web_price'] + $temp;
-					if ($temp > 5000000) {
-						$temp = 5000000;
-					}
-					$customer_tico->total_points = $temp;
-				}
-			}
+  					$temp = $items[$j]['quantity'] * $items[$j]['article']['web_price'] + $temp;
+  					if ($temp > 5000000) {
+  						$temp = 5000000;
+  					}
+  					$customer_tico->total_points = $temp;
+  				}
+  			}
 
-			$customer_tico->total_points = intval($temp/1000);
-			$temp = 0;
-			$customer_tico->save();
+  			$customer_tico->total_points = intval($temp/1000);
+  			$temp = 0;
+  			$customer_tico->save();
   			
   		}
 

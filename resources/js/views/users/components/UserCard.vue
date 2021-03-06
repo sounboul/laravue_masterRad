@@ -15,18 +15,13 @@
       <div class="box-social">
         <el-table :data="social" :show-header="false">
           <el-table-column prop="name" label="Name" />
-          <el-table-column label="Count" align="right" width="200">
+          <el-table-column label="Count" align="right" width="230">
             <template slot-scope="scope">
               {{ scope.row.account }}
             </template>
           </el-table-column>
         </el-table>
       </div>
-      <!-- <div class="user-follow">
-        <el-button type="primary" style="width: 100%;">
-          Follow
-        </el-button>
-      </div> -->
     </div>
   </el-card>
 </template>
@@ -58,7 +53,7 @@ export default {
         },
         {
           'name': 'Instagram: ',
-          'account': 'instagram.com/bexterserbia/',
+          'account': 'instagram.com/bexterserbia',
         },
         {
           'name': 'Twitter: ',

@@ -373,5 +373,7 @@ export default {
     send_sms: 'Отправить смс!',
     success_sending: 'Письмо отправлено!',
     success_sms: 'Смс отправлено!',
+    api_credentials: 'API реквизиты для входа',
+    references: 'Рекомендации',
   },
 };
