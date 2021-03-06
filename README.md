@@ -11,7 +11,7 @@
   <a href="https://github.com/ElemeFE/element">
     <img src="https://img.shields.io/badge/element--ui-2.13.0-brightgreen.svg" alt="element-ui">
   </a>
-  <a href="https://github.com/tuandm/laravue/blob/master/LICENSE">
+  <a href="https://github.com/bexterdesign/laravue_masterRad/blob/master/LICENSE">
     <img src="#">
   </a>
 </p>
@@ -28,22 +28,10 @@
 * [Element](https://element.eleme.io/) - A  Vue 2.0 based component library for developers, designers and product managers
 * [Vue Admin Template](https://github.com/PanJiaChen/vue-admin-template) - A minimal vue admin template with Element UI
 
-## Contributing
-
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, please look at the [release tags](https://github.com/tuandm/laravue/tags) on this repository.
-
 ## Author
 
-* **Petković Boban** - *Initial work* - [tuandm](https://github.com/bexterDesign).
+* **Petković Boban** - *Initial work* - [Petković Boban](https://github.com/bexterDesign/laravue_masterRad).
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE) file for details.
-
-## Related projects
-
-* [Laravue-core](https://github.com/tuandm/laravue-core) - Laravel package which provides core functionalities of Laravue.
