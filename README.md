@@ -12,7 +12,7 @@
     <img src="https://img.shields.io/badge/element--ui-2.13.0-brightgreen.svg" alt="element-ui">
   </a>
   <a href="https://github.com/bexterdesign/laravue_masterRad/blob/master/LICENSE">
-    <img src="#">
+    <img src="https://img.shields.io/badge/license-MIT-brightgreen.svg" alt="license">
   </a>
 </p>
 
