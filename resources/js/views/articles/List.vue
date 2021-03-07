@@ -78,8 +78,8 @@
 
 <script>
 import { fetchList, fetchPv, fetchArticle, createArticle, updateArticle, deleteArticle, articlesTico } from '@/api/article';
-import { fetchStores } from '@/api/stores';
-import { getCategories } from '@/api/category';
+// import { fetchStores } from '@/api/stores';
+// import { getCategories } from '@/api/category';
 // import { getSuppliers } from '@/api/supplier';
 import waves from '@/directive/waves'; // Waves directive
 import { parseTime } from '@/utils';
@@ -180,7 +180,7 @@ export default {
       this.listQuery.page = 1;
       this.getList();
     },
-    async getStores() {
+    /* async getStores() {
       this.listLoading = true;
       const { data } = await fetchStores();
       this.stores = data.stores;
@@ -191,7 +191,7 @@ export default {
       const { data } = await getCategories();
       this.categories = data.items;
       this.listLoading = false;
-    },
+    },*/
     /* async getSuppliers() {
       this.listLoading = true;
       const { data } = await getSuppliers();
