@@ -233,7 +233,6 @@ public function customers()
       $credentials = $response->status();
       if($credentials == 200)
       { 
-
         $validator = Validator::make(
             $request->all(),
             array_merge(
@@ -251,7 +250,6 @@ public function customers()
             $params = $request->all();
 
             $checkApi = Credentials::where('username', $params['username'])->first();
-            //dd($checkApi);
             if ($checkApi !== null) {
               return response()->json(['errors' => 'Podaci već upisani u bazu'], 403);
             }
@@ -261,7 +259,6 @@ public function customers()
                 'password' => $params['pass'],
             ]);
 
-            //return new UserResource($user);
             return response()->json(['success' => 'Podaci snimljeni']);
         }
       } else {        
