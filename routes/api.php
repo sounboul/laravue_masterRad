@@ -80,8 +80,11 @@ Route::namespace('Api')->group(function() {
         // Discounts
         Route::get('/members', 'MemberLevelController@index');
         Route::get('/fetchLevels', 'MemberLevelController@fetchLevels');
+        Route::get('/get_points', 'MemberLevelController@get_points');
         Route::get('/updateLevel', 'MemberLevelController@updateLevel');
         Route::post('/discount/update', 'MemberLevelController@update');
+        Route::post('/discount/updateValue', 'MemberLevelController@updateValue');
+        Route::post('/discount/updatePoint', 'MemberLevelController@updatePoint');
 
         // Bills
         Route::post('/listItem1', 'BillController@listItem');

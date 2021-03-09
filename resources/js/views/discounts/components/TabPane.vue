@@ -82,18 +82,53 @@
           >
             {{ $t('table.edit') }}
           </el-button>
-          <el-button
+          <!-- <el-button
             v-if="checkRole(['admin', 'manager'])"
             type="danger"
             size="mini"
             @click="handleDelete(scope.row.id)"
           >
             {{ $t('table.delete') }}
-          </el-button>
+          </el-button> -->
         </template>
       </el-table-column>
     </el-table>
-    <!-- ODAVDE -->
+    <div style="margin-top: 35px; display: flex;">
+      <el-form ref="dataForm1" :model="values" label-width="300px">
+        <el-form-item
+          :label="
+            $t('discounts.def_point_value')"
+          style=" width: 500px; text-align : center; white-space: pre-line;"
+        >
+          <div style="display: flex;">
+            <el-input v-model="values.value" :placeholder="currencyFormatEU(values.value_point / 100, 2)" />
+            <span style=" margin-left: 5px;">{{ $t('articles.currency') }}</span>
+          </div>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" style="float: right;" @click="value_of_point">
+            {{ $t('permission.confirm') }}
+          </el-button>
+        </el-form-item>
+      </el-form>
+      <el-form ref="dataForm2" :model="points" label-width="300px">
+        <el-form-item
+          :label="
+            $t('discounts.def_value_of_point')"
+          style=" width: 500px; text-align : center; white-space: pre-line;"
+        >
+          <div style="display: flex;">
+            <el-input v-model="points.point" :placeholder="currencyFormatEU(values.point_value / 100, 2)" />
+            <span style=" margin-left: 5px;">{{ $t('articles.currency') }}</span>
+          </div>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" style="float: right;" @click="points_value">
+            {{ $t('permission.confirm') }}
+          </el-button>
+        </el-form-item>
+      </el-form>
+    </div>
     <el-dialog
       :title="
         (textMap[dialogStatus] = 'edit'
@@ -110,7 +145,6 @@
       <el-form ref="dataForm" :model="temp" label-width="180px">
         <div class="x">
           <div class="total_points">
-
             <el-form-item
               :label="
                 $t('customers.total_points') + ' : ' + $t('customers.from')
@@ -127,14 +161,6 @@
             </el-form-item>
           </div>
         </div>
-        <!-- <el-form-item :label="$t('table.status')">
-          <el-select v-model="temp.status" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in statusOptions" :key="item" :label="item" :value="item" />
-          </el-select>
-        </el-form-item>
-        <el-form-item :label="$t('table.importance')">
-          <el-rate v-model="temp.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="3" style="margin-top:8px;" />
-        </el-form-item> -->
         <div class="x">
           <el-form-item
             :label="$t('discounts.discount_percentage')"
@@ -175,11 +201,92 @@
               />
             </el-form-item>
           </span>
-          <!-- <span class="x">
-            <el-input-number v-model="valueNew[0]" :max="10" :min="0" @change="numberChange" />
-            <el-slider v-model="value" range show-stops class="discount_percentage" />
-            <el-input-number v-model="valueNew[1]" :max="30" :min="0" @change="numberChange" />
-          </span> -->
+        </div>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">
+          {{ $t('table.cancel') }}
+        </el-button>
+        <el-button
+          type="primary"
+          @click="dialogStatus === 'create' ? createData() : updateData()"
+        >
+          {{ $t('table.confirm') }}
+        </el-button>
+      </div>
+    </el-dialog>
+    <el-dialog
+      :title="
+        (textMap[dialogStatus] = 'edit'
+          ? $t('discounts.edit_discount')
+          : $t('discounts.create_discount'))
+      "
+      style="width: 60%; margin: 0 auto"
+      :visible.sync="points_definitions"
+    >
+      <h3 style="width:100%; text-align: center; white-space: pre-line;margin-top: -30px;">
+        {{ $t('discounts.customers_level') + ' : ' }}
+        {{ type | uppercaseFirst }}
+      </h3>
+      <el-form ref="dataForm" :model="temp" label-width="180px">
+        <div class="x">
+          <div class="total_points">
+            <el-form-item
+              :label="
+                $t('customers.total_points') + ' : ' + $t('customers.from')
+              "
+              style=" width: 400px; text-align : center; white-space: pre-line;"
+            >
+              <el-input v-model="temp.from_point" />
+            </el-form-item>
+            <el-form-item
+              :label="$t('customers.to')"
+              style="width: 400px; text-align : center"
+            >
+              <el-input v-model="temp.to_point" />
+            </el-form-item>
+          </div>
+        </div>
+        <div class="x">
+          <el-form-item
+            :label="$t('discounts.discount_percentage')"
+            class="discount_percentage"
+            style="word-break: break-word; width: 400px; text-align : center"
+          >
+            <el-input v-model="temp.discount_percent" />
+          </el-form-item>
+          <span class="x">
+            <el-form-item :label="$t('table.date') + ' od : '" class="timepick">
+              <el-date-picker
+                v-model="temp.timestamp1"
+                type="datetime"
+                :placeholder="$t('discounts.pick_date')"
+              />
+            </el-form-item>
+          </span>
+          <span class="x">
+            <el-form-item :label="$t('table.date') + ' do : '" class="timepick">
+              <el-date-picker
+                v-model="temp.timestamp2"
+                type="datetime"
+                :placeholder="$t('discounts.pick_date')"
+              />
+            </el-form-item>
+          </span>
+          <span class="x">
+            <el-form-item
+              :label="$t('discounts.no_time_limit')"
+              class="discount_percentage"
+              style="word-break:;"
+            >
+              <el-switch
+                v-model="temp.no_switch"
+                :active-value="1"
+                :inactive-value="0"
+                style="padding-right: 60px;"
+              />
+            </el-form-item>
+          </span>
         </div>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -198,7 +305,7 @@
 </template>
 
 <script>
-import { fetchList, updateLevel } from '@/api/discounts';
+import { fetchList, updateLevel, getPoints, updateValue, updatePoint } from '@/api/discounts';
 import { parseTime } from '@/utils';
 import checkRole from '@/utils/role';
 import waves from '@/directive/waves';
@@ -224,6 +331,8 @@ export default {
   data() {
     return {
       list: null,
+      points: {},
+      values: {},
       listQuery: {
         page: 1,
         limit: 5,
@@ -248,6 +357,7 @@ export default {
       checkRole,
       parseTime,
       dialogFormVisible: false,
+      points_definitions: false,
       dialogStatus: '',
       // value: [1, 3],
       // activeTab: '',
@@ -281,13 +391,9 @@ export default {
       },
     };
   },
-  /* computed: {
-    valueNew() {
-      return JSON.parse(JSON.stringify(this.value));
-    },
-  }, */
   created() {
     this.getList();
+    this.getPoints();
   },
   methods: {
     async getList() {
@@ -295,6 +401,11 @@ export default {
       const { data } = await fetchList(this.listQuery);
       this.list = data.items;
       this.loading = false;
+    },
+    async getPoints() {
+      const { data } = await getPoints();
+      this.values = data;
+      this.points = data;
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row); // copy obj
@@ -346,9 +457,49 @@ export default {
         type: '',
       };
     },
-    /* numberChange() {
-      this.value = this.valueNew;
-    }, */
+    currencyFormatEU(num, fixed) {
+      if (fixed !== 1){
+        return (
+          num
+            .toFixed(fixed) // always 'fixed' decimal digits
+            .replace('.', ',') // replace decimal point character with ,
+            .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
+        ); // use . as a separator
+      }
+      return num;
+    },
+    value_of_point() {
+      this.$refs['dataForm1'].validate(valid => {
+        if (valid) {
+          const values = Object.assign({}, this.values);
+          updateValue(values).then(response => {
+            // this.dialogFormVisible = false;
+            this.$notify({
+              title: this.$t(response.data.title),
+              message: this.$t(response.data.message),
+              type: response.data.type,
+              duration: 3000,
+            });
+          });
+        }
+      });
+    },
+    points_value() {
+      this.$refs['dataForm2'].validate(valid => {
+        if (valid) {
+          const points = Object.assign({}, this.points);
+          updatePoint(points).then(response => {
+            // this.dialogFormVisible = false;
+            this.$notify({
+              title: this.$t(response.data.title),
+              message: this.$t(response.data.message),
+              type: response.data.type,
+              duration: 3000,
+            });
+          });
+        }
+      });
+    },
   },
 };
 </script>

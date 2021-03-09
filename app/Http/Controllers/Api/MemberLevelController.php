@@ -223,4 +223,39 @@ class MemberLevelController extends Controller
 
     	return response()->json(new JsonResponse(['title' => $title, 'message' => $message, 'type' => $type ]));
     }
+
+    public function get_points()
+    {
+    	$point_value = PointsDefinitions::getData('point_value');
+    	$value_point = PointsDefinitions::getData('value_point');
+    	
+    	return response()->json(new JsonResponse(['point_value' => $point_value, 'value_point' => $value_point]));
+    }
+
+    public function updateValue(Request $request)
+    {
+    	$value = new PointsDefinitions;
+    	$value->value_point = $request->value * 100;
+    	$value->save();
+
+		$title = 'table.success';
+		$message = 'table.updated_successfully';
+		$type = 'success';
+
+    	return response()->json(new JsonResponse(['title' => $title, 'message' => $message, 'type' => $type ]));
+    }
+
+    public function updatePoint(Request $request)
+    {
+    	$value = new PointsDefinitions;
+    	$value->point_value = $request->point * 100;
+    	$value->save();
+
+		$title = 'table.success';
+		$message = 'table.updated_successfully';
+		$type = 'success';
+
+    	return response()->json(new JsonResponse(['title' => $title, 'message' => $message, 'type' => $type ]));
+    	
+    }
 }

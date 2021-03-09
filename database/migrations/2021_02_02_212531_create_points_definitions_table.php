@@ -16,6 +16,7 @@ class CreatePointsDefinitionsTable extends Migration
         Schema::create('points_definitions', function (Blueprint $table) {
             $table->id();
             $table->integer('point_value')->default(0);
+            $table->integer('value_point')->default(0);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
         });

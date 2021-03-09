@@ -362,6 +362,8 @@ export default {
     to_points_overload: 'Obere Grenzpunkte überschreiten die zulässigen Werte!',
     from_points_overload: 'Die unteren Grenzpunkte überschreiten die zulässigen Werte!',
     no_data: 'Keine Daten!',
+    def_point_value: 'Verdienen Sie einen Punkt für ausgegebene:',
+    def_value_of_point: 'Ein Punktwert:',
   },
   marketing: {
     choose_category: 'Artikelkategorie auswählen:',

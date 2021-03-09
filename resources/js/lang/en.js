@@ -362,6 +362,8 @@ export default {
     to_points_overload: 'Upper limit points exceed the allowed values!',
     from_points_overload: 'Lower limit points exceed the allowed values!',
     no_data: 'No data!',
+    def_point_value: 'Earn one point on spent:',
+    def_value_of_point: 'One point value:',
   },
   marketing: {
     choose_category: 'Select item category:',

@@ -364,6 +364,8 @@ export default {
     to_points_overload: 'Bodovi gornje granice prevazilaze dozvoljene vrednosti!',
     from_points_overload: 'Bodovi donje granice prevazilaze dozvoljene vrednosti!',
     no_data: 'Nema podataka!',
+    def_point_value: 'Jedan bod na potrošenih:',
+    def_value_of_point: 'Vrednost jednog boda:',
   },
   marketing: {
     choose_category: 'Izaberite kategoriju artikla:',
