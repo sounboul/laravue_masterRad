@@ -2,15 +2,23 @@
   <div class="tab-container">
     <el-card>
       <div>
-        <h3 style="text-align: center; width: 100%">{{ $t('discounts.dialog_title') }}</h3>
-        <el-button type="warning" size="small" @click="handleCreate()">
-          {{ $t('table.add') }}
-        </el-button>
+        <h3 style="text-align: center; width: 100%">
+          {{ $t('discounts.dialog_title') }}
+        </h3>
         <el-tabs v-model="activeTab">
-          <el-tab-pane v-for="item in tabMapOptions" :key="item.level" :label="item.level | uppercaseFirst" :name="item.level">
+          <el-tab-pane
+            v-for="item in tabMapOptions"
+            :key="item.level"
+            :label="item.level | uppercaseFirst"
+            :name="item.level"
+          >
             <div>
               <keep-alive>
-                <tab-pane v-if="activeTab==item.level" :type="item.level" class="mt-4" />
+                <tab-pane
+                  v-if="activeTab==item.level"
+                  :type="item.level"
+                  class="mt-4"
+                />
               </keep-alive>
             </div>
           </el-tab-pane>

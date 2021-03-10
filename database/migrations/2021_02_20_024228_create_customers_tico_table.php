@@ -19,7 +19,6 @@ class CreateCustomersTicoTable extends Migration
             $table->integer('order_id')->default(0);
             $table->integer('category_id')->nullable();
             $table->integer('total_points');
-            $table->string('level');
             $table->string('email');
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();

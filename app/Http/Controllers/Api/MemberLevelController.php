@@ -242,7 +242,11 @@ class MemberLevelController extends Controller
 		$message = 'table.updated_successfully';
 		$type = 'success';
 
-    	return response()->json(new JsonResponse(['title' => $title, 'message' => $message, 'type' => $type ]));
+    	return response()->json(new JsonResponse([
+    							'title' => $title, 
+    							'message' => $message, 
+    							'type' => $type 
+    						]));
     }
 
     public function updatePoint(Request $request)
@@ -255,7 +259,11 @@ class MemberLevelController extends Controller
 		$message = 'table.updated_successfully';
 		$type = 'success';
 
-    	return response()->json(new JsonResponse(['title' => $title, 'message' => $message, 'type' => $type ]));
+    	return response()->json(new JsonResponse([
+    							'title' => $title, 
+    							'message' => $message, 
+    							'type' => $type 
+    						]));
     	
     }
 }

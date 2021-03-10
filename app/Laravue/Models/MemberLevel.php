@@ -16,7 +16,10 @@ class memberLevel extends Model
     {
     	$members = memberLevel::all();
     	foreach ($members as $member) {
-    		if ($customer_total_points >= $member->from_point && $customer_total_points <= $member->to_point) {
+    		if ($customer_total_points >= $member->from_point 
+                && 
+                $customer_total_points <= $member->to_point) 
+            {
     			$pom = $member->level; 
     		}
     	}

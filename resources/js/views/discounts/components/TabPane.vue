@@ -473,7 +473,6 @@ export default {
         if (valid) {
           const values = Object.assign({}, this.values);
           updateValue(values).then(response => {
-            // this.dialogFormVisible = false;
             this.$notify({
               title: this.$t(response.data.title),
               message: this.$t(response.data.message),

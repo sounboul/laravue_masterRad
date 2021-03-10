@@ -39,9 +39,13 @@ class SellTicoController extends Controller
 
 
 
-public function customers()
+  public function customers()
     {
-    	$response = Http::withBasicAuth(self::loginAPI()->username, self::loginAPI()->password)->get('http://dev.tico.rs/api/v1/b2c-orders');
+    	$response = Http::withBasicAuth(
+                self::loginAPI()->username, 
+                self::loginAPI()->password
+              )
+            ->get('http://dev.tico.rs/api/v1/b2c-orders');
   		$customers = $response->json();
       
       $value_point = PointsDefinitions::getData('value_point')/100;
@@ -79,8 +83,8 @@ public function customers()
   					}
 
   					$temp = $items[$j]['quantity'] * $items[$j]['article']['web_price'] + $temp;
-  					if ($temp > 5000000) {
-  						$temp = 5000000;
+  					if ($temp > 500000) {
+  						$temp = 500000;
   					}
   					$customer_tico->total_points = $temp;
   				}
@@ -112,8 +116,8 @@ public function customers()
 
   		$helpers = customers_category_tico::all();
   		foreach ($helpers as $key => $help) {
-  			$trt = customers_category_tico::select('*')->where('customer_id', $help->customer_id)->where('category_id', $help->category_id)->get();
-	  		foreach ($trt as $key => $value) {
+  			$doubles = customers_category_tico::select('*')->where('customer_id', $help->customer_id)->where('category_id', $help->category_id)->get();
+	  		foreach ($doubles as $key => $value) {
 	  			if ($key > 0) {
 	  				$value->delete();
 	  			}

@@ -8,12 +8,16 @@ use App\Laravue\Models\Categories;
 use App\Laravue\JsonResponse;
 use App\Laravue\Models\User;
 use Illuminate\Support\Facades\Http;
+use App\Laravue\Models\Credentials;
 use Illuminate\Support\Facades\Auth;
 
 class CategoriesController extends BaseController
 {
-	private $username = 'phoenix2208@gmail.com';
-	private $pass = 'sasazivkovic1';
+    private function loginAPI()
+    {
+        $loginAPI = Credentials::find(1);
+        return $loginAPI;
+    }
     const ITEM_PER_PAGE = 10;
 
     public function index(Request $request)
@@ -32,21 +36,8 @@ class CategoriesController extends BaseController
 
     public function fetchCategories()
     {
-    	$response = Http::withBasicAuth($this->username, $this->pass)->get('http://dev.tico.rs/api/v1/categories');
+    	$response = Http::withBasicAuth(self::loginAPI()->username, self::loginAPI()->password)->get('http://dev.tico.rs/api/v1/categories');
   		$categories = $response->json();
-  		//dd($categories);
-       /* $category = [];
-        $z = count($categories['categories']);
-
-        for ($i=0; $i < $z; $i++) { 
-            $category[$i] = $categories['categories'][$i];
-            if ($categories['categories'][$i]['childs'] != null) {
-                $category[$i+$z] = $categories['categories'][$i]['childs'];
-            }
-        }*/
-
-//dd($category);
-
 
         return response()->json(new JsonResponse($categories));
     }
