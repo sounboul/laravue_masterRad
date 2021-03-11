@@ -11,23 +11,16 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
-// use App\User1s;
-
 
 class MailController extends Controller
 {
-	//private $main_email = config('mail.username');
 	private $main_email = 'bexterdesign@gmail.com';
 	private $main_password = 'jovance1';
-	//private $main_password = 'jovance1';
 	private $company_title = 'Bexter Design';
-	//private $company_title = 'FeedBakc';
 
 
     public function send_mail(Request $request)
     {       
-    	$log = count($request->all());
-
 		$test = [];
     	$test[0] = "bexterdesign@gmail.com";
     	/*$test[1] = "petkovic.boban@gmail.com";
@@ -53,7 +46,7 @@ class MailController extends Controller
 			//$mail->addAddress($user->email, $user->name);
 			$mail->isHTML(true);			      
 			$mail->addCC($this->main_email);
-			/*for ($i=1; $i < $log ; $i++) { 
+			/*for ($i=1; $i < count($request->all()) ; $i++) { 
 				$mail->addBCC($request[$i]);
 			} */
 			//$mail->addBCC($request1);  

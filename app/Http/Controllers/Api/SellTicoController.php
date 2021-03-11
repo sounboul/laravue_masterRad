@@ -32,7 +32,10 @@ class SellTicoController extends Controller
       $page = $request->page;
       $limit = $request->limit;
 
-    	$response = Http::withBasicAuth(self::loginAPI()->username, self::loginAPI()->password)->get('http://dev.tico.rs/api/v1/articles?page='. $page . '&limit=' . $limit);
+    	$response = Http::withBasicAuth(
+                      self::loginAPI()->username, 
+                      self::loginAPI()->password)
+                  ->get('http://dev.tico.rs/api/v1/articles');
   		$articles = $response->json();
         return response()->json(new JsonResponse($articles));
     }

@@ -2,32 +2,11 @@
   <div class="app-container">
     <div v-if="active1" class="category">
       <el-form ref="dataForm" :model="form">
-        <!-- <el-form-item label="Activity name">
-          <el-input v-model="form.name" />
-        </el-form-item> -->
         <div class="title">{{ $t('marketing.choose_category') }}</div>
         <el-form-item class="first_category">
           <el-select v-model="form.category" :placeholder="$t('articles.categories')" clearable style="margin-right: 4%; width: 100%" class="filter-item">
             <el-option v-for="item in categories" :key="item.id" :label="item.name | uppercaseFirst" :value="item.id" />
           </el-select>
-        </el-form-item>
-        <!-- </el-form> -->
-        <!-- </div>
-        <div> -->
-        <!-- <el-form> -->
-        <div class="title1">{{ $t('marketing.criteria') }}</div><br>
-        <!-- <div class="title">{{ $t('marketing.newest') }} {{ $t('marketing.no_selled') }}</div> -->
-        <el-form-item>
-          <div style="display: inline-flex; width: 550px;">
-            <div class="title">{{ $t('marketing.newest') }}</div>
-            <el-radio-group v-model="form.resource">
-              <el-radio label="Opcija1" />
-              <el-radio label="Opcija2" />
-            </el-radio-group>
-            <div class="title">
-              {{ $t('marketing.no_selled') }}
-            </div>
-          </div>
         </el-form-item>
         <div class="search_zone">
           <div class="title">{{ $t('marketing.criteria_date') }}</div>
@@ -37,9 +16,6 @@
             </el-col>
           </el-form-item>
           <el-form-item>
-            <!-- <el-button @click="onCancel">
-              {{ $t('permission.cancel') }}
-            </el-button> -->
             <el-button type="primary" @click="onSubmit(form.category)">
               {{ $t('permission.confirm') }}
             </el-button>
@@ -73,9 +49,6 @@
         <el-table-column :label="$t('user.phone')" class-name="col">
           <template slot-scope="scope">
             <span style="cursor: pointer;" @click="choosePhone(scope.row);">{{ scope.row.phone }}</span>
-            <!-- <el-tag :type="scope.row && scope.row.status ">
-              {{ scope.row && scope.row.status }}
-            </el-tag> -->
           </template>
         </el-table-column>
       </el-table>
@@ -118,15 +91,11 @@ export default {
       clickedId: 0,
     };
   },
-  /* created() {
-    this.getList();
-  },*/
   methods: {
     async getCategories() {
       this.listLoading = true;
       const { data } = await fetchList(this.form);
       this.categories = data.categories;
-      // console.log(this.categories);
       this.listLoading = false;
     },
     async getArticles() {
@@ -182,7 +151,6 @@ export default {
       const { data } = await fetch_customers_category(category_id);
       this.list = Object.values(data);
       this.listLoading = false;
-      // console.log(category_id);
     },
     chooseEmail(row) {
       const self = this;

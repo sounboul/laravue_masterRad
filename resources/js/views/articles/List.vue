@@ -72,15 +72,12 @@
       </el-table-column>
     </el-table>
 
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="testPost" />
+    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="articlesTico" />
   </div>
 </template>
 
 <script>
 import { fetchList, fetchPv, fetchArticle, createArticle, updateArticle, deleteArticle, articlesTico } from '@/api/article';
-// import { fetchStores } from '@/api/stores';
-// import { getCategories } from '@/api/category';
-// import { getSuppliers } from '@/api/supplier';
 import waves from '@/directive/waves'; // Waves directive
 import { parseTime } from '@/utils';
 import checkRole from '@/utils/role';
@@ -110,10 +107,9 @@ export default {
       test2: null,
       total: 0,
       listLoading: true,
-      // test: [],
       listQuery: {
         page: 1,
-        limit: 10,
+        limit: 20,
         importance: undefined,
         title: undefined,
         type: undefined,
@@ -144,7 +140,6 @@ export default {
         create: 'Create_Article',
       },
       categories: null,
-      // suppliers: this.getSuppliers(),
       dialogPvVisible: false,
       modalArticlePreview: false,
       pvData: [],
@@ -157,17 +152,14 @@ export default {
     };
   },
   created() {
-    // this.getList();
-    this.testPost();
+    this.articlesTico();
   },
   methods: {
-    testPost() {
+    async articlesTico() {
       this.listLoading = true;
-      articlesTico(this.listQuery).then((response) => {
-        this.list = response.data.products;
-        this.listLoading = false;
-        // console.log(this.list);
-      });
+      const { data } = await articlesTico(this.listQuery);
+      this.list = data.products;
+      this.listLoading = false;
     },
     async getList() {
       this.listLoading = true;
@@ -180,24 +172,6 @@ export default {
       this.listQuery.page = 1;
       this.getList();
     },
-    /* async getStores() {
-      this.listLoading = true;
-      const { data } = await fetchStores();
-      this.stores = data.stores;
-      this.listLoading = false;
-    },
-    async getCategories() {
-      this.listLoading = true;
-      const { data } = await getCategories();
-      this.categories = data.items;
-      this.listLoading = false;
-    },*/
-    /* async getSuppliers() {
-      this.listLoading = true;
-      const { data } = await getSuppliers();
-      this.suppliers = data.items;
-      this.listLoading = false;
-    },*/
     handleModifyStatus(row, status) {
       this.$message({
         message: 'Successful operation',
@@ -331,7 +305,6 @@ export default {
         for (var i = 0; i < pom.length; i++) {
           this.list[i].categories_id = pom[i].categories.name;
         }
-        // console.log(this.list);
         const data = this.formatJson(filterVal, this.list);
         excel.export_json_to_excel({
           header: tHeader,
@@ -373,10 +346,6 @@ export default {
     discountPrice(discount, price){
       return this.currencyFormatEU(((1 - this.currencyFormatEU(discount / 10, 1) / 100) * price) / 100, 2);
     },
-    /* async pom() {
-      const test = await pom();
-      console.log(test);
-    },*/
   },
 };
 </script>

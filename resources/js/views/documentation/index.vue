@@ -2,7 +2,7 @@
   <div class="app-container documentation-container">
     <a class="document-btn" target="_blank" href="https://laravel.com/docs/7.x">{{ $t('documentation.laravel') }}</a>
     <a class="document-btn" target="_blank" href="https://vuejs.org/">VueJS</a>
-    <a class="document-btn" target="_blank" href="https://github.com/bexterDesign/laravue_dev">{{ $t('documentation.github') }}</a>
+    <a class="document-btn" target="_blank" href="https://github.com/bexterDesign/laravue_masterRad">{{ $t('documentation.github') }}</a>
     <dropdown-menu :items="articleList" style="float:left;margin-left:50px;" title="Components" />
   </div>
 </template>
