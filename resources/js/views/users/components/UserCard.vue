@@ -14,8 +14,8 @@
       </div>
       <div class="box-social">
         <el-table :data="social" :show-header="false">
-          <el-table-column prop="name" label="Name" />
-          <el-table-column label="Count" align="right" width="230">
+          <el-table-column prop="name" label="Name" width="105" />
+          <el-table-column label="Count" align="right" width="235">
             <template slot-scope="scope">
               {{ scope.row.account }}
             </template>
@@ -86,6 +86,8 @@ export default {
   }
   .box-social {
     padding-top: 30px;
+    margin-left: -7px;
+    width: 340px;
     .el-table {
       border-top: 1px solid #dfe6ec;
     }

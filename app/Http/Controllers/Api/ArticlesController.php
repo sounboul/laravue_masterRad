@@ -8,6 +8,7 @@ use App\Laravue\Models\Bill;
 use App\Laravue\Models\Categories;
 use App\Laravue\Models\Customers;
 use App\Laravue\Models\MemberLevel;
+use App\Laravue\Models\Credentials;
 use App\Laravue\Models\Stores;
 use App\Laravue\JsonResponse;
 use Illuminate\Http\Resources\Json\ResourceCollection;
@@ -16,6 +17,7 @@ use App\Laravue\Models\User;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Validator;
 
 class ArticlesController extends BaseController
@@ -267,4 +269,25 @@ class ArticlesController extends BaseController
             $article->save();
         } 
     }*/
+
+
+    private function loginAPI()
+    {
+        $loginAPI = Credentials::find(1);
+        return $loginAPI;
+    }
+
+
+    public function articles(Request $request)
+    {
+        $page = $request->page;
+        $limit = $request->limit;
+
+        $response = Http::withBasicAuth(
+                    self::loginAPI()->username, 
+                    self::loginAPI()->password)
+                ->get('http://dev.tico.rs/api/v1/articles');
+        $articles = $response->json();
+        return response()->json(new JsonResponse($articles));
+    }
 }

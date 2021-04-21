@@ -1,51 +1,22 @@
 <template>
   <el-card v-if="user.name">
     <el-tabs v-model="activeActivity" @tab-click="handleClick">
-      <el-tab-pane :label="$t('marketing.references')" name="first">
-        <div class="user-activity">
-          <div class="post">
-            <div class="user-block">
-              <img
-                class="img-circle img-bordered-sm"
-                src="images/Memorandum.png"
-                alt="User Image"
-              >
-              <span class="username">
-                <a href="https://bexter.rs" target="_blank">BexterDesign</a>
-                <a href="#" class="pull-right btn-box-tool">
-                  <i class="fa fa-times" />
-                </a>
-              </span>
-              <span class="description">Neki od autorovih projekata</span>
-            </div>
-            <div class="user-images">
-              <el-carousel :interval="6000" type="card" height="200px">
-                <el-carousel-item v-for="item in carouselImages" :key="item">
-                  <img :src="item" class="image">
-                </el-carousel-item>
-              </el-carousel>
-            </div>
-            <ul class="list-inline">
-              <li>
-                <a href="#" class="link-black text-sm">
-                  <i class="el-icon-share" /> Share
-                </a>
-              </li>
-              <li>
-                <a href="#" class="link-black text-sm">
-                  <svg-icon icon-class="like" />Like
-                </a>
-              </li>
-              <li class="pull-right">
-                <a href="#" class="link-black text-sm">
-                  <svg-icon icon-class="comment" />Comments
-                  (5)
-                </a>
-              </li>
-            </ul>
-            <el-input placeholder="Type a comment" />
-          </div>
+      <el-tab-pane v-loading="updating" :label="$t('marketing.api_credentials')" name="first">
+        <p>Unos parametara za integraciju putem API-ja</p>
+        <p />
+        <div style="width: 350px; margin-top: 30px; ">
+          <el-form-item :label="$t('login.username')">
+            <el-input v-model="user.username" :disabled="user.role === 'admin'" style="width: 220px; float: right;" />
+          </el-form-item>
+          <el-form-item :label="$t('login.password')">
+            <el-input v-model="user.pass" :disabled="user.role === 'admin'" style="width: 220px; float: right;" />
+          </el-form-item>
         </div>
+        <el-form-item style="margin:26px 0 0 130px; ">
+          <el-button type="primary" :disabled="user.role === 'admin'" @click="APIcredentials">
+            {{ $t('permission.confirm') }}
+          </el-button>
+        </el-form-item>
       </el-tab-pane>
       <el-tab-pane :label="$t('user.education')" name="second">
         <div class="block">
@@ -76,21 +47,51 @@
           </el-timeline>
         </div>
       </el-tab-pane>
-      <el-tab-pane v-loading="updating" :label="$t('marketing.api_credentials')" name="third">
-        Unos parametara za integraciju preko API-ja
-        <div style="width: 350px; margin-top: 10px; ">
-          <el-form-item :label="$t('login.username')">
-            <el-input v-model="user.username" :disabled="user.role === 'admin'" style="width: 220px; float: right;" />
-          </el-form-item>
-          <el-form-item :label="$t('login.password')">
-            <el-input v-model="user.pass" :disabled="user.role === 'admin'" style="width: 220px; float: right;" />
-          </el-form-item>
+      <el-tab-pane :label="$t('marketing.references')" name="third">
+        <div class="user-activity">
+          <div class="post">
+            <div class="user-block">
+              <img
+                class="img-circle img-bordered-sm"
+                src="images/Memorandum.png"
+                alt="User Image"
+              >
+              <span class="username">
+                <a href="https://bexter.rs" target="_blank">BexterDesign</a>
+                <a href="#" class="pull-right btn-box-tool">
+                  <i class="fa fa-times" />
+                </a>
+              </span>
+              <span class="description">Neki od dosadašnjih projekata autora</span>
+            </div>
+            <div class="user-images">
+              <el-carousel :interval="6000" type="card" height="200px">
+                <el-carousel-item v-for="item in carouselImages" :key="item">
+                  <img :src="item" class="image">
+                </el-carousel-item>
+              </el-carousel>
+            </div>
+            <ul class="list-inline">
+              <li>
+                <a href="#" class="link-black text-sm">
+                  <i class="el-icon-share" /> Share
+                </a>
+              </li>
+              <li>
+                <a href="#" class="link-black text-sm">
+                  <svg-icon icon-class="like" />Like
+                </a>
+              </li>
+              <li class="pull-right">
+                <a href="#" class="link-black text-sm">
+                  <svg-icon icon-class="comment" />Comments
+                  (5)
+                </a>
+              </li>
+            </ul>
+            <el-input placeholder="Type a comment" />
+          </div>
         </div>
-        <el-form-item>
-          <el-button type="primary" :disabled="user.role === 'admin'" @click="APIcredentials">
-            {{ $t('permission.confirm') }}
-          </el-button>
-        </el-form-item>
       </el-tab-pane>
     </el-tabs>
   </el-card>
