@@ -15,7 +15,7 @@ export default {
   data() {
     return {
       articleList: [
-        { title: 'Laravel Envoy', href: 'https://laravel.com/docs/7.x/envoy' },
+        // { title: 'Laravel Envoy', href: 'https://laravel.com/docs/7.x/envoy' },
         { title: 'Vuex', href: 'https://vuex.vuejs.org/' },
         { title: 'Vue Router', href: 'https://router.vuejs.org/' },
         { title: 'laravue-core', href: 'https://github.com/tuandm/laravue-core' },

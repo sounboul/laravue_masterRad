@@ -96,9 +96,8 @@
     <div style="margin-top: 35px; display: flex;">
       <el-form ref="dataForm1" :model="values" label-width="300px">
         <el-form-item
-          :label="
-            $t('discounts.def_point_value')"
-          style=" width: 500px; text-align : center; white-space: pre-line;"
+          :label="$t('discounts.def_point_value')"
+          style=" width: 500px; text-align: center; white-space: pre-line;"
         >
           <div style="display: flex;">
             <el-input v-model="values.value" :placeholder="currencyFormatEU(values.value_point / 100, 2)" />

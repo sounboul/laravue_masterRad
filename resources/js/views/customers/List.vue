@@ -64,7 +64,7 @@ import { parseTime } from '@/utils';
 import checkRole from '@/utils/role';
 import Pagination from '@/components/Pagination'; // Secondary package based on el-pagination
 
-const calendarTypeOptions = [
+/* const calendarTypeOptions = [
   { key: 'CN', display_name: 'China' },
   { key: 'US', display_name: 'USA' },
   { key: 'JA', display_name: 'Japan' },
@@ -75,7 +75,7 @@ const calendarTypeOptions = [
 const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
   acc[cur.key] = cur.display_name;
   return acc;
-}, {});
+}, {});*/
 
 export default {
   name: 'CustomerList',
@@ -91,9 +91,9 @@ export default {
       };
       return statusMap[active];
     },
-    typeFilter(type) {
+    /* typeFilter(type) {
       return calendarTypeKeyValue[type];
-    },
+    },*/
   },
   data() {
     return {
@@ -117,7 +117,7 @@ export default {
         showDeletedCustomers: true,
       },
       importanceOptions: [1, 2, 3],
-      calendarTypeOptions,
+      // calendarTypeOptions,
       checkRole,
       sortOptions: [{ label: 'ascending', key: '+id' }, { label: 'descending', key: '-id' }],
       statusOptions: ['active', 'pending', 'deleted'],
@@ -176,12 +176,14 @@ export default {
     },
     async customersTico() {
       this.listLoading = true;
-      const { limit, page } = this.listQuery;
-      const { data } = await customersTico(this.listQuery);
-      this.list1 = data.orders;
+      // const { limit, page } = this.listQuery;
+      await customersTico(this.listQuery);
+      this.fetchListTico();
+      /* this.list1 = data.data;
+      this.total = data.total;
       this.list1.forEach((element, index) => {
         element['index'] = (page - 1) * limit + index + 1;
-      });
+      });*/
       this.listLoading = false;
     },
     async fetchListTico() {

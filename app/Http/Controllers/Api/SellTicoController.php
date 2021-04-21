@@ -36,10 +36,27 @@ class SellTicoController extends Controller
                       self::loginAPI()->username, 
                       self::loginAPI()->password)
                   ->get('http://dev.tico.rs/api/v1/articles');
-  		$articles = $response->json();
+
+  		  $articles = $response->json();
+
         return response()->json(new JsonResponse($articles));
     }
 
+  public function update()
+  {
+      $response = Http::withBasicAuth(
+                self::loginAPI()->username, 
+                self::loginAPI()->password
+              )
+            ->get('http://dev.tico.rs/api/v1/b2c-orders');
+      $customers = $response->json();
+
+      $customer_help = customers_tico::find(-1);
+      if ($customer_help->total_points !== count($customers['orders'])) {
+        $customer_help->total_points = count($customers['orders']);
+        $customer_help->update();
+      }
+  }
 
 
   public function customers()
@@ -49,87 +66,141 @@ class SellTicoController extends Controller
                 self::loginAPI()->password
               )
             ->get('http://dev.tico.rs/api/v1/b2c-orders');
+
   		$customers = $response->json();
-      
       $value_point = PointsDefinitions::getData('value_point')/100;
 
-  		for ($i=0; $i < count($customers['orders']); $i++) {
+      if(customers_tico::find(-1) === null)
+      {
+        $test = new customers_tico;
+        $test->id = -1;
+        $test->customer_id = -1;
+        $test->order_id = -1;
+        $test->email = 'test@email.com';
+        $test->phone = '060/1111111';
+        $test->total_points = count($customers['orders']);
+        $test->save();
 
-  			$customer_id = $customers['orders'][$i]['customer']['id'];
-  			$pom = customers_tico::where('customer_id', $customer_id)->first();
 
-  			$temp = 0;
-  			$customer_tico = new customers_tico;
+    		for ($i=0; $i < count($customers['orders']); $i++) {
+    			$temp = 0;
+          self::myFunction($customers, $i, $value_point);
+    		}
 
+    		for ($i=0; $i < count($customers['orders']); $i++) {
 
-  			$customer_tico->updated_at = $customers['orders'][$i]['date'];
-  			$cus[$i] = $customers['orders'][$i]['customer'];
-  			$customer_tico->email = $cus[$i]['email'];
-  			$customer_tico->first_name = $cus[$i]['first_name'];
-  			$customer_tico->last_name = $cus[$i]['last_name'];
-  			$customer_tico->name = $cus[$i]['name'];
-  			$customer_tico->phone = $cus[$i]['phone'];	
-  			$customer_tico->customer_id = $customer_id;
+    			$customer_id = $customers['orders'][$i]['customer']['id'];
 
-  			$items = $customers['orders'][$i]['items'];
+    			$pom = customers_tico::where('customer_id', $customer_id)->sum('total_points');
 
-  			for($j=0; $j < count($items); $j++){
-  				$customer_tico->order_id = $items[$j]['order_id'];
-  				if ($customer_tico->order_id != 0) {
-  					$category_id = $items[$j]['article']['category_id'];
-  					if ($category_id != null) {
-  						$customer_tico->category_id = $category_id;
-  						$customers_category_tico = new customers_category_tico;
-  						$customers_category_tico->customer_id = $customer_id;
-  						$customers_category_tico->category_id = $category_id;
-  						$customers_category_tico->save();
-  					}
+    			$ret = customers_tico::where('customer_id', $customer_id)->first();
+    			$ret->total_points = $pom;
+    			$ret->update();
 
-  					$temp = $items[$j]['quantity'] * $items[$j]['article']['web_price'] + $temp;
-  					if ($temp > 500000) {
-  						$temp = 500000;
-  					}
-  					$customer_tico->total_points = $temp;
-  				}
-  			}
+    			$pom2 = customers_tico::select('*')
+                    ->where('customer_id', $customer_id)
+                    ->where('id', '!=', $ret->id)
+                    ->get();
 
-  			$customer_tico->total_points = intval($temp/$value_point);
-  			$temp = 0;
-  			$customer_tico->save();
-  			
-  		}
+    			foreach ($pom2 as $key => $value) {
+    				$value->delete();
+    			}
 
-  		for ($i=0; $i < count($customers['orders']); $i++) {
+    		}
 
-  			$customer_id = $customers['orders'][$i]['customer']['id'];
+    		$helpers = customers_category_tico::all();
+    		foreach ($helpers as $key => $help) {
+    			$doubles = customers_category_tico::select('*')
+                      ->where('customer_id', $help->customer_id)
+                      ->where('category_id', $help->category_id)
+                      ->get();
+  	  		foreach ($doubles as $key => $value) {
+  	  			if ($key > 0) {
+  	  				$value->delete();
+  	  			}
+  	  		}
+    		}
+      }
 
-  			$pom = customers_tico::where('customer_id', $customer_id)->sum('total_points');
+      else
+      {        
+        $customers_orders = $customers['orders'];
+        $customers_orders_id = $customers['orders'][0]['id'];
+        $customers_orders_items = $customers['orders'][0]['items'];
 
-  			$ret = customers_tico::where('customer_id', $customer_id)->first();
-  			$ret->total_points = $pom;
-  			$ret->update();
+        $counter = customers_tico::where('customer_id', '>', 0)->orderBy('updated_at', 'DESC')->first();
 
-  			$pom2 = customers_tico::select('*')->where('customer_id', $customer_id)->where('id', '!=', $ret->id)->get();
+        if ($counter->order_id < $customers_orders_id) {
+          $ii = count($customers_orders_items)-1;
+          while ($customers_orders_items[$ii] > $counter->order_id) {
 
-  			foreach ($pom2 as $key => $value) {
-  				$value->delete();
-  			}
+            $points = 0;
 
-  		}
+            for ($j=0; $j < count($customers_orders[0]['items']); $j++) { 
+              $points = $customers_orders[$ii]['items'][$j]['quantity'] * $customers_orders[$ii]['items'][$j]['article']['web_price'] + $points; 
+            }
 
-  		$helpers = customers_category_tico::all();
-  		foreach ($helpers as $key => $help) {
-  			$doubles = customers_category_tico::select('*')->where('customer_id', $help->customer_id)->where('category_id', $help->category_id)->get();
-	  		foreach ($doubles as $key => $value) {
-	  			if ($key > 0) {
-	  				$value->delete();
-	  			}
-	  		}
-  		}
+            $temp0 = customers_tico::where('customer_id', $customers_orders[$ii]['customer']['id'])->first();
+            if($temp0 !== null)
+            {
+              $temp0->total_points = $temp0->total_points + intval($points/$value_point);
+              $temp0->updated_at = now();
+              $temp0->order_id = $customers_orders_id;
+              $temp0->update();
+            }
+            else
+            {
+              self::myFunction($customers, $ii, $value_point);
+            }
 
+            $ii--;
+            if ($ii < 0) {
+              break;
+            }
+          }
+        }
+      }
   		return;
-
   	}
+
+    private function myFunction($customers, $a, $value_point)
+    {
+      $customer_tico = new customers_tico;
+      $temp = 0;
+      $customer_tico->updated_at = $customers['orders'][$a]['date'];
+      $cus[$a] = $customers['orders'][$a]['customer'];
+      $customer_tico->email = $cus[$a]['email'];
+      $customer_tico->first_name = $cus[$a]['first_name'];
+      $customer_tico->last_name = $cus[$a]['last_name'];
+      $customer_tico->name = $cus[$a]['name'];
+      $customer_tico->phone = $cus[$a]['phone'];  
+      $customer_tico->customer_id = $customers['orders'][$a]['customer']['id'];
+
+      $items = $customers['orders'][$a]['items'];
+
+      for($j=0; $j < count($items); $j++){
+        $customer_tico->order_id = $items[$j]['order_id'];
+        if ($customer_tico->order_id != 0) {
+          $category_id = $items[$j]['article']['category_id'];
+          if ($category_id != null) {
+            $customer_tico->category_id = $category_id;
+            $customers_category_tico = new customers_category_tico;
+            $customers_category_tico->customer_id = $customers['orders'][$a]['customer']['id'];
+            $customers_category_tico->category_id = $category_id;
+            $customers_category_tico->save();
+          }
+
+          $temp = $items[$j]['quantity'] * $items[$j]['article']['web_price'] + $temp;
+          if ($temp > 500000) {
+            $temp = 500000;
+          }
+          $customer_tico->total_points = $temp;
+        }
+      }
+
+      $customer_tico->total_points = intval($temp/$value_point);
+      $customer_tico->save();
+    }
 
 
     public function fetchListTico(Request $request)
@@ -140,7 +211,7 @@ class SellTicoController extends Controller
   		}
 
     	$limit = $request->limit;
-    	$customers = customers_tico::orderBy('customer_id', 'asc')->paginate($limit);
+    	$customers = customers_tico::where('id', '>', 0)->orderBy('customer_id', 'asc')->paginate($limit);
 
     	for ($i=0; $i < count($customers); $i++) { 
     		$pom = 0;
@@ -210,11 +281,5 @@ class SellTicoController extends Controller
             'username' => 'required',
             'pass' => 'required',
         ];
-    }
-
-
-    private function checkAPI()
-    {
-
     }
 }

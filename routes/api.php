@@ -91,7 +91,8 @@ Route::namespace('Api')->group(function() {
         Route::post('/executeQuery', 'BillController@executeQuery');
 
 
-        Route::get('/articlesTico','SellTicoController@articles');
+        //Route::get('/articlesTico','SellTicoController@articles');
+        Route::get('/articlesTico','ArticlesController@articles');
         Route::get('/customersTico','SellTicoController@customers');
         Route::get('/fetchListTico','SellTicoController@fetchListTico');
         Route::get('/marketing_tico/{category_id}','SellTicoController@marketing_tico');

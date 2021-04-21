@@ -10,7 +10,7 @@
       </div>
       <div class="user-bio-section-body">
         <div class="text-muted">
-          Akademija tehničko-vaspitačkih strukovnih studija u Nišu
+          Akademija tehničko-vaspitačkih strukovnih studija - Odsek Niš
         </div>
       </div>
     </div>

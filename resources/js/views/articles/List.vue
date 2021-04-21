@@ -26,7 +26,7 @@
     >
       <el-table-column :label="$t('table.code')" prop="id" sortable="custom" align="center" width="90">
         <template slot-scope="scope">
-          <span>{{ scope.row.code }}</span>
+          <span>{{ scope.row.id }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('articles.name')" min-width="120px">
@@ -110,6 +110,8 @@ export default {
       listQuery: {
         page: 1,
         limit: 20,
+        current_page: 1,
+        // total: 0,
         importance: undefined,
         title: undefined,
         type: undefined,
@@ -157,9 +159,15 @@ export default {
   methods: {
     async articlesTico() {
       this.listLoading = true;
+      const { limit, page } = this.listQuery;
       const { data } = await articlesTico(this.listQuery);
       this.list = data.products;
       this.listLoading = false;
+      // this.level = data[0].level;
+      this.list.forEach((element, index) => {
+        element['index'] = (page - 1) * limit + index + 1;
+      });
+      // this.total = meta.total;
     },
     async getList() {
       this.listLoading = true;

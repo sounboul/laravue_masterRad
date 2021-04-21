@@ -10,7 +10,7 @@
       </div>
       <div class="user-bio-section-body">
         <div class="text-muted">
-          <b>Akademija tehničko-vaspitačkih strukovnih studija u Nišu</b>
+          <b>Akademija tehničko-vaspitačkih strukovnih studija - Odsek Niš</b>
           <p style="font-size: 8pt; margin-top: 27px !important;">Zvanje:</p>
           <p>Specijalista strukovni inženjer elektrotehnike i računarstva</p>
         </div>
