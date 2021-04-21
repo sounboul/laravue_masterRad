@@ -28,12 +28,6 @@ export function getPoints() {
     method: 'get',
   });
 }
-/* export function updateLevel() {
-  return request({
-    url: '/updateLevel',
-    method: 'get',
-  });
-} */
 
 export function updateLevel(data) {
   return request({
@@ -54,6 +48,14 @@ export function updateValue(data) {
 export function updatePoint(data) {
   return request({
     url: '/discount/updatePoint',
+    method: 'post',
+    data,
+  });
+}
+
+export function updateLimit(data) {
+  return request({
+    url: '/discount/updateLimit',
     method: 'post',
     data,
   });

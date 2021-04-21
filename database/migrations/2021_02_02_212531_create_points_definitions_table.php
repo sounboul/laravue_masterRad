@@ -17,6 +17,7 @@ class CreatePointsDefinitionsTable extends Migration
             $table->id();
             $table->integer('point_value')->default(0);
             $table->integer('value_point')->default(0);
+            $table->integer('points_limit')->default(0);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
         });

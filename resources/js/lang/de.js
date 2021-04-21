@@ -364,6 +364,8 @@ export default {
     no_data: 'Keine Daten!',
     def_point_value: 'Verdienen Sie einen Punkt für ausgegebene:',
     def_value_of_point: 'Ein Punktwert:',
+    limit_number_of_points: 'Maximale Anzahl von Punkten:',
+    new_points_limit: 'Statuswerte zurückgesetzt!',
   },
   marketing: {
     choose_category: 'Artikelkategorie auswählen:',

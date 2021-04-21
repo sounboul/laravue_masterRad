@@ -364,6 +364,8 @@ export default {
     no_data: 'Нет данных!',
     def_point_value: 'Заработайте одно очко за потраченные:',
     def_value_of_point: 'Стоимость в один балл:',
+    limit_number_of_points: 'Максим. количество баллов:',
+    new_points_limit: 'Значения статуса сброшены!',
   },
   marketing: {
     choose_category: 'Выберите категорию товара:',

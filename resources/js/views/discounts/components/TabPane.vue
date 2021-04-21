@@ -94,10 +94,10 @@
       </el-table-column>
     </el-table>
     <div style="margin-top: 35px; display: flex;">
-      <el-form ref="dataForm1" :model="values" label-width="300px">
+      <el-form ref="dataForm1" :model="values" label-width="300px" style="margin-left: -65px">
         <el-form-item
           :label="$t('discounts.def_point_value')"
-          style=" width: 500px; text-align: center; white-space: pre-line;"
+          style=" width: 450px; text-align: center; white-space: pre-line;"
         >
           <div style="display: flex;">
             <el-input v-model="values.value" :placeholder="currencyFormatEU(values.value_point / 100, 2)" />
@@ -114,7 +114,7 @@
         <el-form-item
           :label="
             $t('discounts.def_value_of_point')"
-          style=" width: 500px; text-align : center; white-space: pre-line;"
+          style=" width: 450px; text-align : center; white-space: pre-line; margin-left: -45px;"
         >
           <div style="display: flex;">
             <el-input v-model="points.point" :placeholder="currencyFormatEU(values.point_value / 100, 2)" />
@@ -123,6 +123,23 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" style="float: right;" @click="points_value">
+            {{ $t('permission.confirm') }}
+          </el-button>
+        </el-form-item>
+      </el-form>
+      <el-form ref="dataForm3" :model="limits" label-width="300px">
+        <el-form-item
+          :label="
+            $t('discounts.limit_number_of_points')"
+          style=" width: 370px; text-align : center; white-space: pre-line; margin-left: -35px;"
+        >
+          <div style="display: flex; margin-right: -55px;">
+            <!-- <el-input v-model="limits.limit" :placeholder="values.points_limit" /> -->
+            <el-input v-model="limits.limit" :placeholder="values.limit_points" />
+          </div>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" style="float: right;" @click="points_limit">
             {{ $t('permission.confirm') }}
           </el-button>
         </el-form-item>
@@ -304,7 +321,7 @@
 </template>
 
 <script>
-import { fetchList, updateLevel, getPoints, updateValue, updatePoint } from '@/api/discounts';
+import { fetchList, updateLevel, getPoints, updateValue, updatePoint, updateLimit } from '@/api/discounts';
 import { parseTime } from '@/utils';
 import checkRole from '@/utils/role';
 import waves from '@/directive/waves';
@@ -332,6 +349,8 @@ export default {
       list: null,
       points: {},
       values: {},
+      limits: {},
+      limit_points: {},
       listQuery: {
         page: 1,
         limit: 5,
@@ -405,6 +424,8 @@ export default {
       const { data } = await getPoints();
       this.values = data;
       this.points = data;
+      this.limits = data;
+      this.limit_points = data;
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row); // copy obj
@@ -487,6 +508,22 @@ export default {
         if (valid) {
           const points = Object.assign({}, this.points);
           updatePoint(points).then(response => {
+            // this.dialogFormVisible = false;
+            this.$notify({
+              title: this.$t(response.data.title),
+              message: this.$t(response.data.message),
+              type: response.data.type,
+              duration: 3000,
+            });
+          });
+        }
+      });
+    },
+    points_limit() {
+      this.$refs['dataForm3'].validate(valid => {
+        if (valid) {
+          const limits = Object.assign({}, this.limits);
+          updateLimit(limits).then(response => {
             // this.dialogFormVisible = false;
             this.$notify({
               title: this.$t(response.data.title),

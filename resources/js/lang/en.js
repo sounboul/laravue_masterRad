@@ -364,6 +364,8 @@ export default {
     no_data: 'No data!',
     def_point_value: 'Earn one point on spent:',
     def_value_of_point: 'One point value:',
+    limit_number_of_points: 'Maximum number of points:',
+    new_points_limit: 'Status values reset!',
   },
   marketing: {
     choose_category: 'Select item category:',

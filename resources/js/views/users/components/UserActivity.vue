@@ -21,7 +21,14 @@
       <el-tab-pane :label="$t('user.education')" name="second">
         <div class="block">
           <el-timeline>
-            <el-timeline-item timestamp="10.2013. - 12.2014." placement="top">
+            <el-timeline-item timestamp="10.2017. - 04.2021." placement="top">
+              <el-card>
+                <h4>Akademija tehničko-vaspitačkih STRUKOVNIH STUDIJA - Odsek Niš</h4>
+                <p>Master Strukovne studije – Odsek Multimedijalne komunikacione tehnologije</p>
+                <p>Zvanje: Master strukovni inženjer elektrotehnike i računarstva</p>
+              </el-card>
+            </el-timeline-item>
+            <el-timeline-item timestamp="10.2012. - 04.2014." placement="top">
               <el-card>
                 <h4>Visoka Tehnička Škola STRUKOVNIH STUDIJA u Nišu</h4>
                 <p>Specijalističke Strukovne studije – Odsek Informacione tehnologije</p>
@@ -38,10 +45,6 @@
               <el-card>
                 <h4>ETŠ „Mija Stanimirović“ Niš</h4>
                 <p>Zvanje: Elektrotehničar za telekomunikacione uređaje</p>
-              </el-card>
-              <el-card>
-                <h4>ETŠ „Nikola Tesla“ Niš</h4>
-                <p>Usmereno obrazovanje</p>
               </el-card>
             </el-timeline-item>
           </el-timeline>
