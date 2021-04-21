@@ -85,6 +85,7 @@ Route::namespace('Api')->group(function() {
         Route::post('/discount/update', 'MemberLevelController@update');
         Route::post('/discount/updateValue', 'MemberLevelController@updateValue');
         Route::post('/discount/updatePoint', 'MemberLevelController@updatePoint');
+        Route::post('/discount/updateLimit', 'MemberLevelController@updateLimit');
 
         // Bills
         Route::post('/listItem1', 'BillController@listItem');

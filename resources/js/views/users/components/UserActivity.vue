@@ -46,10 +46,6 @@
                 <h4>ETŠ „Mija Stanimirović“ Niš</h4>
                 <p>Zvanje: Elektrotehničar za telekomunikacione uređaje</p>
               </el-card>
-              <el-card>
-                <h4>ETŠ „Nikola Tesla“ Niš</h4>
-                <p>Usmereno obrazovanje</p>
-              </el-card>
             </el-timeline-item>
           </el-timeline>
         </div>

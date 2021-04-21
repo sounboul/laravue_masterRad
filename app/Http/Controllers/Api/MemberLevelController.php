@@ -42,8 +42,10 @@ class MemberLevelController extends Controller
     	}
 
 
-
-    	return response()->json(new JsonResponse(['items' => $discounts, 'type' => $type, 'limit' => $limit]));
+    	return response()->json(new JsonResponse([
+    		'items' => $discounts, 
+    		'type' => $type, 
+    		'limit' => $limit]));
     }
 
 
@@ -79,7 +81,11 @@ class MemberLevelController extends Controller
     	$level_id = MemberLevel::where('level', $request->type)->first();
     	$level = MemberLevel::find($level_id->id);
 
-    	return response()->json(new JsonResponse(['items' => $level, 'type' => $request->type, 'limit' => $request->limit]));
+    	return response()->json(new JsonResponse([
+    		'items' => $level, 
+    		'type' => $request->type, 
+    		'limit' => $request->limit
+    	]));
     }
 
 
@@ -92,6 +98,23 @@ class MemberLevelController extends Controller
             return response()->json(['error' => 'Permission denied!'], 403);
         }    	
 
+        $points_limit = PointsDefinitions::limitPoint();
+		$last_level_strength = MemberLevel::find($level_num_levels)->level_strength;	// najvisi nivo vaznosti u tabeli
+
+        if ($request->to_point > $points_limit) {
+        	if ($request->level_strength = $last_level_strength) {
+        		$title = 'discounts.warning';
+	    		$message = 'discounts.new_points_limit';
+	    		$type = 'error';
+    		
+    			return response()->json(new JsonResponse([
+    				'title' => $title, 
+    				'message' => $message, 
+    				'type' => $type 
+    			]));
+        	}
+        }
+
     	if($request->no_switch === 0)    // Ukoliko je cekirano dugme za zahtev unosa datuma
     	{
 	    	if ($request->timestamp1 === 'Invalid Date' || $request->timestamp2 === 'Invalid Date' ||
@@ -102,7 +125,11 @@ class MemberLevelController extends Controller
 	    		$message = 'discounts.timestamp_is_required';
 	    		$type = 'error';
     		
-    			return response()->json(new JsonResponse(['title' => $title, 'message' => $message, 'type' => $type ]));
+    			return response()->json(new JsonResponse([
+    				'title' => $title, 
+    				'message' => $message, 
+    				'type' => $type 
+    			]));
 	    	}
 
 	    	if (date_format(date_create($request->timestamp1), 'Y-m-d H:i:s') > date_format(date_create($request->timestamp2), 'Y-m-d H:i:s')) 
@@ -111,7 +138,10 @@ class MemberLevelController extends Controller
 	    		$message = 'discounts.date_less_than';
 	    		$type = 'error';
     			
-    			return response()->json(new JsonResponse(['title' => $title, 'message' => $message, 'type' => $type ]));
+    			return response()->json(new JsonResponse([
+    				'title' => $title, 
+    				'message' => $message, 
+    				'type' => $type ]));
 	    	}
 	    }
 
@@ -121,7 +151,11 @@ class MemberLevelController extends Controller
     		$message = 'discounts.points_greater_than';
     		$type = 'error';
 			
-			return response()->json(new JsonResponse(['title' => $title, 'message' => $message, 'type' => $type ]));
+			return response()->json(new JsonResponse([
+				'title' => $title, 
+				'message' => $message, 
+				'type' => $type 
+			]));
 	    }
 
 	    if ($request->from_point < 0) {   // pocetni bodovi manji od nule
@@ -130,48 +164,63 @@ class MemberLevelController extends Controller
     		$message = 'discounts.from_points_overload';
     		$type = 'error';
 			
-			return response()->json(new JsonResponse(['title' => $title, 'message' => $message, 'type' => $type ]));
+			return response()->json(new JsonResponse([
+				'title' => $title, 
+				'message' => $message, 
+				'type' => $type 
+			]));
 	    }
 
     	$level = MemberLevel::where('level', $request->level)->first();		// definisanje izabranog nivoa
     	$level_num_levels = count(MemberLevel::all());		// ukupan broj nivoa
-		$helper_from_point = MemberLevel::where('level_strength', $request->level_strength + 1)->first();  	// pomocni red (row) sa prvom visom 																											vaznoscu nivoa 
-		$helper_to_point = MemberLevel::where('level_strength', $request->level_strength - 1)->first();		// pomocni red (row) sa prvom nizom 																											vaznoscu nivoa 
-		$last_level_strength = MemberLevel::find($level_num_levels)->level_strength;		// najvisi nivo vaznosti u tabeli
+		$helper_from_point = MemberLevel::where('level_strength', $request->level_strength + 1)->first();  	// pomocni red (row) sa prvom visom vaznoscu nivoa 
+		$helper_to_point = MemberLevel::where('level_strength', $request->level_strength - 1)->first();		// pomocni red (row) sa prvom nizom vaznoscu nivoa 
 
 	    
 	    if ($request->level_strength < $last_level_strength)		// ukoliko se radi o bilo kom nivou nizem od najjaceg
 	    {	
-		    if ($request->from_point >= $helper_from_point->from_point)		// slucaj kada su pocetni bodovi request-a veci ili jednaki pocetnim 																	bodovima iz odgovarajuceg reda viseg nivoa
+		    if ($request->from_point >= $helper_from_point->from_point)		// slucaj kada su pocetni bodovi request-a veci ili jednaki pocetnim bodovima iz odgovarajuceg reda viseg nivoa
 		    {		    	
 		    	$title = 'discounts.warning';
 	    		$message = 'discounts.to_points_overload';
 	    		$type = 'error';
 				
-				return response()->json(new JsonResponse(['title' => $title, 'message' => $message, 'type' => $type ]));
+				return response()->json(new JsonResponse([
+					'title' => $title, 
+					'message' => $message, 
+					'type' => $type 
+				]));
 		    }
 		}
 
 		if ($request->level_strength > 1)		// slucaj kada se radi o bilo kom nivou jacem od prvog
 		{
-		    if ($request->from_point <= $helper_to_point->from_point) {		// ukoliko su pocetni bodovi request-a manji ili jednaki krajnjim 																		bodovima prvog nizeg nivoa 
+		    if ($request->from_point <= $helper_to_point->from_point) {		// ukoliko su pocetni bodovi request-a manji ili jednaki krajnjim bodovima prvog nizeg nivoa 
 		    	$title = 'discounts.warning';
 	    		$message = 'discounts.from_points_overload';
 	    		$type = 'error';
 				
-				return response()->json(new JsonResponse(['title' => $title, 'message' => $message, 'type' => $type ]));
+				return response()->json(new JsonResponse([
+					'title' => $title, 
+					'message' => $message, 
+					'type' => $type 
+				]));
 		    }
 
 		    if ($request->to_point < $helper_to_point->to_point || 
-		    	$request->from_point <= $helper_to_point->from_point) {		// slucaj kada su krajnji bodovi request-a manji od krajnjih bodova 																prvog nizeg nivoa ili pocetni bodovi request-a su manji ili 																	jednaki pocetnim bodovima prvog nizeg nivoa
+		    	$request->from_point <= $helper_to_point->from_point) {		// slucaj kada su krajnji bodovi request-a manji od krajnjih bodova prvog nizeg nivoa ili pocetni bodovi request-a su manji ili jednaki pocetnim bodovima prvog nizeg nivoa
 		       	$title = 'table.update_failed';
 	    		$message = 'discounts.to_points_overload';
 	    		$type = 'error';
 				
-				return response()->json(new JsonResponse(['title' => $title, 'message' => $message, 'type' => $type ]));
+				return response()->json(new JsonResponse([
+					'title' => $title, 
+					'message' => $message, 
+					'type' => $type 
+				]));
 		    }
 
-			$helper_to_point->to_point = $request->from_point - 1;		// pomocnom redu (redu viseg nivoa) se za krajnje bodove dodeljuju 																		pocetni bodovi request-a umanjeni za 1
+			$helper_to_point->to_point = $request->from_point - 1;		// pomocnom redu (redu viseg nivoa) se za krajnje bodove dodeljuju pocetni bodovi request-a umanjeni za 1
 			$helper_to_point->updated_at = date('Y-m-d H:i:s');
 			$helper_to_point->update();
 		}
@@ -184,13 +233,17 @@ class MemberLevelController extends Controller
 	    		$message = 'discounts.from_points_overload';
 	    		$type = 'error';
 				
-				return response()->json(new JsonResponse(['title' => $title, 'message' => $message, 'type' => $type ]));
+				return response()->json(new JsonResponse([
+					'title' => $title, 
+					'message' => $message, 
+					'type' => $type 
+				]));
 			}
 		}
 
 		if ($request->level_strength < $level_num_levels)		// u slucaju jacine nivoa manjeg od najjaceg
 		{
-			$helper_from_point->from_point = $request->to_point + 1;		// pomocnom redu (redu viseg nivoa) se za pocetne bodove 																			dodeljuju krajnji bodovi request-a uvecani za 1
+			$helper_from_point->from_point = $request->to_point + 1;		// pomocnom redu (redu viseg nivoa) se za pocetne bodove dodeljuju krajnji bodovi request-a uvecani za 1
 			$helper_from_point->updated_at = date('Y-m-d H:i:s');
 			$helper_from_point->update();
 		}
@@ -221,15 +274,26 @@ class MemberLevelController extends Controller
 		$message = 'table.updated_successfully';
 		$type = 'success';
 
-    	return response()->json(new JsonResponse(['title' => $title, 'message' => $message, 'type' => $type ]));
+    	return response()->json(new JsonResponse([
+    		'title' => $title, 
+    		'message' => $message, 
+    		'type' => $type 
+    	]));
     }
 
     public function get_points()
     {
     	$point_value = PointsDefinitions::getData('point_value');
     	$value_point = PointsDefinitions::getData('value_point');
+    	$points_limit = PointsDefinitions::getData('points_limit');
+    	$limit_points = PointsDefinitions::limitPoint();
     	
-    	return response()->json(new JsonResponse(['point_value' => $point_value, 'value_point' => $value_point]));
+    	return response()->json(new JsonResponse([
+    		'point_value' => $point_value, 
+    		'value_point' => $value_point, 
+    		'points_limit' => $points_limit, 
+    		'limit_points' => $limit_points
+    	]));
     }
 
     public function updateValue(Request $request)
@@ -253,6 +317,24 @@ class MemberLevelController extends Controller
     {
     	$value = new PointsDefinitions;
     	$value->point_value = $request->point * 100;
+    	$value->save();
+
+		$title = 'table.success';
+		$message = 'table.updated_successfully';
+		$type = 'success';
+
+    	return response()->json(new JsonResponse([
+    							'title' => $title, 
+    							'message' => $message, 
+    							'type' => $type 
+    						]));
+    	
+    }
+
+    public function updateLimit(Request $request)
+    {
+    	$value = new PointsDefinitions;
+    	$value->points_limit = $request->limit;
     	$value->save();
 
 		$title = 'table.success';

@@ -366,6 +366,8 @@ export default {
     no_data: 'Nema podataka!',
     def_point_value: 'Jedan bod na potrošenih:',
     def_value_of_point: 'Vrednost jednog boda:',
+    limit_number_of_points: 'Maksimalan broj bodova:',
+    new_points_limit: 'Vrednosti statusa resetovane!',
   },
   marketing: {
     choose_category: 'Izaberite kategoriju artikla:',
