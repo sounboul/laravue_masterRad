@@ -25,7 +25,7 @@
               <el-card>
                 <h4>Akademija tehničko-vaspitačkih STRUKOVNIH STUDIJA - Odsek Niš</h4>
                 <p>Master Strukovne studije – Odsek Multimedijalne komunikacione tehnologije</p>
-                <p>Zvanje: Master strukovni inženjer elektrotehnike i računarstva</p>
+                <p>Zvanje: Strukovni Master inženjer elektrotehnike i računarstva</p>
               </el-card>
             </el-timeline-item>
             <el-timeline-item timestamp="10.2012. - 04.2014." placement="top">

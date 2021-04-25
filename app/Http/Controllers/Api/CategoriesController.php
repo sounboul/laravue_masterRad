@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Laravue\Models\Categories;
+use App\Laravue\Models\customers_category_tico;
 use App\Laravue\JsonResponse;
 use App\Laravue\Models\User;
 use Illuminate\Support\Facades\Http;
@@ -38,6 +39,9 @@ class CategoriesController extends BaseController
     {
     	$response = Http::withBasicAuth(self::loginAPI()->username, self::loginAPI()->password)->get('http://dev.tico.rs/api/v1/categories');
   		$categories = $response->json();
+
+    // $categories = customers_category_tico::where('category_id', '>', 0)->distinct('category_id')->pluck('category_id');
+      //  dd($categories);
 
         return response()->json(new JsonResponse($categories));
     }

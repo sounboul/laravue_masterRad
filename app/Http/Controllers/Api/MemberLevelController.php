@@ -98,6 +98,7 @@ class MemberLevelController extends Controller
             return response()->json(['error' => 'Permission denied!'], 403);
         }    	
 
+    	$level_num_levels = count(MemberLevel::all());		// ukupan broj nivoa
         $points_limit = PointsDefinitions::limitPoint();
 		$last_level_strength = MemberLevel::find($level_num_levels)->level_strength;	// najvisi nivo vaznosti u tabeli
 
@@ -172,7 +173,6 @@ class MemberLevelController extends Controller
 	    }
 
     	$level = MemberLevel::where('level', $request->level)->first();		// definisanje izabranog nivoa
-    	$level_num_levels = count(MemberLevel::all());		// ukupan broj nivoa
 		$helper_from_point = MemberLevel::where('level_strength', $request->level_strength + 1)->first();  	// pomocni red (row) sa prvom visom vaznoscu nivoa 
 		$helper_to_point = MemberLevel::where('level_strength', $request->level_strength - 1)->first();		// pomocni red (row) sa prvom nizom vaznoscu nivoa 
 
