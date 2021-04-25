@@ -1,4 +1,4 @@
-@servers(['web' => ['dragon1@cipherpols1.com']])
+@servers(['web' => ['bexter@bexter.rs']])
 
 @setup
     $now = new DateTime();

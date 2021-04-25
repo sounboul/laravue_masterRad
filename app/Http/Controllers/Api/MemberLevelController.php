@@ -333,7 +333,27 @@ class MemberLevelController extends Controller
 
     public function updateLimit(Request $request)
     {
+    	$level_num_levels = count(MemberLevel::all());
+    	$level = MemberLevel::orderBy('id', 'desc')->first();
     	$value = new PointsDefinitions;
+
+		if ($request->limit <= $level->from_point) {
+			
+			$title = 'discounts.warning';
+    		$message = 'discounts.to_points_overload';
+    		$type = 'error';
+
+			return response()->json(new JsonResponse([
+									'title' => $title, 
+									'message' => $message, 
+									'type' => $type 
+								]));
+			
+		}
+
+		$new_to_point = MemberLevel::orderBy('id', 'desc')->first();
+		$new_to_point->to_point = $request->limit;
+		$new_to_point->update();
     	$value->points_limit = $request->limit;
     	$value->save();
 
