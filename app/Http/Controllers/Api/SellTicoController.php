@@ -34,21 +34,22 @@ class SellTicoController extends Controller
 
     	$response = Http::withBasicAuth(
                       self::loginAPI()->username, 
-                      self::loginAPI()->password)
+                      self::loginAPI()->password
+                    )
                   ->get('http://dev.tico.rs/api/v1/articles');
 
-  		  $articles = $response->json();
+		  $articles = $response->json();
 
-        return response()->json(new JsonResponse($articles));
+      return response()->json(new JsonResponse($articles));
     }
 
   public function update()
   {
       $response = Http::withBasicAuth(
-                self::loginAPI()->username, 
-                self::loginAPI()->password
-              )
-            ->get('http://dev.tico.rs/api/v1/b2c-orders');
+                      self::loginAPI()->username, 
+                      self::loginAPI()->password
+                    )
+                  ->get('http://dev.tico.rs/api/v1/b2c-orders');
       $customers = $response->json();
 
       $customer_help = customers_tico::find(-1);
@@ -62,12 +63,12 @@ class SellTicoController extends Controller
   public function customers()
     {
     	$response = Http::withBasicAuth(
-                self::loginAPI()->username, 
-                self::loginAPI()->password
-              )
-            ->get('http://dev.tico.rs/api/v1/b2c-orders');
+                      self::loginAPI()->username, 
+                      self::loginAPI()->password
+                    )
+                  ->get('http://dev.tico.rs/api/v1/b2c-orders');
 
-  		$customers = $response->json();
+      $customers = $response->json();
       $value_point = PointsDefinitions::getData('value_point')/100;
 
       if(customers_tico::find(-1) === null)
@@ -281,5 +282,30 @@ class SellTicoController extends Controller
             'username' => 'required',
             'pass' => 'required',
         ];
+    }
+
+    
+    public function customers_level_API(Request $request)
+    {
+        $username = $request->header('php-auth-user');
+        $pass = $request->header('php-auth-pw');
+        
+        if ($username == self::bexterAPI()->username && $pass == self::bexterAPI()->password)
+        {
+            $customer = customers_tico::where('customer_id', $request->id)->first();
+            $level = MemberLevel::findLevel($customer->total_points);
+            $pom = MemberLevel::findLevelAPI($level);
+            
+            return response()->json([
+                    'total_points' => $customer->total_points,
+                    'level' => $level,
+                    'level_strength' => $pom->level_strength,
+                    'discount_percent' => $pom->discount_percent/10,
+                ], 
+                200, 
+                [], 
+                JSON_NUMERIC_CHECK
+              );
+        }
     }
 }

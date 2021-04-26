@@ -25,5 +25,12 @@ class memberLevel extends Model
     	}
     	return $pom;
     }
+        
+
+    public static function findLevelAPI($level)
+    {
+        $data = memberLevel::where('level', $level)->first();
+        return $data;
+    }
 
 }
