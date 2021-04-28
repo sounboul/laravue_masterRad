@@ -285,27 +285,31 @@ class SellTicoController extends Controller
     }
 
     
-    public function customers_level_API(Request $request)
+   /* public function customers_level_API(Request $request)
     {
         $username = $request->header('php-auth-user');
         $pass = $request->header('php-auth-pw');
         
         if ($username == self::bexterAPI()->username && $pass == self::bexterAPI()->password)
         {
-            $customer = customers_tico::where('customer_id', $request->id)->first();
-            $level = MemberLevel::findLevel($customer->total_points);
-            $pom = MemberLevel::findLevelAPI($level);
-            
-            return response()->json([
-                    'total_points' => $customer->total_points,
-                    'level' => $level,
-                    'level_strength' => $pom->level_strength,
-                    'discount_percent' => $pom->discount_percent/10,
-                ], 
-                200, 
-                [], 
-                JSON_NUMERIC_CHECK
-              );
+          $customer = customers_tico::where('customer_id', $request->id)->first();
+          $level = MemberLevel::findLevel($customer->total_points);
+          $pom = MemberLevel::findLevelAPI($level);
+          
+          return response()->json([
+              'total_points' => $customer->total_points,
+              'level' => $level,
+              'level_strength' => $pom->level_strength,
+              'discount_percent' => $pom->discount_percent/10,
+            ],
+            200,
+            [],
+            JSON_NUMERIC_CHECK
+          );
         }
-    }
+        else
+        {
+          return response()->json(['error' => 'Neispravni podaci']);
+        }
+    }*/
 }
