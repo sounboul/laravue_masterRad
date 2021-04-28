@@ -374,7 +374,7 @@ export default {
     criteria: 'Izaberite kriterijum pretrage artikala:',
     newest: 'Noviji artikli',
     no_selled: 'Najmanje prodavani artikli',
-    criteria_date: 'Izaberite datum od koga želite da se vrši pretraga',
+    criteria_date: 'Izaberite datum od koga želite izvršiti pretragu',
     send_mail: 'Pošalji e-mail!',
     send_sms: 'Pošalji sms(ove)!',
     success_sending: 'E-mejl(ovi) uspešno poslat(i)!',
