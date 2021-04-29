@@ -11,8 +11,8 @@ class Categories extends Model
     protected $table = "categories";
     public $timestamps = false;
 
-    public function article()
+    /*public function article()
     {
     	return $this->belongsToMany(Articles::class);
-    }
+    }*/
 }

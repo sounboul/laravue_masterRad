@@ -5,7 +5,7 @@
         <div class="title">{{ $t('marketing.choose_category') }}</div>
         <el-form-item class="first_category">
           <el-select v-model="form.category" :placeholder="$t('articles.categories')" clearable style="margin-right: 4%; width: 100%" class="filter-item">
-            <el-option v-for="item in categories" :key="item.id" :label="item.name | uppercaseFirst" :value="item.id" />
+            <el-option v-for="item in categories" :key="item.id" :label="item.name | uppercaseFirst" :value="item.category_id" />
           </el-select>
         </el-form-item>
         <div class="search_zone">
