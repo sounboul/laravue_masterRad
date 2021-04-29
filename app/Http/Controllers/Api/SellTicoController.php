@@ -12,6 +12,7 @@ use App\Laravue\Models\customers_tico;
 use App\Laravue\Models\customers_category_tico;
 use App\Laravue\Models\MemberLevel;
 use App\Laravue\Models\Credentials;
+use App\Laravue\Models\Categories;
 use App\Laravue\Models\PointsDefinitions;
 use Validator;
 
@@ -82,6 +83,26 @@ class SellTicoController extends Controller
         $test->total_points = count($customers['orders']);
         $test->save();
 
+        $categories0 = Http::withBasicAuth(
+                        self::loginAPI()->username, 
+                        self::loginAPI()->password
+                      )->get('http://dev.tico.rs/api/v1/categories');
+        $category0 = $categories0->json();
+        
+        for ($y=0; $y < count($category0['categories']); $y++) { 
+          $category = new categories;
+          $category->category_id = $category0['categories'][$y]['id'];
+          $category->name = $category0['categories'][$y]['name'];
+          $category->save();
+          if (count($category0['categories'][$y]['childs']) > 0) {
+            for($x=0; $x < count($category0['categories'][$y]['childs']); $x++) {
+              $category = new categories;
+              $category->category_id = $category0['categories'][$y]['childs'][$x]['id'];
+              $category->name = $category0['categories'][$y]['childs'][$x]['name'];
+              $category->save();
+            }
+          }
+        }
 
     		for ($i=0; $i < count($customers['orders']); $i++) {
     			$temp = 0;
@@ -166,8 +187,10 @@ class SellTicoController extends Controller
 
     private function myFunction($customers, $a, $value_point)
     {
+      $limitPoint = PointsDefinitions::limitPoint();
       $customer_tico = new customers_tico;
       $temp = 0;
+
       $customer_tico->updated_at = $customers['orders'][$a]['date'];
       $cus[$a] = $customers['orders'][$a]['customer'];
       $customer_tico->email = $cus[$a]['email'];
@@ -192,8 +215,8 @@ class SellTicoController extends Controller
           }
 
           $temp = $items[$j]['quantity'] * $items[$j]['article']['web_price'] + $temp;
-          if ($temp > 500000) {
-            $temp = 500000;
+          if ($temp > $limitPoint*100) {
+            $temp = $limitPoint*100;
           }
           $customer_tico->total_points = $temp;
         }

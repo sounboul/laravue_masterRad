@@ -44,14 +44,16 @@ class CategoriesController extends BaseController
 
     public function fetchCategories()
     {
-    	//$response = Http::withBasicAuth(self::loginAPI()->username, self::loginAPI()->password)->get('http://dev.tico.rs/api/v1/categories');
-        $response = Http::withBasicAuth(self::bexterAPI()->username, self::bexterAPI()->password)->get('https://laravue.bexter.rs/api/v1/customers_level_API/212');
-  		$categories = $response->json();
+    	$response = Http::withBasicAuth(self::loginAPI()->username, self::loginAPI()->password)->get('http://dev.tico.rs/api/v1/categories');
+        //$response = Http::withBasicAuth(self::bexterAPI()->username, self::bexterAPI()->password)->get('https://laravue.bexter.rs/api/v1/customers_level_API/167');
+  		//$categories = $response->json();
 
-        // $categories = customers_category_tico::where('category_id', '>', 0)->distinct('category_id')->pluck('category_id');
-        //  dd($categories);
+        //dd($categories['categories'][0]);
 
-        return response()->json(new JsonResponse($categories));
+        $categories = categories::all();
+        //dd(json_encode($categories));
+
+        return response()->json(new JsonResponse(['categories' => $categories]));
     }
 
 }
