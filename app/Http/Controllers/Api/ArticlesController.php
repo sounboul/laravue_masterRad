@@ -18,6 +18,9 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use App\Laravue\Models\api_routes;
+use App\Laravue\Models\route_name;
+use App\Laravue\Models\web_services;
 use Validator;
 
 class ArticlesController extends BaseController
@@ -251,25 +254,6 @@ class ArticlesController extends BaseController
         return response()->json(['status' => $bill]);
     }
 
-/*    public function pom()  // Upisuje u bazu random artikle od 402 do 1000
-
-    {
-        for ($i=402; $i < 1001; $i++) {  
-            $article = new Articles;
-            $article->code = 10000 + $i;
-            $article->title = 'Artikal'. $i;
-            $article->categories_id = rand(1,12);
-            $article->supplier_id = rand(1,4);
-            $article->price = rand(10000, 25000000);
-            $article->amount = rand(5,50);
-            $article->brand = 'Brend'. rand(1,10);
-            $article->tags = '';
-            $article->description = '';
-            $article->short_description = '';
-            $article->save();
-        } 
-    }*/
-
 
     private function loginAPI()
     {
@@ -286,7 +270,7 @@ class ArticlesController extends BaseController
         $response = Http::withBasicAuth(
                     self::loginAPI()->username, 
                     self::loginAPI()->password)
-                ->get('http://dev.tico.rs/api/v1/articles');
+                ->get(web_services::find(1)->route_prefix.route_name::find(4)->api_routes[0]->name);
         $articles = $response->json();
         return response()->json(new JsonResponse($articles));
     }

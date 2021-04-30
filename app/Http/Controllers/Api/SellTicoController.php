@@ -14,6 +14,9 @@ use App\Laravue\Models\MemberLevel;
 use App\Laravue\Models\Credentials;
 use App\Laravue\Models\Categories;
 use App\Laravue\Models\PointsDefinitions;
+use App\Laravue\Models\api_routes;
+use App\Laravue\Models\route_name;
+use App\Laravue\Models\web_services;
 use Validator;
 
 class SellTicoController extends Controller
@@ -37,7 +40,7 @@ class SellTicoController extends Controller
                       self::loginAPI()->username, 
                       self::loginAPI()->password
                     )
-                  ->get('http://dev.tico.rs/api/v1/articles');
+                  ->get(web_services::find(1)->route_prefix.route_name::find(4)->api_routes[0]->name);
 
 		  $articles = $response->json();
 
@@ -50,7 +53,7 @@ class SellTicoController extends Controller
                       self::loginAPI()->username, 
                       self::loginAPI()->password
                     )
-                  ->get('http://dev.tico.rs/api/v1/b2c-orders');
+                  ->get(web_services::find(1)->route_prefix.route_name::find(12)->api_routes[0]->name);
       $customers = $response->json();
 
       $customer_help = customers_tico::find(-1);
@@ -67,7 +70,8 @@ class SellTicoController extends Controller
                       self::loginAPI()->username, 
                       self::loginAPI()->password
                     )
-                  ->get('http://dev.tico.rs/api/v1/b2c-orders');
+                  ->get(web_services::find(1)->route_prefix.route_name::find(12)->api_routes[0]->name);
+                  //->get('http://dev.tico.rs/api/v1/b2c-orders');
 
       $customers = $response->json();
       $value_point = PointsDefinitions::getData('value_point')/100;
@@ -86,7 +90,7 @@ class SellTicoController extends Controller
         $categories0 = Http::withBasicAuth(
                         self::loginAPI()->username, 
                         self::loginAPI()->password
-                      )->get('http://dev.tico.rs/api/v1/categories');
+                      )->get(web_services::find(1)->route_prefix.route_name::find(1)->api_routes[0]->name);
         $category0 = $categories0->json();
         
         for ($y=0; $y < count($category0['categories']); $y++) { 
@@ -98,6 +102,7 @@ class SellTicoController extends Controller
             for($x=0; $x < count($category0['categories'][$y]['childs']); $x++) {
               $category = new categories;
               $category->category_id = $category0['categories'][$y]['childs'][$x]['id'];
+              $category->parent_id = $category0['categories'][$y]['id'];
               $category->name = $category0['categories'][$y]['childs'][$x]['name'];
               $category->save();
             }
@@ -261,7 +266,10 @@ class SellTicoController extends Controller
 
     public function APIcredentials(Request $request)
     {
-      $response = Http::withBasicAuth($request->username, $request->pass)->get('http://dev.tico.rs/api/v1/b2c-orders');
+      $response = Http::withBasicAuth(
+          $request->username, 
+          $request->pass
+        )->get(web_services::find(1)->route_prefix.route_name::find(1)->api_routes[0]->name);
       $credentials = $response->status();
       if($credentials == 200)
       { 
