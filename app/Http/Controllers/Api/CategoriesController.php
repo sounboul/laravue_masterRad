@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Laravue\Models\Categories;
-use App\Laravue\Models\customers_category_tico;
+use App\Laravue\Models\customers_category_api;
 use App\Laravue\JsonResponse;
 use App\Laravue\Models\User;
 use Illuminate\Support\Facades\Http;
