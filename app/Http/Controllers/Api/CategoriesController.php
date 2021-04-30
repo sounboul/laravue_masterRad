@@ -10,6 +10,9 @@ use App\Laravue\JsonResponse;
 use App\Laravue\Models\User;
 use Illuminate\Support\Facades\Http;
 use App\Laravue\Models\Credentials;
+use App\Laravue\Models\api_routes;
+use App\Laravue\Models\route_name;
+use App\Laravue\Models\web_services;
 use Illuminate\Support\Facades\Auth;
 
 class CategoriesController extends BaseController
@@ -44,16 +47,30 @@ class CategoriesController extends BaseController
 
     public function fetchCategories()
     {
-    	$response = Http::withBasicAuth(self::loginAPI()->username, self::loginAPI()->password)->get('http://dev.tico.rs/api/v1/categories');
-        //$response = Http::withBasicAuth(self::bexterAPI()->username, self::bexterAPI()->password)->get('https://laravue.bexter.rs/api/v1/customers_level_API/167');
-  		//$categories = $response->json();
+    	/*$response = Http::withBasicAuth(
+                self::loginAPI()->username, 
+                self::loginAPI()->password
+            )->get('http://dev.tico.rs/api/v1/categories');*/
 
-        //dd($categories['categories'][0]);
+        /*$response = Http::withBasicAuth(
+                self::bexterAPI()->username, 
+                self::bexterAPI()->password
+            )->get('https://laravue.bexter.rs/api/v1/customers_level_API/167');*/
 
-        $categories = categories::all();
-        //dd(json_encode($categories));
+        $response = Http::withBasicAuth(
+                self::loginAPI()->username, 
+                self::loginAPI()->password
+            )->get(web_services::find(1)->route_prefix.route_name::find(1)->api_routes[0]->name);
+        
+        $categories = $response->json();
 
-        return response()->json(new JsonResponse(['categories' => $categories]));
+        return response()->json(new JsonResponse($categories));
     }
 
+
+    public function getCategories()
+    {
+        $categories = categories::all();
+        return response()->json(new JsonResponse(['categories' => $categories]));
+    }
 }

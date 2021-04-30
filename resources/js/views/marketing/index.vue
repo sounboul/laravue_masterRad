@@ -60,7 +60,7 @@
 
 <script>
 
-import { fetchList, fetch_customers_category } from '@/api/category';
+import { fetchList, fetch_customers_category, getCategories } from '@/api/category';
 import { fetchAllCustomers, send_mail, send_sms } from '@/api/customer';
 import { fetchArticles } from '@/api/article';
 
@@ -84,7 +84,7 @@ export default {
       active1: true,
       message: '',
       articles: '',
-      categories: this.getCategories(),
+      categories: this.fetchCategories(),
       mail: [],
       phone: [],
       clickedRow: true,
@@ -95,6 +95,12 @@ export default {
     async getCategories() {
       this.listLoading = true;
       const { data } = await fetchList(this.form);
+      this.categories = data.categories;
+      this.listLoading = false;
+    },
+    async fetchCategories() {
+      this.listLoading = true;
+      const { data } = await getCategories(this.form);
       this.categories = data.categories;
       this.listLoading = false;
     },
