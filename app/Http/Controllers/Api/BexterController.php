@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Laravue\Models\MemberLevel;
-use App\Laravue\Models\customers_tico;
+use App\Laravue\Models\customers_api;
 use App\Laravue\JsonResponse;
 use App\Laravue\Models\User;
 use Illuminate\Support\Facades\Http;
@@ -26,7 +26,7 @@ class BexterController extends BaseController
         
         if ($username == self::bexterAPI()->username && $pass == self::bexterAPI()->password)
         {
-			$customer = customers_tico::where('customer_id', $request->id)->first();
+			$customer = customers_api::where('customer_id', $request->id)->first();
 			$level = MemberLevel::findLevel($customer->total_points);
 			$pom = MemberLevel::findLevelAPI($level);
 

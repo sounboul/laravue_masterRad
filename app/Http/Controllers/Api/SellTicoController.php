@@ -8,8 +8,8 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Hash;
 use App\Laravue\JsonResponse;
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Laravue\Models\customers_tico;
-use App\Laravue\Models\customers_category_tico;
+use App\Laravue\Models\customers_api;
+use App\Laravue\Models\customers_category_api;
 use App\Laravue\Models\MemberLevel;
 use App\Laravue\Models\Credentials;
 use App\Laravue\Models\Categories;
@@ -56,7 +56,7 @@ class SellTicoController extends Controller
                   ->get(web_services::find(1)->route_prefix.route_name::find(12)->api_routes[0]->name);
       $customers = $response->json();
 
-      $customer_help = customers_tico::find(-1);
+      $customer_help = customers_api::find(-1);
       if ($customer_help->total_points !== count($customers['orders'])) {
         $customer_help->total_points = count($customers['orders']);
         $customer_help->update();
@@ -76,9 +76,9 @@ class SellTicoController extends Controller
       $customers = $response->json();
       $value_point = PointsDefinitions::getData('value_point')/100;
 
-      if(customers_tico::find(-1) === null)
+      if(customers_api::find(-1) === null)
       {
-        $test = new customers_tico;
+        $test = new customers_api;
         $test->id = -1;
         $test->customer_id = -1;
         $test->order_id = -1;
@@ -118,13 +118,13 @@ class SellTicoController extends Controller
 
     			$customer_id = $customers['orders'][$i]['customer']['id'];
 
-    			$pom = customers_tico::where('customer_id', $customer_id)->sum('total_points');
+    			$pom = customers_api::where('customer_id', $customer_id)->sum('total_points');
 
-    			$ret = customers_tico::where('customer_id', $customer_id)->first();
+    			$ret = customers_api::where('customer_id', $customer_id)->first();
     			$ret->total_points = $pom;
     			$ret->update();
 
-    			$pom2 = customers_tico::select('*')
+    			$pom2 = customers_api::select('*')
                     ->where('customer_id', $customer_id)
                     ->where('id', '!=', $ret->id)
                     ->get();
@@ -135,9 +135,9 @@ class SellTicoController extends Controller
 
     		}
 
-    		$helpers = customers_category_tico::all();
+    		$helpers = customers_category_api::all();
     		foreach ($helpers as $key => $help) {
-    			$doubles = customers_category_tico::select('*')
+    			$doubles = customers_category_api::select('*')
                       ->where('customer_id', $help->customer_id)
                       ->where('category_id', $help->category_id)
                       ->get();
@@ -155,7 +155,7 @@ class SellTicoController extends Controller
         $customers_orders_id = $customers['orders'][0]['id'];
         $customers_orders_items = $customers['orders'][0]['items'];
 
-        $counter = customers_tico::where('customer_id', '>', 0)->orderBy('updated_at', 'DESC')->first();
+        $counter = customers_api::where('customer_id', '>', 0)->orderBy('updated_at', 'DESC')->first();
 
         if ($counter->order_id < $customers_orders_id) {
           $ii = count($customers_orders_items)-1;
@@ -167,7 +167,7 @@ class SellTicoController extends Controller
               $points = $customers_orders[$ii]['items'][$j]['quantity'] * $customers_orders[$ii]['items'][$j]['article']['web_price'] + $points; 
             }
 
-            $temp0 = customers_tico::where('customer_id', $customers_orders[$ii]['customer']['id'])->first();
+            $temp0 = customers_api::where('customer_id', $customers_orders[$ii]['customer']['id'])->first();
             if($temp0 !== null)
             {
               $temp0->total_points = $temp0->total_points + intval($points/$value_point);
@@ -193,7 +193,7 @@ class SellTicoController extends Controller
     private function myFunction($customers, $a, $value_point)
     {
       $limitPoint = PointsDefinitions::limitPoint();
-      $customer_tico = new customers_tico;
+      $customer_tico = new customers_api;
       $temp = 0;
 
       $customer_tico->updated_at = $customers['orders'][$a]['date'];
@@ -213,10 +213,10 @@ class SellTicoController extends Controller
           $category_id = $items[$j]['article']['category_id'];
           if ($category_id != null) {
             $customer_tico->category_id = $category_id;
-            $customers_category_tico = new customers_category_tico;
-            $customers_category_tico->customer_id = $customers['orders'][$a]['customer']['id'];
-            $customers_category_tico->category_id = $category_id;
-            $customers_category_tico->save();
+            $customers_category_api = new customers_category_api;
+            $customers_category_api->customer_id = $customers['orders'][$a]['customer']['id'];
+            $customers_category_api->category_id = $category_id;
+            $customers_category_api->save();
           }
 
           $temp = $items[$j]['quantity'] * $items[$j]['article']['web_price'] + $temp;
@@ -234,13 +234,13 @@ class SellTicoController extends Controller
 
     public function fetchListTico(Request $request)
     {
-  		$clear = customers_tico::where('order_id', 0)->get();
+  		$clear = customers_api::where('order_id', 0)->get();
   		foreach ($clear as $key => $value) {
   			$value->delete();
   		}
 
     	$limit = $request->limit;
-    	$customers = customers_tico::where('id', '>', 0)->orderBy('customer_id', 'asc')->paginate($limit);
+    	$customers = customers_api::where('id', '>', 0)->orderBy('customer_id', 'asc')->paginate($limit);
 
     	for ($i=0; $i < count($customers); $i++) { 
     		$pom = 0;
@@ -253,12 +253,12 @@ class SellTicoController extends Controller
 
     public function marketing_tico($category_id){
 
-    	$categories = customers_category_tico::where('category_id', $category_id)->get();
+    	$categories = customers_category_api::where('category_id', $category_id)->get();
     	
     	$customer = [];
     	
     	foreach ($categories as $key => $category) {
-    		$customer[$key] = customers_tico::where('customer_id', $category->customer_id)->first();
+    		$customer[$key] = customers_api::where('customer_id', $category->customer_id)->first();
   		}
 
     	return response()->json(new JsonResponse($customer));
@@ -323,7 +323,7 @@ class SellTicoController extends Controller
         
         if ($username == self::bexterAPI()->username && $pass == self::bexterAPI()->password)
         {
-          $customer = customers_tico::where('customer_id', $request->id)->first();
+          $customer = customers_api::where('customer_id', $request->id)->first();
           $level = MemberLevel::findLevel($customer->total_points);
           $pom = MemberLevel::findLevelAPI($level);
           

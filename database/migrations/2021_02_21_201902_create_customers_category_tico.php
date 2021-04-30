@@ -13,7 +13,7 @@ class CreateCustomersCategoryTico extends Migration
      */
     public function up()
     {
-        Schema::create('customers_category_tico', function (Blueprint $table) {
+        Schema::create('customers_category_api', function (Blueprint $table) {
             $table->id();
             $table->integer('customer_id');
             $table->integer('category_id');
@@ -28,6 +28,6 @@ class CreateCustomersCategoryTico extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('customers_category_tico');
+        Schema::dropIfExists('customers_category_api');
     }
 }

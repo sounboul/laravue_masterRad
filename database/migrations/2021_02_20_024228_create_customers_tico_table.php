@@ -13,7 +13,7 @@ class CreateCustomersTicoTable extends Migration
      */
     public function up()
     {
-        Schema::create('customers_tico', function (Blueprint $table) {
+        Schema::create('customers_api', function (Blueprint $table) {
             $table->id();
             $table->integer('customer_id');
             $table->integer('order_id')->default(0);
@@ -35,6 +35,6 @@ class CreateCustomersTicoTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('customers_tico');
+        Schema::dropIfExists('customers_api');
     }
 }
