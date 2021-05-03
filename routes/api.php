@@ -67,6 +67,13 @@ Route::namespace('Api')->group(function() {
         Route::get('/categories/delete/{id}', 'CategoriesController@deleteCategory');
         Route::get('/getCategories', 'CategoriesController@getCategories');
 
+        // MailChimp
+        Route::get('/mailchimp', 'MailChimpController@index');
+        Route::post('/mailchimp/create', 'MailChimpController@create');
+        Route::post('/mailchimp/update', 'MailChimpController@update');
+        Route::get('/mailchimp/delete/{email}', 'MailChimpController@delete');
+        Route::post('/mailchimp/tags', 'MailChimpController@tags');
+
         // Suppliers
         Route::get('/suppliers', 'SuppliersController@index');   
         Route::get('/all_suppliers', 'SuppliersController@getSuppliers');   
