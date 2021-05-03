@@ -11,7 +11,7 @@ class MailChimp1 extends Model
 {
 	public static function getSubscriber($email_address)
 	{
-		// List all the mailing lists
+		// Get specific subscriber
 	    $MailChimp1 = new MailChimp(env('MAILCHIMP_KEY'));
 	    $list_id = env('MAILCHIMP_LIST_ID');
 
@@ -23,7 +23,7 @@ class MailChimp1 extends Model
 	}
 
 
-    public static function create($email_address, $fname, $tags, $lname=null, $address=null, $phone=null, $birthday=null)
+    public static function create($email_address, $fname, $tags, $lname='', $address='', $phone='', $birthday='')
     {
     	$MailChimp1 = new MailChimp(env('MAILCHIMP_KEY'));
     	$list_id = env('MAILCHIMP_LIST_ID');
@@ -33,12 +33,13 @@ class MailChimp1 extends Model
                         'merge_fields' 	=> ['FNAME'=>$fname, 
                         					'LNAME'=>$lname, 
                         					'ADDRESS'=>$address, 
-                        					'PHONE'=>$phone
+                        					'PHONE'=>$phone,
+                        					'BIRTHDAY'=>$birthday
                         				],
                         'tags' 			=> [$tags],
                         'status'        => 'subscribed',
                     ]);
-    	return;
+    	return $result;
     }
 
 
@@ -59,7 +60,7 @@ class MailChimp1 extends Model
         return;
     }
 
-    public static function tags($email_address, $tag)
+    public static function tags($email_address, $tag=null)
 	{
 		$MailChimp1 = new MailChimp(env('MAILCHIMP_KEY'));
     	$list_id = env('MAILCHIMP_LIST_ID');
