@@ -13,7 +13,7 @@
     "authors": [
         {
             "name": "Petković Boban",
-            "email": "petkovic.Boban@gmail.com",
+            "email": "petkovic.boban@gmail.com",
             "homepage": "https://laravue.bexter.rs",
             "role": "Developer"
         }
@@ -28,6 +28,7 @@
         "laravel/sanctum": "^2.1",
         "laravel/tinker": "^2.0",
         "phpmailer/phpmailer": "^6.3",
+        "drewm/mailchimp-api": "*",
         "spatie/laravel-permission": "^3.0"
     },
     "require-dev": {

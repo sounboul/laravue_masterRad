@@ -16,7 +16,7 @@ class CreateWebServicesTable extends Migration
         Schema::create('web_services', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('api_routes_route_id')
+            $table->integer('api_routes_route_id');
             $table->string('route_prefix');
             $table->timestamps();
         });
