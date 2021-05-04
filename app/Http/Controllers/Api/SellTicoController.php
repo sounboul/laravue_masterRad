@@ -154,7 +154,7 @@ class SellTicoController extends Controller
       
         // Registruje suscribere na MailChimp
         
-       /* $old_customers = customers_api::where('customer_id', '>', 0)->get();
+        $old_customers = customers_api::where('customer_id', '>', 0)->get();
 
         foreach ($old_customers as $key => $value) {
           
@@ -173,83 +173,75 @@ class SellTicoController extends Controller
               $last_name = '';
             }
             
-            $new_subscriber = MailChimp1::create($value->email, $value->first_name, $category_name, $value->last_name, 'AAA', $value->phone, '01/10');
+            $new_subscriber = MailChimp1::create($value->email, $value->first_name, $value->last_name, 'AAA', $value->phone, '01/10');
           }
-        }*/
+        }
       
       }
       else
       { 
-        $counter = customers_api::where('order_id', '>', 0)->orderBy('updated_at', 'DESC')->first();
-        //$i=0;
-        $i=0;
-        while($counter->updated_at < $customers['orders'][$i]['date'])
-        {
-          $temp=0;
-          $new_customer = customers_api::where('customer_id', $customers['orders'][$i]['customer']['id'])->first();
-          if ($new_customer === null) {
-            $new_customer = new customers_api;
-            $new_customer->customer_id = $customers['orders'][$i]['customer']['id'];
-            $new_customer->email = $customers['orders'][$i]['customer']['email'];
-            $new_customer->first_name = $customers['orders'][$i]['customer']['first_name'];
-            $new_customer->last_name = $customers['orders'][$i]['customer']['last_name'];
-            $new_customer->name = $customers['orders'][$i]['customer']['name'];
-            $new_customer->phone = $customers['orders'][$i]['customer']['phone'];
-            for ($y=0; $y < count($customers['orders'][$i]['items']); $y++) {
-              $pom_category[$y] = $customers['orders'][$i]['items'][$y]['article']['category_id'];
-              $new_customer->order_id = $customers['orders'][$i]['items'][$y]['order_id'];
-              $new_customer->updated_at = $customers['orders'][$i]['date'];
-              self::categories_api($customers, $i, $y);
-              $temp = $temp + $customers['orders'][$i]['items'][$y]['article']['web_price'] * $customers['orders'][$i]['items'][$y]['quantity'];
-            }
-            $new_customer->total_points = intval($temp/$value_point) > $limitPoint ? $limitPoint : intval($temp/$value_point);
-            $new_customer->save();
+        $counter = customers_api::where('order_id', '>', 0)->orderBy('order_id', 'DESC')->first();
+        
+        $num_customers = count($customers['orders'])-1;
+        for ($i=$num_customers; $i >= 0 ; $i--) { 
+          $temp = 0;
+          if ($counter->order_id < $customers['orders'][$i]['id']) {
+            //echo $customers['orders'][$i]['id'].", ";
+            $new_customer = customers_api::where('customer_id', $customers['orders'][$i]['customer']['id'])->first();
+            if ($new_customer === null) {
+              $new_customer = new customers_api;
+              $new_customer->customer_id = $customers['orders'][$i]['customer']['id'];
+              $new_customer->email = $customers['orders'][$i]['customer']['email'];
+              $new_customer->first_name = $customers['orders'][$i]['customer']['first_name'];
+              $new_customer->last_name = $customers['orders'][$i]['customer']['last_name'];
+              $new_customer->name = $customers['orders'][$i]['customer']['name'];
+              $new_customer->phone = $customers['orders'][$i]['customer']['phone'];
+              for ($y=0; $y < count($customers['orders'][$i]['items']); $y++) {
+                $pom_category[$y] = $customers['orders'][$i]['items'][$y]['article']['category_id'];
+                $new_customer->order_id = $customers['orders'][$i]['items'][$y]['order_id'];
+                $new_customer->updated_at = $customers['orders'][$i]['date'];
+                self::categories_api($customers, $i, $y);
+                $temp = $temp + $customers['orders'][$i]['items'][$y]['article']['web_price'] * $customers['orders'][$i]['items'][$y]['quantity'];
+              }
+              $new_customer->total_points = intval($temp/$value_point) > $limitPoint ? $limitPoint : intval($temp/$value_point);
+              $new_customer->save();
 
-            /*if ($new_customer->name !== null) {
-              $first_name = $new_customer->name;
-              $last_name = '';
+              self::optimize_categories_api();
+
+              if ($new_customer->name !== null) {
+                $first_name = $new_customer->name;
+                $last_name = '';
+              }
+
+              $new_categories = customers_category_api::where('customer_id', $customers['orders'][$i]['customer']['id'])->get();
+              
+              foreach ($new_categories as $key => $new_category) {
+                $final_category[$key] = categories::where('category_id',$new_category->category_id)->first()->name;
+              }
+
+              $new_subscriber = MailChimp1::create($new_customer->email, $new_customer->first_name, $new_customer->last_name, 'AAA', $new_customer->phone, '01/10');
+              $update_tags = MailChimp1::tags($new_customer->email, $final_category);
+              //dd($new_subscriber);
             }
-            $new_subscriber = MailChimp1::create($new_customer->email, $new_customer->first_name, $pom_category, $new_customer->last_name, 'AAA', $new_customer->phone, '01/10');*/
-          }
-          else
-          {
-            $updated_customer = customers_api::where('customer_id', $new_customer->customer_id)->first();
-            for ($x=0; $x < count($customers['orders'][$i]['items']); $x++) {
-              $pom_category[$y] = $customers['orders'][$i]['items'][$x]['article']['category_id'];
-              $updated_customer->order_id = $customers['orders'][$i]['items'][$x]['order_id'];
-              $updated_customer->updated_at = $customers['orders'][$i]['date'];
-              $temp = $temp + $customers['orders'][$i]['items'][$x]['article']['web_price'] * $customers['orders'][$i]['items'][$x]['quantity'];
+            else
+            {
+              $updated_customer = customers_api::where('customer_id', $new_customer->customer_id)->first();
+              for ($x=0; $x < count($customers['orders'][$i]['items']); $x++) {
+                $pom_category[$y] = $customers['orders'][$i]['items'][$x]['article']['category_id'];
+                $updated_customer->order_id = $customers['orders'][$i]['items'][$x]['order_id'];
+                $updated_customer->updated_at = $customers['orders'][$i]['date'];
+                $temp = $temp + $customers['orders'][$i]['items'][$x]['article']['web_price'] * $customers['orders'][$i]['items'][$x]['quantity'];
+              }
+              $helper = intval($temp/$value_point) > $limitPoint ? $limitPoint : intval($temp/$value_point);
+              $updated_customer->total_points = $updated_customer->total_points + $helper > $limitPoint ? $limitPoint : $updated_customer->total_points + $helper;
+              $updated_customer->update();
+              self::optimize_categories_api();
+
+              $update_tags = MailChimp1::tags($updated_customer->email, $pom_category);
             }
-            $helper = intval($temp/$value_point) > $limitPoint ? $limitPoint : intval($temp/$value_point);
-            $updated_customer->total_points = $updated_customer->total_points + $helper > $limitPoint ? $limitPoint : $updated_customer->total_points + $helper;
-            $updated_customer->update();
-            // $update_tags = MailChimp1::tags($updated_customer->email, $pom_category);
           }
-          $i++;
+          $counter = customers_api::where('order_id', '>', 0)->orderBy('order_id', 'DESC')->first();
         }
-        self::optimize_categories_api();
-        // Dodavanje novog subscribera u MailChimp
-        /*$old_customers = customers_api::where('customer_id', '>', 0)->get();
-        foreach ($old_customers as $key => $value) {
-          
-          $category_name = categories::where('category_id', $value->category_id)->first()->name;
-
-          //$test0 = MailChimp1::tags($value->email, $category_name);
-          $test = MailChimp1::getSubscriber($value->email);
-          
-          if($test['status'] == 'subscribed')
-          {
-              $update_tags = MailChimp1::tags($value->email, $category_name);
-          }
-          else
-          {
-            if ($value->name !== null) {
-              $value->first_name = $value->name;
-            }
-            
-            $new_subscriber = MailChimp1::create($value->email, $value->first_name, $category_name, $value->last_name, 'AAA', $value->phone);
-          }
-        }*/
       }
   		return;
   	}
@@ -296,22 +288,22 @@ class SellTicoController extends Controller
     private function optimize_categories_api()
     {
       $starts = customers_category_api::all();
-      foreach($starts as $start){
-        $double_category_customer = customers_category_api::select('*')
-                                      ->where('customer_id', '=', $start->customer_id)
-                                      ->where('category_id', '=', $start->category_id)
-                                      ->get();
-        if(count($double_category_customer) > 1)
+
+      foreach($starts as $key => $start){
+        $double_category_customer[$key] = customers_category_api::select('*')
+                                    ->where('customer_id', '=', $start->customer_id)
+                                    ->where('category_id', '=', $start->category_id)
+                                    ->first();
+
+        $pomx = customers_category_api::select('*')
+                                    ->where('id', '>', $double_category_customer[$key]->id)
+                                    ->where('customer_id', '=', $start->customer_id)
+                                    ->where('category_id', '=', $start->category_id)
+                                    ->first(); 
+        if($pomx !== null)
         {
-          $pomx = customers_category_api::select('*')
-                                      ->where('id', '>', $double_category_customer->first()->id)
-                                      ->where('customer_id', '=', $start->customer_id)
-                                      ->where('category_id', '=', $start->category_id)
-                                      ->get(); 
           $pomx->delete();
         }
-
-
       }
     }
 
@@ -328,28 +320,6 @@ class SellTicoController extends Controller
     	for ($i=0; $i < count($customers); $i++) {
     		$customers[$i]->level = MemberLevel::findLevel($customers[$i]->total_points);
     	}
-
-
-
-      $starts = customers_category_api::all();
-
-      foreach($starts as $key => $start){
-        $double_category_customer[$key] = customers_category_api::select('*')
-                                      ->where('customer_id', '=', $start->customer_id)
-                                      ->where('category_id', '=', $start->category_id)
-                                      ->first();
-        //dd(count($double_category_customer));
-            $pomx = customers_category_api::select('*')
-                                        ->where('id', '>', $double_category_customer[$key]->id)
-                                        ->where('customer_id', '=', $start->customer_id)
-                                        ->where('category_id', '=', $start->category_id)
-                                        ->first(); 
-            if($pomx !== null)
-            {
-              $pomx->delete();
-            }
-
-      }
   		
     	return response()->json(new JsonResponse($customers));
     }

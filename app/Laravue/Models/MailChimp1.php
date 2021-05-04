@@ -23,7 +23,7 @@ class MailChimp1 extends Model
 	}
 
 
-    public static function create($email_address, $fname, $tags, $lname='', $address='', $phone='', $birthday='')
+    public static function create($email_address, $fname, $lname='', $address='', $phone='', $birthday='')
     {
     	$MailChimp1 = new MailChimp(env('MAILCHIMP_KEY'));
     	$list_id = env('MAILCHIMP_LIST_ID');
@@ -36,7 +36,7 @@ class MailChimp1 extends Model
                         					'PHONE'=>$phone,
                         					'BIRTHDAY'=>$birthday
                         				],
-                        'tags' 			=> [$tags],
+                        //'tags' 			=> [$tags],
                         'status'        => 'subscribed',
                     ]);
     	return $result;

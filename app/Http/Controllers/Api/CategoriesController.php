@@ -55,7 +55,7 @@ class CategoriesController extends BaseController
         /*$response = Http::withBasicAuth(
                 self::bexterAPI()->username, 
                 self::bexterAPI()->password
-            )->get('https://laravue.bexter.rs/api/v1/customers_level_API/167');*/
+            )->get('https://laravue.bexter.rs/api/v1/customers_level_API/87');*/
 
         $response = Http::withBasicAuth(
                 self::loginAPI()->username, 
