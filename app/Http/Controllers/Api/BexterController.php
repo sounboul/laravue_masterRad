@@ -27,6 +27,10 @@ class BexterController extends BaseController
         if ($username == self::bexterAPI()->username && $pass == self::bexterAPI()->password)
         {
 			$customer = customers_api::where('customer_id', $request->id)->first();
+			if($customer === null)
+			{
+			    return response()->json(['error' => 'Nepostojeći podaci!'], 403);
+			}
 			$level = MemberLevel::findLevel($customer->total_points);
 			$pom = MemberLevel::findLevelAPI($level);
 
@@ -43,7 +47,7 @@ class BexterController extends BaseController
         }
         else
         {
-          	return response()->json(['error' => 'Neispravni podaci']);
+          	return response()->json(['error' => 'Neispravni podaci'], 403);
         }
     }
 }

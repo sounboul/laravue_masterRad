@@ -43,24 +43,7 @@ class MailChimp1 extends Model
     }
 
 
-    public static function update1($email_address, $address=null, $phone=null)
-	{
-		$MailChimp1 = new MailChimp(env('MAILCHIMP_KEY'));
-    	$list_id = env('MAILCHIMP_LIST_ID');
-
-		// Update a list member with more information (using patch to update)
-        $subscriber_hash = MailChimp::subscriberHash($email_address);
-
-        $result = $MailChimp1->patch("lists/$list_id/members/$subscriber_hash", [
-        				'merge_fields' 	=> ['ADDRESS'=>$address,
-                    						'PHONE'=>$phone
-                    					],
-                        //'interests'    => ['4c18f8c13a' => true, 'e5c9a2241e' => true],
-                    ]);
-        return;
-    }
-
-    public static function tags($email_address, $tag=null)
+    public static function update1($email_address, $tag)
 	{
 		$MailChimp1 = new MailChimp(env('MAILCHIMP_KEY'));
     	$list_id = env('MAILCHIMP_LIST_ID');
@@ -73,6 +56,27 @@ class MailChimp1 extends Model
 		    ),
 		);
 		$result = $MailChimp1->post( "lists/$list_id/members/$subscriber_hash/tags", $payload );
+
+        return;
+    }
+
+    public static function tags($email_address, $tag1)
+	{
+		$MailChimp1 = new MailChimp(env('MAILCHIMP_KEY'));
+    	$list_id = env('MAILCHIMP_LIST_ID');
+
+		// Dodavanje tagova postojecim korisnicima
+        $subscriber_hash = MailChimp::subscriberHash($email_address);
+		
+		for ($key=0; $key < count($tag1); $key++) { 
+	        $payload = array( 'tags' =>
+			    array(
+			        array('name' => $tag1[$key], 'status' => 'active' ),
+			    ),
+			);
+			$result = $MailChimp1->post( "lists/$list_id/members/$subscriber_hash/tags", $payload );
+		}
+		//dd($result);
 		return;
 	}
 }
