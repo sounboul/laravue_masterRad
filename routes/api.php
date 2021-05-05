@@ -8,7 +8,7 @@ use \App\Laravue\JsonResponse;
 use \App\Laravue\Acl;
 
 Route::namespace('Api')->group(function() {
-    Route::get('v1/customers_level_API/{id}', 'BexterController@customers_level_API');
+    Route::get('v1/get_customers_level/{id}', 'BexterController@customers_level_API');
     Route::post('auth/login', 'AuthController@login');
     Route::group(['middleware' => 'auth:sanctum'], function () {
         // Auth routes
