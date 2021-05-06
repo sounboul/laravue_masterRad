@@ -173,7 +173,7 @@ class SellTicoController extends Controller
         }
       
       }
-      else  // upis novih kupca
+      else  // upis novih kupca pored postojecih
       { 
         $counter = customers_api::where('order_id', '>', 0)->orderBy('order_id', 'DESC')->first();
         
@@ -263,6 +263,7 @@ class SellTicoController extends Controller
           $orders->item_article_category_id = $customers['orders'][$a]['items'][$i]['article']['category_id'];
           $temp = $temp + $customers['orders'][$a]['items'][$i]['article']['web_price'] * $customers['orders'][$a]['items'][$i]['quantity'];
           self::categories_api($customers, $a, $i);
+          self::optimize_categories_api();
         }
           $orders->item_article_web_price = intval($temp/$value_point) > $limitPoint ? $limitPoint : intval($temp/$value_point);
       }
