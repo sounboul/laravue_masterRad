@@ -160,7 +160,7 @@ class SellTicoController extends Controller
           $test = MailChimp1::getSubscriber($value->email);
           if($test['status'] == 'subscribed')
           {
-              $update_tags = MailChimp1::update1($value->email, $category_name);
+            $update_tags = MailChimp1::update1($value->email, $category_name);
           }
           else
           {
@@ -173,7 +173,7 @@ class SellTicoController extends Controller
         }
       
       }
-      else  // upis novih kupca
+      else  // upis novih kupca pored postojecih
       { 
         $counter = customers_api::where('order_id', '>', 0)->orderBy('order_id', 'DESC')->first();
         
@@ -265,8 +265,10 @@ class SellTicoController extends Controller
           self::categories_api($customers, $a, $i);
         }
           $orders->item_article_web_price = intval($temp/$value_point) > $limitPoint ? $limitPoint : intval($temp/$value_point);
+          self::optimize_categories_api();
       }
       $orders->save();
+      return;
     }
 
     private function categories_api($customers, $xa, $xi)
@@ -275,6 +277,7 @@ class SellTicoController extends Controller
         $customers_category_api->customer_id = $customers['orders'][$xa]['customer']['id'];
         $customers_category_api->category_id = $customers['orders'][$xa]['items'][$xi]['article']['category_id'];
       $customers_category_api->save();
+      return;
     }
 
     private function optimize_categories_api()
@@ -297,6 +300,7 @@ class SellTicoController extends Controller
           $pomx->delete();
         }
       }
+      return;
     }
 
     public function fetchListTico(Request $request)
@@ -367,17 +371,19 @@ class SellTicoController extends Controller
 
             return response()->json(['success' => 'Podaci snimljeni']);
         }
-      } else {        
-            return response()->json(['errors' => 'Neispravni podaci za logovanje'], 403);
+      } 
+      else 
+      {        
+        return response()->json(['errors' => 'Neispravni podaci za logovanje'], 403);
       }
     }
 
 
     private function getValidationRules($isNew = true)
     {
-        return [
-            'username' => 'required',
-            'pass' => 'required',
-        ];
+      return [
+        'username' => 'required',
+        'pass' => 'required',
+      ];
     }
 }

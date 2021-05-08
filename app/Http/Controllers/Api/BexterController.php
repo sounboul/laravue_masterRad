@@ -19,7 +19,7 @@ class BexterController extends BaseController
     }
 
     
-    public function customers_level_API(Request $request)
+    public function get_customer_level(Request $request)
     {
         $username = $request->header('php-auth-user');
         $pass = $request->header('php-auth-pw');
