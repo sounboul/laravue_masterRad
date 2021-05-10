@@ -11,6 +11,7 @@ Vue.use(Router);
 
 import Layout from '@/layout';
 
+import selfProfileRoutes from './modules/selfProfile';
 import adminRoutes from './modules/admin';
 import articleRoutes from './modules/article';
 /**
@@ -123,32 +124,6 @@ export const constantRoutes = [
     ],
   },
   {
-    path: '/profile',
-    component: Layout,
-    redirect: '/profile/edit',
-    children: [
-      {
-        path: 'edit',
-        component: () => import('@/views/users/SelfProfile'),
-        name: 'SelfProfile',
-        meta: { title: 'userProfile', icon: 'people', noCache: true },
-      },
-    ],
-  },
-  {
-    path: '/discounts',
-    component: Layout,
-    redirect: '/discounts/index',
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/discounts/index'),
-        name: 'Discounts',
-        meta: { title: 'discounts', icon: 'star', noCache: true },
-      },
-    ],
-  },
-  {
     path: '/customers',
     component: Layout,
     redirect: '/customers',
@@ -210,6 +185,24 @@ export const constantRoutes = [
 ];
 
 export const asyncRoutes = [
+  {
+    path: '/discounts',
+    component: Layout,
+    redirect: '/discounts/index',
+    meta: {
+      roles: ['admin', 'manager'],
+    },
+    // permissions: ['view menu manager'],
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/discounts/index'),
+        name: 'Discounts',
+        meta: { roles: ['admin', 'manager'], title: 'discounts', icon: 'star', noCache: true },
+      },
+    ],
+  },
+  selfProfileRoutes,
   articleRoutes,
   adminRoutes,
 ];
