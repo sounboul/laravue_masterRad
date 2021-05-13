@@ -1,0 +1,4 @@
+- Broj kupaca po danima
+- Najpozeljnije kategorije
+- Najverniji kupci
+- Profit po danima

@@ -69,7 +69,7 @@ export const constantRoutes = [
     path: '/401',
     component: () => import('@/views/error-page/401'),
     hidden: true,
-  }, /*
+  },
   {
     path: '',
     component: Layout,
@@ -82,20 +82,20 @@ export const constantRoutes = [
         meta: { title: 'dashboard', icon: 'dashboard', noCache: false },
       },
     ],
-  },*/
-  {
+  },
+  /* {
     path: '',
     component: Layout,
     redirect: '/documentation',
-    /* children: [
+    children: [
       {
         path: 'dashboard',
         component: () => import('@/views/dashboard/index'),
         name: 'Dashboard',
         meta: { title: 'dashboard', icon: 'dashboard', noCache: false },
       },
-    ],*/
-  },
+    ],
+  },*/
   {
     path: '/selling',
     component: Layout,
@@ -114,6 +114,7 @@ export const constantRoutes = [
     path: '/documentation',
     component: Layout,
     redirect: '/documentation/index',
+    hidden: true,
     children: [
       {
         path: 'index',
@@ -192,7 +193,6 @@ export const asyncRoutes = [
     meta: {
       roles: ['admin', 'manager'],
     },
-    // permissions: ['view menu manager'],
     children: [
       {
         path: 'index',
