@@ -64,7 +64,7 @@ class BexterController extends BaseController
     }
 
 
-    public function customers()
+    public function customers(Request $request)
     {
     	$username = $request->header('php-auth-user');
         $pass = $request->header('php-auth-pw');
@@ -177,7 +177,7 @@ class BexterController extends BaseController
 	        else  // upis novih kupaca pored postojecih
 	        { 
 	            $counter = customers_api::where('order_id', '>', 0)->orderBy('order_id', 'DESC')->first();
-	            
+
 	            $num_customers = count($customers['orders'])-1;
 	            for ($i=$num_customers; $i >= 0 ; $i--) { 
 	                $temp = 0;
@@ -187,16 +187,22 @@ class BexterController extends BaseController
 	                        $new_customer = new customers_api;
 	                        $new_customer->customer_id = $customers['orders'][$i]['customer']['id'];
 	                        $new_customer->email = $customers['orders'][$i]['customer']['email'];
-	                        $new_customer->first_name = $customers['orders'][$i]['customer']['first_name'];
-	                        $new_customer->last_name = $customers['orders'][$i]['customer']['last_name'];
+	                        $new_customer->first_name = $customers['orders'][$i]['customer']['name'] === null ? $customers['orders'][$i]['customer']['first_name'] : "?";
+	                        $new_customer->last_name = $customers['orders'][$i]['customer']['name'] === null ? $customers['orders'][$i]['customer']['last_name'] : "?";
 	                        $new_customer->name = $customers['orders'][$i]['customer']['name'];
 	                        $new_customer->phone = $customers['orders'][$i]['customer']['phone'];
-	                        $new_customer->category_id = $customers['orders'][$i]['items'][0]['article']['category_id'];
-	                        for ($y=0; $y < count($customers['orders'][$i]['items']); $y++) {
-	                            $new_customer->order_id = $customers['orders'][$i]['items'][$y]['order_id'];
-	                            $new_customer->updated_at = $customers['orders'][$i]['date'];
-	                            self::categories_api($customers, $i, $y);
-	                            $temp = $temp + $customers['orders'][$i]['items'][$y]['article']['web_price'] * $customers['orders'][$i]['items'][$y]['quantity'];
+	                        if($customers['orders'][$i]['items'] == []){
+	                            $new_customer->category_id = 0;
+	                        }
+	                        else
+	                        {
+	                            $new_customer->category_id = $customers['orders'][$i]['items'][0]['article']['category_id'];
+	                            for ($y=0; $y < count($customers['orders'][$i]['items']); $y++) {
+	                                $new_customer->order_id = $customers['orders'][$i]['items'][$y]['order_id'];
+	                                $new_customer->updated_at = $customers['orders'][$i]['date'];
+	                                self::categories_api($customers, $i, $y);
+	                                $temp = $temp + $customers['orders'][$i]['items'][$y]['article']['web_price'] * $customers['orders'][$i]['items'][$y]['quantity'];
+	                            }
 	                        }
 	                        $new_customer->total_points = intval($temp/$value_point) > $limitPoint ? $limitPoint : intval($temp/$value_point);
 	                        $new_customer->save();
@@ -215,11 +221,20 @@ class BexterController extends BaseController
 	                        }
 
 	                        $new_subscriber = MailChimp1::create($new_customer->email, $new_customer->first_name, $new_customer->last_name, 'AAA', $new_customer->phone, '01/10');
-	                        $update_tags = MailChimp1::tags($new_customer->email, $final_category);
+	                        if (count($final_category) > 1) {
+	                            $update_tags = MailChimp1::tags($new_customer->email, $final_category);
+	                        }
+	                        else
+	                        {
+	                            $update_tags = MailChimp1::update1($new_customer->email, $final_category[0]);
+	                        }
 	                    }
 	                    else        // update postojecih kupaca
 	                    {
 	                        $updated_customer = customers_api::where('customer_id', $new_customer->customer_id)->first();
+	                        if (count($customers['orders'][$i]['items']) == 0) {
+	                            $pom_category = [0];
+	                        }
 	                        for ($x=0; $x < count($customers['orders'][$i]['items']); $x++) {
 	                            $pom_category[$y] = $customers['orders'][$i]['items'][$x]['article']['category_id'];
 	                            $updated_customer->order_id = $customers['orders'][$i]['items'][$x]['order_id'];
@@ -233,7 +248,6 @@ class BexterController extends BaseController
 	                        $update_tags = MailChimp1::tags($updated_customer->email, $pom_category);
 	                    }
 	                }
-	                $counter = customers_api::where('order_id', '>', 0)->orderBy('order_id', 'DESC')->first();
 	            }
 	        }
 	    	return response()->json(['success' => 'Sve ok!!!']);
@@ -259,12 +273,12 @@ class BexterController extends BaseController
         $orders->customer_address = $customers['orders'][$a]['customer']['address'];
         $orders->customer_phone = $customers['orders'][$a]['customer']['phone'];
         if(count($customers['orders'][$a]['items']) > 0){
-            for ($i=0; $i < count($customers['orders'][$a]['items']); $i++) { 
-                $orders->item_quantity = $customers['orders'][$a]['items'][$i]['quantity'];
-                $orders->item_order_id = $customers['orders'][$a]['items'][$i]['id'];
-                $orders->item_article_category_id = $customers['orders'][$a]['items'][$i]['article']['category_id'];
-                $temp = $temp + $customers['orders'][$a]['items'][$i]['article']['web_price'] * $customers['orders'][$a]['items'][$i]['quantity'];
-                self::categories_api($customers, $a, $i);
+            for ($zi=0; $zi < count($customers['orders'][$a]['items']); $zi++) { 
+                $orders->item_quantity = $customers['orders'][$a]['items'][$zi]['quantity'];
+                $orders->item_order_id = $customers['orders'][$a]['items'][$zi]['id'];
+                $orders->item_article_category_id = $customers['orders'][$a]['items'][$zi]['article']['category_id'];
+                $temp = $temp + $customers['orders'][$a]['items'][$zi]['article']['web_price'] * $customers['orders'][$a]['items'][$zi]['quantity'];
+                self::categories_api($customers, $a, $zi);
             }
             $orders->item_article_web_price = intval($temp/$value_point) > $limitPoint ? $limitPoint : intval($temp/$value_point);
             self::optimize_categories_api();
@@ -296,12 +310,15 @@ class BexterController extends BaseController
                                         ->where('id', '>', $double_category_customer[$key]->id)
                                         ->where('customer_id', '=', $start->customer_id)
                                         ->where('category_id', '=', $start->category_id)
-                                        ->first(); 
+                                        ->get(); 
             if($pomx !== null)
             {
-                $pomx->delete();
+                foreach($pomx as $pomy){
+                    $pomy->delete();
+                }
             }
         }
         return;
     }
+
 }
