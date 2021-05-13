@@ -52,17 +52,18 @@ class CategoriesController extends BaseController
                 self::loginAPI()->password
             )->get('http://dev.tico.rs/api/v1/categories');*/
 
-        /*$response = Http::withBasicAuth(
+        $response = Http::withBasicAuth(
                 self::bexterAPI()->username, 
                 self::bexterAPI()->password
-            )->get('https://laravue.bexter.rs/api/v1/update_list');*/
+            )->get('https://laravue.bexter.rs/api/v1/update_list');
 
-        $response = Http::withBasicAuth(
+        /*$response = Http::withBasicAuth(
                 self::loginAPI()->username, 
                 self::loginAPI()->password
-            )->get(web_services::find(1)->route_prefix.route_name::find(1)->api_routes[0]->name);
+            )->get(web_services::find(1)->route_prefix.route_name::find(1)->api_routes[0]->name);*/
         
         $categories = $response->json();
+        dd($categories);
 
         return response()->json(new JsonResponse($categories));
     }
