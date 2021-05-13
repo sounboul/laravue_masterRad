@@ -6,7 +6,6 @@ const selfProfileRoutes = {
   component: Layout,
   redirect: '/profile/edit',
   meta: {
-    // permissions: ['manage permissions'],
     roles: ['admin'],
   },
   children: [

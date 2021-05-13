@@ -380,4 +380,13 @@ export default {
     api_credentials: 'API Referenzen',
     references: 'Verweise',
   },
+  dashboard: {
+    mon: 'Mon',
+    tue: 'Die',
+    wed: 'Mitt',
+    thu: 'Donn',
+    fri: 'Frei',
+    sat: 'Sam',
+    sun: 'Sonn',
+  },
 };

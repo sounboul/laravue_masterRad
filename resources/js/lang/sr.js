@@ -382,4 +382,13 @@ export default {
     api_credentials: 'API podaci',
     references: 'Reference',
   },
+  dashboard: {
+    mon: 'Pon',
+    tue: 'Uto',
+    wed: 'Sre',
+    thu: 'Čet',
+    fri: 'Pet',
+    sat: 'Sub',
+    sun: 'Ned',
+  },
 };

@@ -8,8 +8,9 @@ use \App\Laravue\JsonResponse;
 use \App\Laravue\Acl;
 
 Route::namespace('Api')->group(function() {
-    Route::get('v1/get_customer_level/{id}', 'BexterController@get_customer_level');
     Route::post('auth/login', 'AuthController@login');
+    Route::get('v1/get_customer_level/{id}', 'BexterController@get_customer_level');
+    Route::get('v1/update_list', 'BexterController@customers');
     Route::group(['middleware' => 'auth:sanctum'], function () {
         // Auth routes
         Route::get('auth/user', 'AuthController@user');
@@ -59,6 +60,11 @@ Route::namespace('Api')->group(function() {
 
         // Stores
         Route::get('/stores', 'StoresController@fetchStores');
+
+        // Dashboard
+        Route::get('/getDates', 'SellTicoController@getDates');
+        Route::get('/getValue', 'SellTicoController@chart_values');
+        
 
         // Categories
         Route::get('/categories', 'CategoriesController@fetchCategories');

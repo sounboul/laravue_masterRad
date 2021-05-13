@@ -380,4 +380,13 @@ export default {
     api_credentials: 'API реквизиты для входа',
     references: 'Рекомендации',
   },
+  dashboard: {
+    mon: 'Пон',
+    tue: 'Вто',
+    wed: 'Сре',
+    thu: 'Чет',
+    fri: 'Пят',
+    sat: 'Субб',
+    sun: 'Вос',
+  },
 };
