@@ -11,6 +11,7 @@ Route::namespace('Api')->group(function() {
     Route::post('auth/login', 'AuthController@login');
     Route::get('v1/get_customer_level/{id}', 'BexterController@get_customer_level');
     Route::get('v1/update_list', 'BexterController@customers');
+    Route::post('v1/place_order', 'BexterController@place_order');
     Route::group(['middleware' => 'auth:sanctum'], function () {
         // Auth routes
         Route::get('auth/user', 'AuthController@user');

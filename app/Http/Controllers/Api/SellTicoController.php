@@ -19,6 +19,7 @@ use App\Laravue\Models\api_routes;
 use App\Laravue\Models\route_name;
 use App\Laravue\Models\web_services;
 use App\Laravue\Models\Orders;
+use App\Laravue\Models\Orders_history;
 use \DrewM\MailChimp\MailChimp;
 use \DrewM\MailChimp\Batch;
 use Validator;
@@ -135,7 +136,7 @@ class SellTicoController extends Controller
                     $customers_api->customer_id = $order->customer_id;
                     $customers_api->order_id = $order->order_id;
                     $customers_api->category_id = $order->item_article_category_id === null || $order->item_article_category_id < 0 ? 126 : $order->item_article_category_id;
-                    $customers_api->email = time().$order->customer_email;
+                    $customers_api->email = $order->customer_email;
                     $customers_api->updated_at = $order->updated_at;
                     $customers_api->first_name = $order->customer_first_name === null || $order->customer_first_name == '' ? '?' : $order->customer_first_name;
                     $customers_api->last_name = $order->customer_last_name === null || $order->customer_last_name == '' ? '?' : $order->customer_last_name;
@@ -143,11 +144,11 @@ class SellTicoController extends Controller
                     $customers_api->phone = $order->customer_phone;
 
                     $pom = Orders::where('customer_id', $order->customer_id)->sum('item_article_web_price');
+
                     if ($pom > $limitPoint) {
                         $pom = $limitPoint;
                     }
                     $customers_api->total_points = $pom;
-
                     $customers_api->save();
                 }
             }
@@ -190,7 +191,7 @@ class SellTicoController extends Controller
             for ($i=$num_customers; $i >= 0 ; $i--) { 
                 $temp = 0;
                 if ($counter->order_id < $customers['orders'][$i]['id']) {
-                    $new_customer = customers_api::where('customer_id', $customers['orders'][$i]['customer']['id'])->first();
+                    $new_customer = customers_api::where('email', $customers['orders'][$i]['customer']['email'])->first();
                     if ($new_customer === null) {         // novi kupac
                         $new_customer = new customers_api;
                         $new_customer->customer_id = $customers['orders'][$i]['customer']['id'];
@@ -239,15 +240,19 @@ class SellTicoController extends Controller
                     }
                     else        // update postojecih kupaca
                     {
-                        $updated_customer = customers_api::where('customer_id', $new_customer->customer_id)->first();
+                        $updated_customer = customers_api::where('email', $new_customer->email)->first();
                         if (count($customers['orders'][$i]['items']) == 0) {
                             $pom_category = [0];
                         }
-                        for ($x=0; $x < count($customers['orders'][$i]['items']); $x++) {
-                            $pom_category[$y] = $customers['orders'][$i]['items'][$x]['article']['category_id'];
-                            $updated_customer->order_id = $customers['orders'][$i]['items'][$x]['order_id'];
-                            $updated_customer->updated_at = $customers['orders'][$i]['date'];
-                            $temp = $temp + $customers['orders'][$i]['items'][$x]['article']['web_price'] * $customers['orders'][$i]['items'][$x]['quantity'];
+                        else{
+                            for ($x=0; $x < count($customers['orders'][$i]['items']); $x++) {
+                                $pom_category[$x] = $customers['orders'][$i]['items'][$x]['article']['category_id'];
+                                $updated_customer->order_id = $customers['orders'][$i]['items'][$x]['order_id'];
+                                self::orders_history($customers, $i);
+                                $updated_customer->updated_at = $customers['orders'][$i]['date'];
+                                self::categories_api($customers, $i, $x);
+                                $temp = $temp + $customers['orders'][$i]['items'][$x]['article']['web_price'] * $customers['orders'][$i]['items'][$x]['quantity'];
+                            }
                         }
                         $helper = intval($temp/$value_point) > $limitPoint ? $limitPoint : intval($temp/$value_point);
                         $updated_customer->total_points = $updated_customer->total_points + $helper > $limitPoint ? $limitPoint : $updated_customer->total_points + $helper;
@@ -291,7 +296,19 @@ class SellTicoController extends Controller
             self::optimize_categories_api();
         }
         $orders->save();
+
+        self::orders_history($customers, $a);
+
         return;
+    }
+
+    private function orders_history($customers, $ax)
+    {
+        $orders_history = new orders_history;
+            $orders_history->order_id = $customers['orders'][$ax]['id'];
+            $orders_history->customer_id = $customers['orders'][$ax]['customer']['id'];
+            $orders_history->created_at = $customers['orders'][$ax]['date'];
+        $orders_history->save();
     }
 
     private function categories_api($customers, $xa, $xi)

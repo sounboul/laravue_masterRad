@@ -52,6 +52,11 @@ class CategoriesController extends BaseController
                 self::loginAPI()->password
             )->get('http://dev.tico.rs/api/v1/categories');*/
 
+        /*$response = Http::withBasicAuth(
+                self::bexterAPI()->username, 
+                self::bexterAPI()->password
+            )->get('https://laravue.bexter.rs/api/v1/get_customer_level/59');*/
+
         $response = Http::withBasicAuth(
                 self::bexterAPI()->username, 
                 self::bexterAPI()->password
