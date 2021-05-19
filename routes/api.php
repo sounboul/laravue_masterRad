@@ -11,6 +11,7 @@ Route::namespace('Api')->group(function() {
     Route::post('auth/login', 'AuthController@login');
     Route::get('v1/get_customer_level/{id}', 'BexterController@get_customer_level');
     Route::get('v1/update_list', 'BexterController@customers');
+    Route::post('v1/place_order', 'BexterController@place_order');
     Route::group(['middleware' => 'auth:sanctum'], function () {
         // Auth routes
         Route::get('auth/user', 'AuthController@user');
@@ -116,6 +117,9 @@ Route::namespace('Api')->group(function() {
         // E-mail
         Route::post('/send_mail', 'MailController@send_mail');
         Route::post('/send_sms', 'MailController@send_sms');
+
+        //Validate mail
+        Route::get('/send_mail/{email}', 'Validate_emailController@send_mail');
 
     });
 });

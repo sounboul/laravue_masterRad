@@ -4,7 +4,7 @@ export default {
   /**
    * @type {String}
    */
-  title: 'SellTico Loyalty',
+  title: 'BexterLoyalty',
   theme: variables.theme,
 
   /**

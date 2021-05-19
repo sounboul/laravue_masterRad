@@ -15,6 +15,8 @@ use App\Laravue\Models\PointsDefinitions;
 use App\Laravue\Models\web_services;
 use App\Laravue\Models\api_routes;
 use App\Laravue\Models\route_name;
+use App\Laravue\Models\Orders;
+use \DrewM\MailChimp\MailChimp;
 
 class BexterController extends BaseController
 {
@@ -174,12 +176,12 @@ class BexterController extends BaseController
 	                }
 	            }*/
 	        }
-	        else  // upis novih kupaca pored postojecih
+	        else  // upis/update novih kupaca pored postojecih
 	        { 
 	            $counter = customers_api::where('order_id', '>', 0)->orderBy('order_id', 'DESC')->first();
 
 	            $num_customers = count($customers['orders'])-1;
-	            for ($i=$num_customers; $i >= 0 ; $i--) { 
+	            for ($i=$num_customers; $i >= 0; $i--) { 
 	                $temp = 0;
 	                if ($counter->order_id < $customers['orders'][$i]['id']) {
 	                    $new_customer = customers_api::where('customer_id', $customers['orders'][$i]['customer']['id'])->first();
@@ -239,13 +241,23 @@ class BexterController extends BaseController
 	                            $pom_category[$y] = $customers['orders'][$i]['items'][$x]['article']['category_id'];
 	                            $updated_customer->order_id = $customers['orders'][$i]['items'][$x]['order_id'];
 	                            $updated_customer->updated_at = $customers['orders'][$i]['date'];
+	                            self::categories_api($customers, $i, $x);
 	                            $temp = $temp + $customers['orders'][$i]['items'][$x]['article']['web_price'] * $customers['orders'][$i]['items'][$x]['quantity'];
 	                        }
 	                        $helper = intval($temp/$value_point) > $limitPoint ? $limitPoint : intval($temp/$value_point);
 	                        $updated_customer->total_points = $updated_customer->total_points + $helper > $limitPoint ? $limitPoint : $updated_customer->total_points + $helper;
 	                        $updated_customer->update();
 	                        self::optimize_categories_api();
-	                        $update_tags = MailChimp1::tags($updated_customer->email, $pom_category);
+
+	                        if($pom_category !== [0]){
+		                        foreach($pom_category as $category1){
+		                            $name_category = categories::where('category_id', $category1->category_id)->first();
+		                            if($name_category !== null) {
+		                                $update_tags = MailChimp1::update1($updated_customer->email, $name_category->name);
+		                            }
+		                        }
+		                    }
+	                        //$update_tags = MailChimp1::tags($updated_customer->email, $pom_category);
 	                    }
 	                }
 	            }
@@ -319,6 +331,12 @@ class BexterController extends BaseController
             }
         }
         return;
+    }
+
+
+    public function place_order(Request $request) 
+    {
+
     }
 
 }

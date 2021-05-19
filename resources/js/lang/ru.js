@@ -238,6 +238,12 @@ export default {
     'active': 'Активный',
     'pending': 'В ожидании',
     'deleted': 'Неактивный',
+    'new_user': 'Новый работодатель ',
+    'created_successfully': ' был успешно создан.',
+    'role_is_required': 'Роль обязательна',
+    'name_is_required': 'Имя обязательно',
+    'correct_mail': 'Пожалуйста, введите правильный адрес электронной почты',
+    'password_is_required': 'Hеобходим пароль',
   },
   roles: {
     description: {
