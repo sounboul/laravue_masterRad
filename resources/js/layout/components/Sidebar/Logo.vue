@@ -24,7 +24,7 @@ export default {
   },
   data() {
     return {
-      title: 'SellTico Loyalty',
+      title: 'BexterLoyalty',
       logo: '/images/SellTico.png',
     };
   },
