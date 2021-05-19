@@ -240,6 +240,12 @@ export default {
     'active': 'Aktivan',
     'pending': 'Nepotvrđen',
     'deleted': 'Mirovanje',
+    'new_user': 'Novi radnik ',
+    'created_successfully': ' uspešno kreiran.',
+    'role_is_required': 'Uloga je obavezna',
+    'name_is_required': 'Ime je obavezno',
+    'correct_mail': 'Unesite ispravnu e-mail adresu',
+    'password_is_required': 'Lozinka je obavezna',
   },
   roles: {
     description: {

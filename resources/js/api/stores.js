@@ -6,3 +6,10 @@ export function fetchStores() {
     method: 'get',
   });
 }
+
+export function mail_verification(email) {
+  return request({
+    url: '/send_mail/' + email,
+    method: 'get',
+  });
+}

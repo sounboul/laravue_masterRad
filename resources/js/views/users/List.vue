@@ -87,7 +87,7 @@
 
       <el-table-column align="center" :label="$t('table.actions')" width="350">
         <template slot-scope="scope">
-          <router-link v-if="!scope.row.roles.includes('admin')" :to="'/administrator/users/edit/'+scope.row.id">
+          <router-link v-if="!scope.row.roles.includes('admin') && scope.row.active !== 'deleted'" :to="'/administrator/users/edit/'+scope.row.id">
             <el-button v-permission="['manage user']" type="success" size="mini">
               {{ $t('table.edit') }}
             </el-button>
@@ -95,7 +95,7 @@
           <el-button v-if="!scope.row.roles.includes('admin')" v-permission="['manage permission']" style="background-color: #f58938; color: #000;" size="mini" @click="handleEditPermissions(scope.row.id);">
             {{ $t('route.permission') }}
           </el-button>
-          <el-button v-if="scope.row.roles.includes('visitor')" v-permission="['manage user']" type="danger" size="mini" @click="handleDelete(scope.row.id, scope.row.name);">
+          <el-button v-if="scope.row.roles.includes('visitor') && scope.row.active !== 'deleted'" v-permission="['manage user']" type="danger" size="mini" @click="handleDelete(scope.row.id, scope.row.name);">
             {{ $t('table.delete') }}
           </el-button>
         </template>
@@ -172,7 +172,7 @@
 import Pagination from '@/components/Pagination'; // Secondary package based on el-pagination
 import UserResource from '@/api/user';
 import Resource from '@/api/resource';
-import { fetchStores } from '@/api/stores';
+import { fetchStores, mail_verification } from '@/api/stores';
 import { fetchDepartments } from '@/api/department';
 import waves from '@/directive/waves'; // Waves directive
 import permission from '@/directive/permission'; // Permission directive
@@ -236,13 +236,13 @@ export default {
         rolePermissions: [],
       },
       rules: {
-        role: [{ required: true, message: 'Role is required', trigger: 'change' }],
-        name: [{ required: true, message: 'Name is required', trigger: 'blur' }],
+        role: [{ required: true, message: this.$t('user.role_is_required'), trigger: 'change' }],
+        name: [{ required: true, message: this.$t('user.name_is_required'), trigger: 'blur' }],
         email: [
-          { required: true, message: 'Email is required', trigger: 'blur' },
-          { type: 'email', message: 'Please input correct email address', trigger: ['blur', 'change'] },
+          { required: true, message: this.$t('customers.email_required'), trigger: 'blur' },
+          { type: 'email', message: this.$t('user.correct_mail'), trigger: ['blur', 'change'] },
         ],
-        password: [{ required: true, message: 'Password is required', trigger: 'blur' }],
+        password: [{ required: true, message: this.$t('user.password_is_required'), trigger: 'blur' }],
         confirmPassword: [{ validator: validateConfirmPassword, trigger: 'blur' }],
       },
       permissionProps: {
@@ -415,8 +415,9 @@ export default {
           userResource
             .store(this.newUser)
             .then(response => {
+              this.mail_verification(this.newUser.email);
               this.$message({
-                message: 'New user ' + this.newUser.name + '(' + this.newUser.email + ') has been created successfully.',
+                message: this.$t('user.new_user') + this.newUser.name + '(' + this.newUser.email + ')' + this.$t('user.created_successfully'),
                 type: 'success',
                 duration: 5 * 1000,
               });
@@ -435,6 +436,10 @@ export default {
           return false;
         }
       });
+    },
+    mail_verification(email) {
+      const { data } = mail_verification(email);
+      console.log(data);
     },
     resetNewUser() {
       this.newUser = {

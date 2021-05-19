@@ -29,10 +29,18 @@ class AuthController extends BaseController
     {
         $credentials = $request->only('email', 'password');
         if (!Auth::attempt($credentials)) {
-            return response()->json(new JsonResponse([], 'login_error'), Response::HTTP_UNAUTHORIZED);
+            return response()->json(new JsonResponse([], 'Neispravni podaci!'), Response::HTTP_UNAUTHORIZED);
         }
 
         $user = $request->user();
+        if($user->active == 'pending'){
+            return response()->json(new JsonResponse([], 'Nalog nije verifikovan!'), Response::HTTP_UNAUTHORIZED);
+        }
+        
+        else if ($user->active == 'deleted')
+        {
+            return response()->json(new JsonResponse([], 'Nalog obrisan!'), Response::HTTP_UNAUTHORIZED);   
+        }
 
         return response()->json(new JsonResponse(new UserResource($user)), Response::HTTP_OK);
     }

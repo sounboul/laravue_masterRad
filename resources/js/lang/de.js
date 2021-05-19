@@ -238,6 +238,12 @@ export default {
     'active': 'Aktiv',
     'pending': 'Steht aus',
     'deleted': 'Inaktiv',
+    'new_user': 'Neuer Arbeitgeber ',
+    'created_successfully': ' wurde erfolgreich erstellt.',
+    'role_is_required': 'Rolle ist erforderlich',
+    'name_is_required': 'Name ist erforderlich',
+    'correct_mail': 'Bitte geben Sie die richtige E-Mail-Adresse ein',
+    'password_is_required': 'Passwort wird benötigt',
   },
   roles: {
     description: {

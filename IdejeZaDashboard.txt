@@ -2,3 +2,14 @@
 - Najpozeljnije kategorije
 - Najverniji kupci
 - Profit po danima
+
+
+
+
+
+
+Ime aplikacije se menja u:
+- /opt/lampp/htdocs/Laravue_test/resources/js/settings.js
+- /opt/lampp/htdocs/Laravue_test/resources/js/layout/components/Sidebar/Logo.vue
+- /opt/lampp/htdocs/Laravue_test/resources/js/utils/get-page-title.js
+- 

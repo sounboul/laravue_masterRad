@@ -120,6 +120,7 @@ class UserController extends BaseController
             array_merge(
                 $this->getValidationRules(),
                 [
+                    'email' => 'unique:users',
                     'password' => ['required', 'min:6'],
                     'confirmPassword' => 'same:password',
                 ]
@@ -239,7 +240,8 @@ class UserController extends BaseController
         }
 
         try {
-            $user->delete();
+            $user->active = 'deleted';
+            $user->update();
         } catch (\Exception $ex) {
             return response()->json(['error' => $ex->getMessage()], 403);
         }

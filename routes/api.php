@@ -118,5 +118,8 @@ Route::namespace('Api')->group(function() {
         Route::post('/send_mail', 'MailController@send_mail');
         Route::post('/send_sms', 'MailController@send_sms');
 
+        //Validate mail
+        Route::get('/send_mail/{email}', 'Validate_emailController@send_mail');
+
     });
 });

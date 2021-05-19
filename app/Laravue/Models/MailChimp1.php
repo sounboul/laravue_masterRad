@@ -9,6 +9,16 @@ use \DrewM\MailChimp\Batch;
 
 class MailChimp1 extends Model
 {
+	public static function get_env_mail()
+	{
+		return env('MAIL_USER');
+	} 
+
+	public static function get_env_pass()
+	{
+		return env('MAIL_PASS');
+	} 
+
 	public static function getSubscriber($email_address)
 	{
 		// Get specific subscriber
