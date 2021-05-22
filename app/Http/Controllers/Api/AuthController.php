@@ -34,16 +34,19 @@ class AuthController extends BaseController
 
         $user = $request->user();
         
-        if($user->active == 'pending'){
+        if($user->active == 'active'){
+            return response()->json(new JsonResponse(new UserResource($user)), Response::HTTP_OK);
+        }
+
+        else if($user->active == 'pending'){
             return response()->json(new JsonResponse([], 'Nalog nije verifikovan!'), Response::HTTP_UNAUTHORIZED);
         }
 
-        else if ($user->active == 'deleted')
+        else
         {
             return response()->json(new JsonResponse([], 'Nalog obrisan!'), Response::HTTP_UNAUTHORIZED);   
         }
 
-        return response()->json(new JsonResponse(new UserResource($user)), Response::HTTP_OK);
     }
 
     /**

@@ -20,6 +20,7 @@ use App\Laravue\Models\route_name;
 use App\Laravue\Models\web_services;
 use App\Laravue\Models\Orders;
 use App\Laravue\Models\Orders_history;
+use App\Laravue\Models\Cashing;
 use \DrewM\MailChimp\MailChimp;
 use \DrewM\MailChimp\Batch;
 use Validator;
@@ -136,7 +137,7 @@ class SellTicoController extends Controller
                     $customers_api->customer_id = $order->customer_id;
                     $customers_api->order_id = $order->order_id;
                     $customers_api->category_id = $order->item_article_category_id === null || $order->item_article_category_id < 0 ? 126 : $order->item_article_category_id;
-                    $customers_api->email = $order->customer_email;
+                    $customers_api->email = time().$order->customer_email;
                     $customers_api->updated_at = $order->updated_at;
                     $customers_api->first_name = $order->customer_first_name === null || $order->customer_first_name == '' ? '?' : $order->customer_first_name;
                     $customers_api->last_name = $order->customer_last_name === null || $order->customer_last_name == '' ? '?' : $order->customer_last_name;
@@ -349,13 +350,14 @@ class SellTicoController extends Controller
     {
     		$clear = customers_api::where('order_id', 0)->get();
     		foreach ($clear as $key => $value) {
-            $value->delete();
+                $value->delete();
     		}
 
       	$limit = $request->limit;
       	$customers = customers_api::where('id', '>', 0)->orderBy('customer_id', 'asc')->paginate($limit);
 
       	for ($i=0; $i < count($customers); $i++) {
+              $customers[$i]->total_points = $customers[$i]->total_points - Cashing::get_cashing($customers[$i]->customer_id);
       		  $customers[$i]->level = MemberLevel::findLevel($customers[$i]->total_points);
       	}
     		

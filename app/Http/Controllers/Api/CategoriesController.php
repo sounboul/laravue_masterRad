@@ -13,6 +13,7 @@ use App\Laravue\Models\Credentials;
 use App\Laravue\Models\api_routes;
 use App\Laravue\Models\route_name;
 use App\Laravue\Models\web_services;
+use App\Laravue\Models\Cashing;
 use Illuminate\Support\Facades\Auth;
 
 class CategoriesController extends BaseController
@@ -55,19 +56,33 @@ class CategoriesController extends BaseController
         /*$response = Http::withBasicAuth(
                 self::bexterAPI()->username, 
                 self::bexterAPI()->password
-            )->get('https://laravue.bexter.rs/api/v1/get_customer_level/59');*/
+            )->get('https://laravue.bexter.rs/api/v1/get_customer_level/67');*/
 
-        $response = Http::withBasicAuth(
+        /*$response = Http::withBasicAuth(
                 self::bexterAPI()->username, 
                 self::bexterAPI()->password
-            )->get('https://laravue.bexter.rs/api/v1/update_list');
+            )->get('https://laravue.bexter.rs/api/v1/update_list');*/
 
         /*$response = Http::withBasicAuth(
                 self::loginAPI()->username, 
                 self::loginAPI()->password
             )->get(web_services::find(1)->route_prefix.route_name::find(1)->api_routes[0]->name);*/
+
+        $data = [
+            'customer_id' => 152,
+            'cashed_points' => 1,
+            'user' => 'editor@laravue.dev',
+        ];
+
+        $url = 'https://laravue.bexter.rs/api/v1/cashing';
+
+        $response = Http::withBasicAuth(
+                self::bexterAPI()->username, 
+                self::bexterAPI()->password
+            )->post($url, $data);
         
         $categories = $response->json();
+        //$categories = Cashing::get_cashing('214', '2021-05-21');
         dd($categories);
 
         return response()->json(new JsonResponse($categories));
