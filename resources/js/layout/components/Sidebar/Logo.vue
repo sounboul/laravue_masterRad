@@ -62,15 +62,17 @@ export default {
         vertical-align: middle;
         margin-right: 12px;
         margin-bottom: 12px;
+        margin-top:5px;
       }
 
       & .sidebar-title {
         display: inline-block;
         margin: 0;
+        margin-top: -5px;
         color: #fff;
         font-weight: 600;
         line-height: 50px;
-        font-size: 14px;
+        font-size: 19px;
         font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
         vertical-align: middle;
       }

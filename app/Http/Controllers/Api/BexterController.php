@@ -16,6 +16,7 @@ use App\Laravue\Models\web_services;
 use App\Laravue\Models\api_routes;
 use App\Laravue\Models\route_name;
 use App\Laravue\Models\Orders;
+use App\Laravue\Models\Cashing;
 use \DrewM\MailChimp\MailChimp;
 
 class BexterController extends BaseController
@@ -49,7 +50,7 @@ class BexterController extends BaseController
 			$pom = MemberLevel::findLevelAPI($level);
 
 			return response()->json([
-					'total_points' => $customer->total_points,
+					'total_points' => $customer->total_points - Cashing::get_cashing($request->id),
 					'level' => $level,
 					'level_strength' => $pom->level_strength,
 					'discount_percent' => $pom->discount_percent/10,
@@ -85,7 +86,7 @@ class BexterController extends BaseController
 
 	        if(customers_api::find(-1) === null)    // Upis u prazne tabele - prvo pokretanje aplikacije (Refresh u 'Kupci')
 	        {
-	        	return response()->json(['error' => 'ODMAH KONTAKTIRATI PODRŠKU!!!'], 403);
+	        	return response()->json(['error' => 'ODMAH KONTAKTIRATI PODRŠKU!!! / CONTACT SUPPORT IMMEDIATELY!!!'], 403);
 	            /*$test = new customers_api;
 	            $test->id = -1;
 	            $test->customer_id = -1;
@@ -334,9 +335,39 @@ class BexterController extends BaseController
     }
 
 
-    public function place_order(Request $request) 
+    public function cashing(Request $request)
     {
-
+    	$username = $request->header('php-auth-user');
+        $pass = $request->header('php-auth-pw'); 
+        if ($username == self::bexterAPI()->username && $pass == self::bexterAPI()->password)
+        {  
+            $customer_id = $request['customer_id'];
+            $cashed_points = $request['cashed_points'];
+        	$customer = customers_api::where('customer_id', $customer_id)->first(); 
+        	$customer_cashing = cashing::where('customer_id', $customer_id)->sum('cashed_points');
+        	
+			if($customer === null){
+		        return response()->json(['error' => 'Nepostojeći kupac!'], 403);
+			}
+			else
+			{	
+    			if($customer->total_points - $customer_cashing < $cashed_points)
+    			{
+    			    return response()->json(['error' => 'Kupac nema toliki broj poena!'], 403);
+    			}
+    	    	$new_cashing = new Cashing;
+    	    	$new_cashing->customer_id = $customer_id;
+    	    	$new_cashing->cashed_points = $cashed_points;
+    	    	$new_cashing->save();
+    
+    			$customers_name = customers_api::where("customer_id", $customer_id)->first()->name !== null ? customers_api::where("customer_id", $customer_id)->first()->name : customers_api::where("customer_id", $customer_id)->first()->first_name . " " . customers_api::where("customer_id", $customer_id)->first()->last_name;
+    	    	return response()->json(['success' => 'Korisniku '. $customers_name .' bodovi uspešno unovčeni!!!']);
+			}
+	    }
+	    else
+	    {
+	    	return response()->json(['error' => 'Neispravni podaci!!!']);
+	    }
     }
 
 }

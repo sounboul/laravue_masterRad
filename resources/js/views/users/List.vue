@@ -92,7 +92,7 @@
               {{ $t('table.edit') }}
             </el-button>
           </router-link>
-          <el-button v-if="!scope.row.roles.includes('admin')" v-permission="['manage permission']" style="background-color: #f58938; color: #000;" size="mini" @click="handleEditPermissions(scope.row.id);">
+          <el-button v-if="!scope.row.roles.includes('admin') && scope.row.active !== 'deleted'" v-permission="['manage permission']" style="background-color: #f58938; color: #000;" size="mini" @click="handleEditPermissions(scope.row.id);">
             {{ $t('route.permission') }}
           </el-button>
           <el-button v-if="scope.row.roles.includes('visitor') && scope.row.active !== 'deleted'" v-permission="['manage user']" type="danger" size="mini" @click="handleDelete(scope.row.id, scope.row.name);">
