@@ -46,7 +46,7 @@ class BexterController extends BaseController
 			{
 			    return response()->json(['error' => 'Nepostojeći podaci!'], 403);
 			}
-			$level = MemberLevel::findLevel($customer->total_points);
+			$level = MemberLevel::findLevel($customer->total_points - Cashing::get_cashing($request->id));
 			$pom = MemberLevel::findLevelAPI($level);
 
 			return response()->json([
@@ -343,6 +343,11 @@ class BexterController extends BaseController
         {  
             $customer_id = $request['customer_id'];
             $cashed_points = $request['cashed_points'];
+            $user = $request['user'];
+            $check_user = user::where('email', $user)->first();
+            if ($check_user === null) {
+            	return response()->json(['error' => 'Nepostojeći radnik!'], 403);
+            }
         	$customer = customers_api::where('customer_id', $customer_id)->first(); 
         	$customer_cashing = cashing::where('customer_id', $customer_id)->sum('cashed_points');
         	
@@ -358,6 +363,7 @@ class BexterController extends BaseController
     	    	$new_cashing = new Cashing;
     	    	$new_cashing->customer_id = $customer_id;
     	    	$new_cashing->cashed_points = $cashed_points;
+    	    	$new_cashing->user = $user;
     	    	$new_cashing->save();
     
     			$customers_name = customers_api::where("customer_id", $customer_id)->first()->name !== null ? customers_api::where("customer_id", $customer_id)->first()->name : customers_api::where("customer_id", $customer_id)->first()->first_name . " " . customers_api::where("customer_id", $customer_id)->first()->last_name;

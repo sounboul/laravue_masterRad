@@ -56,7 +56,7 @@ class CategoriesController extends BaseController
         /*$response = Http::withBasicAuth(
                 self::bexterAPI()->username, 
                 self::bexterAPI()->password
-            )->get('https://laravue.bexter.rs/api/v1/get_customer_level/59');*/
+            )->get('https://laravue.bexter.rs/api/v1/get_customer_level/67');*/
 
         /*$response = Http::withBasicAuth(
                 self::bexterAPI()->username, 
@@ -69,8 +69,9 @@ class CategoriesController extends BaseController
             )->get(web_services::find(1)->route_prefix.route_name::find(1)->api_routes[0]->name);*/
 
         $data = [
-            'customer_id' => 93,
-            'cashed_points' => 20, 
+            'customer_id' => 152,
+            'cashed_points' => 1,
+            'user' => 'editor@laravue.dev',
         ];
 
         $url = 'https://laravue.bexter.rs/api/v1/cashing';

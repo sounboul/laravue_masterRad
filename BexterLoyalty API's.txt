@@ -1,0 +1,21 @@
+
+BexterLoyalty API's
+ALL REQUESTS REQUIRED BASIC AUTH!
+
+
+1. Return customer's level
+	endpoint:
+		GET: https://laravue.bexter.rs/api/v1/get_customer_level/{customer_id}
+
+
+2. Initializes the update of customers points for each sell
+	endpoint:
+		GET: https://laravue.bexter.rs/api/v1/update_list
+
+3. Monetization of points
+	endpoint:
+		POST: https://laravue.bexter.rs/api/v1/cashing
+			request:
+				customer_id			integer	| required 
+				cashed_points		integer	| required  	// the number of points to be cashed 
+				user				string	| required		// email of the employee who monetized the customer's points

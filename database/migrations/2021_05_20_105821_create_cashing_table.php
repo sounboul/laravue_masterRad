@@ -17,6 +17,7 @@ class CreateCashingTable extends Migration
             $table->id();
             $table->integer('customer_id');
             $table->integer('cashed_points');
+            $table->string('user');
             $table->timestamps();
         });
     }
