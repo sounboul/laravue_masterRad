@@ -64,8 +64,8 @@ export default {
     };
     return {
       loginForm: {
-        email: 'petkovic.boban@gmail.com',
-        password: 'laravue',
+        email: '',
+        password: '',
       },
       loginRules: {
         email: [{ required: true, trigger: 'blur', validator: validateEmail }],

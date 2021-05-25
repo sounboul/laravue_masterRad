@@ -38,15 +38,15 @@ class MailChimpController extends BaseController
 		// Subscribe someone to a list
         $result = self::mailchimp_credentials()['MailChimp']
         		->post("lists/".self::mailchimp_credentials()['list_id']."/members", [
-                        'email_address' => $request->email_address,
-                        'merge_fields' 	=> ['FNAME'=>$request->fname, 
-                        					'LNAME'=>$request->lname, 
-                        					'ADDRESS'=>$request->address, 
-                        					'PHONE'=>$request->phone, 
-                        					'BIRTHDAY'=>$request->birthday
+                        'email_address'      => $request->email_address,
+                        'merge_fields' 	     => ['FNAME'=>$request->fname, 
+                        					'LNAME'    =>$request->lname, 
+                        					'ADDRESS'  =>$request->address, 
+                        					'PHONE'    =>$request->phone, 
+                        					'BIRTHDAY' =>$request->birthday
                         				],
-                        'tags' 			=> [$request->tags],
-                        'status'        => 'subscribed',
+                        'tags' 			         => [$request->tags],
+                        'status'             => 'subscribed',
                     ]);
 
         if ($result !== null) 
@@ -74,9 +74,10 @@ class MailChimpController extends BaseController
 
         $result = self::mailchimp_credentials()['MailChimp']
         		->patch("lists/".self::mailchimp_credentials()['list_id']."/members/$subscriber_hash", [
-                        'merge_fields' 	=> ['ADDRESS'=>$request->address,
-                    						'PHONE'=>$request->phone
-                    					],
+                        'merge_fields' 	  =>  [
+                                  'ADDRESS' =>  $request->address,
+                      						'PHONE'   =>  $request->phone
+                    					 ],
                         //'interests'    => ['4c18f8c13a' => true, 'e5c9a2241e' => true],
                     ]);
         

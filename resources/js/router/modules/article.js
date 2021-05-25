@@ -30,7 +30,7 @@ const articleRoutes = {
       component: () => import('@/views/articles/Edit'),
       name: 'ArticleImport',
       meta: { title: 'importArticles', icon: 'el-icon-download', roles: ['admin', 'manager'] },
-      // hidden: true,
+      hidden: true,
     },
   ],
 };
