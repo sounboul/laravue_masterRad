@@ -10,9 +10,7 @@
       </div>
       <div class="user-bio-section-body">
         <div class="text-muted">
-          <b>Akademija tehničko-vaspitačkih strukovnih studija - Odsek Niš</b>
-          <p style="font-size: 8pt; margin-top: 27px !important;">Zvanje:</p>
-          <p>Specijalista strukovni inženjer elektrotehnike i računarstva</p>
+          Akademija tehničko-vaspitačkih strukovnih studija u Nišu
         </div>
       </div>
     </div>
@@ -24,15 +22,15 @@
       <div class="user-bio-section-body">
         <div class="progress-item">
           <span>Laravel</span>
-          <el-progress :percentage="78" />
+          <el-progress :percentage="70" />
         </div>
         <div class="progress-item">
           <span>Vue</span>
-          <el-progress :percentage="43" />
+          <el-progress :percentage="18" />
         </div>
         <div class="progress-item">
           <span>JavaScript</span>
-          <el-progress :percentage="47" />
+          <el-progress :percentage="12" />
         </div>
         <div class="progress-item">
           <span>HTML &amp; CSS</span>

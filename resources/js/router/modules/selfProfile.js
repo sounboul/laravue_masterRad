@@ -11,7 +11,7 @@ const selfProfileRoutes = {
   children: [
     {
       path: 'edit',
-      component: () => import('@/views/users/SelfProfile'),
+      component: () => import('@/views/users1/SelfProfile'),
       name: 'selfProfile',
       meta: { title: 'userProfile', icon: 'people' },
     },

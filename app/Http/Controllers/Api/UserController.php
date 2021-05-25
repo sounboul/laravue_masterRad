@@ -123,6 +123,7 @@ class UserController extends BaseController
                     'email' => 'unique:users',
                     'password' => ['required', 'min:6'],
                     'confirmPassword' => 'same:password',
+                    'phone' => ['required'],
                 ]
             )
         );
@@ -135,6 +136,7 @@ class UserController extends BaseController
                 'name' => $params['name'],
                 'email' => $params['email'],
                 'password' => Hash::make($params['password']),
+                'phone' => $params['phone'],
             ]);
             $role = Role::findByName($params['role']);
             $user->syncRoles($role);

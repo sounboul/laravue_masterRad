@@ -11,7 +11,6 @@ Vue.use(Router);
 
 import Layout from '@/layout';
 
-import selfProfileRoutes from './modules/selfProfile';
 import adminRoutes from './modules/admin';
 import articleRoutes from './modules/article';
 /**
@@ -170,22 +169,25 @@ export const constantRoutes = [
       },
     ],
   },*/
+];
+
+export const asyncRoutes = [
   {
     path: '/marketing',
     component: Layout,
     redirect: '/marketing/index',
+    meta: {
+      roles: ['admin', 'manager', 'editor'],
+    },
     children: [
       {
         path: 'index',
         component: () => import('@/views/marketing/index'),
         name: 'Marketing',
-        meta: { title: 'marketing', icon: 'dollar', noCache: true },
+        meta: { roles: ['admin', 'manager', 'editor'], title: 'marketing', icon: 'dollar', noCache: true },
       },
     ],
   },
-];
-
-export const asyncRoutes = [
   {
     path: '/discounts',
     component: Layout,
@@ -202,7 +204,6 @@ export const asyncRoutes = [
       },
     ],
   },
-  selfProfileRoutes,
   articleRoutes,
   adminRoutes,
 ];

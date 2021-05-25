@@ -48,42 +48,48 @@ class CategoriesController extends BaseController
 
     public function fetchCategories()
     {
-    	/*$response = Http::withBasicAuth(
+    	  $response = Http::withBasicAuth(
                 self::loginAPI()->username, 
                 self::loginAPI()->password
-            )->get('http://dev.tico.rs/api/v1/categories');*/
+            )->get('http://dev.tico.rs/api/v1/categories');
 
-        /*$response = Http::withBasicAuth(
-                self::bexterAPI()->username, 
-                self::bexterAPI()->password
-            )->get('https://laravue.bexter.rs/api/v1/get_customer_level/67');*/
-
-        /*$response = Http::withBasicAuth(
-                self::bexterAPI()->username, 
-                self::bexterAPI()->password
-            )->get('https://laravue.bexter.rs/api/v1/update_list');*/
-
-        /*$response = Http::withBasicAuth(
+        /*  $response = Http::withBasicAuth(
                 self::loginAPI()->username, 
                 self::loginAPI()->password
             )->get(web_services::find(1)->route_prefix.route_name::find(1)->api_routes[0]->name);*/
 
-        $data = [
-            'customer_id' => 152,
-            'cashed_points' => 1,
-            'user' => 'editor@laravue.dev',
-        ];
 
-        $url = 'https://laravue.bexter.rs/api/v1/cashing';
 
-        $response = Http::withBasicAuth(
+        /*  $url = 'https://laravue.bexter.rs/api/v1/get_customer_level/93';
+            $response = Http::withBasicAuth(
                 self::bexterAPI()->username, 
                 self::bexterAPI()->password
-            )->post($url, $data);
+            )->get($url);*/
+
+        /*  $url = 'https://laravue.bexter.rs/api/v1/update_list';
+            $response = Http::withBasicAuth(
+                self::bexterAPI()->username, 
+                self::bexterAPI()->password
+            )->get($url);*/
+
+       /*   $data = [
+                'customer_id' => 93,
+                'cashed_points' => 25,
+                'user' => 'editor@laravue.dev',
+            ];
+
+            $url = 'https://laravue.bexter.rs/api/v1/cashing';
+
+            $response = Http::withBasicAuth(
+                    self::bexterAPI()->username, 
+                    self::bexterAPI()->password
+                )->post($url, $data);*/
         
-        $categories = $response->json();
+
         //$categories = Cashing::get_cashing('214', '2021-05-21');
-        dd($categories);
+
+        $categories = $response->json();
+        //dd($categories);
 
         return response()->json(new JsonResponse($categories));
     }

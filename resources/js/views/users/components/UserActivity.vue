@@ -1,71 +1,92 @@
 <template>
   <el-card v-if="user.name">
     <el-tabs v-model="activeActivity" @tab-click="handleClick">
-      <el-tab-pane v-loading="updating" :label="$t('marketing.api_credentials')" name="first">
-        <p>Unos parametara za integraciju putem API-ja</p>
-        <p />
-        <div style="width: 350px; margin-top: 30px; ">
-          <el-form-item :label="$t('login.username')">
-            <el-input v-model="user.username" :disabled="user.role === 'admin'" style="width: 220px; float: right;" />
-          </el-form-item>
-          <el-form-item :label="$t('login.password')">
-            <el-input v-model="user.pass" :disabled="user.role === 'admin'" style="width: 220px; float: right;" />
-          </el-form-item>
-        </div>
-        <el-form-item style="margin:26px 0 0 130px; ">
-          <el-button type="primary" :disabled="user.role === 'admin'" @click="APIcredentials">
-            {{ $t('permission.confirm') }}
-          </el-button>
-        </el-form-item>
-      </el-tab-pane>
-      <el-tab-pane :label="$t('user.education')" name="second">
-        <div class="block">
-          <el-timeline>
-            <el-timeline-item timestamp="10.2017. - 04.2021." placement="top">
-              <el-card>
-                <h4>Akademija tehničko-vaspitačkih STRUKOVNIH STUDIJA - Odsek Niš</h4>
-                <p>Master Strukovne studije – Odsek Multimedijalne komunikacione tehnologije</p>
-                <p>Zvanje: Strukovni Master inženjer elektrotehnike i računarstva</p>
-              </el-card>
-            </el-timeline-item>
-            <el-timeline-item timestamp="10.2012. - 04.2014." placement="top">
-              <el-card>
-                <h4>Visoka Tehnička Škola STRUKOVNIH STUDIJA u Nišu</h4>
-                <p>Specijalističke Strukovne studije – Odsek Informacione tehnologije</p>
-                <p>Zvanje: Specijalista strukovni inženjer elektrotehnike i računarstva</p>
-              </el-card>
-            </el-timeline-item>
-            <el-timeline-item timestamp="10.1996. - 06.1999." placement="top">
-              <el-card>
-                <h4>Viša tehnička škola u Nišu – smer elektrotehnika</h4>
-                <p>Zvanje: Inženjer elektrotehnike</p>
-              </el-card>
-            </el-timeline-item>
-            <el-timeline-item timestamp="09.1985. - 06.1989." placement="top">
-              <el-card>
-                <h4>ETŠ „Mija Stanimirović“ Niš</h4>
-                <p>Zvanje: Elektrotehničar za telekomunikacione uređaje</p>
-              </el-card>
-            </el-timeline-item>
-          </el-timeline>
-        </div>
-      </el-tab-pane>
-      <el-tab-pane :label="$t('marketing.references')" name="third">
+      <el-tab-pane label="Activity" name="first">
         <div class="user-activity">
           <div class="post">
             <div class="user-block">
               <img
-                class="img-circle img-bordered-sm"
-                src="images/Memorandum.png"
-                alt="User Image"
+                class="img-circle"
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDkaQO69Fro8SZLTVZQ75JH2R0T-sn5yIA_lKGwvvgQ0R0BoQtUQ"
+                alt="user image"
               >
-              <span class="username">
-                <a href="https://bexter.rs" target="_blank">BexterDesign</a>
+              <span class="username text-muted">
+                <a href="#">Iron Man</a>
                 <a href="#" class="pull-right btn-box-tool">
                   <i class="fa fa-times" />
                 </a>
               </span>
-              <span class="description">Neki od dosadašnjih projekata autora</span>
+              <span class="description">Shared publicly - 7:30 PM today</span>
+            </div>
+            <p>
+              Lorem ipsum represents a long-held tradition for designers,
+              typographers and the like. Some people hate it and argue for
+              its demise, but others ignore the hate as they create awesome
+              tools to help create filler text for everyone from bacon lovers
+              to Charlie Sheen fans.
+            </p>
+            <ul class="list-inline">
+              <li>
+                <a href="#" class="link-black text-sm">
+                  <i class="el-icon-share" /> Share
+                </a>
+              </li>
+              <li>
+                <a href="#" class="link-black text-sm">
+                  <svg-icon icon-class="like" />Like
+                </a>
+              </li>
+              <li class="pull-right">
+                <a href="#" class="link-black text-sm">
+                  <svg-icon icon-class="comment" />Comments
+                  (5)
+                </a>
+              </li>
+            </ul>
+            <el-input placeholder="Type a comment" />
+          </div>
+          <div class="post">
+            <div class="user-block">
+              <img
+                class="img-circle"
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMMN-8f9CQQ3MKJpboBJIqaiJ2Wus2Tf4w_vx9STtalxrY3qGJ"
+                alt="user image"
+              >
+              <span class="username text-muted">
+                <a href="#">Captain American</a>
+                <a href="#" class="pull-right btn-box-tool">
+                  <i class="fa fa-times" />
+                </a>
+              </span>
+              <span class="description">Sent you a message - yesterday</span>
+            </div>
+            <p>
+              Lorem ipsum represents a long-held tradition for designers,
+              typographers and the like. Some people hate it and argue for
+              its demise, but others ignore the hate as they create awesome
+              tools to help create filler text for everyone from bacon lovers
+              to Charlie Sheen fans.
+            </p>
+            <el-input placeholder="Response">
+              <el-button slot="append">
+                Send
+              </el-button>
+            </el-input>
+          </div>
+          <div class="post">
+            <div class="user-block">
+              <img
+                class="img-circle img-bordered-sm"
+                src="https://cdn3.iconfinder.com/data/icons/movies-3/32/daredevil-superhero-marvel-comics-mutant-avatar-512.png"
+                alt="User Image"
+              >
+              <span class="username">
+                <a href="#">Daredevil</a>
+                <a href="#" class="pull-right btn-box-tool">
+                  <i class="fa fa-times" />
+                </a>
+              </span>
+              <span class="description">Posted 4 photos - 2 days ago</span>
             </div>
             <div class="user-images">
               <el-carousel :interval="6000" type="card" height="200px">
@@ -96,13 +117,56 @@
           </div>
         </div>
       </el-tab-pane>
+      <el-tab-pane label="Timeline" name="second">
+        <div class="block">
+          <el-timeline>
+            <el-timeline-item timestamp="2019/4/17" placement="top">
+              <el-card>
+                <h4>Update Github template</h4>
+                <p>tuandm committed 2019/4/17 20:46</p>
+              </el-card>
+            </el-timeline-item>
+            <el-timeline-item timestamp="2019/4/18" placement="top">
+              <el-card>
+                <h4>Update Github template</h4>
+                <p>tonynguyen committed 2019/4/18 20:46</p>
+              </el-card>
+              <el-card>
+                <h4>Update Github template</h4>
+                <p>tuandm committed 2019/4/19 21:16</p>
+              </el-card>
+            </el-timeline-item>
+            <el-timeline-item timestamp="2019/4/19" placement="top">
+              <el-card>
+                <h4>
+                  Deploy
+                  <a href="https://laravue.dev" target="_blank">laravue.dev</a>
+                </h4>
+                <p>tuandm deployed 2019/4/19 10:23</p>
+              </el-card>
+            </el-timeline-item>
+          </el-timeline>
+        </div>
+      </el-tab-pane>
+      <el-tab-pane v-loading="updating" label="Account" name="third">
+        <el-form-item label="Name">
+          <el-input v-model="user.name" :disabled="user.role === 'admin'" />
+        </el-form-item>
+        <el-form-item label="Email">
+          <el-input v-model="user.email" :disabled="user.role === 'admin'" />
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" :disabled="user.role === 'admin'" @click="onSubmit">
+            {{ $t('user.update') }}
+          </el-button>
+        </el-form-item>
+      </el-tab-pane>
     </el-tabs>
   </el-card>
 </template>
 
 <script>
 import Resource from '@/api/resource';
-import { APIcredentials } from '@/api/article';
 const userResource = new Resource('users');
 
 export default {
@@ -112,9 +176,7 @@ export default {
       default: () => {
         return {
           name: '',
-          username: '',
           email: '',
-          pass: '',
           avatar: '',
           roles: [],
         };
@@ -125,10 +187,10 @@ export default {
     return {
       activeActivity: 'first',
       carouselImages: [
-        'images/dental.jpeg',
-        'images/tours.jpeg',
-        'images/autoskola.jpeg',
-        'images/rachelle.jpeg',
+        'https://cdn.laravue.dev/photo1.png',
+        'https://cdn.laravue.dev/photo2.png',
+        'https://cdn.laravue.dev/photo3.jpg',
+        'https://cdn.laravue.dev/photo4.jpg',
       ],
       updating: false,
     };
@@ -153,10 +215,6 @@ export default {
           console.log(error);
           this.updating = false;
         });
-    },
-    async APIcredentials() {
-      const { data } = await APIcredentials(this.user);
-      console.log(data);
     },
   },
 };

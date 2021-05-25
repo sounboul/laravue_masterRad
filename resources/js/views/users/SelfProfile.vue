@@ -18,16 +18,12 @@
 import UserBio from './components/UserBio';
 import UserCard from './components/UserCard';
 import UserActivity from './components/UserActivity';
-import waves from '@/directive/waves'; // Waves directive
-import permission from '@/directive/permission'; // Permission directive
 
 export default {
   name: 'SelfProfile',
   components: { UserBio, UserCard, UserActivity },
-  directives: { waves, permission },
   data() {
     return {
-      roles: ['admin', 'manager', 'editor', 'user', 'visitor'],
       user: {},
     };
   },

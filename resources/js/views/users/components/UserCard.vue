@@ -9,13 +9,13 @@
           {{ user.name }}
         </div>
         <div class="user-role text-center text-muted">
-          {{ user.email }}
+          {{ getRole() }}
         </div>
       </div>
       <div class="box-social">
         <el-table :data="social" :show-header="false">
-          <el-table-column prop="name" label="Name" width="105" />
-          <el-table-column label="Count" align="right" width="235">
+          <el-table-column prop="name" label="Name" />
+          <el-table-column label="Count" align="right" width="200">
             <template slot-scope="scope">
               {{ scope.row.account }}
             </template>
@@ -39,6 +39,7 @@ export default {
           name: '',
           email: '',
           avatar: '',
+          account: '',
           roles: [],
         };
       },
@@ -49,23 +50,31 @@ export default {
       social: [
         {
           'name': 'Facebook: ',
-          'account': 'facebook.com/bexter.rs',
+          'account': this.acc(),
         },
         {
           'name': 'Instagram: ',
-          'account': 'instagram.com/bexterserbia',
+          'account': 'instagram.account',
         },
         {
           'name': 'Twitter: ',
-          'account': '-',
+          'account': 'twitter.account',
         },
       ],
     };
+  },
+  created() {
+    this.acc();
   },
   methods: {
     getRole() {
       const roles = this.user.roles.map(value => this.$options.filters.uppercaseFirst(value));
       return roles.join(' | ');
+    },
+    acc() {
+      const acc = this.user;
+      console.log(acc);
+      return acc;
     },
   },
 };
@@ -86,8 +95,6 @@ export default {
   }
   .box-social {
     padding-top: 30px;
-    margin-left: -7px;
-    width: 340px;
     .el-table {
       border-top: 1px solid #dfe6ec;
     }

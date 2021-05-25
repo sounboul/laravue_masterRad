@@ -95,7 +95,7 @@
           <el-button v-if="!scope.row.roles.includes('admin') && scope.row.active !== 'deleted'" v-permission="['manage permission']" style="background-color: #f58938; color: #000;" size="mini" @click="handleEditPermissions(scope.row.id);">
             {{ $t('route.permission') }}
           </el-button>
-          <el-button v-if="scope.row.roles.includes('visitor') && scope.row.active !== 'deleted'" v-permission="['manage user']" type="danger" size="mini" @click="handleDelete(scope.row.id, scope.row.name);">
+          <el-button v-if="(scope.row.roles.includes('user') || scope.row.roles.includes('visitor') || scope.row.roles.includes('editor') || scope.row.roles.includes('manager')) && scope.row.active !== 'deleted'" v-permission="['manage user']" type="danger" size="mini" @click="handleDelete(scope.row.id, scope.row.name);">
             {{ $t('table.delete') }}
           </el-button>
         </template>
@@ -153,6 +153,9 @@
           </el-form-item>
           <el-form-item :label="$t('user.confirmPassword')" prop="confirmPassword">
             <el-input v-model="newUser.confirmPassword" show-password />
+          </el-form-item>
+          <el-form-item :label="$t('user.phone')" prop="phone">
+            <el-input v-model="newUser.phone" />
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -417,7 +420,7 @@ export default {
             .then(response => {
               this.mail_verification(this.newUser.email);
               this.$message({
-                message: this.$t('user.new_user') + this.newUser.name + '(' + this.newUser.email + ')' + this.$t('user.created_successfully'),
+                message: this.$t('user.new_user') + this.newUser.name + ' (' + this.newUser.email + ') ' + this.$t('user.created_successfully'),
                 type: 'success',
                 duration: 5 * 1000,
               });
@@ -447,6 +450,7 @@ export default {
         email: '',
         password: '',
         confirmPassword: '',
+        phone: '',
         role: 'user',
       };
     },
