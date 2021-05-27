@@ -21,13 +21,13 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('phone')->nullable();
             $table->string('avatar')->nullable()->default('UnknownUser.png');
-            $table->unsignedBigInteger('stores_id');
+            $table->unsignedBigInteger('stores_id')->default('1');
             $table->foreign('stores_id')->references('id')
                                         ->on('stores')
                                         ->onUpdate('cascade')
                                         ->onDelete('cascade')
                                         ->nullable();
-            $table->unsignedBigInteger('department_id');
+            $table->unsignedBigInteger('department_id')->default('1');
             $table->foreign('department_id')->references('id')
                                         ->on('department')
                                         ->onUpdate('cascade')
