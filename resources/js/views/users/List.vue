@@ -6,7 +6,7 @@
         {{ $t('table.search') }}
       </el-button> -->
       <div style="float: right;">
-        <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-plus" @click="handleCreate">
+        <el-button v-if="checkRole(['admin', 'manager'])" class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-plus" @click="handleCreate">
           {{ $t('table.add') }}
         </el-button>
         <el-button v-waves :loading="downloading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
@@ -157,6 +157,16 @@
           <el-form-item :label="$t('user.phone')" prop="phone">
             <el-input v-model="newUser.phone" />
           </el-form-item>
+          <el-form-item :label="$t('stores.location')" prop="store" style="width: 800px;">
+            <el-select v-model="query.store" :placeholder="$t('stores.location')" clearable style="margin-right: 4%; width: 21%" class="filter-item" @change="handleFilter">
+              <el-option v-for="item in stores" :key="item.id" :label="item.name | uppercaseFirst" :value="item.name" />
+            </el-select>
+          </el-form-item>
+          <el-form-item :label="$t('stores.department')" prop="department">
+            <el-select v-model="query.department" :placeholder="$t('stores.department')" clearable class="filter-item" style=" width: 21%" @change="handleFilter">
+              <el-option v-for="item in departments" :key="item.id" :label="item.name" :value="item.name" />
+            </el-select>
+          </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">
@@ -180,6 +190,7 @@ import { fetchDepartments } from '@/api/department';
 import waves from '@/directive/waves'; // Waves directive
 import permission from '@/directive/permission'; // Permission directive
 import checkPermission from '@/utils/permission'; // Permission checking
+import checkRole from '@/utils/role';
 
 const userResource = new UserResource();
 const permissionResource = new Resource('permissions');
@@ -222,10 +233,10 @@ export default {
         department: '',
       },
       roles: ['admin', 'manager', 'editor', 'user', 'visitor'],
-      // stores: this.getStores(),
-      stores: [],
-      // departments: this.getDepartments(),
-      departments: [],
+      stores: this.getStores(),
+      // stores: [],
+      departments: this.getDepartments(),
+      // departments: [],
       actives: ['active', 'deleted', 'pending'],
       nonAdminRoles: ['editor', 'user', 'visitor'],
       newUser: {},
@@ -330,6 +341,7 @@ export default {
   },
   methods: {
     checkPermission,
+    checkRole,
     async getPermissions() {
       const { data } = await permissionResource.list({});
       const { all, menu, other } = this.classifyPermissions(data);
@@ -451,6 +463,9 @@ export default {
         password: '',
         confirmPassword: '',
         phone: '',
+        avatar: '',
+        stores_id: '',
+        department_id: '',
         role: 'user',
       };
     },
