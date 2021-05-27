@@ -131,11 +131,19 @@ class UserController extends BaseController
             return response()->json(['errors' => $validator->errors()], 403);
         } else {
             $params = $request->all();
+            if ($params['store'] === null) {
+                $params['store'] = 1;
+            }
+            if ($params['department'] === null) {
+                $params['department'] = 1;
+            }
             $user = User::create([
                 'name' => $params['name'],
                 'email' => $params['email'],
                 'password' => Hash::make($params['password']),
                 'phone' => $params['phone'],
+                'stores_id' => $params['store'],
+                'department_id' => $params['department'],
             ]);
             $role = Role::findByName($params['role']);
             $user->syncRoles($role);

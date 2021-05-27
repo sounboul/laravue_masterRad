@@ -157,14 +157,14 @@
           <el-form-item :label="$t('user.phone')" prop="phone">
             <el-input v-model="newUser.phone" />
           </el-form-item>
-          <el-form-item :label="$t('stores.location')" prop="store" style="width: 800px;">
-            <el-select v-model="query.store" :placeholder="$t('stores.location')" clearable style="margin-right: 4%; width: 21%" class="filter-item" @change="handleFilter">
-              <el-option v-for="item in stores" :key="item.id" :label="item.name | uppercaseFirst" :value="item.name" />
+          <el-form-item :label="$t('stores.location')">
+            <el-select v-model="newUser.store" :placeholder="$t('stores.location')" clearable class="filter-item" prop="store" @change="handleFilter">
+              <el-option v-for="item in stores" :key="item.id" :label="item.name | uppercaseFirst" :value="item.id" />
             </el-select>
           </el-form-item>
-          <el-form-item :label="$t('stores.department')" prop="department">
-            <el-select v-model="query.department" :placeholder="$t('stores.department')" clearable class="filter-item" style=" width: 21%" @change="handleFilter">
-              <el-option v-for="item in departments" :key="item.id" :label="item.name" :value="item.name" />
+          <el-form-item :label="$t('stores.department')">
+            <el-select v-model="newUser.department" :placeholder="$t('stores.department')" clearable class="filter-item" prop="department" @change="handleFilter">
+              <el-option v-for="item in departments" :key="item.id" :label="item.name | uppercaseFirst" :value="item.id" />
             </el-select>
           </el-form-item>
         </el-form>
@@ -464,8 +464,8 @@ export default {
         confirmPassword: '',
         phone: '',
         avatar: '',
-        stores_id: '',
-        department_id: '',
+        store: '',
+        department: '',
         role: 'user',
       };
     },
