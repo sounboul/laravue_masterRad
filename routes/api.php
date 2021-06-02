@@ -121,5 +121,7 @@ Route::namespace('Api')->group(function() {
         //Validate mail
         Route::get('/send_mail/{email}', 'Validate_emailController@send_mail');
 
+        //Route::options('/photos/upload', 'CategoriesController@uploadFoto');
+        Route::post('/upload', 'CategoriesController@uploadFoto');
     });
 });

@@ -56,6 +56,25 @@ export default {
       lowestPx: 'Image\'s size is too low. Expected at least: ',
     },
   },
+  sr: {
+    hint: 'Kliknite ili prevucite fajl da biste ga upload-ovali',
+    loading: 'Uploading…',
+    noSupported: 'Browser is not supported, please use IE10+ or other browsers',
+    success: 'Upload success',
+    fail: 'Upload failed',
+    preview: 'Preview',
+    btn: {
+      off: 'Cancel',
+      close: 'Close',
+      back: 'Back',
+      save: 'Save',
+    },
+    error: {
+      onlyImg: 'Image only',
+      outOfSize: 'Image exceeds size limit: ',
+      lowestPx: 'Image\'s size is too low. Expected at least: ',
+    },
+  },
   vi: {
     hint: 'Nhấp chuột hoặc kéo file vào đây để tải lên',
     loading: 'Đang tải lên…',

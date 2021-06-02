@@ -224,6 +224,7 @@ export default {
     'role': 'Роль',
     'password': 'Пароль',
     'confirmPassword': 'Подтвердить пароль',
+    'password_mismatched': 'Неверный пароль!',
     'name': 'Имя',
     'email': 'Email',
     'phone': 'Телефон',

@@ -15,6 +15,7 @@ use App\Laravue\Models\route_name;
 use App\Laravue\Models\web_services;
 use App\Laravue\Models\Cashing;
 use Illuminate\Support\Facades\Auth;
+use App\Models\FileUpload;
 
 class CategoriesController extends BaseController
 {
@@ -99,5 +100,27 @@ class CategoriesController extends BaseController
     {
         $categories = categories::all();
         return response()->json(new JsonResponse(['categories' => $categories]));
+    }
+
+    public function uploadFoto(Request $request)
+    {
+        /*$resData['image'] = 'users/SlikaSokoBanja.png';
+        return response()->json(new JsonResponse(['resData' => $resData]));*/
+         $request->validate([
+           'file' => 'required|mimes:jpg,jpeg,png,csv,txt,xlx,xls,pdf|max:2048'
+        ]);
+
+        $fileUpload = new User;
+
+        if($request->file()) {
+            $file_name = time().'_'.$request->file->getClientOriginalName();
+            $file_path = $request->file('file')->storeAs('uploads', $file_name, 'public');
+
+            $fileUpload->name = time().'_'.$request->file->getClientOriginalName();
+            $fileUpload->path = '/storage/' . $file_path;
+            $fileUpload->save();
+
+            return response()->json(['success'=>'File uploaded successfully.']);
+        }
     }
 }
