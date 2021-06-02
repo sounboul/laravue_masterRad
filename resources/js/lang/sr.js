@@ -225,6 +225,7 @@ export default {
     'role': 'Uloga',
     'password': 'Lozinka',
     'confirmPassword': 'Potvrdi lozinku',
+    'password_mismatched': 'Lozinke se ne podudaraju!',
     'name': 'Ime',
     'email': 'Email',
     'phone': 'Telefon',

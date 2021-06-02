@@ -26,7 +26,7 @@ const adminRoutes = {
       path: 'users',
       component: () => import('@/views/users/List'),
       name: 'UserList',
-      meta: { title: 'users', icon: 'people', permissions: ['manage user'] },
+      meta: { title: 'users', icon: 'peoples', permissions: ['manage user'] },
     },
     /** Role and permission */
     {

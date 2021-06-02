@@ -60,8 +60,8 @@ export default {
     emitInput(val) {
       this.$emit('input', val);
     },
-    handleImageSuccess(file) {
-      this.emitInput(file.files.file);
+    handleImageSuccess(data) {
+      this.emitInput(data.files.file);
     },
   },
 };

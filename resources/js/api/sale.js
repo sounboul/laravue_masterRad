@@ -16,3 +16,12 @@ export function billUpdate(data) {
     data,
   });
 }
+
+export function uploading(data) {
+  // console.log(query);
+  return request({
+    url: '/upload',
+    method: 'post',
+    data,
+  });
+}

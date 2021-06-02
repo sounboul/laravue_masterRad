@@ -136,7 +136,7 @@
 
     <el-dialog :title="$t('user.Create_new_user')" :visible.sync="dialogFormVisible">
       <div v-loading="userCreating" class="form-container">
-        <el-form ref="userForm" :rules="rules" :model="newUser" label-position="left" label-width="150px" style="max-width: 500px;">
+        <el-form ref="userForm" :rules="rules" :model="newUser" :multiple="true" enctype="multipart/form-data" label-position="left" label-width="150px" style="max-width: 500px;">
           <el-form-item :label="$t('user.role')" prop="role">
             <el-select v-model="newUser.role" class="filter-item" :placeholder="$t('user.Please_select_role')">
               <el-option v-for="item in nonAdminRoles" :key="item" :label="item | uppercaseFirst" :value="item" />
@@ -167,6 +167,34 @@
               <el-option v-for="item in departments" :key="item.id" :label="item.name | uppercaseFirst" :value="item.id" />
             </el-select>
           </el-form-item>
+          <!-- <single-image /> -->
+          <!-- <form enctype="multipart/form-data" @submit="formSubmit"> -->
+          <el-form-item :label="$t('stores.department')">
+            <el-upload
+              v-model="newUser.files"
+              :file-list="fileList"
+              :show-file-list="true"
+              :on-remove="handleRemove"
+              :on-success="handleSuccess"
+              :before-upload="beforeUpload"
+              class="editor-slide-upload"
+              action="https://httpbin.org/post"
+              list-type="picture-card"
+            >
+              <el-button size="small" type="primary">
+                Upload
+              </el-button>
+            </el-upload>
+            <!-- <el-button @click="dialogVisible = false">
+              Cancel
+            </el-button>
+            <el-button type="primary" @click="handleSubmit">
+              Confirm
+            </el-button> -->
+            <!-- <input type="file" class="form-control" @change="onChange"> -->
+          </el-form-item>
+          <!-- <button class="btn btn-primary btn-block">Upload</button> -->
+          <!-- </form> -->
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">
@@ -183,7 +211,9 @@
 
 <script>
 import Pagination from '@/components/Pagination'; // Secondary package based on el-pagination
+// import SingleImage from '@/components/Upload/SingleImage';
 import UserResource from '@/api/user';
+import { uploading } from '@/api/sale';
 import Resource from '@/api/resource';
 import { fetchStores, mail_verification } from '@/api/stores';
 import { fetchDepartments } from '@/api/department';
@@ -212,7 +242,7 @@ export default {
   data() {
     var validateConfirmPassword = (rule, value, callback) => {
       if (value !== this.newUser.password) {
-        callback(new Error('Password is mismatched!'));
+        callback(new Error(this.$t('user.password_mismatched')));
       } else {
         callback();
       }
@@ -267,6 +297,12 @@ export default {
       permissions: [],
       menuPermissions: [],
       otherPermissions: [],
+      name: '',
+      file: '',
+      success: '',
+      isVisible: false,
+      listObj: {},
+      fileList: [],
     };
   },
   computed: {
@@ -340,6 +376,81 @@ export default {
     }
   },
   methods: {
+    checkAllSuccess() {
+      return Object.keys(this.listObj).every(item => this.listObj[item].hasSuccess);
+    },
+    handleSubmit() {
+      const arr = Object.keys(this.listObj).map(v => this.listObj[v]);
+      if (!this.checkAllSuccess()) {
+        this.$message('Please wait for all images to be uploaded successfully or there is a network problem, please refresh the page and re-upload!');
+        return;
+      }
+      this.$emit('successCBK', arr);
+      this.listObj = {};
+      this.fileList = [];
+      this.dialogVisible = false;
+    },
+    handleSuccess(response, file) {
+      const uid = file.uid;
+      const objKeyArr = Object.keys(this.listObj);
+      for (let i = 0, len = objKeyArr.length; i < len; i++) {
+        if (this.listObj[objKeyArr[i]].uid === uid) {
+          this.listObj[objKeyArr[i]].url = response.files.file;
+          this.listObj[objKeyArr[i]].hasSuccess = true;
+          return;
+        }
+      }
+    },
+    handleRemove(file) {
+      const uid = file.uid;
+      const objKeyArr = Object.keys(this.listObj);
+      for (let i = 0, len = objKeyArr.length; i < len; i++) {
+        if (this.listObj[objKeyArr[i]].uid === uid) {
+          delete this.listObj[objKeyArr[i]];
+          return;
+        }
+      }
+    },
+    beforeUpload(file) {
+      const _self = this;
+      const _URL = window.URL || window.webkitURL;
+      const fileName = 'picture';
+      this.listObj[fileName] = {};
+      this.newUser.files = this.listObj;
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.src = _URL.createObjectURL(file);
+        img.onload = function() {
+          _self.listObj[fileName] = { hasSuccess: true, uid: file.uid, width: this.width, height: this.height };
+        };
+        resolve(true);
+      });
+    },
+    onChange(e) {
+      this.file = e.target.files[0];
+      /* const data = new FormData();
+      data.append('file', this.file);*/
+    },
+    async formSubmit(e) {
+      e.preventDefault();
+      const existingObj = this;
+
+      const config = {
+        headers: {
+          'content-type': 'multipart/form-data',
+        },
+      };
+
+      const data = new FormData();
+      data.append('file', this.file);
+
+      const { res } = await uploading(data);
+      existingObj.success = res.data.success;
+      console.log(config);
+      /* .catch(function(err) {
+        this.existingObj.output = err;
+      });*/
+    },
     checkPermission,
     checkRole,
     async getPermissions() {
@@ -422,10 +533,25 @@ export default {
         this.$refs.otherPermissions.setCheckedKeys(this.permissionKeys(this.userOtherPermissions));
       });
     },
+    imageChange(file, fileList, name) {
+      // on-change the trigger
+      const data = new FormData();
+      if (file) {
+        // data.append('file', file[name]);
+      }
+      // this.images.file = fileList[0];
+      console.log('AAA', data);
+      console.log(123, file);
+      console.log(456, fileList);
+      console.log(789, name);
+    },
     createUser() {
       this.$refs['userForm'].validate((valid) => {
         if (valid) {
+          // this.newUser.file = this.images.file;
+          // this.newUser.file = this.files;
           this.newUser.roles = [this.newUser.role];
+          console.log(this.newUser);
           this.userCreating = true;
           userResource
             .store(this.newUser)
@@ -451,6 +577,32 @@ export default {
           return false;
         }
       });
+    },
+    uploadform() {
+      const fd = new FormData();
+      console.log(888121212121212, fd.name);
+      fd.append('dsc', this.form.equipmentType);
+      Object.entries(this.images).forEach(file => {
+        file[1].forEach(item => {
+          fd.append('files', item.raw);
+          fd.append(item.name, file[0]);
+        });
+      });
+
+      /* const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      };
+      console.log(this.fileFormData);
+      this.$axios
+        .post(`/a/biEquipment/saveData`, this.fileFormData, config)
+        .then(res => {
+          console.log(res);
+        })
+        .catch(() => {
+          this.$message.error(' failed to save, please try again later ');
+        });*/
     },
     mail_verification(email) {
       const { data } = mail_verification(email);
@@ -581,5 +733,12 @@ export default {
     border: 0 !important;
   }
   @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@1,300;1,400&family=Raleway:wght@500&display=swap');
+
+  .editor-slide-upload {
+  margin-bottom: 20px;
+  /deep/ .el-upload--picture-card {
+    width: 100%;
+  }
+}
 }
 </style>

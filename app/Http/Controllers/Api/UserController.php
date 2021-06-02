@@ -22,6 +22,7 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Validator;
 
 /**
@@ -131,19 +132,47 @@ class UserController extends BaseController
             return response()->json(['errors' => $validator->errors()], 403);
         } else {
             $params = $request->all();
+
             if ($params['store'] === null) {
                 $params['store'] = 1;
             }
             if ($params['department'] === null) {
                 $params['department'] = 1;
             }
+            if($params['files']) {
+                $file = $request['files'];
+                //dd(json_encode($file['url']));
+                $pom = $request['files']['picture'];
+                
+                $image_64 = $pom['url']; //your base64 encoded data
+
+                $extension = explode('/', explode(':', substr($image_64, 0, strpos($image_64, ';')))[1])[1];   // .jpg .png .pdf
+
+                $replace = substr($image_64, 0, strpos($image_64, ',')+1); 
+
+                // find substring fro replace here eg: data:image/png;base64,
+
+                $image = str_replace($replace, '', $image_64); 
+
+                $image = str_replace(' ', '+', $image); 
+
+                $imageName = time().'.'.$extension;
+
+                Storage::disk('my_images')->put($imageName, base64_decode($image));
+
+                $file_path = "users/".$imageName;
+            }
+            else {
+                $file_path = null;
+            }
             $user = User::create([
-                'name' => $params['name'],
-                'email' => $params['email'],
-                'password' => Hash::make($params['password']),
-                'phone' => $params['phone'],
-                'stores_id' => $params['store'],
+                'name'          => $params['name'],
+                'email'         => $params['email'],
+                'password'      => Hash::make($params['password']),
+                'phone'         => $params['phone'],
+                'stores_id'     => $params['store'],
                 'department_id' => $params['department'],
+                'avatar'        => $file_path,
             ]);
             $role = Role::findByName($params['role']);
             $user->syncRoles($role);
