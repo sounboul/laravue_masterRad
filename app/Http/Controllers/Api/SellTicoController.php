@@ -137,7 +137,7 @@ class SellTicoController extends Controller
                     $customers_api->customer_id = $order->customer_id;
                     $customers_api->order_id = $order->order_id;
                     $customers_api->category_id = $order->item_article_category_id === null || $order->item_article_category_id < 0 ? 126 : $order->item_article_category_id;
-                    $customers_api->email = time().$order->customer_email;
+                    $customers_api->email = $order->customer_email;
                     $customers_api->updated_at = $order->updated_at;
                     $customers_api->first_name = $order->customer_first_name === null || $order->customer_first_name == '' ? '?' : $order->customer_first_name;
                     $customers_api->last_name = $order->customer_last_name === null || $order->customer_last_name == '' ? '?' : $order->customer_last_name;

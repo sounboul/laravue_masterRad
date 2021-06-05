@@ -50,7 +50,7 @@ export default {
       social: [
         {
           'name': 'Facebook: ',
-          'account': this.acc(),
+          'account': 'facebook.account',
         },
         {
           'name': 'Instagram: ',
@@ -63,18 +63,10 @@ export default {
       ],
     };
   },
-  created() {
-    this.acc();
-  },
   methods: {
     getRole() {
       const roles = this.user.roles.map(value => this.$options.filters.uppercaseFirst(value));
       return roles.join(' | ');
-    },
-    acc() {
-      const acc = this.user;
-      console.log(acc);
-      return acc;
     },
   },
 };

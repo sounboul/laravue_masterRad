@@ -225,6 +225,7 @@ export default {
     'role': 'Uloga',
     'password': 'Lozinka',
     'confirmPassword': 'Potvrdi lozinku',
+    'new_password': 'Nova lozinka',
     'password_mismatched': 'Lozinke se ne podudaraju!',
     'name': 'Ime',
     'email': 'Email',
@@ -247,6 +248,8 @@ export default {
     'name_is_required': 'Ime je obavezno',
     'correct_mail': 'Unesite ispravnu e-mail adresu',
     'password_is_required': 'Lozinka je obavezna',
+    'details': 'Lični podaci',
+    'activity': 'Aktivnosti',
   },
   roles: {
     description: {

@@ -1,7 +1,87 @@
 <template>
   <el-card v-if="user.name">
     <el-tabs v-model="activeActivity" @tab-click="handleClick">
-      <el-tab-pane label="Activity" name="first">
+      <el-tab-pane v-loading="updating" :label="this.$t('customers.account')" name="first">
+        <div class="first_block">
+          <el-form-item :label="this.$t('user.name')" class="name">
+            <el-input v-model="user.name" :disabled="user.role === 'admin'" />
+          </el-form-item>
+          <el-form-item :label="this.$t('user.email')" class="name">
+            <el-input v-model="user.email" :disabled="user.role === 'admin'" />
+          </el-form-item>
+          <el-form-item :label="this.$t('user.new_password')" class="name">
+            <el-input v-model="user.new_password" :disabled="user.role === 'admin'" />
+          </el-form-item>
+        </div>
+        <br>
+        <div class="first_block">
+          <el-form-item :label="this.$t('user.phone')" class="name">
+            <el-input v-model="user.phone" :disabled="user.role === 'admin'" />
+          </el-form-item>
+          <el-form-item :label="this.$t('stores.location')" class="name">
+            <el-select v-model="user.store" clearable class="name">
+              <el-option v-for="item in stores" :key="item.id" :label="item.name" :value="item.id" />
+            </el-select>
+          </el-form-item>
+          <el-form-item :label="this.$t('stores.department')" class="name">
+            <el-select v-model="user.department" clearable class="name">
+              <el-option v-for="item in departments" :key="item.id" :label="item.name" :value="item.id" />
+            </el-select>
+          </el-form-item>
+        </div>
+        <br>
+        <div class="first_block">
+          <el-form-item v-role="['admin']" :label="this.$t('user.role')" class="name">
+            <el-select v-model="user.role" clearable class="name">
+              <el-option v-for="item in roles" :key="item.id" :label="item | uppercaseFirst" :value="item" />
+            </el-select>
+          </el-form-item>
+          <el-form-item v-role="['manager']" :label="this.$t('user.role')" class="name">
+            <el-select v-model="user.role" clearable class="name">
+              <el-option v-for="item in nonAdminRoles" :key="item.id" :label="item | uppercaseFirst" :value="item" />
+            </el-select>
+          </el-form-item>
+        </div>
+        <br>
+        <br>
+        <el-form-item style="text-align: center;">
+          <el-button type="primary" :disabled="user.role === 'admin'" @click="onSubmit">
+            {{ $t('user.update') }}
+          </el-button>
+        </el-form-item>
+      </el-tab-pane>
+      <el-tab-pane :label="this.$t('user.details')" name="second">
+        <div class="block">
+          <el-timeline>
+            <el-timeline-item timestamp="2019/4/17" placement="top">
+              <el-card>
+                <h4>Update Github template</h4>
+                <p>tuandm committed 2019/4/17 20:46</p>
+              </el-card>
+            </el-timeline-item>
+            <el-timeline-item timestamp="2019/4/18" placement="top">
+              <el-card>
+                <h4>Update Github template</h4>
+                <p>tonynguyen committed 2019/4/18 20:46</p>
+              </el-card>
+              <el-card>
+                <h4>Update Github template</h4>
+                <p>tuandm committed 2019/4/19 21:16</p>
+              </el-card>
+            </el-timeline-item>
+            <el-timeline-item timestamp="2019/4/19" placement="top">
+              <el-card>
+                <h4>
+                  Deploy
+                  <a href="https://laravue.dev" target="_blank">laravue.dev</a>
+                </h4>
+                <p>tuandm deployed 2019/4/19 10:23</p>
+              </el-card>
+            </el-timeline-item>
+          </el-timeline>
+        </div>
+      </el-tab-pane>
+      <el-tab-pane :label="this.$t('user.activity')" name="third">
         <div class="user-activity">
           <div class="post">
             <div class="user-block">
@@ -117,59 +197,19 @@
           </div>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="Timeline" name="second">
-        <div class="block">
-          <el-timeline>
-            <el-timeline-item timestamp="2019/4/17" placement="top">
-              <el-card>
-                <h4>Update Github template</h4>
-                <p>tuandm committed 2019/4/17 20:46</p>
-              </el-card>
-            </el-timeline-item>
-            <el-timeline-item timestamp="2019/4/18" placement="top">
-              <el-card>
-                <h4>Update Github template</h4>
-                <p>tonynguyen committed 2019/4/18 20:46</p>
-              </el-card>
-              <el-card>
-                <h4>Update Github template</h4>
-                <p>tuandm committed 2019/4/19 21:16</p>
-              </el-card>
-            </el-timeline-item>
-            <el-timeline-item timestamp="2019/4/19" placement="top">
-              <el-card>
-                <h4>
-                  Deploy
-                  <a href="https://laravue.dev" target="_blank">laravue.dev</a>
-                </h4>
-                <p>tuandm deployed 2019/4/19 10:23</p>
-              </el-card>
-            </el-timeline-item>
-          </el-timeline>
-        </div>
-      </el-tab-pane>
-      <el-tab-pane v-loading="updating" label="Account" name="third">
-        <el-form-item label="Name">
-          <el-input v-model="user.name" :disabled="user.role === 'admin'" />
-        </el-form-item>
-        <el-form-item label="Email">
-          <el-input v-model="user.email" :disabled="user.role === 'admin'" />
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" :disabled="user.role === 'admin'" @click="onSubmit">
-            {{ $t('user.update') }}
-          </el-button>
-        </el-form-item>
-      </el-tab-pane>
     </el-tabs>
   </el-card>
 </template>
 
 <script>
 import Resource from '@/api/resource';
+import { fetchStores } from '@/api/stores';
+import { fetchDepartments } from '@/api/department';
+import role from '@/directive/role/index.js';
 const userResource = new Resource('users');
 
 export default {
+  directives: { role },
   props: {
     user: {
       type: Object,
@@ -178,7 +218,6 @@ export default {
           name: '',
           email: '',
           avatar: '',
-          roles: [],
         };
       },
     },
@@ -193,11 +232,15 @@ export default {
         'https://cdn.laravue.dev/photo4.jpg',
       ],
       updating: false,
+      departments: this.getDepartments(),
+      stores: this.getStores(),
+      roles: ['manager', 'editor', 'user', 'visitor'],
+      nonAdminRoles: ['editor', 'user', 'visitor'],
     };
   },
   methods: {
     handleClick(tab, event) {
-      console.log('Switching tab ', tab, event);
+      // console.log('Switching tab ', tab, event);
     },
     onSubmit() {
       this.updating = true;
@@ -215,6 +258,17 @@ export default {
           console.log(error);
           this.updating = false;
         });
+    },
+    async getStores() {
+      // this.listLoading = true;
+      const { data } = await fetchStores();
+      this.stores = data.stores;
+      // this.total = data.total;
+      // this.listLoading = false;
+    },
+    async getDepartments() {
+      const { data } = await fetchDepartments();
+      this.departments = data.departments;
     },
   },
 };
@@ -290,5 +344,12 @@ export default {
   .el-carousel__item:nth-child(2n+1) {
     background-color: #d3dce6;
   }
+}
+.name {
+  width: 300px;
+  margin: auto;
+}
+.first_block {
+  display: flex;
 }
 </style>

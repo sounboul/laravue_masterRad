@@ -61,7 +61,7 @@ class Validate_emailController extends Controller
 				<body>
 					<h2>Potvrda e-mail adrese</h2>
 					<h3>Kliknite na link ispod da biste verifikovali e-mail adresu:</h3> 
-					<p><a href="laravue.bexter.rs/verify/'.self::randomPassword($test).'">Link za potvrdu e-mail adrese</a></p>
+					<p><a href="https://laravue.bexter.rs/verify/'.self::randomPassword($test).'">Link za potvrdu e-mail adrese</a></p>
 				</body>
 				</html>
 			';
