@@ -23,6 +23,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 use Validator;
 
 /**
@@ -201,6 +202,7 @@ class UserController extends BaseController
      */
     public function update(Request $request, User $user)
     {
+        //dd($request->all());
         if ($user === null) {
             return response()->json(['error' => 'User not found'], 404);
         }
@@ -228,6 +230,20 @@ class UserController extends BaseController
 
             $user->name = $request->get('name');
             $user->email = $email;
+            if($request->new_password !== null) {
+                $user->password = Hash::make($request->new_password);
+            }
+            $user->phone = $request->phone;
+            if (is_numeric($request->store)) {
+                $user->stores_id = $request->store;
+            }
+            if (is_numeric($request->department)) {
+                $user->department_id = $request->department;
+            }
+            if ($request->role !== null) {
+                $role = Role::findByName($request->role);
+                $user->syncRoles($role);
+            }
             $user->save();
             return new UserResource($user);
         }
@@ -319,11 +335,5 @@ class UserController extends BaseController
                 'array'
             ],
         ];
-    }
-
-    public function getStores()
-    {
-        $stores = Stores::all();
-        return response()->json(['stores' => $stores]);
     }
 }

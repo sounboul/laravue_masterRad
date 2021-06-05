@@ -167,8 +167,6 @@
               <el-option v-for="item in departments" :key="item.id" :label="item.name | uppercaseFirst" :value="item.id" />
             </el-select>
           </el-form-item>
-          <!-- <single-image /> -->
-          <!-- <form enctype="multipart/form-data" @submit="formSubmit"> -->
           <el-form-item :label="$t('stores.department')">
             <el-upload
               v-model="newUser.files"
@@ -185,16 +183,7 @@
                 Upload
               </el-button>
             </el-upload>
-            <!-- <el-button @click="dialogVisible = false">
-              Cancel
-            </el-button>
-            <el-button type="primary" @click="handleSubmit">
-              Confirm
-            </el-button> -->
-            <!-- <input type="file" class="form-control" @change="onChange"> -->
           </el-form-item>
-          <!-- <button class="btn btn-primary btn-block">Upload</button> -->
-          <!-- </form> -->
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">
@@ -211,7 +200,6 @@
 
 <script>
 import Pagination from '@/components/Pagination'; // Secondary package based on el-pagination
-// import SingleImage from '@/components/Upload/SingleImage';
 import UserResource from '@/api/user';
 import { uploading } from '@/api/sale';
 import Resource from '@/api/resource';
@@ -618,6 +606,7 @@ export default {
         avatar: '',
         store: '',
         department: '',
+        files: '',
         role: 'user',
       };
     },

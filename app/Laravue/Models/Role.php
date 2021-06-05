@@ -21,6 +21,7 @@ use Spatie\Permission\Models\Permission;
 class Role extends \Spatie\Permission\Models\Role
 {
     public $guard_name = 'api';
+    protected $table = "roles";
 
     /**
      * Check whether current role is admin

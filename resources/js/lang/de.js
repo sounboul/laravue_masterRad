@@ -224,6 +224,7 @@ export default {
     'role': 'Rolle',
     'password': 'Passwort',
     'confirmPassword': 'Kennwort bestätigen',
+    'new_password': 'Neues Passwort',
     'password_mismatched': 'Passwort stimmt nicht überein!',
     'name': 'Name',
     'email': 'Email',
@@ -245,6 +246,8 @@ export default {
     'name_is_required': 'Name ist erforderlich',
     'correct_mail': 'Bitte geben Sie die richtige E-Mail-Adresse ein',
     'password_is_required': 'Passwort wird benötigt',
+    'details': 'Persönliche Daten',
+    'activity': 'Aktivität',
   },
   roles: {
     description: {

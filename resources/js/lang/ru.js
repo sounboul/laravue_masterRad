@@ -224,6 +224,7 @@ export default {
     'role': 'Роль',
     'password': 'Пароль',
     'confirmPassword': 'Подтвердить пароль',
+    'new_password': 'Новый пароль',
     'password_mismatched': 'Неверный пароль!',
     'name': 'Имя',
     'email': 'Email',
@@ -245,6 +246,8 @@ export default {
     'name_is_required': 'Имя обязательно',
     'correct_mail': 'Пожалуйста, введите правильный адрес электронной почты',
     'password_is_required': 'Hеобходим пароль',
+    'details': 'Личные данные',
+    'activity': 'Aктивность',
   },
   roles: {
     description: {
