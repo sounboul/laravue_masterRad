@@ -6,7 +6,6 @@
 import echarts from 'echarts';
 require('echarts/theme/macarons'); // echarts theme
 import { debounce } from '@/utils';
-import { getDates } from '@/api/dashboard';
 
 export default {
   props: {
@@ -35,8 +34,6 @@ export default {
     return {
       chart: null,
       sidebarElm: null,
-      // days: [this.$t('dashboard.mon'), this.$t('dashboard.tue'), this.$t('dashboard.wed'), this.$t('dashboard.thu'), this.$t('dashboard.fri'), this.$t('dashboard.sat'), this.$t('dashboard.sun')],
-      // days: this.getDates(),
     };
   },
   watch: {
@@ -47,10 +44,8 @@ export default {
       },
     },
   },
-  created() {
-    this.days = this.getDates();
-  },
   mounted() {
+    this.initChart();
     if (this.autoResize) {
       this.__resizeHandler = debounce(() => {
         if (this.chart) {
@@ -83,20 +78,10 @@ export default {
         this.__resizeHandler();
       }
     },
-    async getDates() {
-      const { data } = await getDates();
-      this.days = data;
-      this.initChart();
-    },
-    /* async getValue() {
-      const { data } = await getValue();
-      return data;
-    },*/
     setOptions({ expectedData, actualData } = {}) {
-      console.log(expectedData);
       this.chart.setOption({
         xAxis: {
-          data: this.days,
+          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
           boundaryGap: false,
           axisTick: {
             show: false,
@@ -122,7 +107,6 @@ export default {
           },
         },
         legend: {
-          // data: this.getValue(),
           data: ['expected', 'actual'],
         },
         series: [

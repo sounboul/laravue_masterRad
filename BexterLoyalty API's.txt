@@ -17,5 +17,5 @@ ALL REQUESTS REQUIRED BASIC AUTH!
 		POST: https://laravue.bexter.rs/api/v1/cashing
 			request:
 				customer_id			integer	| required 
-				cashed_points		integer	| required  	// the number of points to be cashed 
-				user				string	| required		// email of the employee who monetized the customer's points
+				cashed_points			integer	| required  	// the number of points to be cashed 
+				user				string	| required	// email of the employee who monetized the customer's points
