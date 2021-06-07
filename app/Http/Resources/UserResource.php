@@ -26,7 +26,9 @@ class UserResource extends JsonResource
             'active' => $this->active,
             'store' => $this->stores->name,
             'department' => Department::find($this->department_id)->name,
-            'account' => $this->account,
+            'f_account' => $this->f_account,
+            'i_account' => $this->i_account,
+            'l_account' => $this->l_account,
             'roles' => array_map(
                 function ($role) {
                     return $role['name'];

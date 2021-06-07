@@ -196,7 +196,7 @@ class SellTicoController extends Controller
                     if ($new_customer === null) {         // novi kupac
                         $new_customer = new customers_api;
                         $new_customer->customer_id = $customers['orders'][$i]['customer']['id'];
-                        $new_customer->email = $customers['orders'][$i]['customer']['email'];
+                        $new_customer->email = time().$customers['orders'][$i]['customer']['email'];
                         $new_customer->first_name = $customers['orders'][$i]['customer']['name'] === null ? $customers['orders'][$i]['customer']['first_name'] : "?";
                         $new_customer->last_name = $customers['orders'][$i]['customer']['name'] === null ? $customers['orders'][$i]['customer']['last_name'] : "?";
                         $new_customer->name = $customers['orders'][$i]['customer']['name'];
@@ -209,6 +209,7 @@ class SellTicoController extends Controller
                             $new_customer->category_id = $customers['orders'][$i]['items'][0]['article']['category_id'];
                             for ($y=0; $y < count($customers['orders'][$i]['items']); $y++) {
                                 $new_customer->order_id = $customers['orders'][$i]['items'][$y]['order_id'];
+                                self::orders_history($customers, $i);
                                 $new_customer->updated_at = $customers['orders'][$i]['date'];
                                 self::categories_api($customers, $i, $y);
                                 $temp = $temp + $customers['orders'][$i]['items'][$y]['article']['web_price'] * $customers['orders'][$i]['items'][$y]['quantity'];
@@ -437,7 +438,7 @@ class SellTicoController extends Controller
     public function chart_values()
     {
         $expectedData1 = array(100, 120, 161, 134, 105, 160, 165, 180, 160, 151, 106, 145, 150, 130);
-        $actualData1 = array(120, 82, 91, 154, 162, 140, 145, 120, 90, 100, 138, 142, 130, 130);
+        $actualData1 = array(150, 82, 91, 154, 162, 140, 145, 120, 90, 100, 138, 142, 130, 130);
         $expectedData2 = array(200, 192, 120, 144, 160, 130, 140, 120, 82, 91, 154, 162, 140, 130);
         $actualData2 = array(180, 160, 151, 106, 145, 150, 130, 80, 100, 121, 104, 105, 90, 100);
         $expectedData3 = array(80, 100, 121, 104, 105, 90, 100, 120, 90, 100, 138, 142, 130, 130);

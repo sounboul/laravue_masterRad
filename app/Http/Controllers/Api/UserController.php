@@ -207,7 +207,7 @@ class UserController extends BaseController
             return response()->json(['error' => 'User not found'], 404);
         }
         if ($user->isAdmin()) {
-            return response()->json(['error' => 'Admin can not be modified'], 403);
+            return response()->json(['error' => 'Admin se ne može ažurirati'], 403);
         }
 
         $currentUser = Auth::user();
@@ -244,6 +244,15 @@ class UserController extends BaseController
                 $role = Role::findByName($request->role);
                 $user->syncRoles($role);
             }
+            if ($request->f_account !== null) {
+                $user->f_account = $request->f_account;
+            }
+            if ($request->i_account !== null) {
+                $user->i_account = $request->i_account;
+            }
+            if ($request->l_account !== null) {
+                $user->l_account = $request->l_account;
+            }
             $user->save();
             return new UserResource($user);
         }
@@ -263,7 +272,7 @@ class UserController extends BaseController
         }
 
         if ($user->isAdmin()) {
-            return response()->json(['error' => 'Admin can not be modified'], 403);
+            return response()->json(['error' => 'Admin se ne može ažurirati'], 403);
         }
 
         $permissionIds = $request->get('permissions', []);

@@ -113,6 +113,7 @@ class BexterController extends BaseController
 	                            $new_customer->category_id = $customers['orders'][$i]['items'][0]['article']['category_id'];
 	                            for ($y=0; $y < count($customers['orders'][$i]['items']); $y++) {
 	                                $new_customer->order_id = $customers['orders'][$i]['items'][$y]['order_id'];
+	                                self::orders_history($customers, $i);
 	                                $new_customer->updated_at = $customers['orders'][$i]['date'];
 	                                self::categories_api($customers, $i, $y);
 	                                $temp = $temp + $customers['orders'][$i]['items'][$y]['article']['web_price'] * $customers['orders'][$i]['items'][$y]['quantity'];
@@ -152,6 +153,7 @@ class BexterController extends BaseController
 	                        for ($x=0; $x < count($customers['orders'][$i]['items']); $x++) {
 	                            $pom_category[$y] = $customers['orders'][$i]['items'][$x]['article']['category_id'];
 	                            $updated_customer->order_id = $customers['orders'][$i]['items'][$x]['order_id'];
+	                            self::orders_history($customers, $i);
 	                            $updated_customer->updated_at = $customers['orders'][$i]['date'];
 	                            self::categories_api($customers, $i, $x);
 	                            $temp = $temp + $customers['orders'][$i]['items'][$x]['article']['web_price'] * $customers['orders'][$i]['items'][$x]['quantity'];

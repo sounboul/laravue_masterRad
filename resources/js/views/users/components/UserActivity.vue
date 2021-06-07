@@ -31,6 +31,18 @@
         </div>
         <br>
         <div class="first_block">
+          <el-form-item label="Facebook" class="name">
+            <el-input v-model="user.f_account" :disabled="user.role === 'admin'" />
+          </el-form-item>
+          <el-form-item label="Instagram" class="name">
+            <el-input v-model="user.i_account" :disabled="user.role === 'admin'" />
+          </el-form-item>
+          <el-form-item label="Linked In" class="name">
+            <el-input v-model="user.l_account" :disabled="user.role === 'admin'" />
+          </el-form-item>
+        </div>
+        <br>
+        <div class="first_block">
           <el-form-item v-role="['admin']" :label="this.$t('user.role')" class="name">
             <el-select v-model="user.role" clearable class="name">
               <el-option v-for="item in roles" :key="item.id" :label="item | uppercaseFirst" :value="item" />
@@ -50,7 +62,7 @@
           </el-button>
         </el-form-item>
       </el-tab-pane>
-      <el-tab-pane :label="this.$t('user.details')" name="second">
+      <el-tab-pane :label="this.$t('user.activity')" name="second">
         <div class="block">
           <el-timeline>
             <el-timeline-item timestamp="2019/4/17" placement="top">
@@ -81,7 +93,7 @@
           </el-timeline>
         </div>
       </el-tab-pane>
-      <el-tab-pane :label="this.$t('user.activity')" name="third">
+      <el-tab-pane :label="this.$t('user.details')" name="third">
         <div class="user-activity">
           <div class="post">
             <div class="user-block">

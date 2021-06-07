@@ -14,11 +14,12 @@
       </div>
       <div class="box-social">
         <el-table :data="social" :show-header="false">
-          <el-table-column prop="name" label="Name" />
-          <el-table-column label="Count" align="right" width="200">
+          <el-table-column prop="name" />
+          <el-table-column align="right" width="200">
             <template slot-scope="scope">
               {{ scope.row.account }}
             </template>
+            <!-- {{ user.account }} -->
           </el-table-column>
         </el-table>
       </div>
@@ -39,7 +40,9 @@ export default {
           name: '',
           email: '',
           avatar: '',
-          account: '',
+          f_account: '',
+          i_account: '',
+          l_account: '',
           roles: [],
         };
       },
@@ -50,18 +53,33 @@ export default {
       social: [
         {
           'name': 'Facebook: ',
-          'account': 'facebook.account',
+          'account': '-',
         },
         {
           'name': 'Instagram: ',
-          'account': 'instagram.account',
+          'account': '-',
         },
         {
-          'name': 'Twitter: ',
-          'account': 'twitter.account',
+          'name': 'Linked In: ',
+          'account': '-',
         },
       ],
     };
+  },
+  watch: {
+    user(user) {
+      this.social = [
+        { 'name': 'Facebook:',
+          'account': this.user.f_account,
+        },
+        { 'name': 'Instagram:',
+          'account': this.user.i_account,
+        },
+        { 'name': 'Linked In:',
+          'account': this.user.l_account,
+        },
+      ];
+    },
   },
   methods: {
     getRole() {
