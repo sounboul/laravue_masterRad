@@ -398,5 +398,8 @@ export default {
     fri: 'Frei',
     sat: 'Sam',
     sun: 'Sonn',
+    turnover: 'Umsatz',
+    sales: 'Umsatz pro Tag',
+    profit: 'Tagesumsatz',
   },
 };

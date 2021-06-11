@@ -40,6 +40,7 @@ export default {
     chartData: {
       deep: true,
       handler(val) {
+        console.log(val);
         this.setOptions(val);
       },
     },
@@ -78,10 +79,10 @@ export default {
         this.__resizeHandler();
       }
     },
-    setOptions({ expectedData, actualData } = {}) {
+    setOptions({ expectedData, actualData, dates } = {}) {
       this.chart.setOption({
         xAxis: {
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          data: Array.from(dates),
           boundaryGap: false,
           axisTick: {
             show: false,
@@ -107,11 +108,11 @@ export default {
           },
         },
         legend: {
-          data: ['expected', 'actual'],
+          data: [this.$t('dashboard.sales'), this.$t('dashboard.profit')],
         },
         series: [
           {
-            name: 'expected',
+            name: this.$t('dashboard.sales'),
             itemStyle: {
               normal: {
                 color: '#FF005A',
@@ -128,7 +129,7 @@ export default {
             animationEasing: 'cubicInOut',
           },
           {
-            name: 'actual',
+            name: this.$t('dashboard.profit'),
             smooth: true,
             type: 'line',
             itemStyle: {
@@ -152,6 +153,7 @@ export default {
     },
     initChart() {
       this.chart = echarts.init(this.$el, 'macarons');
+      console.log(this.chartData);
       this.setOptions(this.chartData);
     },
   },

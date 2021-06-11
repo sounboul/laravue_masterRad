@@ -309,7 +309,7 @@ class SellTicoController extends Controller
         $orders_history = new orders_history;
             $orders_history->order_id = $customers['orders'][$ax]['id'];
             $orders_history->customer_id = $customers['orders'][$ax]['customer']['id'];
-            $orders_history->created_at = $customers['orders'][$ax]['date'];
+            $orders_history->created_at = date_format(date_create($customers['orders'][$ax]['date']), 'Y-m-d');
         $orders_history->save();
     }
 
@@ -435,10 +435,46 @@ class SellTicoController extends Controller
     }
 
 
-    public function chart_values()
-    {
-        $expectedData1 = array(100, 120, 161, 134, 105, 160, 165, 180, 160, 151, 106, 145, 150, 130);
-        $actualData1 = array(150, 82, 91, 154, 162, 140, 145, 120, 90, 100, 138, 142, 130, 130);
+    public function chart_values(Request $request)
+    {           
+        $days = 14;
+        $dates = orders_history::distinct()->select('created_at')->get();
+        for ($k=0; $k < $days; $k++) { 
+            $date[$k] = date_format(date_create($dates[$k]->created_at), 'd.m.Y');
+        }
+        if ($request[0] == 'newVisitis') { 
+            $key = 0;
+            for ($i=0; $i < $days; $i++) { 
+                $temp = orders_history::where('created_at', $dates[$i]->created_at)->count();
+                $pom = orders_history::where('created_at', $dates[$i]->created_at)->first();
+                $expectedData1[$i] = $temp;
+                $response = Http::withBasicAuth(
+                                self::loginAPI()->username, 
+                                self::loginAPI()->password
+                              )
+                            ->get(web_services::find(1)->route_prefix.route_name::find(12)->api_routes[0]->name.'/?id='.$pom->order_id);
+                $customers = $response->json();
+                if (count($customers['orders'][0]['items']) > 0) {
+                    $temp = 0;
+                    for($j=0; $j < count($customers['orders'][0]['items']); $j++){
+                        $actualData1[$i] =  $temp + 
+                                            $customers['orders'][0]['items'][$j]['quantity'] * 
+                                            $customers['orders'][0]['items'][$j]['article']['web_price'];
+                    }
+                    $actualData1[$i] = number_format($actualData1[$i]/1000, 3);
+                }
+                else
+                {
+                    $actualData1[$i] = 0;
+                }
+            }
+        }
+        else 
+        {
+            $expectedData1 = array(200, 192, 120, 144, 160, 130, 140, 120, 82, 91, 154, 162, 140, 130);
+            $actualData1 = array(180, 160, 151, 106, 145, 150, 130, 80, 100, 121, 104, 105, 90, 100);    
+        }
+
         $expectedData2 = array(200, 192, 120, 144, 160, 130, 140, 120, 82, 91, 154, 162, 140, 130);
         $actualData2 = array(180, 160, 151, 106, 145, 150, 130, 80, 100, 121, 104, 105, 90, 100);
         $expectedData3 = array(80, 100, 121, 104, 105, 90, 100, 120, 90, 100, 138, 142, 130, 130);
@@ -451,18 +487,22 @@ class SellTicoController extends Controller
                 'newVisitis' => array(
                     'expectedData' => $expectedData1,
                     'actualData' => $actualData1,
+                    'dates' => $date,
                 ),
                 'messages' => array(
                     'expectedData' => $expectedData2,
                     'actualData' => $actualData2,
+                    'dates' => $date,
                 ),
                 'purchases' => array(
                     'expectedData' => $expectedData3,
                     'actualData' => $actualData3,
+                    'dates' => $date,
                 ),
                 'shoppings' => array(
                     'expectedData' => $expectedData4,
                     'actualData' => $actualData4,
+                    'dates' => $date,
                 ),
             )
         );

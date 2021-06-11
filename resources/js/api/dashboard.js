@@ -15,10 +15,11 @@ export function getDates() {
   });
 }
 
-export function getValue() {
+export function getValue(type) {
   return request({
     url: '/getValue',
     method: 'get',
+    params: type,
   });
 }
 
