@@ -398,5 +398,8 @@ export default {
     fri: 'Пят',
     sat: 'Субб',
     sun: 'Вос',
+    turnover: 'Оборот',
+    sales: 'продажи в день',
+    profit: 'дневной оборот',
   },
 };

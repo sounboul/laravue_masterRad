@@ -398,5 +398,8 @@ export default {
     fri: 'Fri',
     sat: 'Sat',
     sun: 'Sun',
+    turnover: 'Turnover',
+    sales: 'sales per day',
+    profit: 'daily turnover',
   },
 };

@@ -400,5 +400,8 @@ export default {
     fri: 'Pet',
     sat: 'Sub',
     sun: 'Ned',
+    turnover: 'Promet',
+    sales: 'broj prodaja dnevno',
+    profit: 'dnevni promet',
   },
 };
