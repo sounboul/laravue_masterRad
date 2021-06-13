@@ -250,6 +250,7 @@ export default {
     'password_is_required': 'Lozinka je obavezna',
     'details': 'Lični podaci',
     'activity': 'Aktivnosti',
+    'upload': 'Otpremi',
   },
   roles: {
     description: {

@@ -248,6 +248,7 @@ export default {
     'password_is_required': 'Passwort wird benötigt',
     'details': 'Persönliche Daten',
     'activity': 'Aktivität',
+    'upload': 'Hochladen',
   },
   roles: {
     description: {

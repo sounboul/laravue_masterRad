@@ -248,6 +248,7 @@ export default {
     'password_is_required': 'Hеобходим пароль',
     'details': 'Личные данные',
     'activity': 'Aктивность',
+    'upload': 'Загрузить',
   },
   roles: {
     description: {

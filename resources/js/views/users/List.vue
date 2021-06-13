@@ -167,7 +167,7 @@
               <el-option v-for="item in departments" :key="item.id" :label="item.name | uppercaseFirst" :value="item.id" />
             </el-select>
           </el-form-item>
-          <el-form-item :label="$t('stores.department')">
+          <el-form-item :label="$t('route.avatarUpload')">
             <el-upload
               v-model="newUser.files"
               :file-list="fileList"
@@ -180,7 +180,7 @@
               list-type="picture-card"
             >
               <el-button size="small" type="primary">
-                Upload
+                {{ $t('user.upload') }}
               </el-button>
             </el-upload>
           </el-form-item>
