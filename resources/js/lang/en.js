@@ -248,6 +248,7 @@ export default {
     'password_is_required': 'Password is required',
     'details': 'Personal data',
     'activity': 'Activity',
+    'upload': 'Upload',
   },
   roles: {
     description: {
