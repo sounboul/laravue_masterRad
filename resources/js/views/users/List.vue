@@ -170,6 +170,7 @@
           <el-form-item :label="$t('route.avatarUpload')">
             <el-upload
               v-model="newUser.files"
+              :multiple="true"
               :file-list="fileList"
               :show-file-list="true"
               :on-remove="handleRemove"
@@ -186,7 +187,7 @@
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">
+          <el-button @click="resetNewUser()">
             {{ $t('table.cancel') }}
           </el-button>
           <el-button type="primary" @click="createUser()">
@@ -461,11 +462,8 @@ export default {
       this.loading = false;
     },
     async getStores() {
-      // this.listLoading = true;
       const { data } = await fetchStores();
       this.stores = data.stores;
-      // this.total = data.total;
-      // this.listLoading = false;
     },
     async getDepartments() {
       const { data } = await fetchDepartments();
@@ -527,7 +525,6 @@ export default {
       if (file) {
         // data.append('file', file[name]);
       }
-      // this.images.file = fileList[0];
       console.log('AAA', data);
       console.log(123, file);
       console.log(456, fileList);
@@ -536,8 +533,6 @@ export default {
     createUser() {
       this.$refs['userForm'].validate((valid) => {
         if (valid) {
-          // this.newUser.file = this.images.file;
-          // this.newUser.file = this.files;
           this.newUser.roles = [this.newUser.role];
           console.log(this.newUser);
           this.userCreating = true;
@@ -576,21 +571,6 @@ export default {
           fd.append(item.name, file[0]);
         });
       });
-
-      /* const config = {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      };
-      console.log(this.fileFormData);
-      this.$axios
-        .post(`/a/biEquipment/saveData`, this.fileFormData, config)
-        .then(res => {
-          console.log(res);
-        })
-        .catch(() => {
-          this.$message.error(' failed to save, please try again later ');
-        });*/
     },
     mail_verification(email) {
       const { data } = mail_verification(email);
@@ -609,6 +589,10 @@ export default {
         files: '',
         role: 'user',
       };
+      this.handleRemove(this.file);
+      this.listObj = {};
+      this.fileList = [];
+      this.dialogFormVisible = false;
     },
     handleDownload() {
       this.downloading = true;
@@ -726,7 +710,7 @@ export default {
   .editor-slide-upload {
   margin-bottom: 20px;
   /deep/ .el-upload--picture-card {
-    width: 100%;
+    width: 50%;
   }
 }
 }

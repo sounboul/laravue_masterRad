@@ -187,7 +187,7 @@ class SellTicoController extends Controller
         else  // upis novih kupaca pored postojecih
         { 
             $counter = customers_api::where('order_id', '>', 0)->orderBy('order_id', 'DESC')->first();
-
+            
             $num_customers = count($customers['orders'])-1;
             for ($i=$num_customers; $i >= 0 ; $i--) { 
                 $temp = 0;
