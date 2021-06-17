@@ -170,12 +170,12 @@
           <el-form-item :label="$t('route.avatarUpload')">
             <el-upload
               v-model="newUser.files"
-              :multiple="true"
               :file-list="fileList"
               :show-file-list="true"
               :on-remove="handleRemove"
               :on-success="handleSuccess"
               :before-upload="beforeUpload"
+              :limit="1"
               class="editor-slide-upload"
               action="https://httpbin.org/post"
               list-type="picture-card"

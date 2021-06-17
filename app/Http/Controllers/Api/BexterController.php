@@ -2,22 +2,28 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Laravue\Models\MemberLevel;
-use App\Laravue\Models\customers_api;
-use App\Laravue\JsonResponse;
-use App\Laravue\Models\User;
 use Illuminate\Support\Facades\Http;
-use App\Laravue\Models\Credentials;
+use Illuminate\Support\Facades\Hash;
+use App\Laravue\JsonResponse;
+use Illuminate\Http\Resources\Json\JsonResource;
+use App\Laravue\Models\customers_api;
 use App\Laravue\Models\customers_category_api;
+use App\Laravue\Models\MemberLevel;
+use App\Laravue\Models\MailChimp1;
+use App\Laravue\Models\Credentials;
 use App\Laravue\Models\Categories;
 use App\Laravue\Models\PointsDefinitions;
-use App\Laravue\Models\web_services;
 use App\Laravue\Models\api_routes;
 use App\Laravue\Models\route_name;
+use App\Laravue\Models\web_services;
 use App\Laravue\Models\Orders;
+use App\Laravue\Models\Orders_history;
 use App\Laravue\Models\Cashing;
 use \DrewM\MailChimp\MailChimp;
+use \DrewM\MailChimp\Batch;
+use Validator;
 
 class BexterController extends BaseController
 {
@@ -91,12 +97,12 @@ class BexterController extends BaseController
 	        else  // upis/update novih kupaca pored postojecih
 	        { 
 	            $counter = customers_api::where('order_id', '>', 0)->orderBy('order_id', 'DESC')->first();
-
+	            
 	            $num_customers = count($customers['orders'])-1;
-	            for ($i=$num_customers; $i >= 0; $i--) { 
+	            for ($i=$num_customers; $i >= 0 ; $i--) { 
 	                $temp = 0;
 	                if ($counter->order_id < $customers['orders'][$i]['id']) {
-	                    $new_customer = customers_api::where('customer_id', $customers['orders'][$i]['customer']['id'])->first();
+	                    $new_customer = customers_api::where('email', $customers['orders'][$i]['customer']['email'])->first();
 	                    if ($new_customer === null) {         // novi kupac
 	                        $new_customer = new customers_api;
 	                        $new_customer->customer_id = $customers['orders'][$i]['customer']['id'];
@@ -146,39 +152,36 @@ class BexterController extends BaseController
 	                    }
 	                    else        // update postojecih kupaca
 	                    {
-	                        $updated_customer = customers_api::where('customer_id', $new_customer->customer_id)->first();
+	                        $updated_customer = customers_api::where('email', $new_customer->email)->first();
 	                        if (count($customers['orders'][$i]['items']) == 0) {
 	                            $pom_category = [0];
 	                        }
-	                        for ($x=0; $x < count($customers['orders'][$i]['items']); $x++) {
-	                            $pom_category[$y] = $customers['orders'][$i]['items'][$x]['article']['category_id'];
-	                            $updated_customer->order_id = $customers['orders'][$i]['items'][$x]['order_id'];
-	                            self::orders_history($customers, $i);
-	                            $updated_customer->updated_at = $customers['orders'][$i]['date'];
-	                            self::categories_api($customers, $i, $x);
-	                            $temp = $temp + $customers['orders'][$i]['items'][$x]['article']['web_price'] * $customers['orders'][$i]['items'][$x]['quantity'];
+	                        else{
+	                            for ($x=0; $x < count($customers['orders'][$i]['items']); $x++) {
+	                                $pom_category[$x] = categories::where('category_id', $customers['orders'][$i]['items'][$x]['article']['category_id'])->first()->name;
+	                                $updated_customer->order_id = $customers['orders'][$i]['items'][$x]['order_id'];
+	                                self::orders_history($customers, $i);
+	                                $updated_customer->updated_at = $customers['orders'][$i]['date'];
+	                                self::categories_api($customers, $i, $x);
+	                                $temp = $temp + $customers['orders'][$i]['items'][$x]['article']['web_price'] * $customers['orders'][$i]['items'][$x]['quantity'];
+	                            }
 	                        }
 	                        $helper = intval($temp/$value_point) > $limitPoint ? $limitPoint : intval($temp/$value_point);
 	                        $updated_customer->total_points = $updated_customer->total_points + $helper > $limitPoint ? $limitPoint : $updated_customer->total_points + $helper;
 	                        $updated_customer->update();
 	                        self::optimize_categories_api();
-
-	                        if($pom_category !== [0]){
-		                        foreach($pom_category as $category1){
-		                            $name_category = categories::where('category_id', $category1->category_id)->first();
-		                            if($name_category !== null) {
-		                                $update_tags = MailChimp1::update1($updated_customer->email, $name_category->name);
-		                            }
-		                        }
-		                    }
-	                        //$update_tags = MailChimp1::tags($updated_customer->email, $pom_category);
+	                        $update_tags = MailChimp1::tags($updated_customer->email, $pom_category);
 	                    }
-	                }
+		            }
 	            }
-	        }
-	    	return response()->json(['success' => 'Sve ok!!!']);
+		    	return response()->json(['success' => 'Sve ok!!!']);
+		    }
 	    }
-    }
+	    else
+	    {
+	    	return response()->json(['error' => 'Neispravni podaci!!!']);
+	    }
+	}
 
 
     private function store_customers($customers, $a, $value_point, $limitPoint)
@@ -211,6 +214,15 @@ class BexterController extends BaseController
         }
         $orders->save();
         return;
+    }
+
+    private function orders_history($customers, $ax)
+    {
+        $orders_history = new orders_history;
+            $orders_history->order_id = $customers['orders'][$ax]['id'];
+            $orders_history->customer_id = $customers['orders'][$ax]['customer']['id'];
+            $orders_history->created_at = date_format(date_create($customers['orders'][$ax]['date']), 'Y-m-d');
+        $orders_history->save();
     }
 
     private function categories_api($customers, $xa, $xi)

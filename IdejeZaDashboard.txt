@@ -13,3 +13,11 @@ Ime aplikacije se menja u:
 - /opt/lampp/htdocs/Laravue_test/resources/js/layout/components/Sidebar/Logo.vue
 - /opt/lampp/htdocs/Laravue_test/resources/js/utils/get-page-title.js
 - 
+
+
+
+Laravel framework is my specialty, I learn Vue.js recently, MySQL and PostgreSQL databases are
+types of databases that I work with. I work in Linux Ubuntu OS where I use LAMP as a local
+environment. From Source Version Control I have dealing with Github and Bitbucket. The Apache
+server configuration is well known to me.
+The last project I worked on was the Loyalty Program (https://laravue.bexter.rs - email: manager@laravue.dev password: laravue), (developed in Laravel 7 and Vue.js 2.6) which can be integrated into any e-shop (API) from whose database integration with MailChimp is performed for the purpose of automated sending of advertising messages / campaigns. 

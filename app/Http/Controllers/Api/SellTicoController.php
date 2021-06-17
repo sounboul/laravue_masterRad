@@ -136,7 +136,7 @@ class SellTicoController extends Controller
                     $customers_api = new customers_api;
                     $customers_api->customer_id = $order->customer_id;
                     $customers_api->order_id = $order->order_id;
-                    $customers_api->category_id = $order->item_article_category_id === null || $order->item_article_category_id < 0 ? 126 : $order->item_article_category_id;
+                    $customers_api->category_id = $order->item_article_category_id === null || $order->item_article_category_id < 0 ? 0 : $order->item_article_category_id;
                     $customers_api->email = $order->customer_email;
                     $customers_api->updated_at = $order->updated_at;
                     $customers_api->first_name = $order->customer_first_name === null || $order->customer_first_name == '' ? '?' : $order->customer_first_name;
@@ -157,27 +157,29 @@ class SellTicoController extends Controller
             // Registruje suscribere na MailChimp
             
             $old_customers = customers_api::where('customer_id', '>', 0)->get();
-            foreach ($old_customers as $key => $value) {          
-                $category_name = categories::where('category_id', $value->category_id)->first()->name;
-                $test = MailChimp1::getSubscriber($value->email);
-                if($test['status'] == 'subscribed')
-                {
-                    $update_tags = MailChimp1::update1($value->email, $category_name);
-                }
-                else
-                {
-                    if ($value->name !== null) {
-                        $first_name = $value->name;
-                        $last_name = '';
+            foreach ($old_customers as $key => $value) {
+                if($value->category_id != 0){     
+                    $category_name = categories::where('category_id', $value->category_id)->first()->name;
+                    $test = MailChimp1::getSubscriber($value->email);
+                    if($test['status'] == 'subscribed')
+                    {
+                        $update_tags = MailChimp1::update1($value->email, $category_name);
                     }
-                    $new_subscriber = MailChimp1::create($value->email, $value->first_name, $value->last_name, 'AAA', $value->phone, '01/10');
-                    $category_pom = customers_category_api::where('customer_id', $value->customer_id)->get();
-                    
-                    if($category_pom !== null){
-                        foreach($category_pom as $category1){
-                            $name_category = categories::where('category_id', $category1->category_id)->first();
-                            if($name_category !== null) {
-                                $update_tags = MailChimp1::update1($value->email, $name_category->name);
+                    else
+                    {
+                        if ($value->name !== null) {
+                            $first_name = $value->name;
+                            $last_name = '';
+                        }
+                        $new_subscriber = MailChimp1::create($value->email, $value->first_name, $value->last_name, 'AAA', $value->phone, '01/10');
+                        $category_pom = customers_category_api::where('customer_id', $value->customer_id)->get();
+                        
+                        if($category_pom !== null){
+                            foreach($category_pom as $category1){
+                                $name_category = categories::where('category_id', $category1->category_id)->first();
+                                if($name_category !== null) {
+                                    $update_tags = MailChimp1::update1($value->email, $name_category->name);
+                                }
                             }
                         }
                     }
@@ -196,7 +198,7 @@ class SellTicoController extends Controller
                     if ($new_customer === null) {         // novi kupac
                         $new_customer = new customers_api;
                         $new_customer->customer_id = $customers['orders'][$i]['customer']['id'];
-                        $new_customer->email = time().$customers['orders'][$i]['customer']['email'];
+                        $new_customer->email = $customers['orders'][$i]['customer']['email'];
                         $new_customer->first_name = $customers['orders'][$i]['customer']['name'] === null ? $customers['orders'][$i]['customer']['first_name'] : "?";
                         $new_customer->last_name = $customers['orders'][$i]['customer']['name'] === null ? $customers['orders'][$i]['customer']['last_name'] : "?";
                         $new_customer->name = $customers['orders'][$i]['customer']['name'];
@@ -248,7 +250,7 @@ class SellTicoController extends Controller
                         }
                         else{
                             for ($x=0; $x < count($customers['orders'][$i]['items']); $x++) {
-                                $pom_category[$x] = $customers['orders'][$i]['items'][$x]['article']['category_id'];
+                                $pom_category[$x] = categories::where('category_id', $customers['orders'][$i]['items'][$x]['article']['category_id'])->first()->name;
                                 $updated_customer->order_id = $customers['orders'][$i]['items'][$x]['order_id'];
                                 self::orders_history($customers, $i);
                                 $updated_customer->updated_at = $customers['orders'][$i]['date'];
