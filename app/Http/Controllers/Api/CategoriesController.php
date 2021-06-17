@@ -67,7 +67,7 @@ class CategoriesController extends BaseController
                 self::bexterAPI()->password
             )->get($url);*/
 
-        /*  $url = 'https://laravue.bexter.rs/api/v1/update_list';
+          /*$url = 'https://laravue.bexter.rs/api/v1/update_list';
             $response = Http::withBasicAuth(
                 self::bexterAPI()->username, 
                 self::bexterAPI()->password
