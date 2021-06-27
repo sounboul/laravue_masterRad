@@ -64,19 +64,6 @@ import { parseTime } from '@/utils';
 import checkRole from '@/utils/role';
 import Pagination from '@/components/Pagination'; // Secondary package based on el-pagination
 
-/* const calendarTypeOptions = [
-  { key: 'CN', display_name: 'China' },
-  { key: 'US', display_name: 'USA' },
-  { key: 'JA', display_name: 'Japan' },
-  { key: 'VI', display_name: 'Vietnam' },
-];
-
-// arr to obj ,such as { CN : "China", US : "USA" }
-const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
-  acc[cur.key] = cur.display_name;
-  return acc;
-}, {});*/
-
 export default {
   name: 'CustomerList',
   components: { Pagination },
@@ -91,9 +78,6 @@ export default {
       };
       return statusMap[active];
     },
-    /* typeFilter(type) {
-      return calendarTypeKeyValue[type];
-    },*/
   },
   data() {
     return {
@@ -117,7 +101,6 @@ export default {
         showDeletedCustomers: true,
       },
       importanceOptions: [1, 2, 3],
-      // calendarTypeOptions,
       checkRole,
       sortOptions: [{ label: 'ascending', key: '+id' }, { label: 'descending', key: '-id' }],
       statusOptions: ['active', 'pending', 'deleted'],
@@ -157,8 +140,6 @@ export default {
     };
   },
   created() {
-    // this.getList();
-    // this.customersTico();
     this.fetchListTico();
   },
   methods: {

@@ -19,6 +19,7 @@ class MemberLevelController extends Controller
     	function myfunction($v)
 		{
 			$v->discount_percent = $v->discount_percent/10;
+			$v->temp_discount = $v->temp_discount/10;
 		  	return($v);
 		}
 
@@ -55,6 +56,7 @@ class MemberLevelController extends Controller
     	function myfunction($v)
 		{
 			$v->discount_percent = $v->discount_percent/10;
+			$v->temp_discount = $v->temp_discount/10;
 		  	return($v);
 		}
 
@@ -252,11 +254,13 @@ class MemberLevelController extends Controller
 		{
 			$level->discount_start_date =  date_format(date_create($request->timestamp1), 'Y-m-d H:i:s');
 			$level->discount_end_date = date_format(date_create($request->timestamp2), 'Y-m-d H:i:s');
+			$level->temp_discount = $request->discount_percent * 10;
 		}
 		else 
 		{
-			$level->discount_start_date = null;
-			$level->discount_end_date = null;
+			/*$level->discount_start_date = null;
+			$level->discount_end_date = null;*/
+			$level->discount_percent = $request->discount_percent * 10;	
 		}
 
 		if ($request->level_strength == 1)
@@ -267,7 +271,6 @@ class MemberLevelController extends Controller
 		$level->updated_at = date('Y-m-d H:i:s');
 		$level->from_point = $request->from_point;
 		$level->to_point = $request->to_point;
-		$level->discount_percent = $request->discount_percent * 10;
 		$level->update();
 
 		$title = 'table.success';
