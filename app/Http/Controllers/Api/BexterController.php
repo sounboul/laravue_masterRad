@@ -59,7 +59,7 @@ class BexterController extends BaseController
 					'total_points' => $customer->total_points - Cashing::get_cashing($request->id),
 					'level' => $level,
 					'level_strength' => $pom->level_strength,
-					'discount_percent' => $pom->discount_percent/10,
+					'discount_percent' => (now()<=$pom->discount_end_date && now()>=$pom->discount_start_date) === false ? $pom->discount_percent/10 : $pom->temp_discount/10,
 				],
 				200,
 				[],

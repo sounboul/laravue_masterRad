@@ -42,7 +42,10 @@
         :label="$t('discounts.discount_percentage')"
       >
         <template slot-scope="scope">
-          <span> {{ scope.row.discount_percent }} % </span>
+          <span v-if="Date.parse(today) <= Date.parse(scope.row.discount_end_date) && Date.parse(today) >= Date.parse(scope.row.discount_start_date)">
+            {{ scope.row.temp_discount }} %
+          </span>
+          <span v-else> {{ scope.row.discount_percent }} %</span>
         </template>
       </el-table-column>
 
@@ -82,14 +85,6 @@
           >
             {{ $t('table.edit') }}
           </el-button>
-          <!-- <el-button
-            v-if="checkRole(['admin', 'manager'])"
-            type="danger"
-            size="mini"
-            @click="handleDelete(scope.row.id)"
-          >
-            {{ $t('table.delete') }}
-          </el-button> -->
         </template>
       </el-table-column>
     </el-table>
@@ -346,6 +341,7 @@ export default {
   },
   data() {
     return {
+      today: this.formatDate(new Date(), 'yyyy-mm-dd'),
       list: null,
       points: {},
       values: {},
@@ -414,6 +410,14 @@ export default {
     this.getPoints();
   },
   methods: {
+    formatDate(date, format) {
+      const map = {
+        mm: date.getMonth() + 1,
+        dd: date.getDate(),
+        yyyy: date.getFullYear(),
+      };
+      return format.replace(/mm|dd|yyyy/gi, matched => map[matched]);
+    },
     async getList() {
       this.loading = true;
       const { data } = await fetchList(this.listQuery);
